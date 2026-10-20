@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.3.31] - 2026-10-20
+
+### Fixed
+- Public artist pages now consistently honour the artist's biography, location, links, email and discography visibility settings in the rendered page.
+- Removed catalogue links and release counts when the artist has chosen to hide their discography.
+- Public release cards now receive their artwork path from the Supabase `verify-turnstile` endpoint and show a graceful fallback when artwork cannot load.
+- Refreshed the asset and service-worker cache versions.
+
+### Improved
+- Kept public artist links within the editor's eight-link limit.
+- Retained the dashboard's persistent widget layout customisation and responsive image-fitting improvements.
+
+### Verification
+- Syntax checks passed for the modified frontend JavaScript files.
+- Supabase `verify-turnstile` deployed successfully as version 15.
+- Cloudflare Pages build and deployment succeeded for commit `35ac2224ab6e09c18148f5e3b6ded0959dbfb1ff`.
+- Signed-in browser and device-level regression testing is still required.
+
+
 ## [1.3.24] - 2026-10-20
 
 ### Fixed
