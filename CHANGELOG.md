@@ -1,21 +1,22 @@
 # Changelog
 
-All notable changes to Imposed Entertainment are documented here. This project follows [Semantic Versioning](https://semver.org/).
+This project follows Semantic Versioning (MAJOR.MINOR.PATCH).
 
-## [1.0.0] - 2026-10-20
-
-First release using Semantic Versioning. This is the versioning baseline for the existing portal feature set, not a claim that every integration has been independently end-to-end tested.
-
-### Fixed
-- Align service-worker cache version and the allowlisted asset query parameter with the portal release, avoiding stale-version cache mismatches.
-- Fix Business Suite Draft Recovery ordering to use the database's `saved_at` column rather than the nonexistent `created_at` column.
-- Display draft snapshot timestamps using `saved_at` when available.
+## [1.1.0] - 2026-10-20
 
 ### Changed
-- Replace the previous numeric build label with `1.0.0` in the portal shell, diagnostics report, and service-worker cache namespace.
-- Add a canonical `VERSION` file and changelog.
+- Complete visual redesign of navigation, workspace canvas, cards, metrics, release lists, forms, settings, authentication and loading states.
+- Reduced wasted horizontal and vertical space so more useful content appears at once.
+- Introduced a punchier dark art direction with acid-lime and electric-cyan highlights, asymmetrical card silhouettes, graphic accent bars and stronger hierarchy.
+- Added page-entry motion, animated section accents, floating empty states, hover feedback and tactile button transitions.
+- Restyled existing appearance customisation controls to complement the new interface.
 
-### Compatibility and verification
-- No Supabase schema migration was needed for this release.
-- Existing Supabase URL, public client key, authentication flow, routes, and feature modules remain in place.
-- Supabase project/table/advisor inspection completed. Full browser-based sign-in, RLS-per-user isolation, file uploads, and every feature action still require live end-to-end testing with test accounts.
+### Accessibility and compatibility
+- Retained responsive mobile navigation and compact mobile layouts.
+- Preserved reduced-motion support.
+- Kept Supabase integration and feature logic unchanged.
+- Bumped asset query versions and service-worker cache namespace to avoid stale assets.
+
+### Verification
+- CSS brace-balance check passed before commit.
+- Live visual, browser-console, authenticated Supabase and cross-device regression testing remains outstanding.
