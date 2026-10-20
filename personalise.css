@@ -30,3 +30,5 @@ body.personalise-comfort :where(.card,.settings-card,.detail-card,.builder-card,
 #ie-personalise-panel button:focus-visible,#ie-personalise-panel select:focus-visible,#ie-personalise-panel input:focus-visible{outline:2px solid var(--user-accent);outline-offset:3px}
 @media(max-width:520px){#ie-personalise-trigger{right:12px;bottom:calc(12px + env(safe-area-inset-bottom))}#ie-personalise-panel{right:10px;bottom:calc(68px + env(safe-area-inset-bottom));max-height:75dvh}}
 @media(prefers-reduced-motion:reduce){#ie-personalise-trigger:hover{transform:none}}
+
+body.personalise-high-contrast{--text:#fff;--muted:#e1dce0;color:#fff}body.personalise-high-contrast :where(p,small,label,.muted,.subtle,.description,.hint){color:#e1dce0}
