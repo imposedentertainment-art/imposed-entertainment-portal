@@ -196,3 +196,13 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   html,body{scroll-behavior:auto}
   .shell *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
+
+
+/* Listener account screens use the same trusted auth controls without reserving a blank story column. */
+.listener-account-shell{display:flex!important;align-items:flex-start;justify-content:center;min-height:100dvh;padding:clamp(20px,5vw,56px) 16px!important;background:var(--bg,#080a0f)}
+.listener-account-shell .auth-panel{width:min(100%,520px);max-width:520px;margin:0 auto;padding:0!important}
+.listener-account-shell .auth-card{width:100%;max-width:100%}
+.listener-account-shell .auth-legal-links{margin:18px auto 0;justify-content:center}
+.guest-account-link{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:8px 12px;border:1px solid var(--line2,#303744);border-radius:10px;color:var(--text,#f7f5ef);font-size:12px;font-weight:700;text-decoration:none}
+.guest-account-link:hover{border-color:var(--accent,#7868f4);background:var(--s2,#171e27)}
+html[data-ie-banner-enabled="false"] #main-content>.ie-banner{display:none!important;height:0!important;min-height:0!important;margin:0!important;padding:0!important;border:0!important}
