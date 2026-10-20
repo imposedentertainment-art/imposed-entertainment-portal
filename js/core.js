@@ -122,7 +122,8 @@
     let path='/';
     if(ROUTES.includes(view)) path='/'+view;
     else if(view==='release'&&selected?.id) path='/release/'+encodeURIComponent(selected.id);
-    else if((view==='profile'||view==='editprofile')&&pageId) path='/profile/'+encodeURIComponent(pageId);
+    else if(view==='editprofile'&&pageId) path='/profile/'+encodeURIComponent(pageId)+'/edit';
+    else if(view==='profile'&&pageId) path='/profile/'+encodeURIComponent(pageId);
     if(location.pathname!==path || location.hash) history.pushState(null,'',path+location.search);
   }
   function restoreRoute(){
@@ -132,8 +133,13 @@
     if(route.length===2&&route[0]==='release'){
       const r=releases.find(x=>String(x.id)===route[1]);if(r){selected=r;view='release';return true;}return false;
     }
+    if(route.length===3&&route[0]==='profile'&&route[2]==='edit'){
+      view='editprofile';pageId=route[1];
+      setTimeout(()=>openProfile(route[1]).then(()=>{if(pageData&&String(pageData.id)===String(route[1]))openEditor();}).catch(()=>toast('Could not open this profile. Please try again.','error')),0);
+      return true;
+    }
     if(route.length===2&&route[0]==='profile'){
-      view='profile';pageId=route[1];setTimeout(()=>openProfile(pageId),0);return true;
+      view='profile';pageId=route[1];setTimeout(()=>openProfile(pageId).catch(()=>toast('Could not load this profile. Please try again.','error')),0);return true;
     }
     // Backwards compatibility with old links.
     const leaf=route[0]||'';const legacy=leaf.match(/^([a-z]+)\.html$/i);
