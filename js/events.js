@@ -89,6 +89,8 @@ function ieStartEmailCodeCooldown(){
         showPortalLoading('Retrying workspace data…','Checking releases, tasks, notifications and roster');
         try {
           await Promise.allSettled([loadReleases(),loadBands(),loadNotes(),loadMisc(),...(isAdmin()?[loadUsers(),loadInvites()]:[])]);
+          // Re-resolve the current URL after retry so release detail pages recover in place.
+          if(typeof restoreRoute==='function')restoreRoute();
           render();
           if(Object.keys(workspaceDataWarnings||{}).length)toast('Some data is still unavailable. Your other workspace features remain available.','error');
           else toast('Workspace data refreshed.','success');
