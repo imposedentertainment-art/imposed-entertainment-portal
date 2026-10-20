@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.3.12] - 2026-10-20
+
+### Fixed
+- Startup workspace queries now settle independently, so one failed roster/notification query cannot skip route restoration and silently send a refreshed page back to the dashboard.
+- Route changes close the mobile menu and release its body scroll lock; scroll is also explicitly enabled for normal page content.
+- Label dashboard artist cards now show an explicit “View artist profile” action.
+- Label roster avatars now use the saved profile avatar and both the avatar and artist name open that artist’s profile; the existing role-management actions remain separate.
+- Updated the service-worker cache and versioned asset URLs so browsers fetch the corrected code.
+
+### Verification
+- JavaScript syntax, CSS brace balance, and build/cache version consistency checked.
+- Live authenticated route, avatar and mobile scroll tests still require browser verification.
+
+
 ## [1.3.11] - 2026-10-20
 
 ### Fixed
