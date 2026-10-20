@@ -3943,3 +3943,18 @@ body{position:relative!important;touch-action:pan-y pinch-zoom!important}
 .profile-edit-page .pf-preview[data-theme="classic"]{border-radius:2px;background:var(--s1);box-shadow:inset 0 3px 0 var(--ac)}
 .profile-edit-page .pf-preview[data-theme="cinematic"]{border-radius:18px;background:radial-gradient(ellipse at top right,color-mix(in srgb,var(--ac) 15%,transparent),transparent 60%),var(--s2)}
 @media(max-width:520px){.profile-edit-page .pf-banner-live-preview{width:100%;aspect-ratio:16/5}.profile-edit-page .pf-preview{max-width:100%}.profile-edit-page .pf-prev-row{gap:9px;padding-left:10px;padding-right:10px}}
+
+/* v1.4.54: make every advertised appearance preference visibly affect the workspace. */
+html[data-ie-font="clean"] body{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+html[data-ie-font="poster"] :is(h1,h2,h3,.page-heading h1,.dashboard-hero h1){font-family:Impact,"Arial Narrow",sans-serif;letter-spacing:.015em}
+html[data-ie-font="blackletter"] :is(h1,h2,h3,.page-heading h1,.dashboard-hero h1){font-family:Georgia,"Times New Roman",serif;font-weight:900;letter-spacing:.025em}
+html[data-ie-font="occult"] :is(h1,h2,h3,.page-heading h1,.dashboard-hero h1){font-family:Georgia,"Times New Roman",serif;font-style:italic}
+html[data-ie-font="typewriter"] :is(h1,h2,h3,.page-heading h1,.dashboard-hero h1){font-family:"Courier New",monospace;letter-spacing:.01em}
+html[data-ie-density="compact"] :is(.card,.settings-card,.detail-card,.dashboard-panel,.metric,.up-card){padding:clamp(10px,1.2vw,15px)!important}
+html[data-ie-density="spacious"] :is(.card,.settings-card,.detail-card,.dashboard-panel,.metric,.up-card){padding:clamp(20px,2.4vw,30px)!important}
+html[data-ie-style="minimal"] :is(.card,.settings-card,.detail-card,.dashboard-panel,.metric,.up-card){box-shadow:none!important;background-image:none!important}
+html[data-ie-style="vivid"] :is(.card,.settings-card,.detail-card,.dashboard-panel,.metric,.up-card){border-color:color-mix(in srgb,var(--accent-user,#b3122a) 42%,var(--line2,transparent))}
+html[data-ie-cards="glass"] :is(.card,.settings-card,.detail-card,.dashboard-panel,.metric,.up-card){background:color-mix(in srgb,var(--panel,#11151a) 78%,transparent);backdrop-filter:blur(12px)}
+html[data-ie-cards="ash"] :is(.card,.settings-card,.detail-card,.dashboard-panel,.metric,.up-card){box-shadow:none!important;background-image:linear-gradient(135deg,rgba(255,255,255,.018),transparent)!important}
+html[data-ie-cards="scar"] :is(.card,.settings-card,.detail-card,.dashboard-panel,.metric,.up-card){clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px));border-radius:0!important}
+html[data-ie-cards="slab"] :is(.card,.settings-card,.detail-card,.dashboard-panel,.metric,.up-card){box-shadow:4px 4px 0 color-mix(in srgb,var(--accent-user,#b3122a) 15%,transparent)}
