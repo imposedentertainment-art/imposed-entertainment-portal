@@ -170,6 +170,7 @@ async function openProfile(id) {
   pageId = id; pageData = null; pageDisc = []; coverUrls = {}; view = 'profile'; mobile = false; render(); window.scrollTo(0, 0);
   const [a, b] = await Promise.all([sb.rpc('get_profile', { p_id: id }), sb.rpc('profile_discography', { p_id: id })]);
   if (pageId !== id) return;
+  if (a.error) { console.warn('Profile could not be loaded:', a.error); pageData = 'error'; render(); return; }
   const row = Array.isArray(a.data) ? a.data[0] : a.data;
   const mine = id === session.user.id;
   pageData = row ? (mine ? {...row,is_public:profile.is_public,public_slug:profile.public_slug,public_profile_preferences:profile.public_profile_preferences,show_email:profile.show_email} : row) : false;
@@ -192,6 +193,7 @@ async function openProfile(id) {
 function profilePage() {
   const back = `<button class="back-link" data-pf="discover">${icon('back', 16)} Discover</button>`;
   if (pageData === null) return `<section class="page fade">${back}<p class="muted">Loading…</p></section>`;
+  if (pageData === 'error') return `<section class="page fade">${back}<div class="card"><h2>Couldn’t load this profile</h2><p class="muted">Check your connection and try again. Your profile hasn’t been changed.</p><button class="primary" data-pf="retry-profile">Try again</button></div></section>`;
   if (pageData === false) return `<section class="page fade">${back}<p class="muted">This profile is not available.</p></section>`;
   const p = pageData, ac = accentOf(p.accent), banner = MEDIA_URL(p.banner_path), mine = p.id === session.user.id, canEdit = mine || isAdmin();
   const links = (Array.isArray(p.links) ? p.links : []).map(l => ({ label: String(l.label || '').trim(), href: safeUrl(String(l.url || '')) })).filter(l => l.href);
@@ -286,7 +288,7 @@ async function saveEditor() {
     const prefs={...s.public_profile_preferences}; document.querySelectorAll('[data-public-pref]').forEach(x=>prefs[x.dataset.publicPref]=x.checked); const v = { profile_theme: ['cinematic','minimal','neon','classic'].includes(s.profile_theme) ? s.profile_theme : 'cinematic', ...(isAdmin() && uid !== session.user.id ? {display_name: String(s.display_name || '').trim().slice(0,80) || 'Artist'} : {}), tagline: s.tagline.trim() || null, bio: s.bio.trim() || null, location: s.location.trim() || null, accent: s.accent, show_email: !!s.show_email, links, avatar_path: a || s.avatarPath || null, banner_path: b || s.bannerPath || null, is_public: !!$('#pf-public')?.checked, public_slug: slug, public_profile_preferences:prefs };
     const { data: savedRow, error } = await sb.from('profiles').update(v).eq('id', uid).select('*').maybeSingle(); if (error) throw new Error('Could not save profile: ' + error.message); if (!savedRow) throw new Error('Supabase did not save this profile. Check the profiles UPDATE policy allows label admins to edit artist profile fields. Your uploaded image was not attached to the account.');
     if (Array.isArray(users)) { const idx=users.findIndex(u=>String(u.id)===String(uid)); if(idx>=0) users[idx]={...users[idx],...savedRow}; }
-    if (uid === session.user.id && a && s.avatarPath && s.avatarPath !== a) sb.storage.from('profile-media').remove([s.avatarPath]); if (uid === session.user.id && b && s.bannerPath && s.bannerPath !== b) sb.storage.from('profile-media').remove([s.bannerPath]); if (uid === session.user.id) Object.assign(profile, v); if(s.avatarPreview)URL.revokeObjectURL(s.avatarPreview);if(s.bannerPreview)URL.revokeObjectURL(s.bannerPreview);toast(v.is_public ? 'Public artist page published and saved' : 'Profile saved', 'success'); if(editState?.avatarPreview)URL.revokeObjectURL(editState.avatarPreview);if(editState?.bannerPreview)URL.revokeObjectURL(editState.bannerPreview);busy = false; editState = null; editTargetId = null; await openProfile(uid);
+    if (uid === session.user.id && a && s.avatarPath && s.avatarPath !== a) { const cleanup = await sb.storage.from('profile-media').remove([s.avatarPath]); if (cleanup.error) console.warn('Old avatar cleanup failed:', cleanup.error); } if (uid === session.user.id && b && s.bannerPath && s.bannerPath !== b) { const cleanup = await sb.storage.from('profile-media').remove([s.bannerPath]); if (cleanup.error) console.warn('Old banner cleanup failed:', cleanup.error); } if (uid === session.user.id) Object.assign(profile, v); if(s.avatarPreview)URL.revokeObjectURL(s.avatarPreview);if(s.bannerPreview)URL.revokeObjectURL(s.bannerPreview);toast(v.is_public ? 'Public artist page published and saved' : 'Profile saved', 'success'); if(editState?.avatarPreview)URL.revokeObjectURL(editState.avatarPreview);if(editState?.bannerPreview)URL.revokeObjectURL(editState.bannerPreview);busy = false; editState = null; editTargetId = null; await openProfile(uid);
   } catch (e) { if(newlyUploaded.length)await sb.storage.from('profile-media').remove(newlyUploaded).catch(()=>{}); console.error(e); const message=/profiles_public_slug_unique_idx|duplicate key value violates unique constraint/i.test(String(e.message||''))?'That page URL is already taken. Choose a different artist slug.':(e.message || 'Could not save profile'); toast(message, 'error'); } finally { busy = false; if(saveButton&&saveButton.isConnected){saveButton.disabled=false;saveButton.textContent='Save profile';} }
 }
 
@@ -306,6 +308,7 @@ function bindProfiles() {
       else if (a === 'retry-discover') { discoverRes = null; discoverError = ''; const el = $('#disc-results'); if (el) el.innerHTML = discoverList(); runSearch(discoverQ); }
       else if (a === 'clear-discover') { const q = $('#disc-q'); if (q) { q.value = ''; q.focus(); q.dispatchEvent(new Event('input', { bubbles: true })); } }
       else if (a === 'open-profile') await openProfile(el.dataset.id);
+      else if (a === 'retry-profile') await openProfile(pageId);
       else if (a === 'my-page') { if (isAdmin()) { view='settings'; mobile=false; render(); } else await openProfile(session.user.id); }
       else if (a === 'new-release') { draft=freshDraft(); draft.artist=profile.display_name||''; wizardStep=1; draftDirty=false; backView='profile'; view='builder'; render(); }
       else if (a === 'edit-draft-release') { const rel=releases.find(r=>r.id===el.dataset.id); if(!rel || rel.owner_id!==session.user.id || !['Draft','Changes Requested'].includes(rel.status)) throw new Error('This release is not editable.'); await openDraft(rel.id); }
