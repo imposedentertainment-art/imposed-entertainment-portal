@@ -95,7 +95,7 @@ const PRESETS = ['#d7bd72', '#8caed8', '#539df5', '#7c83ff', '#b79af0', '#ff6fae
 function avatarHtml(p, size) {
   // Prefer the canonical uploaded path, but retry legacy avatar_url if the storage URL fails.
   const legacyUrl = typeof p.avatar_url === 'string' ? safeUrl(p.avatar_url) : '';
-  const u = p.avatar_preview || MEDIA_URL(p.avatar_path) || legacyUrl;
+  const u = p.avatar_preview || (typeof p.avatar_url === 'string' ? safeUrl(p.avatar_url) : '') || MEDIA_URL(p.avatar_path) || legacyUrl;
   const initials = esc(String(p.display_name || p.email || '?').trim().slice(0, 2).toUpperCase());
   const fallback = legacyUrl && legacyUrl !== u ? ` data-fallback-src="${esc(legacyUrl)}"` : '';
   return `<span class="pf-avatar" style="width:${size}px;height:${size}px;font-size:${Math.round(size / 3)}px;background:${accentOf(p.accent)}">${u ? `<img loading="lazy" decoding="async" src="${esc(u)}"${fallback} alt="">` : initials}</span>`;
