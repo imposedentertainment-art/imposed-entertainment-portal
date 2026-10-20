@@ -4005,3 +4005,42 @@ html[data-ie-cards="slab"] :is(.card,.settings-card,.detail-card,.dashboard-pane
 #app .guest-discover .guest-legal-footer{max-width:1360px;margin:70px auto 0;padding:20px 0;border-top:1px solid var(--listener-line)}
 @media(max-width:900px){#app .guest-discover .guest-welcome{grid-template-columns:minmax(0,1fr);gap:22px;min-height:0;margin-top:28px}#app .guest-discover .guest-welcome>.eyebrow{margin:0}#app .guest-discover .guest-welcome h1{font-size:clamp(42px,9vw,62px)}#app .guest-discover .guest-verify-card{grid-column:1;grid-row:auto}#app .guest-discover .guest-artist-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:580px){#app .guest-discover{padding-inline:13px}#app .guest-discover .public-artist-nav{min-height:68px}#app .guest-discover .brand img{width:35px;height:35px}#app .guest-discover .brand span{font-size:10px}#app .guest-discover .guest-back{font-size:10px;padding:7px 10px}#app .guest-discover .guest-welcome{padding:22px 18px;border-radius:20px}#app .guest-discover .guest-welcome h1{font-size:clamp(38px,11vw,52px)}#app .guest-discover .guest-directory{margin-top:54px}#app .guest-discover .guest-directory h1{font-size:clamp(39px,11vw,53px)}#app .guest-discover .guest-search-wrap{grid-template-columns:minmax(0,1fr) auto;gap:7px}#app .guest-discover .guest-search-wrap input{padding-inline:13px;min-height:50px;font-size:13px}#app .guest-discover .guest-search-clear{min-height:50px;padding-inline:12px}#app .guest-discover .listener-letter-filter{gap:4px;padding:7px}#app .guest-discover .listener-letter{width:28px;height:30px;flex-basis:28px}#app .guest-discover .guest-artist-grid{grid-template-columns:minmax(0,1fr);gap:11px}#app .guest-discover .guest-artist-card{min-height:125px;padding:14px;border-radius:16px}#app .guest-discover .guest-artist-avatar{width:68px;height:68px;flex-basis:68px;border-radius:18px}#app .guest-discover .guest-artist-copy h2{font-size:17px}#app .guest-discover .listener-discovery-tools{align-items:flex-start;flex-direction:column}#app .guest-discover .guest-legal-footer{margin-top:44px}}
+
+
+/* v1.4.57 — listener discovery controls, collection management and mobile polish. */
+#app .guest-discover .listener-discovery-tools{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:18px 0 12px}
+#app .guest-discover .collection-toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-width:0}
+#app .guest-discover .collection-toolbar button{min-height:38px;border-radius:999px;padding:8px 13px;font-size:11px;font-weight:750;display:inline-flex;align-items:center;gap:6px}
+#app .guest-discover #show-saved-artists{background:rgba(255,173,145,.11);border-color:rgba(255,173,145,.32);color:#ffd0c1}
+#app .guest-discover #show-saved-artists.is-active{background:#ffad91;color:#21120e}
+#app .guest-discover #listener-saved-count{display:inline-grid;place-items:center;min-width:19px;height:19px;padding:0 4px;border-radius:99px;background:rgba(255,255,255,.13);font-size:10px}
+#app .guest-discover .listener-sort-label{display:flex;align-items:center;gap:9px;color:#9eacc0;font-size:11px;font-weight:750}
+#app .guest-discover .listener-sort-label select{min-height:38px;max-width:180px;border-radius:10px;background:#111a27;color:#eaf0f8;border:1px solid var(--listener-line);padding:0 10px}
+#app .guest-discover .listener-recent-panel{margin:16px 0 20px;padding:15px;border:1px solid var(--listener-line);border-radius:16px;background:rgba(17,26,39,.82)}
+#app .guest-discover .listener-recent-panel[hidden],#app .guest-discover .listener-clear-filters[hidden]{display:none!important}
+#app .guest-discover .listener-recent-panel>div:first-child{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+#app .guest-discover .listener-recent-panel strong{font-size:12px;color:#e7edf7}
+#app .guest-discover .listener-recent-panel button{background:transparent;border:0;color:#ffb39a;font-size:11px;cursor:pointer}
+#app .guest-discover #listener-recent-list{display:flex;gap:8px;flex-wrap:wrap}
+#app .guest-discover .listener-recent-chip{display:inline-flex;align-items:center;min-height:34px;padding:7px 12px;border:1px solid var(--listener-line);border-radius:999px;background:#172335;color:#eaf0f8;text-decoration:none;font-size:11px;font-weight:700;max-width:100%;overflow-wrap:anywhere}
+#app .guest-discover .listener-recent-chip:hover{border-color:rgba(255,173,145,.48);color:#ffbea9}
+#app .guest-discover .listener-clear-filters{margin:0 0 16px;border:0;background:transparent;color:#ffb39a;font-size:12px;font-weight:800;cursor:pointer}
+#app .guest-discover .listener-recent-badge{display:inline-flex;width:max-content;max-width:100%;margin-top:5px;padding:3px 7px;border-radius:999px;background:rgba(255,173,145,.1);color:#ffbea9;font-size:9px;font-weight:800;letter-spacing:.04em}
+#app .guest-discover .listener-card-actions{position:absolute;right:12px;top:12px;display:flex;gap:5px}
+#app .guest-discover .listener-card-actions .collection-save,#app .guest-discover .listener-card-share{position:static;width:34px;height:34px;flex:0 0 34px;border-radius:50%;border:1px solid var(--listener-line);background:#0d1520;color:#ffd3c5;font-size:17px;display:grid;place-items:center;cursor:pointer}
+#app .guest-discover .listener-card-actions button:hover{background:#2b2530;border-color:rgba(255,173,145,.5)}
+#app .guest-discover .guest-artist-copy{padding-right:54px}
+#app .guest-discover .guest-artist-card{padding-right:13px}
+#app .guest-discover .guest-artist-card .guest-artist-open{padding-right:0}
+#app .guest-discover .guest-artist-card .guest-artist-copy p{overflow-wrap:anywhere}
+@media(max-width:700px){
+ #app .guest-discover .listener-discovery-tools{align-items:stretch;flex-direction:column}
+ #app .guest-discover .collection-toolbar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%}
+ #app .guest-discover .collection-toolbar button{justify-content:center;min-width:0;white-space:normal;text-align:center;padding-inline:8px}
+ #app .guest-discover .listener-sort-label{justify-content:space-between}
+ #app .guest-discover .listener-sort-label select{flex:1;max-width:none}
+ #app .guest-discover .listener-card-actions{right:9px;top:9px}
+ #app .guest-discover .listener-card-actions .collection-save,#app .guest-discover .listener-card-share{width:31px;height:31px;flex-basis:31px}
+ #app .guest-discover .guest-artist-copy{padding-right:42px}
+}
+@media(prefers-reduced-motion:reduce){#app .guest-discover .guest-artist-card{transition:none}}
