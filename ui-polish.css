@@ -254,3 +254,51 @@ tr:last-child td{border-bottom:0}
 .pf-char-count{display:block;margin-top:5px;color:var(--muted);font-size:12px;font-variant-numeric:tabular-nums;text-align:right}
 .pf-form .field:focus-within .pf-char-count{color:var(--text)}
 @media(prefers-reduced-motion:reduce){.pf-char-count{transition:none}}
+
+
+/* Accessibility and responsive hardening — additive, safe across existing views. */
+:where(a,button,input,select,textarea,[tabindex]:not([tabindex="-1"]),[role="button"]):focus-visible{
+  outline:3px solid var(--accent,#e0c779);
+  outline-offset:3px;
+}
+:where(button,a,[role="button"],input[type="checkbox"],input[type="radio"],select){
+  touch-action:manipulation;
+}
+button,a,[role="button"]{ -webkit-tap-highlight-color:transparent; }
+img,video,canvas,svg{max-width:100%}
+pre,code{overflow-wrap:anywhere}
+:where(.card,.settings-card,.detail-card,.builder-card,.approval-card,.empty,.metric,.up-card){
+  min-width:0;
+}
+:where(.table-wrap,.table-scroll,.data-table-wrap){max-width:100%;overflow-x:auto;overscroll-behavior-x:contain}
+table{max-width:100%;border-collapse:collapse}
+td,th{overflow-wrap:anywhere}
+[aria-invalid="true"],.field-error input,.field-error select,.field-error textarea{
+  border-color:var(--red,#f09595)!important;
+}
+[hidden]{display:none!important}
+@media (max-width:700px){
+  html{scroll-padding-top:72px}
+  .main{width:100%;padding-left:14px;padding-right:14px;border-radius:0}
+  .page-heading{margin-bottom:22px}
+  .section-head{align-items:flex-start}
+  :where(.hero-row,.section-head,.toolbar,.actions-row){max-width:100%;min-width:0}
+  :where(.hero-row,.toolbar,.actions-row){flex-wrap:wrap}
+  :where(input:not([type=checkbox]):not([type=radio]),select,textarea){max-width:100%;font-size:16px}
+  :where(button,.primary,.secondary,.new-btn,.danger-btn,.success,.copy-btn,.text-btn,.link-button){max-width:100%;white-space:normal}
+  :where(.grid,.metrics-grid,.approval-grid){grid-template-columns:minmax(0,1fr)}
+  :where(.modal,.dialog,.modal-card){max-width:calc(100vw - 24px);max-height:calc(100dvh - 24px);overflow:auto}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    scroll-behavior:auto!important;
+    transition-duration:.01ms!important;
+  }
+}
+@media (forced-colors:active){
+  :where(a,button,input,select,textarea,[role="button"]):focus-visible{outline:2px solid Highlight}
+  .primary,.new-btn,.secondary,.danger-btn,.success{border:1px solid ButtonText}
+}
