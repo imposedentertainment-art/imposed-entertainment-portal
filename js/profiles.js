@@ -107,6 +107,25 @@ function renderPublicArtistError(slug, message, unavailable=false) {
 }
 const accentOf = a => /^#[0-9a-f]{6}$/i.test(a || '') ? a : '#d7bd72';
 function profileCompletion(p){if(!p)return 0;const checks=[!!p.avatar_path,!!p.banner_path,!!String(p.bio||'').trim(),!!String(p.tagline||'').trim(),!!String(p.location||'').trim(),Array.isArray(p.links)&&p.links.some(l=>safeUrl(String(l.url||''))),!!p.accent];return Math.round(checks.filter(Boolean).length/checks.length*100);}
+
+function profileEditorReadiness(s){
+  const checks=[
+    {key:'avatar',label:'Add a profile photo',done:!!(s.avatarFile||s.avatarPath)},
+    {key:'banner',label:'Add a page banner',done:!!(s.bannerFile||s.bannerPath)},
+    {key:'bio',label:'Write an artist bio',done:!!String(s.bio||'').trim()},
+    {key:'tagline',label:'Add a short tagline',done:!!String(s.tagline||'').trim()},
+    {key:'location',label:'Add your location',done:!!String(s.location||'').trim()},
+    {key:'links',label:'Add at least one valid music or social link',done:Array.isArray(s.links)&&s.links.some(l=>safeUrl(String(l.url||'')))},
+    {key:'accent',label:'Choose your page accent',done:!!s.accent}
+  ];
+  const count=checks.filter(x=>x.done).length,percent=Math.round(count/checks.length*100);
+  return {count,total:checks.length,percent,checks};
+}
+function renderProfileEditorReadiness(s){
+  const state=profileEditorReadiness(s);
+  return `<section class="card pf-readiness" aria-labelledby="pf-readiness-title"><div class="pf-readiness-head"><div><p class="eyebrow">PROFILE CHECKLIST</p><h3 id="pf-readiness-title">${state.percent===100?'You’re ready to stand out':'Make your page memorable'}</h3><p class="muted">${state.count} of ${state.total} essentials complete · This checklist is private and won’t publish anything by itself.</p></div><strong class="pf-readiness-score">${state.percent}%</strong></div><div class="pf-readiness-track" role="progressbar" aria-label="Profile readiness" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${state.percent}"><span style="width:${state.percent}%"></span></div><ul class="pf-readiness-list">${state.checks.map(x=>`<li class="${x.done?'is-done':''}"><span aria-hidden="true">${x.done?'✓':'○'}</span>${esc(x.label)}</li>`).join('')}</ul></section>`;
+}
+
 const PRESETS = ['#d7bd72', '#8caed8', '#539df5', '#7c83ff', '#b79af0', '#ff6fae', '#f3727f', '#ffa42b', '#eadb62', '#e8eeeb'];
 function avatarHtml(p, size) {
   // Prefer the canonical uploaded path, but retry legacy avatar_url if the storage URL fails.
@@ -218,6 +237,7 @@ function openEditor() {
 function editProfile() {
   const s = editState; if (!s) return discover();
   return `<section class="page fade profile-edit-page"><button class="back-link" data-pf="cancel-editor">${icon('back', 16)} Cancel</button><div class="page-heading"><p class="eyebrow">YOUR PAGE</p><h1>Edit profile</h1><p class="sub">This is what other accounts see when they find you. Your name is set by the label.</p></div>
+   <div id="pf-readiness-live">${renderProfileEditorReadiness(s)}</div>
   <div class="card pf-form"><h3>Look</h3>
     <div class="pf-media"><div>${avatarHtml({ display_name: s.display_name || (pageData||profile).display_name, accent: s.accent, avatar_path: s.avatarPath, avatar_preview:s.avatarPreview }, 72)}<label class="secondary pf-file">Choose photo<input type="file" accept="image/*" data-pf-file="avatar" hidden></label><small>${s.avatarFile ? esc(s.avatarFile.name) : ''}</small></div><div><label class="secondary pf-file">Choose banner<input type="file" accept="image/jpeg,image/png,image/webp,image/gif" data-pf-file="banner" hidden></label><small>${s.bannerFile ? esc(s.bannerFile.name) : (s.bannerPath ? 'Banner set' : 'Wide image works best · max 2 MB')}</small><div class="pf-banner-live-preview">${s.bannerPreview||(s.bannerPath?MEDIA_URL(s.bannerPath):'')?`<img src="${esc(s.bannerPreview||(s.bannerPath?MEDIA_URL(s.bannerPath):''))}" alt="Banner preview" loading="lazy">`:`<span>Banner preview</span>`}</div></div></div>
     <div class="field"><span>Live page preview · updates as you edit</span>
@@ -303,8 +323,8 @@ function bindProfiles() {
   });
   const q = $('#disc-q'); if (q) { q.oninput = () => { const nextQ = q.value.trim(); discoverQ = nextQ; ++discoverRequestId; discoverError = ''; discoverRes = null; const results = $('#disc-results'); if (results) results.innerHTML = discoverList(); const clear = document.querySelector('[data-pf=\"clear-discover\"]'); if (clear) clear.hidden = !nextQ; clearTimeout(pfTimer); pfTimer = setTimeout(() => runSearch(nextQ), 250); }; q.onkeydown = e => { if (e.key === 'Escape' && q.value) { q.value = ''; q.dispatchEvent(new Event('input', { bubbles: true })); } }; if (document.activeElement === document.body) q.focus(); }
   if (editState && view === 'editprofile') {
-    document.querySelectorAll('[data-pf-in]').forEach(i => {const update=()=>{editState[i.dataset.pfIn]=i.value;const name=document.querySelector('.pf-prev-name'),tagline=document.querySelector('.pf-prev-tagline'),bio=document.querySelector('.pf-prev-bio'),preview=document.querySelector('.pf-preview');if(name&&i.dataset.pfIn==='display_name')name.textContent=i.value||'Your name';if(tagline&&i.dataset.pfIn==='tagline')tagline.textContent=i.value||'Your tagline';if(bio&&i.dataset.pfIn==='bio')bio.textContent=i.value||'Your artist bio will appear here.';if(preview&&i.dataset.pfIn==='profile_theme')preview.dataset.theme=i.value;};i.oninput=update;i.onchange=update;});
-    document.querySelectorAll('[data-pf-link]').forEach(i => i.oninput = () => { editState.links[Number(i.dataset.pfLink)][i.dataset.k] = i.value; });
+    document.querySelectorAll('[data-pf-in]').forEach(i => {const update=()=>{editState[i.dataset.pfIn]=i.value;const name=document.querySelector('.pf-prev-name'),tagline=document.querySelector('.pf-prev-tagline'),bio=document.querySelector('.pf-prev-bio'),preview=document.querySelector('.pf-preview');if(name&&i.dataset.pfIn==='display_name')name.textContent=i.value||'Your name';if(tagline&&i.dataset.pfIn==='tagline')tagline.textContent=i.value||'Your tagline';if(bio&&i.dataset.pfIn==='bio')bio.textContent=i.value||'Your artist bio will appear here.';if(preview&&i.dataset.pfIn==='profile_theme')preview.dataset.theme=i.value;refreshProfileEditorReadiness();};i.oninput=update;i.onchange=update;});
+    document.querySelectorAll('[data-pf-link]').forEach(i => i.oninput = () => { editState.links[Number(i.dataset.pfLink)][i.dataset.k] = i.value; refreshProfileEditorReadiness(); });
     const hx = $('#pf-hex'); if (hx) hx.oninput = () => { let v = hx.value.trim(); if (v && v[0] !== '#') v = '#' + v; if (/^#[0-9a-f]{6}$/i.test(v)) setAccent(v, true); };
     const em = $('#pf-email'); if (em) em.onchange = () => { editState.show_email = em.checked; };
     const pub = $('#pf-public'); if(pub) pub.onchange=()=>{editState.is_public=pub.checked;};
@@ -315,6 +335,7 @@ function bindProfiles() {
   syncPlayIcons();
 }
 
+function refreshProfileEditorReadiness(){const root=document.getElementById('pf-readiness-live');if(root&&editState)root.innerHTML=renderProfileEditorReadiness(editState);}
 function setAccent(c, fromHex) {
   editState.accent = c;
   const pv = document.querySelector('.pf-preview'); if (pv) pv.style.setProperty('--ac', c);
