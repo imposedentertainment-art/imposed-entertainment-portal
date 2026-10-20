@@ -7,7 +7,7 @@ const slugifyArtist = v => String(v||'artist').toLowerCase().normalize('NFKD').r
 
 // Recover gracefully when stored profile media is deleted or temporarily unavailable.
 function bindProfileImageFallbacks(root = document) {
-  root.querySelectorAll('.pf-avatar img, img.public-artist-avatar, .sidebar-profile .avatar img, .band-art img').forEach(img => {
+  root.querySelectorAll('.pf-avatar img, img.public-artist-avatar, .sidebar-profile .avatar img, .band-art img, .public-release-art img').forEach(img => {
     if (img.dataset.fallbackBound) return;
     img.dataset.fallbackBound = 'true';
     img.onerror = () => {
@@ -20,7 +20,10 @@ function bindProfileImageFallbacks(root = document) {
         || document.querySelector('.public-artist-id h1')?.textContent
         || 'Artist';
       const initial = Array.from(name.trim())[0]?.toLocaleUpperCase() || 'A';
-      if (img.matches('.public-artist-avatar')) {
+      if (img.matches('.public-release-art img')) {
+        const wrapper=img.closest('.public-release-art');
+        if(wrapper){wrapper.textContent='♪';wrapper.setAttribute('role','img');wrapper.setAttribute('aria-label','Cover artwork unavailable');}
+      } else if (img.matches('.public-artist-avatar')) {
         const fallback = document.createElement('span');
         fallback.className = 'public-artist-avatar public-artist-avatar-fallback';
         fallback.textContent = initial;
