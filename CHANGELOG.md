@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.5] - 2026-10-20
+
+### Fixed
+- Removed artist-facing Help & Support links from label account navigation and workspace footer.
+- Guarded the support route so label accounts are redirected to their dashboard.
+- Added a role-aware handler for stale support actions, routing label users to Operations Centre.
+
+### Verification
+- JavaScript syntax and CSS brace balance checked before commit.
+- Live role-based interaction checks remain outstanding.
+
+
 ## [1.3.9] - 2026-10-20
 
 ### Fixed
