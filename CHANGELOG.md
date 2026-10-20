@@ -2,6 +2,26 @@
 
 This project follows Semantic Versioning (MAJOR.MINOR.PATCH).
 
+## [1.2.0] - 2026-10-20
+
+### Fixed
+- Removed the unused dashboard banner strip that consumed a large amount of mobile screen space.
+- Removed the duplicate mobile navigation title/close bar; the main menu toggle remains the single close control.
+- Fixed listener verification on direct artist URLs so successful verification opens the requested artist instead of dropping the visitor into the directory.
+- Added a guarded, busy-state-aware listener verification action to prevent duplicate submissions and make progress/error states clearer.
+- Corrected the artist editor’s public URL preview to match the actual `/listen/artist/<slug>` route.
+
+### Improved
+- Tightened dashboard spacing and simplified the mobile hero so key actions and information appear sooner.
+- Preserved the Turnstile security check and server-verified listener sessions.
+- Kept existing Supabase data operations and role restrictions in place.
+
+### Verification
+- Static source checks and release-version consistency checks performed before deployment.
+- Live authenticated Supabase flows still require real-account regression testing.
+
+This project follows Semantic Versioning (MAJOR.MINOR.PATCH).
+
 ## [1.1.0] - 2026-10-20
 
 ### Changed
