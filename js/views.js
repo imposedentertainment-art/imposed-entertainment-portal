@@ -97,14 +97,14 @@
     const routeChanged = lastRenderedWorkspaceView !== null && lastRenderedWorkspaceView !== view;
     lastRenderedWorkspaceView = view;
     const page=view==='dashboard'?dashboard():view==='podcasts'?podcastsView():view==='builder'?builder():view==='release'?detail():view==='settings'?settings():view==='support'?supportView():view==='earnings'?earningsView():view==='statements'?statementsView():view==='operations'?operationsView():view==='notifications'?notesView():view==='bands'?bandsView():view==='roster'?roster():view==='discover'?discover():view==='discography'?discography():view==='calendar'?calendarView():view==='insights'?insightsView():view==='pipeline'?pipelineView():view==='studio'?studioView():view==='vault'?vaultView():view==='business'?businessView():view==='activity'?activityView():view==='profile'?profilePage():view==='editprofile'?editProfile():dashboard();
-    $('#app').innerHTML=`<div class="shell ${sidebarCollapsed()?'sidebar-collapsed':''}">${nav()}<main id="main-content" class="main ${routeChanged?'route-enter':''}" tabindex="-1">${workspaceTopbar()}${workspaceDataWarningMarkup()}${page}</main></div>`;
+    $('#app').innerHTML=`<div class="shell ${sidebarCollapsed()?'sidebar-collapsed':''}">${nav()}<main id="main-content" class="main ${routeChanged?'route-enter':''}" tabindex="-1">${workspaceTopbar()}${workspaceDataWarningMarkup()}${page}<footer class="workspace-legal-footer" aria-label="Legal and help"><span>© ${new Date().getFullYear()} Imposed Entertainment</span><nav aria-label="Policies"><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Service</a><a href="mailto:support@imposedentertainment.com">Contact</a></nav></footer></main></div>`;
     enhanceNavigation();bind();setTimeout(hydrateCovers,0);
     // Decode images off the critical path and defer below-the-fold media. The global error handler
     // in index.html replaces failed images with accessible fallbacks.
     document.querySelectorAll('#main-content img').forEach(img=>{
       if(!img.hasAttribute('decoding')) img.decoding='async';
-      if(!img.hasAttribute('loading') && img.getBoundingClientRect().top > window.innerHeight * 1.25) img.loading='lazy';
-      if(img.complete && img.naturalWidth>0) img.classList.add('media-loaded');
+      if(!img.hasAttribute('loading')){const r=img.getBoundingClientRect();const near=r.bottom>0&&r.top<window.innerHeight*.85;img.loading=near?'eager':'lazy';if(!near)img.fetchPriority='low';}
+      if(img.complete&&img.naturalWidth>0)img.classList.add('media-loaded');
       else if(!img.dataset.mediaLoadBound){img.dataset.mediaLoadBound='1';img.addEventListener('load',()=>img.classList.add('media-loaded'),{once:true});}
     });
     document.querySelectorAll('.icon-btn:not([aria-label])').forEach(b=>b.setAttribute('aria-label',b.title||(/[\u2715\u00d7]/.test(b.textContent)?'Delete':String(b.dataset.action||'Action').replace(/-/g,' '))));
