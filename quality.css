@@ -20,7 +20,7 @@ body.ie-command-open{overflow:hidden}
 
 
 /* Optional overview banner: never reserves space while hidden or unconfigured. */
-#main-content>.ie-banner{display:none}
+#main-content>.ie-banner{display:none;background-image:none}
 html[data-ie-banner-enabled="true"] #main-content>.ie-banner{display:block;height:clamp(100px,20vw,176px);margin:0 0 18px;border:1px solid var(--line2);border-radius:var(--ie-radius,2px);background-color:var(--ie-banner-color,transparent);background-position:center;background-size:cover;background-repeat:no-repeat;box-sizing:border-box;overflow:hidden}
 .banner-toggle-row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 14px;border:1px solid var(--line2);border-radius:12px;min-width:0}
 .banner-toggle-row>span{display:grid;gap:4px;min-width:0}.banner-toggle-row small{color:var(--muted);line-height:1.45}.banner-toggle-row input{flex:0 0 auto;width:20px;height:20px;accent-color:var(--accent)}
