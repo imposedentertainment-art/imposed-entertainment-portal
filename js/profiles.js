@@ -237,6 +237,8 @@ async function saveEditor() {
 function bindProfiles() {
   bindProfileImageFallbacks(document);
   document.querySelectorAll('[data-pf="open-profile"][role="button"]').forEach(row=>{if(row.dataset.profileKeyboardBound)return;row.dataset.profileKeyboardBound='1';row.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();row.click();}});});
+  // Make the roster row itself a useful tap target, without hijacking its explicit action buttons.
+  document.querySelectorAll('.roster-row.account-row').forEach(row=>{if(row.dataset.rowProfileBound)return;row.dataset.rowProfileBound='1';row.addEventListener('click',e=>{if(e.target.closest('button,a,input,[data-action]'))return;row.querySelector('[data-pf="open-profile"]')?.click();});row.addEventListener('keydown',e=>{if(e.target===row&&(e.key==='Enter'||e.key===' ')){e.preventDefault();row.querySelector('[data-pf="open-profile"]')?.click();}});row.tabIndex=0;row.setAttribute('aria-label','Open artist profile');});
   document.querySelectorAll('.brand img, .boot-brand img, .auth-logo img').forEach(img => { if (img.dataset.logoFallbackBound) return; img.dataset.logoFallbackBound='1'; img.addEventListener('error', () => { img.hidden=true; const mark=document.createElement('span'); mark.className='logo-fallback-mark'; mark.textContent='IE'; mark.setAttribute('aria-hidden','true'); img.insertAdjacentElement('afterend',mark); }, {once:true}); });
   document.querySelectorAll('[data-pf]').forEach(el => el.onclick = async () => {
     if (el.dataset.pendingAction === '1') return;
