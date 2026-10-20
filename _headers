@@ -43,3 +43,6 @@
 
 /ui-polish.css
   Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+/js/profiles.js
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
