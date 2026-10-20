@@ -1,0 +1,78 @@
+name: Install website package
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - site-package.zip
+
+permissions:
+  contents: write
+
+jobs:
+  install-site:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract website package safely
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          from zipfile import ZipFile
+          import shutil
+
+          archive = Path("site-package.zip")
+          target = Path(".").resolve()
+          staging = Path("/tmp/imposed-site-package")
+          shutil.rmtree(staging, ignore_errors=True)
+          staging.mkdir(parents=True)
+
+          with ZipFile(archive) as zf:
+              for item in zf.infolist():
+                  name = item.filename.replace("\\", "/")
+                  p = Path(name)
+                  if p.is_absolute() or ".." in p.parts or ".git" in p.parts:
+                      raise SystemExit(f"Unsafe archive path rejected: {name}")
+                  if not name:
+                      continue
+                  destination = (staging / p).resolve()
+                  if staging.resolve() not in destination.parents and destination != staging.resolve():
+                      raise SystemExit(f"Unsafe archive path rejected: {name}")
+                  if item.is_dir():
+                      destination.mkdir(parents=True, exist_ok=True)
+                  else:
+                      destination.parent.mkdir(parents=True, exist_ok=True)
+                      with zf.open(item) as src, destination.open("wb") as dst:
+                          shutil.copyfileobj(src, dst)
+
+          ignored = {".git", ".github"}
+          for source in staging.iterdir():
+              if source.name in ignored:
+                  continue
+              destination = target / source.name
+              if source.is_dir():
+                  if destination.exists():
+                      shutil.rmtree(destination)
+                  shutil.copytree(source, destination)
+              else:
+                  shutil.copy2(source, destination)
+
+          archive.unlink()
+          PY
+
+      - name: Commit extracted website files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No website changes to commit."
+            exit 0
+          fi
+          git commit -m "Deploy website package"
+          git push
