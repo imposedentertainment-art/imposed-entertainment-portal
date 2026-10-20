@@ -11,6 +11,8 @@ function bindProfileImageFallbacks(root = document) {
     if (img.dataset.fallbackBound) return;
     img.dataset.fallbackBound = 'true';
     img.onerror = () => {
+      const fallbackSrc = img.dataset.fallbackSrc;
+      if (fallbackSrc && img.dataset.legacyFallbackTried !== '1') { img.dataset.legacyFallbackTried='1'; img.removeAttribute('data-fallback-src'); img.src=fallbackSrc; return; }
       const name = img.closest('.pf-avatar')?.parentElement?.querySelector('.pf-id h1, h1, strong')?.textContent
         || img.closest('.guest-artist-card')?.querySelector('h2')?.textContent
         || img.closest('.sidebar-profile')?.querySelector('.sidebar-profile-copy strong')?.textContent
@@ -80,7 +82,7 @@ async function renderPublicArtist(slug) {
   const shareBtn=$('#public-share-btn');if(shareBtn)shareBtn.onclick=async()=>{const shareData={title:document.title,text:`Discover ${row.display_name} on Imposed Entertainment`,url:location.href};try{if(navigator.share)await navigator.share(shareData);else if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(location.href);toast('Artist profile link copied.','success');}else{window.prompt('Copy this artist profile link:',location.href);}}catch(e){if(e?.name!=='AbortError'){try{await navigator.clipboard.writeText(location.href);toast('Artist profile link copied.','success');}catch(_){window.prompt('Copy this artist profile link:',location.href);}}}};
 }
 
-const MEDIA_URL = p => p ? sb.storage.from('profile-media').getPublicUrl(p).data.publicUrl : '';
+const MEDIA_URL = p => { const raw=String(p||'').trim(); if(!raw)return ''; if(/^https?:\/\//i.test(raw)){try{const u=new URL(raw);return ['http:','https:'].includes(u.protocol)?u.href:'';}catch(_){return '';}} const path=raw.replace(/^\/+/, '').replace(/^profile-media\//,''); return path ? sb.storage.from('profile-media').getPublicUrl(path).data.publicUrl : ''; };
 const safeUrl = u => { try { const raw=String(u||'').trim(); if(!raw||raw.length>512)return ''; const x = new URL(/^https?:\/\//i.test(raw) ? raw : 'https://' + raw); return /^https?:$/.test(x.protocol)&&x.hostname&&!x.username&&!x.password ? x.href : ''; } catch (e) { return ''; } };
 function renderPublicArtistError(slug, message, unavailable=false) {
   const app=$('#app'); if(!app)return;
@@ -93,8 +95,10 @@ const PRESETS = ['#d7bd72', '#8caed8', '#539df5', '#7c83ff', '#b79af0', '#ff6fae
 function avatarHtml(p, size) {
   // Prefer the canonical uploaded path; support older profile records that only have avatar_url.
   const legacyUrl = typeof p.avatar_url === 'string' ? safeUrl(p.avatar_url) : '';
-  const u = p.avatar_preview || MEDIA_URL(p.avatar_path) || legacyUrl;
-  return `<span class="pf-avatar" style="width:${size}px;height:${size}px;font-size:${Math.round(size / 3)}px;background:${accentOf(p.accent)}">${u ? `<img loading="lazy" decoding="async" src="${esc(u)}" alt="">` : esc(String(p.display_name || p.email || '?').trim().slice(0, 2).toUpperCase())}</span>`;
+  const storedPath = typeof p.avatar_path === 'string' ? p.avatar_path.trim() : '';
+  const u = p.avatar_preview || (storedPath ? MEDIA_URL(storedPath) : '') || legacyUrl;
+  const fallback = legacyUrl && legacyUrl !== u ? ` data-fallback-src="${esc(legacyUrl)}"` : '';
+  return `<span class="pf-avatar" style="width:${size}px;height:${size}px;font-size:${Math.round(size / 3)}px;background:${accentOf(p.accent)}">${u ? `<img loading="${size <= 48 ? 'eager' : 'lazy'}" decoding="async" src="${esc(u)}"${fallback} alt="">` : esc(String(p.display_name || p.email || '?').trim().slice(0, 2).toUpperCase())}</span>`;
 }
 
 /* ---------- Discover ---------- */
