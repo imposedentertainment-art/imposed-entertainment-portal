@@ -1,34 +1,5 @@
-/vault /index.html 200
-/business /index.html 200
-# Canonical extensionless legal URLs. Rewrite directly to real static files;
-# avoid redirecting users between slash/no-slash variants.
-/privacy.html /privacy 301
-/terms.html /terms 301
 /privacy /privacy/index.html 200
 /privacy/ /privacy/index.html 200
 /terms /terms/index.html 200
 /terms/ /terms/index.html 200
-/dashboard /index.html 200
-/listen /index.html 200
-/listen/artist/* /index.html 200
-/link/* /index.html 200
-/support /index.html 200
-/settings /index.html 200
-/earnings /index.html 200
-/statements /index.html 200
-/operations /index.html 200
-/notifications /index.html 200
-/activity /index.html 200
-/bands /index.html 200
-/roster /index.html 200
-/discover /index.html 200
-/discography /index.html 200
-/podcasts /index.html 200
-/calendar /index.html 200
-/insights /index.html 200
-/pipeline /index.html 200
-/studio /index.html 200
-/builder /index.html 200
-/release/* /index.html 200
-/profile/* /index.html 200
 /* /index.html 200
