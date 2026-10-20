@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.3.35] - 2026-10-20
+
+### Fixed
+- Unsubscribe the early auth listener and suppress queued callbacks if initial session resolution fails or times out, preventing stale startup callbacks and unnecessary background loads.
+
+### Verification
+- Auth startup event ordering and failure cleanup checked at source level.
+- Live browser, authenticated account and host-specific regression tests remain necessary.
+
+
 ## [1.3.34] - 2026-10-20
 
 ### Fixed
