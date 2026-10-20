@@ -3809,3 +3809,9 @@ html,body{height:auto!important;max-height:none!important;overflow-x:hidden!impo
 .public-artist .public-release-card:target{border-color:var(--ac,#ff866f)!important;box-shadow:0 0 0 3px color-mix(in srgb,var(--ac,#ff866f) 18%,transparent)!important;scroll-margin-top:18px}
 .public-artist .public-release-card a:focus-visible,.public-artist .public-cta:focus-visible,.public-artist .public-share-btn:focus-visible{outline:3px solid var(--ac,#ff866f)!important;outline-offset:3px}
 @media(max-width:480px){.public-artist-id{align-items:flex-start!important}.public-artist-intro{flex:1 1 0}.public-artist-actions{width:100%}.public-artist-actions>span{display:none}.public-artist-actions .public-share-btn{flex:1 1 auto}.public-artist-quicklinks .public-cta{max-width:100%;overflow-wrap:anywhere}}
+
+/* v1.3.23 — final scroll recovery and route-preserving release errors */
+html,body{height:auto!important;min-height:100%!important;max-height:none!important;overflow-x:hidden!important;overflow-y:auto!important;overscroll-behavior-y:auto!important;touch-action:pan-y pinch-zoom!important}
+body{position:relative!important;touch-action:pan-y pinch-zoom!important}
+#app,.shell,.shell .main,#main-content{height:auto!important;max-height:none!important;overflow:visible!important;touch-action:pan-y pinch-zoom!important}
+.shell .main{min-height:calc(100dvh - 57px)!important;padding-bottom:max(76px,env(safe-area-inset-bottom))!important}
