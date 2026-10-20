@@ -120,6 +120,7 @@
   let unavailableReleaseRouteId=null;
   const ROUTES=['dashboard','podcasts','support','settings','earnings','statements','operations','notifications','activity','bands','roster','discover','discography','calendar','insights','pipeline','studio','vault','business','builder'];
   function syncHash(){
+    if(view!=='release')unavailableReleaseRouteId=null;
     let path='/';
     if(ROUTES.includes(view)) path='/'+view;
     else if(view==='release'&&(selected?.id||unavailableReleaseRouteId)) path='/release/'+encodeURIComponent(selected?.id||unavailableReleaseRouteId);
