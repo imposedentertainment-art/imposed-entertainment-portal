@@ -263,8 +263,9 @@ async function saveEditor() {
   if (busy) return; busy = true; const newlyUploaded=[]; const saveButton=document.querySelector('[data-pf="save-profile"]'); if(saveButton){saveButton.disabled=true;saveButton.textContent='Saving profile…';}
   try {
     const s = editState, uid = editTargetId || session.user.id; if (uid !== session.user.id && !isAdmin()) throw new Error('You can only edit your own profile.'); const up = async (f, kind) => {
-      if (!f) return null; if (!/^image\//.test(f.type)) throw new Error('Pictures must be image files.'); if (f.size > 2 * 1024 * 1024) throw new Error('Pictures must be under 2 MB.');
-      const path = `${session.user.id}/${uid===session.user.id?'':'managed-'+uid+'-'}${kind}-${Date.now()}.${(f.name.split('.').pop() || 'jpg').toLowerCase()}`;
+      if (!f) return null; const imageExtensions={'image/jpeg':'jpg','image/png':'png','image/webp':'webp','image/gif':'gif'}; const extension=imageExtensions[f.type]; if (!extension) throw new Error('Choose a JPG, PNG, WebP or GIF image.'); if (f.size > 2 * 1024 * 1024) throw new Error('Pictures must be under 2 MB.');
+      const uploadId = typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : Date.now() + '-' + Math.random().toString(36).slice(2,10);
+      const path = `${session.user.id}/${uid===session.user.id?'':'managed-'+uid+'-'}${kind}-${uploadId}.${extension}`;
       const r = await uploadWithRetry('profile-media',path,f,{contentType:f.type}); newlyUploaded.push(path); return path;
     };
     const a = await up(s.avatarFile, 'avatar'), b = await up(s.bannerFile, 'banner');
