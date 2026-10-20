@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.3.6] - 2026-10-20
+
+### Fixed
+- Routed label-account avatar controls to account settings instead of the artist public page.
+- Replaced artist public-page editing and completeness controls in label settings with direct artist-roster and release-pipeline shortcuts.
+- Changed the label account identity label so it no longer says its name is set by the label.
+- Versioned the final role-separation changes and service-worker cache.
+
+### Verification
+- JavaScript syntax, CSS brace balance, asset version consistency and profile action wiring checked.
+- Live-browser tests of role-specific workflows and Supabase permissions are still required.
+
+
 ## [1.3.5] - 2026-10-20
 
 ### Fixed
