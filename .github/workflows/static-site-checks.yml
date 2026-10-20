@@ -1,4 +1,4 @@
-name: Static site checks
+name: Cloudflare Pages static checks
 
 on:
   push:
@@ -26,16 +26,22 @@ jobs:
             test -f "$file"
             node --check "$file"
           done
-      - name: Check static deployment files and cache versions
+      - name: Validate Cloudflare Pages assets and security basics
         shell: bash
         run: |
           set -euo pipefail
           test -f index.html
           test -f _redirects
           test -f _headers
-          test -f netlify.toml
+          test ! -f netlify.toml
           version="$(tr -d '\r\n' < VERSION)"
+          test -n "$version"
           grep -Fq "$version" index.html
           grep -Fq "$version" sw.js
           grep -Fq '/* /index.html 200' _redirects
           grep -Fq 'Content-Security-Policy:' _headers
+          grep -Fq 'X-Content-Type-Options: nosniff' _headers
+          grep -Fq 'Cache-Control: no-store' _headers
+          ! grep -Eiq 'service_role|SUPABASE_SECRET_KEY|sb_secret_' config.js
+          grep -Fq 'SUPABASE_URL:' config.js
+          grep -Fq 'SUPABASE_ANON_KEY:' config.js
