@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.3.22] - 2026-10-20
+
+### Improved
+- Public artist profiles resolve profile photos through the same avatar-path and legacy-avatar URL fallback used by signed-in profile cards, and support legacy banner URLs.
+- Public profile music is ordered by release date, and the primary hero action links directly to the newest release when one exists.
+- Applied the correct tagline styling, improved narrow-screen wrapping, and added visible keyboard focus and release-target feedback.
+- Bumped the asset and service-worker cache versions so browsers request the updated profile UI.
+
+### Verification
+- JavaScript syntax, CSS brace balance, and HTML/service-worker version consistency checked.
+- Authenticated browser, device, and live Supabase/Edge Function checks still need a real session.
+
+
 ## [1.3.21] - 2026-10-20
 
 ### Improved
