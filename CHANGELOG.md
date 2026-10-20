@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.8] - 2026-10-20
+
+### Fixed
+- Added a defensive guard so label accounts cannot open the artist-specific self-profile editor, even if an old or direct action is triggered.
+- Routed the self-profile action for label accounts back to workspace settings.
+- Bumped the service-worker cache and asset query version after the final role guard.
+
+### Verification
+- Re-ran JavaScript syntax, CSS structure and build/cache version checks.
+- Live browser and authenticated role testing remain outstanding.
+
+
 ## [1.3.7] - 2026-10-20
 
 ### Fixed
