@@ -1,5 +1,0 @@
-[build]
-  publish = "."
-
-# This is a static JavaScript application; no bundler or build command is required.
-# Keep routing and response headers in the shared _redirects and _headers files.
