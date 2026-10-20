@@ -42,7 +42,7 @@ function ieStartEmailCodeCooldown(){
 }
   function saveAppearancePreferences(next){
     if(!session||!profile||!sb)return;
-    const userId=session.user.id;const dashboard=next.dashboard&&typeof next.dashboard==='object'?next.dashboard:{};const safe={theme:IE_APPEARANCE_THEMES[next.theme]?next.theme:'slate',accent:/^#[0-9a-f]{6}$/i.test(String(next.accent||''))?next.accent:'#536579',density:['compact','comfortable','spacious'].includes(next.density)?next.density:'comfortable',style:['vivid','classic','minimal'].includes(next.style)?next.style:'classic',font:['poster','blackletter','typewriter','occult','clean'].includes(next.font)?next.font:'poster',cards:['slab','glass','scar','ash'].includes(next.cards)?next.cards:'slab',grain:Math.min(100,Math.max(0,Math.round(Number(next.grain)||0))),radius:Math.min(24,Math.max(0,Math.round(Number(next.radius)||0))),banner:/^data:image\/jpeg;base64,[A-Za-z0-9+\/=]+$/.test(String(next.banner||''))&&String(next.banner).length<240000?next.banner:'',dashboard:Object.fromEntries(['metrics','tasks','announcements','upcoming','activity','catalogue'].map(k=>[k,dashboard[k]!==false]))};
+    const userId=session.user.id;const dashboard=next.dashboard&&typeof next.dashboard==='object'?next.dashboard:{};const safe={theme:IE_APPEARANCE_THEMES[next.theme]?next.theme:'slate',accent:/^#[0-9a-f]{6}$/i.test(String(next.accent||''))?next.accent:'#536579',density:['compact','comfortable','spacious'].includes(next.density)?next.density:'comfortable',style:['vivid','classic','minimal'].includes(next.style)?next.style:'classic',font:['poster','blackletter','typewriter','occult','clean'].includes(next.font)?next.font:'poster',cards:['slab','glass','scar','ash'].includes(next.cards)?next.cards:'slab',grain:Math.min(100,Math.max(0,Math.round(Number(next.grain)||0))),radius:Math.min(24,Math.max(0,Math.round(Number(next.radius)||0))),banner:/^data:image\/jpeg;base64,[A-Za-z0-9+\/=]+$/.test(String(next.banner||''))&&String(next.banner).length<240000?next.banner:'',dashboard:Object.fromEntries(['metrics','tasks','announcements','upcoming','activity','catalogue'].map(k=>[k,dashboard[k]!==false])),dashboardLayout:normaliseDashboardLayout(next.dashboardLayout)};
     profile.notification_preferences={...(profile.notification_preferences||{}),appearance:safe};
     iePreferenceSaveQueue=iePreferenceSaveQueue.catch(()=>{}).then(async()=>{
       if(!session||session.user.id!==userId||!profile)return;
@@ -53,7 +53,31 @@ function ieStartEmailCodeCooldown(){
       profile.notification_preferences=prefs;if(status)status.textContent='Appearance saved to your account.';
     });
   }
+  function bindDashboardLayout(){
+    const root=document.querySelector('.dashboard-page');
+    if(!root)return;
+    const layout=()=>normaliseDashboardLayout(getAppearancePreferences().dashboardLayout);
+    const persist=next=>{const current=getAppearancePreferences();current.dashboardLayout=normaliseDashboardLayout(next);applyAppearancePreferences(current);saveAppearancePreferences(current);const status=document.querySelector('#appearance-save-status');if(status)status.textContent='Dashboard layout saved.';};
+    const readOrder=()=>Array.from(root.querySelectorAll('[data-dashboard-widget-card]')).map(el=>el.dataset.dashboardWidgetCard);
+    root.querySelector('[data-dashboard-edit-toggle]')?.addEventListener('click',e=>{const on=root.classList.toggle('is-customising');e.currentTarget.setAttribute('aria-pressed',String(on));e.currentTarget.textContent=on?'Done customising':'Customise layout';});
+    root.querySelectorAll('[data-dashboard-size]').forEach(el=>el.addEventListener('change',()=>{const next=layout();next.sizes[el.dataset.dashboardSize]=el.value;persist(next);}));
+    root.querySelectorAll('[data-dashboard-shape]').forEach(el=>el.addEventListener('change',()=>{const next=layout();next.shapes[el.dataset.dashboardShape]=el.value;persist(next);}));
+    root.querySelectorAll('[data-dashboard-move]').forEach(el=>el.addEventListener('click',()=>{const card=el.closest('[data-dashboard-widget-card]');if(!card)return;const siblings=Array.from(root.querySelectorAll('[data-dashboard-widget-card]'));const i=siblings.indexOf(card),j=el.dataset.dashboardMove==='up'?i-1:i+1;if(j<0||j>=siblings.length)return;const other=siblings[j];if(j<i)root.querySelector('.dashboard-widget-layout').insertBefore(card,other);else root.querySelector('.dashboard-widget-layout').insertBefore(other,card);const next=layout();next.order=readOrder();persist(next);}));
+    let dragged=null;
+    root.querySelectorAll('[data-dashboard-drag]').forEach(handle=>{
+      handle.addEventListener('dragstart',e=>{dragged=handle.closest('[data-dashboard-widget-card]');if(!dragged)return;e.dataTransfer?.setData('text/plain',dragged.dataset.dashboardWidgetCard);if(e.dataTransfer)e.dataTransfer.effectAllowed='move';dragged.classList.add('is-dragging');});
+      handle.addEventListener('dragend',()=>{dragged?.classList.remove('is-dragging');dragged=null;});
+    });
+    root.querySelectorAll('[data-dashboard-widget-card]').forEach(card=>{
+      card.addEventListener('dragover',e=>{if(root.classList.contains('is-customising'))e.preventDefault();});
+      card.addEventListener('drop',e=>{if(!root.classList.contains('is-customising'))return;e.preventDefault();const source=dragged;if(!source||source===card)return;const layoutRoot=root.querySelector('.dashboard-widget-layout');const cards=Array.from(layoutRoot.querySelectorAll('[data-dashboard-widget-card]'));if(cards.indexOf(source)<cards.indexOf(card))layoutRoot.insertBefore(source,card.nextSibling);else layoutRoot.insertBefore(source,card);const next=layout();next.order=readOrder();persist(next);});
+    });
+    const pref=layout();const layoutRoot=root.querySelector('.dashboard-widget-layout');
+    if(layoutRoot){pref.order.forEach(key=>{const card=layoutRoot.querySelector('[data-dashboard-widget-card="'+key+'"]');if(card)layoutRoot.appendChild(card);});}
+    applyAppearancePreferences(getAppearancePreferences());
+  }
   function bind(){
+    bindDashboardLayout();
     bindProfiles();
     bindDiscography();
     bindPodcastControls();
