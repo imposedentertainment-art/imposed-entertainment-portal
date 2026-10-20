@@ -3744,7 +3744,6 @@ body{background-image:radial-gradient(ellipse at 82% 0%,rgba(216,255,99,.035),tr
 
 /* v1.3.11 — restore document scrolling and make dashboard artist cards actionable */
 html,body{overflow-x:hidden;overflow-y:auto!important;overscroll-behavior-y:auto}
-body{touch-action:pan-y;}
 .insight-artist-row{display:flex!important;align-items:center;gap:12px;width:100%;min-width:0;padding:12px 10px!important;text-align:left;font:inherit;color:inherit;background:transparent;border:0;border-bottom:1px solid var(--ie-border,rgba(255,255,255,.08));cursor:pointer;appearance:none;-webkit-appearance:none}
 .insight-artist-row:last-child{border-bottom:0}
 .insight-artist-row:hover{background:rgba(255,255,255,.045)!important}
