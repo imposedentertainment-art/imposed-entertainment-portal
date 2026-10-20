@@ -224,7 +224,7 @@ function ieStartEmailCodeCooldown(){
       else if(a==='invite-band'){const email=$('#bi-email').value.trim().toLowerCase();if(!email.includes('@'))throw new Error('Choose an artist to invite.');const {error}=await sb.from('band_invites').insert({band_id:el.dataset.id,email,invited_by:profile.id});if(error)throw error;await loadBands();toast('Invite sent. It shows up in their notifications.','success');render();}
       else if(a==='copy-band-invite'){const url=location.origin+location.pathname+'?invite='+encodeURIComponent(el.dataset.code);try{await navigator.clipboard.writeText(url);toast('Invite link copied','success');}catch(_){window.prompt('Copy this invite link',url);}}
       else if(a==='accept-band'||a==='decline-band'){const {error}=await sb.rpc('accept_band_invite',{p_id:el.dataset.id,p_accept:a==='accept-band'});if(error)throw error;await loadBands();await loadReleases();toast(a==='accept-band'?'Welcome to the band':'Invite declined','success');render();}
-      else if(a==='roster'){view='roster';mobile=false;render();}
+      else if(a==='roster'){view='roster';mobile=false;try{await loadUsers();}catch(_){}render();}
       else if(a==='roster-filter'){rosterQ=el.dataset.filter;render();}
       else if(a==='rename'){throw new Error('Your name is set by the label.');}
       else if(a==='invite-role'){const nv=$('#inv-name')?.value||'',ev=$('#inv-email')?.value||'';inviteRole=el.dataset.r;render();if($('#inv-name'))$('#inv-name').value=nv;if($('#inv-email'))$('#inv-email').value=ev;}
