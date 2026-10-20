@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.3.32] - 2026-10-20
+
+### Improved
+- Artist profile editor previews avatar and banner artwork, and updates name, tagline, biography and theme while editing.
+- Added theme-specific editor preview styling for Cinematic, Minimal, Neon and Classic.
+- Dashboard widget reordering supports pointer/touch dragging as well as desktop drag-and-drop and move buttons.
+- Added a dashboard reset control and clearer save feedback.
+
+### Security
+- Restricted the invite lookup SECURITY DEFINER function from signed-in callers while preserving anonymous execution required for pre-registration invite validation.
+- Retained the function's explicit search path and schema-qualified table references.
+
+### Verification
+- Frontend syntax, dashboard event wiring, profile editor bindings, SQL grants and asset/cache version consistency checked.
+- Live signed-in interaction and invite signup regression tests still require a real browser session.
+
+
 ## [1.3.31] - 2026-10-20
 
 ### Fixed
