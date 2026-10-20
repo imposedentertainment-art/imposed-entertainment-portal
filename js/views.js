@@ -76,6 +76,8 @@
     if(!mobile)return;
     mobile=false;
     document.body.style.overflow='';
+    document.body.style.overflowY='auto';
+    document.documentElement.style.overflowY='auto';
     document.getElementById('mobile-navigation-menu')?.remove();
     const button=document.querySelector('.shell .mobile-menu');
     if(button){button.setAttribute('aria-expanded','false');button.setAttribute('aria-label','Open navigation');button.title='Open menu';button.innerHTML=icon('menu',21);}
