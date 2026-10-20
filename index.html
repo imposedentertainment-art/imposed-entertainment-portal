@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#060405">
+  <meta name="color-scheme" content="dark">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="Imposed Entertainment artist and label portal">
+  <meta name="portal-build" content="v132">
+  <title>Imposed Entertainment | Artist Workspace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Bebas+Neue&family=UnifrakturCook:wght@700&family=Special+Elite&family=Cinzel:wght@600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css?v=132">
+  <link rel="icon" type="image/png" href="/img/logo-64.png?v=132">
+  <link rel="apple-touch-icon" href="/img/logo-192.png?v=132">
+  <link rel="manifest" href="/manifest.webmanifest?v=132">
+  <link rel="preload" as="image" href="/img/logo-128.png?v=132">
+  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0" crossorigin="anonymous" onerror="this.onerror=null;this.src='https://unpkg.com/@supabase/supabase-js@2.118.0'"></script>
+</head>
+<body data-portal-build="v132">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="app" aria-busy="true"><main class="boot-skeleton" aria-label="Loading Imposed Entertainment"><div class="boot-brand"><img src="/img/logo-128.png?v=132" alt=""><span>IMPOSED ENTERTAINMENT</span></div><div class="boot-skeleton-line wide"></div><div class="boot-skeleton-line"></div><div class="boot-skeleton-grid"><i></i><i></i><i></i></div><p>Preparing your workspace…</p></main></div>
+  <div id="app-loading" class="app-loading" role="status" aria-live="polite"><div class="loading-card"><span class="loading-spinner" aria-hidden="true"></span><strong id="loading-message">Preparing your workspace…</strong><small id="loading-detail">Build v132 · Connecting securely</small><button id="loading-retry" type="button" hidden onclick="location.reload()">Reload portal</button></div></div>
+  <div id="network-status" class="network-status" role="status" aria-live="polite" hidden></div>
+  <div id="toast-root" aria-live="polite"></div>
+  <script>
+    (function(){
+      var timer=setTimeout(function(){var d=document.getElementById('loading-detail'),b=document.getElementById('loading-retry');if(d)d.textContent='This is taking longer than expected. Check your connection and try again.';if(b)b.hidden=false;},18000);
+      window.addEventListener('portal-ready',function(){clearTimeout(timer);});
+      var onlineTimer;
+      function network(){var n=document.getElementById('network-status');if(!n)return;clearTimeout(onlineTimer);if(!navigator.onLine){n.hidden=false;n.textContent='You appear to be offline. Some portal features may be unavailable.';n.classList.remove('is-online');return;}if(!n.hidden){n.hidden=false;n.textContent='Connection restored.';n.classList.add('is-online');onlineTimer=setTimeout(function(){n.hidden=true;},2600);}}
+      window.addEventListener('offline',network);window.addEventListener('online',network);network();
+      // Keep missing logos and user-uploaded artwork from leaving broken-image icons.
+      document.addEventListener('error',function(event){
+        var img=event.target;
+        if(!img||img.tagName!=='IMG'||img.dataset.fallbackHandled==='1')return;
+        img.dataset.fallbackHandled='1';
+        var rect=img.getBoundingClientRect();
+        var fallback=document.createElement('span');
+        fallback.className=(img.className?img.className+' ':'')+'image-load-fallback';
+        fallback.setAttribute('role',img.alt?'img':'presentation');
+        if(img.alt)fallback.setAttribute('aria-label',img.alt);
+        else fallback.setAttribute('aria-hidden','true');
+        var label=String(img.alt||'').trim();
+        fallback.textContent=label?Array.from(label).filter(function(c){return /[A-Za-z0-9\u00C0-\u024F]/.test(c);}).slice(0,2).join('').toUpperCase():'♪';
+        if(!fallback.textContent)fallback.textContent='♪';
+        fallback.style.width=(rect.width||32)+'px';
+        fallback.style.height=(rect.height||32)+'px';
+        fallback.style.flex='0 0 auto';
+        img.replaceWith(fallback);
+      },true);
+      window.addEventListener('unhandledrejection',function(){
+        var app=document.getElementById('app');
+        if(app&&app.getAttribute('aria-busy')==='true'){
+          var detail=document.getElementById('loading-detail');
+          if(detail)detail.textContent='A connection step failed. You can retry without losing saved data.';
+          var retry=document.getElementById('loading-retry');if(retry)retry.hidden=false;
+        }
+      });
+    })();
+  </script>
+  <script defer src="/js/i18n.js?v=132"></script>
+  <script defer src="/config.js?v=132"></script>
+  <script defer src="/js/core.js?v=132"></script>
+  <script defer src="/js/podcasts.js?v=132"></script>
+  <script defer src="/js/boot.js?v=132"></script>
+  <script defer src="/js/data.js?v=132"></script>
+  <script defer src="/js/audio.js?v=132"></script>
+  <script defer src="/js/extras.js?v=132"></script>
+  <script defer src="/js/business.js?v=132"></script>
+  <script defer src="/js/views.js?v=132"></script>
+  <script defer src="/js/release.js?v=132"></script>
+  <script defer src="/js/profiles.js?v=132"></script>
+  <script defer src="/js/discography.js?v=132"></script>
+  <script defer src="/js/studio.js?v=132"></script>
+  <script defer src="/js/vault.js?v=132"></script>
+  <script defer src="/js/captcha.js?v=132"></script>
+  <script defer src="/js/events.js?v=132"></script>
+  <script>console.info("Imposed Entertainment portal build v132");if("serviceWorker"in navigator)addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(function(){/* Offline caching is optional; keep the portal usable if registration is blocked. */}))</script>
+</body>
+</html>
