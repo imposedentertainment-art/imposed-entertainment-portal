@@ -118,7 +118,10 @@
     // in index.html replaces failed images with accessible fallbacks.
     document.querySelectorAll('#main-content img').forEach(img=>{
       if(!img.hasAttribute('decoding')) img.decoding='async';
-      if(!img.hasAttribute('loading')){const r=img.getBoundingClientRect();const near=r.bottom>0&&r.top<window.innerHeight*.85;img.loading=near?'eager':'lazy';if(!near)img.fetchPriority='low';}
+      const r=img.getBoundingClientRect();
+      const near=r.bottom>0&&r.top<window.innerHeight*.9;
+      if(!img.hasAttribute('loading'))img.loading=near?'eager':'lazy';
+      if(!img.hasAttribute('fetchpriority'))img.fetchPriority=near?'high':'low';
       if(img.complete&&img.naturalWidth>0)img.classList.add('media-loaded');
       else if(!img.dataset.mediaLoadBound){img.dataset.mediaLoadBound='1';img.addEventListener('load',()=>img.classList.add('media-loaded'),{once:true});}
     });
