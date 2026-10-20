@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.3.10] - 2026-10-20
+
+### Fixed
+- Corrected the profile editor's low-contrast heading and body text against the pale canvas shown on mobile.
+- Forced the editor workspace and form cards to a consistent dark surface so inherited theme styles cannot wash out text.
+- Removed any sticky/fixed positioning from profile save actions and ensured buttons wrap within narrow mobile screens instead of covering form fields.
+- Bumped static asset and service-worker cache versions to invalidate stale styles.
+
+### Verification
+- JavaScript syntax is unchanged; CSS braces and version references checked.
+- Visual verification on a live authenticated mobile session remains outstanding.
+
+
 ## [1.3.5] - 2026-10-20
 
 ### Fixed
