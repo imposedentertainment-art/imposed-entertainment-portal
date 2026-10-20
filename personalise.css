@@ -36,8 +36,8 @@ body.personalise-high-contrast{--text:#fff;--muted:#e1dce0;color:#fff}body.perso
 
 /* Full-interface personalisation tokens */
 :root{--user-accent:#d8bd73;--user-bg:#080a0d;--user-surface:#11151b;--user-surface2:#171d25;--user-line:#28313b;--user-radius:14px;--user-font:inherit;--user-font-scale:1;--user-shadow:1;--user-spacing:1}
-html{font-family:var(--user-font,inherit)}
-body{font-size:calc(1rem * var(--user-font-scale,1));background-color:var(--user-bg,var(--bg));}
+html{font-family:var(--user-font,inherit);font-size:calc(100% * var(--user-font-scale,1))}
+body{font-size:1rem;background-color:var(--user-bg,var(--bg));}
 body.personalise-theme-light{color-scheme:light;--bg:#f4f5f7;--s1:#fff;--s2:#eef0f3;--s3:#e3e6eb;--line:#d6dae1;--line2:#b7bfca;--text:#171a20;--soft:#333a45;--muted:#606a78;color:#171a20;background:#f4f5f7}
 body.personalise-theme-light :where(.card,.panel,.modal,.modal-card,.sidebar,.topbar,.nav,.settings-card,.detail-card,.builder-card,.approval-card,.metric,.up-card){color:#171a20}
 body.personalise-theme-system{color-scheme:light dark}
