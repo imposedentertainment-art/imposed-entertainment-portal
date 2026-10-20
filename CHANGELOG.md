@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.23] - 2026-10-20
+
+### Fixed
+- Added a document-scroll recovery guard for mobile browser restores and route changes, while keeping the mobile navigation independently scrollable.
+- Preserved release-detail URLs when release data is temporarily unavailable instead of silently routing to the dashboard; the page now offers a retry action.
+- Versioned the shell and service-worker cache so the routing and scroll safeguards are refreshed together.
+
+### Verification
+- Core/view JavaScript syntax, CSS brace balance, route-to-view coverage, and asset/cache version consistency checked.
+- Live refresh, touch scrolling, and authenticated Supabase checks still require browser testing on deployed pages.
+
+
 ## [1.3.22] - 2026-10-20
 
 ### Improved
