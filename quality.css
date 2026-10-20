@@ -28,3 +28,7 @@ html[data-ie-banner-enabled="true"] #main-content>.ie-banner{display:block;heigh
 .banner-state-note{font-size:12px;line-height:1.5;color:var(--muted);margin:8px 0 0}
 .banner-preview{background-color:var(--ie-banner-color,transparent);background-image:var(--ie-banner,none),linear-gradient(135deg,var(--accent-user-soft),var(--s2))!important}
 @media(max-width:600px){#main-content>.ie-banner{height:clamp(82px,25vw,130px);margin-bottom:13px}.banner-toggle-row{align-items:flex-start}.banner-picker{width:100%}.banner-colour-label{flex:1 1 100%}}
+
+/* Settings section controls: distinct targets, keyboard-accessible SPA scrolling. */
+.settings-quicknav button{appearance:none;border:1px solid var(--line2,rgba(255,255,255,.12));background:transparent;color:var(--muted,#aeb8c6);border-radius:8px;padding:9px 12px;font:inherit;font-size:12px;font-weight:650;white-space:nowrap;cursor:pointer}
+.settings-quicknav button:hover,.settings-quicknav button:focus-visible{background:color-mix(in srgb,var(--accent,#d8bd73) 14%,transparent);color:var(--text,#f7f5ef);outline:2px solid var(--accent,#d8bd73);outline-offset:2px}
