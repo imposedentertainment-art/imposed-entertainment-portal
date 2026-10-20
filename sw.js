@@ -53,7 +53,7 @@ self.addEventListener('fetch', event => {
   const isStaticAsset = STATIC_PATHS.has(url.pathname);
   // Only accept the known release query on allow-listed public assets. All other query-bearing
   // requests (auth codes, invites, search state, user-specific data) bypass Cache Storage.
-  const isVersionedStaticAsset = isStaticAsset && url.searchParams.size === 1 && url.searchParams.get('v') === '1.3.45';
+  const isVersionedStaticAsset = isStaticAsset && url.searchParams.size === 1 && ['1.3.45','1.3.46'].includes(url.searchParams.get('v'));
   if ((url.search && !isVersionedStaticAsset) || url.hash || /\/(auth|callback|invite)(\/|$)/i.test(url.pathname)) return;
   if (!isNavigation && !isStaticAsset) return;
 
