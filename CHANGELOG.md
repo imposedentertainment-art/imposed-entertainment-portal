@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.3.14] - 2026-10-20
+
+### Fixed
+- Fixed a root-level mobile scroll lock: closing the navigation now releases both the body and document-element overflow locks.
+- Routed dashboard Insights artist cards through the main action handler so tapping an artist reliably opens their profile.
+- Kept profile avatars sourced from the shared profile record and retained the immediate local roster update after label-side profile edits.
+- Bumped stylesheet and service-worker versions to invalidate older cached app shells.
+
+### Verification
+- JavaScript syntax, CSS brace balance, and build/cache version consistency checked.
+- Real authenticated mobile-browser testing remains necessary to confirm the deployed behavior.
+
+
 ## [1.3.13] - 2026-10-20
 
 ### Fixed and improved
