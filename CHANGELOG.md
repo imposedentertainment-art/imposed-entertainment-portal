@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.3] - 2026-10-20
+
+### Improved
+- Rebuilt the dashboard content hierarchy to prioritise overview, key metrics, actions, upcoming releases and shortcuts.
+- Collapsed secondary tasks, insights, announcements, activity, requested changes and full catalogue into one expandable section to prevent endless dashboard scrolling.
+- Consolidated dashboard shortcuts into a compact responsive layout.
+
+### Verification
+- JavaScript syntax, stylesheet brace balance and release version checked before commit.
+- Live role-specific visual and interaction testing still required.
+
+
 ## [1.3.2] - 2026-10-20
 
 ### Optimised
