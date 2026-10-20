@@ -3722,3 +3722,21 @@ body{background-image:radial-gradient(ellipse at 82% 0%,rgba(216,255,99,.035),tr
   .profile-edit-page .pf-file{width:100%;box-sizing:border-box;padding:10px 8px!important;font-size:12px!important}
   .profile-edit-page .pf-hex input{min-width:0;width:100%}
 }
+
+
+/* v1.3.10 — enforce readable contrast and non-overlapping actions in profile editor */
+.shell .main:has(.profile-edit-page){background:#0a0c0f!important;color:#f4f6f8!important}
+.profile-edit-page{background:#0a0c0f!important;color:#f4f6f8!important;border-radius:14px;padding:clamp(12px,2vw,22px)!important;box-sizing:border-box}
+.profile-edit-page .page-heading h1{color:#f4f6f8!important;opacity:1!important}
+.profile-edit-page .page-heading .sub,.profile-edit-page .page-heading>p:not(.eyebrow){color:#aeb8c4!important;opacity:1!important}
+.profile-edit-page .eyebrow{color:#ff6b83!important}
+.profile-edit-page .back-link{color:#b8c3ce!important}
+.profile-edit-page .pf-form{background:#11161c!important;color:#f4f6f8!important;border-color:#303a46!important}
+.profile-edit-page .pf-form h3{color:#f4f6f8!important}
+.profile-edit-page .pf-form .muted,.profile-edit-page .pf-form small{color:#aeb8c4!important}
+.profile-edit-page .builder-buttons{position:static!important;bottom:auto!important;display:flex!important;flex-wrap:wrap!important;gap:10px!important;margin:12px 0 0!important;padding:12px 0 0!important;background:transparent!important;border-top:1px solid #303a46!important}
+.profile-edit-page .builder-buttons button{position:static!important;flex:1 1 140px!important;min-width:0!important;width:auto!important;max-width:100%!important}
+.profile-edit-page .pf-media{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important}
+.profile-edit-page .pf-media>div{min-width:0!important}
+.profile-edit-page .pf-file{white-space:normal!important;overflow-wrap:anywhere!important}
+@media(max-width:520px){.profile-edit-page{padding:10px!important}.profile-edit-page .page-heading h1{font-size:clamp(30px,9vw,40px)!important}.profile-edit-page .builder-buttons button{flex:1 1 100%!important}.profile-edit-page .pf-media{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
