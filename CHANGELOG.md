@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.3.16] - 2026-10-20
+
+### Improved
+- Made blank space within roster artist rows clickable to open the artist profile, while preserving the existing role-management and profile buttons.
+- Added keyboard activation and accessible row labelling for the new tap target.
+- Bumped asset and service-worker versions after the interaction change.
+
+### Verification
+- JavaScript syntax and build/cache version consistency checked.
+
+
 ## [1.3.15] - 2026-10-20
 
 ### Fixed
