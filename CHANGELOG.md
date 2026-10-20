@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.3.20] - 2026-10-20
+
+### Fixed
+- Added the nested profile-editor route to the service worker's offline app-shell fallback, so refreshing /profile/{id}/edit can restore the editor when offline after the app shell has been cached.
+- Bumped asset and service-worker cache versions to keep the route fix aligned with deployed assets.
+
+### Verification
+- JavaScript syntax, service-worker syntax, CSS brace balance, and version references checked.
+- Live authenticated mobile testing remains necessary to verify Supabase role and storage policies.
+
+
 ## [1.3.18] - 2026-10-20
 
 ### Fixed and improved
