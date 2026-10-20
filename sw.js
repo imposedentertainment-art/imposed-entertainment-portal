@@ -1,11 +1,11 @@
-/* Imposed Entertainment v1.3.50: versioned static assets; never cache query-bearing navigations/auth callbacks. */
-const CACHE_NAME = 'imposed-v1.3.50';
+/* Imposed Entertainment v1.4.50: versioned static assets; never cache query-bearing navigations/auth callbacks. */
+const CACHE_NAME = 'imposed-v1.4.50';
 const STATIC_ASSETS = [
-  '/index.html', '/styles.css', '/ui-polish.css', '/manifest.webmanifest', '/privacy/index.html', '/terms/index.html',
+  '/index.html', '/styles.css', '/ui-polish.css', '/quality.css', '/manifest.webmanifest', '/privacy/index.html', '/terms/index.html',
   '/img/logo-64.png', '/img/logo-128.png', '/img/logo-192.png', '/img/logo-512.png',
   '/js/i18n.js', '/js/core.js', '/js/boot.js', '/js/data.js', '/js/audio.js',
   '/js/extras.js', '/js/podcasts.js', '/js/business.js', '/js/views.js', '/js/release.js', '/js/profiles.js',
-  '/js/discography.js', '/js/studio.js', '/js/vault.js', '/js/captcha.js', '/js/events.js', '/js/personalise.js', '/personalise.css'
+  '/js/discography.js', '/js/studio.js', '/js/vault.js', '/js/captcha.js', '/js/events.js', '/js/personalise.js', '/js/quality.js', '/personalise.css'
 ];
 const STATIC_PATHS = new Set(STATIC_ASSETS.map(path => new URL(path, self.location.origin).pathname));
 const NETWORK_TIMEOUT_MS = 7000;
@@ -16,7 +16,7 @@ self.addEventListener('install', event => {
     // Keep first-install activation fast: precache only the app shell and legal documents.
     // Other allow-listed assets are cached as they are requested by the app.
     const criticalAssets = [
-      '/index.html', '/styles.css', '/ui-polish.css', '/personalise.css', '/js/personalise.js', '/js/i18n.js', '/js/core.js', '/js/boot.js',
+      '/index.html', '/styles.css', '/ui-polish.css', '/quality.css', '/personalise.css', '/js/personalise.js', '/js/quality.js', '/js/i18n.js', '/js/core.js', '/js/boot.js',
       '/privacy/index.html', '/terms/index.html', '/img/logo-128.png'
     ];
     await Promise.allSettled(criticalAssets.map(async path => {
@@ -53,7 +53,7 @@ self.addEventListener('fetch', event => {
   const isStaticAsset = STATIC_PATHS.has(url.pathname);
   // Only accept the known release query on allow-listed public assets. All other query-bearing
   // requests (auth codes, invites, search state, user-specific data) bypass Cache Storage.
-  const isVersionedStaticAsset = isStaticAsset && url.searchParams.size === 1 && ['1.3.50'].includes(url.searchParams.get('v'));
+  const isVersionedStaticAsset = isStaticAsset && url.searchParams.size === 1 && ['1.4.50'].includes(url.searchParams.get('v'));
   if ((url.search && !isVersionedStaticAsset) || url.hash || /\/(auth|callback|invite)(\/|$)/i.test(url.pathname)) return;
   if (!isNavigation && !isStaticAsset) return;
 
