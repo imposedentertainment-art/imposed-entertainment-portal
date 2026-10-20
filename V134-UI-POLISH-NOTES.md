@@ -1,13 +1,13 @@
-# Imposed Entertainment V134 — UI polish
+# Imposed Entertainment V135 — artist profile and discover polish
 
 ## Changes
-- Added an additive UI refinement stylesheet to improve visual hierarchy, surfaces, controls, navigation, loading feedback, and responsive layouts.
-- Introduced clearer card boundaries, subtle depth, less disruptive hover motion, and more consistent rounded corners.
-- Improved mobile spacing, compact-screen typography, horizontally scrollable tables, and full-width search on small screens.
-- Added reduced-motion support and clearer input focus/hover states.
-- Bumped the static asset version and included the new stylesheet in the service-worker cache allowlist and critical app-shell assets.
-- Preserved existing view logic, routes, and Supabase data flows.
+- Refined the public artist header and action layout so long artist names and narrow screens wrap without crowding.
+- Improved profile follow/connect links, release cards, track lists and smart-link actions for clearer hierarchy and more reliable alignment.
+- Added subtle, reduced-motion-aware interactions and clearer release-anchor arrival feedback.
+- Improved Discover profile cards, search controls, skeleton spacing and keyboard focus visibility.
+- Kept the update additive: no Supabase schema, policies, authentication or release data flows were changed.
+- Bumped the static asset version and service-worker cache so returning visitors can receive the updated CSS.
 
 ## Validation
-- Static source and configuration review performed.
-- A live browser regression test is still needed for authenticated views and mobile navigation.
+- Checked the stylesheet additions against the existing public artist, discover, release-card and responsive selectors.
+- Source-level checks can confirm the version and cache wiring; authenticated browser and live deployment regression checks remain necessary before calling the release fully verified.
