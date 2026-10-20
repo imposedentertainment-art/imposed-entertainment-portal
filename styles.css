@@ -3694,3 +3694,31 @@ img{max-width:100%}#main-content img{background:#171d23}#main-content img:not(.m
 .dashboard-more-content>.dashboard-panel,.dashboard-more-content>.changes-panel,.dashboard-more-content>.catalogue-panel{margin:0!important}
 @media(max-width:700px){.dashboard-page{gap:10px!important}.dashboard-page>.dashboard-hero{min-height:0!important}.dashboard-shortcut-grid{grid-template-columns:1fr;gap:6px}.dashboard-shortcut-grid .quick-link-row{min-height:50px;padding:9px 10px!important}.dashboard-shortcut-grid .quick-link-row small{font-size:11px!important}.dashboard-more>summary{min-height:56px;padding:11px 12px}.dashboard-more-content{gap:9px;padding:9px}.dashboard-page .metrics{margin:0!important}}
 @media(prefers-reduced-motion:reduce){.dashboard-more-toggle{transition:none!important}}
+
+
+/* v1.3.5 — fix mixed light/dark canvas and profile editor actions on mobile */
+html,body,#app,.shell{background:var(--ie-bg)!important;color:var(--ie-text)}
+body{background-image:radial-gradient(ellipse at 82% 0%,rgba(216,255,99,.035),transparent 34rem)!important}
+.shell .main,.shell #main-content{background:transparent!important}
+.profile-edit-page{color:var(--ie-text)!important;min-width:0}
+.profile-edit-page .page-heading h1{color:var(--ie-text)!important}
+.profile-edit-page .page-heading .sub,.profile-edit-page .page-heading>p:not(.eyebrow){color:var(--ie-muted)!important}
+.profile-edit-page .back-link{min-height:40px;color:var(--ie-muted)!important}
+.profile-edit-page .pf-form{background:var(--ie-surface)!important;color:var(--ie-text)!important;border:1px solid var(--ie-border)!important;box-shadow:none!important}
+.profile-edit-page .pf-form h3{color:var(--ie-text)!important}
+.profile-edit-page .pf-form .field>span{color:#dbe2e9!important}
+.profile-edit-page .pf-form .field small,.profile-edit-page .pf-form .muted{color:var(--ie-muted)!important}
+.profile-edit-page .builder-buttons{position:static!important;inset:auto!important;z-index:auto!important;background:transparent!important;padding:12px 0 4px!important;margin-top:10px!important}
+.profile-edit-page .builder-buttons .primary{flex:1 1 100%;min-height:50px}
+.profile-edit-page .pf-media{align-items:flex-start;gap:14px}
+.profile-edit-page .pf-media>div{min-width:0;max-width:100%}
+.profile-edit-page .pf-file{max-width:100%;white-space:normal;text-align:center}
+@media(max-width:520px){
+  .profile-edit-page{gap:12px!important}
+  .profile-edit-page .back-link{margin-bottom:5px!important}
+  .profile-edit-page .page-heading{padding-bottom:10px!important}
+  .profile-edit-page .pf-media{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .profile-edit-page .pf-media>div{width:100%;align-content:start}
+  .profile-edit-page .pf-file{width:100%;box-sizing:border-box;padding:10px 8px!important;font-size:12px!important}
+  .profile-edit-page .pf-hex input{min-width:0;width:100%}
+}
