@@ -1,0 +1,41 @@
+name: Static site checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check JavaScript syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in config.js sw.js js/*.js; do
+            test -f "$file"
+            node --check "$file"
+          done
+      - name: Check static deployment files and cache versions
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f index.html
+          test -f _redirects
+          test -f _headers
+          test -f netlify.toml
+          version="$(tr -d '\r\n' < VERSION)"
+          grep -Fq "$version" index.html
+          grep -Fq "$version" sw.js
+          grep -Fq '/* /index.html 200' _redirects
+          grep -Fq 'Content-Security-Policy:' _headers
