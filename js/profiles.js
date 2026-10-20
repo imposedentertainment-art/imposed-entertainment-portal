@@ -91,8 +91,10 @@ const accentOf = a => /^#[0-9a-f]{6}$/i.test(a || '') ? a : '#d7bd72';
 function profileCompletion(p){if(!p)return 0;const checks=[!!p.avatar_path,!!p.banner_path,!!String(p.bio||'').trim(),!!String(p.tagline||'').trim(),!!String(p.location||'').trim(),Array.isArray(p.links)&&p.links.some(l=>safeUrl(String(l.url||''))),!!p.accent];return Math.round(checks.filter(Boolean).length/checks.length*100);}
 const PRESETS = ['#d7bd72', '#8caed8', '#539df5', '#7c83ff', '#b79af0', '#ff6fae', '#f3727f', '#ffa42b', '#eadb62', '#e8eeeb'];
 function avatarHtml(p, size) {
-  const u = p.avatar_preview || MEDIA_URL(p.avatar_path);
-  return `<span class="pf-avatar" style="width:${size}px;height:${size}px;font-size:${Math.round(size / 3)}px;background:${accentOf(p.accent)}">${u ? `<img loading="lazy" decoding="async" src="${esc(u)}" alt="">` : esc(String(p.display_name || '?').trim().slice(0, 2).toUpperCase())}</span>`;
+  // Prefer the canonical uploaded path; support older profile records that only have avatar_url.
+  const legacyUrl = typeof p.avatar_url === 'string' ? safeUrl(p.avatar_url) : '';
+  const u = p.avatar_preview || MEDIA_URL(p.avatar_path) || legacyUrl;
+  return `<span class="pf-avatar" style="width:${size}px;height:${size}px;font-size:${Math.round(size / 3)}px;background:${accentOf(p.accent)}">${u ? `<img loading="lazy" decoding="async" src="${esc(u)}" alt="">` : esc(String(p.display_name || p.email || '?').trim().slice(0, 2).toUpperCase())}</span>`;
 }
 
 /* ---------- Discover ---------- */
