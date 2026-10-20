@@ -4,7 +4,7 @@
   const ready = Boolean(window.supabase && C.SUPABASE_URL && !C.SUPABASE_URL.includes('PASTE_') && C.SUPABASE_ANON_KEY && !C.SUPABASE_ANON_KEY.includes('PASTE_'));
   const sb = ready ? window.supabase.createClient(C.SUPABASE_URL, C.SUPABASE_ANON_KEY) : null;
 
-  const IE_APPEARANCE_DEFAULTS = {theme:'blood', accent:'#b3122a', density:'comfortable', style:'classic', font:'poster', cards:'slab', grain:35, radius:2, banner:'', dashboard:{metrics:true,tasks:true,announcements:true,upcoming:true,activity:true,catalogue:true}, dashboardLayout:{order:['metrics','actions','upcoming','shortcuts','details'],sizes:{metrics:'full',actions:'full',upcoming:'half',shortcuts:'half',details:'full'},shapes:{metrics:'soft',actions:'soft',upcoming:'soft',shortcuts:'soft',details:'soft'}}};
+  const IE_APPEARANCE_DEFAULTS = {theme:'blood', accent:'#b3122a', density:'comfortable', style:'classic', font:'poster', cards:'slab', grain:35, radius:2, banner:'', bannerColor:'', bannerEnabled:false, dashboard:{metrics:true,tasks:true,announcements:true,upcoming:true,activity:true,catalogue:true}, dashboardLayout:{order:['metrics','actions','upcoming','shortcuts','details'],sizes:{metrics:'full',actions:'full',upcoming:'half',shortcuts:'half',details:'full'},shapes:{metrics:'soft',actions:'soft',upcoming:'soft',shortcuts:'soft',details:'soft'}}};
   const IE_APPEARANCE_THEMES = {
     violet:{accent:'#7868f4',hover:'#6655e7',ink:'#ffffff',soft:'rgba(120,104,244,.14)'},
     ocean:{accent:'#168bd2',hover:'#0875b7',ink:'#ffffff',soft:'rgba(22,139,210,.14)'},
@@ -38,6 +38,8 @@
     out.grain=Math.min(100,Math.max(0,Math.round(Number(out.grain)||0)));
     out.radius=Math.min(24,Math.max(0,Math.round(Number(out.radius)||0)));
     out.banner=/^data:image\/jpeg;base64,[A-Za-z0-9+\/=]+$/.test(String(out.banner||''))&&String(out.banner).length<240000?out.banner:'';
+    out.bannerColor=/^#[0-9a-f]{6}$/i.test(String(out.bannerColor||''))?out.bannerColor:'';
+    out.bannerEnabled=out.bannerEnabled===true;
     const dashboard=out.dashboard&&typeof out.dashboard==='object'?out.dashboard:{};
     out.dashboard=Object.fromEntries(['metrics','tasks','announcements','upcoming','activity','catalogue'].map(k=>[k,dashboard[k]!==false]));
     out.dashboardLayout=normaliseDashboardLayout(out.dashboardLayout);
@@ -48,7 +50,7 @@
     const theme=IE_APPEARANCE_THEMES[a.theme]||IE_APPEARANCE_THEMES.slate;
     const accent=/^#[0-9a-f]{6}$/i.test(String(a.accent||''))?a.accent:theme.accent;
     const root=document.documentElement;
-    root.dataset.ieTheme=a.theme||'slate';root.dataset.ieFont=a.font||'poster';root.dataset.ieCards=a.cards||'slab';root.style.setProperty('--ie-grain',String(Math.min(100,Math.max(0,Number(a.grain)||0))/100));root.style.setProperty('--ie-radius',(Math.min(24,Math.max(0,Number(a.radius)||0)))+'px');root.style.setProperty('--ie-banner',/^data:image\/jpeg;base64,/.test(String(a.banner||''))?'url('+a.banner+')':'none');root.dataset.ieDensity=a.density||'comfortable';root.dataset.ieStyle=a.style||'classic';
+    root.dataset.ieTheme=a.theme||'slate';root.dataset.ieFont=a.font||'poster';root.dataset.ieCards=a.cards||'slab';root.style.setProperty('--ie-grain',String(Math.min(100,Math.max(0,Number(a.grain)||0))/100));root.style.setProperty('--ie-radius',(Math.min(24,Math.max(0,Number(a.radius)||0)))+'px');root.style.setProperty('--ie-banner',/^data:image\/jpeg;base64,/.test(String(a.banner||''))?'url('+a.banner+')':'none');root.style.setProperty('--ie-banner-color',/^#[0-9a-f]{6}$/i.test(String(a.bannerColor||''))?a.bannerColor:'transparent');root.dataset.ieBannerEnabled=a.bannerEnabled===true?'true':'false';root.dataset.ieDensity=a.density||'comfortable';root.dataset.ieStyle=a.style||'classic';
     const dashboard=a.dashboard&&typeof a.dashboard==='object'?a.dashboard:IE_APPEARANCE_DEFAULTS.dashboard;
     ['metrics','tasks','announcements','upcoming','activity','catalogue'].forEach(k=>{root.dataset['ieDashboard'+k[0].toUpperCase()+k.slice(1)]=dashboard[k]===false?'false':'true';});
     const dashboardLayout=normaliseDashboardLayout(a.dashboardLayout);
