@@ -116,7 +116,7 @@ function profileEditorReadiness(s){
     {key:'tagline',label:'Add a short tagline',done:!!String(s.tagline||'').trim()},
     {key:'location',label:'Add your location',done:!!String(s.location||'').trim()},
     {key:'links',label:'Add at least one valid music or social link',done:Array.isArray(s.links)&&s.links.some(l=>safeUrl(String(l.url||'')))},
-    {key:'accent',label:'Choose your page accent',done:!!s.accent}
+    {key:'publish',label:'Publish your artist page when you’re ready',done:!!s.is_public}
   ];
   const count=checks.filter(x=>x.done).length,percent=Math.round(count/checks.length*100);
   return {count,total:checks.length,percent,checks};
