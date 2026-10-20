@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.13] - 2026-10-20
+
+### Fixed and improved
+- Made document scrolling the explicit default across the app shell and page content, releasing both body and root scroll locks whenever the mobile menu is closed.
+- A successful label-side profile edit now updates the local roster row immediately, including avatar and banner paths, rather than waiting for a reload.
+- Bumped shell, stylesheet and service-worker cache versions so mobile clients request the latest assets.
+
+### Verification
+- JavaScript syntax and CSS brace balance checked; version references reviewed.
+- Authenticated live-device interaction and Supabase Realtime delivery cannot be proven by static checks alone.
+
+
 ## [1.3.12] - 2026-10-20
 
 ### Fixed
