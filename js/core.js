@@ -155,6 +155,6 @@
     if(ROUTES.includes(m[1])&&!(m[1]==='roster'&&!isAdmin())){view=m[1];return true;}
     return false;
   }
-  window.addEventListener('popstate',()=>{if(!session||!profile)return;if(restoreRoute())render();});
+  window.addEventListener('popstate',()=>{if(!session||!profile)return;if(restoreRoute())render();else{view='dashboard';pageId=null;selected=null;render();}});
   const QUOTA=()=>((window.IMPOSED_CONFIG&&window.IMPOSED_CONFIG.ARTIST_QUOTA_MB)||150)*1048576;
   const MAX_FILE=50*1048576, fmtMB=b=>(b/1048576).toFixed(1)+' MB';
