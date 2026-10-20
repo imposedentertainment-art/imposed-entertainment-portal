@@ -3815,3 +3815,25 @@ html,body{height:auto!important;min-height:100%!important;max-height:none!import
 body{position:relative!important;touch-action:pan-y pinch-zoom!important}
 #app,.shell,.shell .main,#main-content{height:auto!important;max-height:none!important;overflow:visible!important;touch-action:pan-y pinch-zoom!important}
 .shell .main{min-height:calc(100dvh - 57px)!important;padding-bottom:max(76px,env(safe-area-inset-bottom))!important}
+
+
+/* Artist page editor: quick platform presets and accessible link ordering */
+.pf-link-presets{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 12px}
+.pf-link-preset{min-height:38px;padding:8px 12px;border-radius:999px;font-size:.82rem;white-space:nowrap}
+.pf-linkrow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.45fr) auto auto auto;gap:8px;align-items:center;margin:10px 0}
+.pf-linkrow input{min-width:0;width:100%}
+.pf-link-move{min-width:38px;min-height:42px;padding:8px 10px;font-size:1rem}
+.pf-link-move:disabled{opacity:.32;cursor:not-allowed}
+.pf-link-help{display:block;margin:10px 0 14px;color:var(--muted,#a6a8b2);line-height:1.5}
+@media(max-width:640px){
+  .pf-linkrow{grid-template-columns:minmax(0,1fr) minmax(0,1fr) 38px 38px 38px;gap:6px}
+  .pf-linkrow input{font-size:14px;padding:12px 10px}
+  .pf-linkrow .pf-link-move{min-width:36px;width:36px;padding:6px}
+  .pf-link-presets{gap:6px}
+  .pf-link-preset{min-height:36px;padding:7px 10px}
+}
+@media(max-width:390px){
+  .pf-linkrow{grid-template-columns:minmax(0,1fr) minmax(0,1fr) 32px 32px 32px;gap:4px}
+  .pf-linkrow input{font-size:12px;padding:10px 7px}
+  .pf-linkrow .pf-link-move{min-width:30px;width:30px}
+}
