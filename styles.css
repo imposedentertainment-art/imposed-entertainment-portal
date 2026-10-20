@@ -3837,3 +3837,21 @@ body{position:relative!important;touch-action:pan-y pinch-zoom!important}
   .pf-linkrow input{font-size:12px;padding:10px 7px}
   .pf-linkrow .pf-link-move{min-width:30px;width:30px}
 }
+
+
+/* Public artist page themes */
+.public-artist[data-theme="minimal"] .public-artist-hero{border:1px solid rgba(255,255,255,.09);box-shadow:none;background-color:#101218}
+.public-artist[data-theme="minimal"] .public-artist-avatar{border-radius:22px;box-shadow:none}
+.public-artist[data-theme="minimal"] .public-artist-bio,.public-artist[data-theme="minimal"] .public-artist-links{box-shadow:none;border-color:rgba(255,255,255,.08);background:rgba(255,255,255,.025)}
+.public-artist[data-theme="minimal"] .public-cta{border-radius:10px;box-shadow:none}
+.public-artist[data-theme="neon"] .public-artist-hero{border:1px solid color-mix(in srgb,var(--ac) 45%,transparent);box-shadow:0 0 55px color-mix(in srgb,var(--ac) 12%,transparent)}
+.public-artist[data-theme="neon"] .public-artist-id h1{ text-shadow:0 0 26px color-mix(in srgb,var(--ac) 30%,transparent)}
+.public-artist[data-theme="neon"] .public-artist-avatar{box-shadow:0 0 0 3px var(--ac),0 0 28px color-mix(in srgb,var(--ac) 35%,transparent)}
+.public-artist[data-theme="neon"] .public-cta{box-shadow:0 0 20px color-mix(in srgb,var(--ac) 15%,transparent)}
+.public-artist[data-theme="classic"] .public-artist-id h1,.public-artist[data-theme="classic"] .public-artist-bio h2,.public-artist[data-theme="classic"] .public-artist-music h2{font-family:Georgia,"Times New Roman",serif;letter-spacing:-.035em}
+.public-artist[data-theme="classic"] .public-artist-hero{border-radius:14px}
+.public-artist[data-theme="classic"] .public-artist-avatar{border-radius:14px}
+.public-artist[data-theme="classic"] .public-release-card{border-radius:12px}
+@media(prefers-reduced-motion:reduce){
+  .public-artist[data-theme="neon"] .public-artist-hero,.public-artist[data-theme="neon"] .public-artist-avatar{animation:none;transition:none}
+}
