@@ -138,7 +138,9 @@
     if(!session || session.user.id!==expectedUserId) return;
     if(!window.__poll) window.__poll=setInterval(async()=>{ if(!session||!profile||document.hidden) return; const u=inbox.filter(n=>!n.read).length, p=myBandInvites.length; await loadNotes(); try{const m=await sb.rpc('my_band_invites'); myBandInvites=m.data||[];}catch(_){} if(view!=='builder'&&!typing()&&(inbox.filter(n=>!n.read).length!==u||myBandInvites.length!==p)) render(); },60000);
     if(window.__rtUid!==session.user.id){ try{ if(window.__rt) sb.removeChannel(window.__rt); window.__rtUid=session.user.id; window.__rt=sb.channel('notes-'+session.user.id).on('postgres_changes',{event:'INSERT',schema:'public',table:'notifications',filter:'user_id=eq.'+session.user.id},async p=>{ await loadNotes(); try{const m=await sb.rpc('my_band_invites'); myBandInvites=m.data||[];}catch(_){} await loadMisc(); if(p.new&&p.new.release_id) await loadReleases(); if(p.new&&p.new.title&&notificationIsVisible(p.new)) toast(p.new.title+(p.new.body?': '+p.new.body:''),'success'); if(view!=='builder'&&!typing()) render(); }).subscribe(); }catch(e){ console.warn('Realtime unavailable',e); } }
-    if(!window.__routed){window.__routed=true;restoreRoute();}
+    // Re-resolve the current URL after workspace data loads, including refreshes and auth rechecks.
+    // The rendered view writes its canonical route, so the address bar remains the source of truth.
+    window.__routed=true;restoreRoute();
     if(view==='operations'&&isAdmin())await loadOperationsData();
     if(view==='vault')await loadVaultData();
     if(view==='podcasts')await loadPodcastSubmissions();
