@@ -1,5 +1,5 @@
-/* Imposed Entertainment v1.4.58: versioned static assets; never cache query-bearing navigations/auth callbacks. */
-const CACHE_NAME = 'imposed-v1.4.58';
+/* Imposed Entertainment v1.4.59: versioned static assets; never cache query-bearing navigations/auth callbacks. */
+const CACHE_NAME = 'imposed-v1.4.59';
 const STATIC_ASSETS = [
   '/index.html', '/styles.css', '/ui-polish.css', '/quality.css', '/manifest.webmanifest', '/privacy/index.html', '/terms/index.html',
   '/img/logo-64.png', '/img/logo-128.png', '/img/logo-192.png', '/img/logo-512.png',
@@ -53,7 +53,7 @@ self.addEventListener('fetch', event => {
   const isStaticAsset = STATIC_PATHS.has(url.pathname);
   // Only accept the known release query on allow-listed public assets. All other query-bearing
   // requests (auth codes, invites, search state, user-specific data) bypass Cache Storage.
-  const isVersionedStaticAsset = isStaticAsset && url.searchParams.size === 1 && ['1.4.58'].includes(url.searchParams.get('v'));
+  const isVersionedStaticAsset = isStaticAsset && url.searchParams.size === 1 && ['1.4.59'].includes(url.searchParams.get('v'));
   if ((url.search && !isVersionedStaticAsset) || url.hash || /\/(auth|callback|invite)(\/|$)/i.test(url.pathname)) return;
   if (!isNavigation && !isStaticAsset) return;
 
@@ -82,7 +82,7 @@ self.addEventListener('fetch', event => {
           if (legal) return legal;
         }
         // Serve the cached app shell for known SPA paths; preserve the address bar URL.
-        const spaPaths = new Set(['/','/index.html','/dashboard','/listen','/support','/settings','/earnings','/statements','/operations','/notifications','/activity','/bands','/roster','/discover','/listen/artist','/link','/discography','/podcasts','/calendar','/insights','/pipeline','/studio','/vault','/business','/builder']);
+        const spaPaths = new Set(['/','/index.html','/dashboard','/listen','/listen/account','/support','/settings','/earnings','/statements','/operations','/notifications','/activity','/bands','/roster','/discover','/listen/artist','/link','/discography','/podcasts','/calendar','/insights','/pipeline','/studio','/vault','/business','/builder']);
         if (spaPaths.has(path) || (path.startsWith('/profile/') && path.endsWith('/edit') && path.split('/').length===4) || /^\/(release|profile|listen\/artist|link)\/[^/]+$/.test(path)) {
           const shell = await cache.match('/index.html');
           if (shell) return shell;
