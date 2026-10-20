@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.33] - 2026-10-20
+
+### Fixed
+- Artist live preview now includes the existing saved avatar as well as newly selected avatar images.
+- Dashboard reordering uses a consistent pointer-driven drag interaction for mouse, pen and touch, with move buttons retained as an accessible alternative.
+
+### Verification
+- Frontend JavaScript syntax and CSS brace balance checked.
+- Cloudflare Pages deployment for v1.3.32 succeeded; v1.3.33 cache/version update is queued for deployment.
+- Full authenticated browser regression remains unverified in this environment.
+
+
 ## [1.3.32] - 2026-10-20
 
 ### Improved
