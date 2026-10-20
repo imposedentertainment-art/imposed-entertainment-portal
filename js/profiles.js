@@ -194,7 +194,7 @@ function openEditor() {
 }
 function editProfile() {
   const s = editState; if (!s) return discover();
-  return `<section class="page fade"><button class="back-link" data-pf="cancel-editor">${icon('back', 16)} Cancel</button><div class="page-heading"><p class="eyebrow">YOUR PAGE</p><h1>Edit profile</h1><p class="sub">This is what other accounts see when they find you. Your name is set by the label.</p></div>
+  return `<section class="page fade profile-edit-page"><button class="back-link" data-pf="cancel-editor">${icon('back', 16)} Cancel</button><div class="page-heading"><p class="eyebrow">YOUR PAGE</p><h1>Edit profile</h1><p class="sub">This is what other accounts see when they find you. Your name is set by the label.</p></div>
   <div class="card pf-form"><h3>Look</h3>
     <div class="pf-media"><div>${avatarHtml({ display_name: s.display_name || (pageData||profile).display_name, accent: s.accent, avatar_path: s.avatarPath, avatar_preview:s.avatarPreview }, 72)}<label class="secondary pf-file">Choose photo<input type="file" accept="image/*" data-pf-file="avatar" hidden></label><small>${s.avatarFile ? esc(s.avatarFile.name) : ''}</small></div><div><label class="secondary pf-file">Choose banner<input type="file" accept="image/*" data-pf-file="banner" hidden></label><small>${s.bannerFile ? esc(s.bannerFile.name) : (s.bannerPath ? 'Banner set' : 'Wide image works best')}</small></div></div>
     <div class="field"><span>Accent colour</span>
@@ -211,7 +211,7 @@ function editProfile() {
   <div class="card pf-form"><h3>Artist links</h3><p class="muted">These become the artist’s public link hub, so fans can go straight to your music and socials. Add up to 8 links.</p>
     ${s.links.map((l, i) => `<div class="pf-linkrow"><input data-pf-link="${i}" data-k="label" placeholder="Label" maxlength="30" value="${esc(l.label)}"><input data-pf-link="${i}" data-k="url" placeholder="https://" maxlength="200" value="${esc(l.url)}"><button class="icon-btn danger-ghost" data-pf="del-link" data-i="${i}" aria-label="Remove link">✕</button></div>`).join('')}
     ${s.links.length < 8 ? `<button class="secondary" data-pf="add-link">+ Add link</button>` : ''}</div>
-  <div class="builder-buttons"><button class="secondary" data-pf="cancel-editor">Cancel</button><button class="primary" data-pf="save-profile">Save profile</button></div></section>`;
+  <div class="builder-buttons"><button class="primary" data-pf="save-profile">Save profile</button></div></section>`;
 }
 async function saveEditor() {
   if (busy) return; busy = true; const newlyUploaded=[]; const saveButton=document.querySelector('[data-pf="save-profile"]'); if(saveButton){saveButton.disabled=true;saveButton.textContent='Saving profile…';}
