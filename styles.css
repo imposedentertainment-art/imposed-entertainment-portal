@@ -3752,3 +3752,17 @@ html,body{overflow-x:hidden;overflow-y:auto!important;overscroll-behavior-y:auto
 .insight-artist-row .release-info{flex:1;min-width:0}
 .insight-artist-arrow{flex:0 0 auto;color:var(--ie-muted,#aeb8c4);font-size:20px;opacity:.7}
 @media(max-width:520px){.insight-artist-row{padding:12px 8px!important;gap:10px}.insight-artist-row .release-info strong{white-space:normal;overflow-wrap:anywhere}}
+
+
+/* v1.3.12 — profile-synced roster actions, route transitions and reliable scrolling */
+html,body,#app,.shell{min-height:100%;}
+html,body{overflow-x:hidden!important;overflow-y:auto!important;touch-action:pan-y;}
+body{overscroll-behavior-y:auto!important;}
+.shell .main{min-height:100dvh;overflow:visible!important;}
+.roster-avatar-profile{display:grid!important;place-items:center;padding:0!important;overflow:hidden;flex:0 0 48px;cursor:pointer;}
+.roster-avatar-profile .pf-avatar{display:inline-flex!important;align-items:center;justify-content:center;overflow:hidden;}
+.roster-avatar-profile .pf-avatar img{width:100%;height:100%;object-fit:cover;border-radius:inherit;}
+.roster-profile-name{display:block;max-width:100%;padding:0;border:0;background:transparent;color:var(--ie-text,#f4f6f8);font:inherit;font-weight:750;text-align:left;cursor:pointer;overflow-wrap:anywhere;}
+.roster-profile-name:hover,.roster-profile-name:focus-visible{color:var(--ie-accent,#d7bd72);text-decoration:underline;}
+.insight-artist-cta{display:block;margin-top:4px;color:var(--ie-accent,#d7bd72)!important;font-size:11px;font-weight:700;}
+.insight-artist-row{touch-action:pan-y;}
