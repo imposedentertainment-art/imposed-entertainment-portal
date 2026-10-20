@@ -49,11 +49,13 @@
     }
     showPortalLoading('Preparing your workspace…','Connecting securely');
     let bootSessionResolved=false;
+    let bootFailed=false;
     let pendingAuthEvent=false;
     let pendingAuthSession=null;
-    sb.auth.onAuthStateChange((event,nextSession)=>{
+    const authSubscription=sb.auth.onAuthStateChange((event,nextSession)=>{
       // Defer work so Supabase's auth callback lock is released before data calls.
       setTimeout(async()=>{
+        if(bootFailed)return;
         if(!bootSessionResolved){pendingAuthEvent=true;pendingAuthSession=nextSession||null;return;}
         if(isListenerRoute()){ session=nextSession||null; renderListenerRoute(); hidePortalLoading(); return; }
         const previousUserId=session?.user?.id||null;
@@ -80,9 +82,10 @@
     },15000);});
     let sessionResult;
     try { sessionResult=await Promise.race([sessionRequest,timeoutRequest]); }
+    catch(error){bootFailed=true;bootSessionResolved=true;authSubscription?.data?.subscription?.unsubscribe();throw error;}
     finally { clearTimeout(startupTimeoutId); }
     const {data,error}=sessionResult;
-    if(error) throw error;
+    if(error){bootFailed=true;bootSessionResolved=true;authSubscription?.data?.subscription?.unsubscribe();throw error;}
     session=pendingAuthEvent?pendingAuthSession:(data?.session||null);
     bootSessionResolved=true;
     // Do not force public listener links through the artist/label sign-in screen.
