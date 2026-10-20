@@ -302,3 +302,59 @@ td,th{overflow-wrap:anywhere}
   :where(a,button,input,select,textarea,[role="button"]):focus-visible{outline:2px solid Highlight}
   .primary,.new-btn,.secondary,.danger-btn,.success{border:1px solid ButtonText}
 }
+
+
+/* Responsive overflow and text wrapping hardening — v1.4.52 */
+:where(#app,#main-content,.main,.page,.page-heading,.settings-card,.appearance-card,.appearance-section,.appearance-section-head,.setting-section,.setting-row,.setting-row>div,.settings-security-note,.appearance-footer,.appearance-custom,.banner-picker,.appearance-range,.theme-grid,.theme-option,.appearance-choice-grid,.appearance-choice,.density-options,.font-grid,.font-option,.dashboard-widget-grid,.dashboard-widget-option,.language-choice-grid,.language-choice,.language-choice-note,.settings-quicknav){min-width:0;max-width:100%;box-sizing:border-box}
+:where(.page,.page-heading,.settings-card,.appearance-card,.appearance-section,.setting-section,.setting-row,.setting-row>div,.appearance-section-head,.appearance-custom,.appearance-footer,.language-choice,.language-choice-note,.theme-option,.appearance-choice,.font-option,.dashboard-widget-option){overflow-wrap:anywhere;word-break:normal}
+:where(.settings-card,.appearance-card,.appearance-section,.setting-section,.setting-row,.appearance-section-head,.appearance-custom,.appearance-footer,.banner-picker){height:auto;min-height:0}
+.settings-card .setting-section>div:last-child,.appearance-section-head>div,.appearance-custom>span,.appearance-footer>span,.setting-row>div:first-child{flex:1 1 12rem;min-width:0}
+.settings-card .setting-row{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.settings-card .setting-row>input[type=checkbox]{flex:0 0 auto;margin:3px 2px 0 12px}
+.settings-card .setting-row>.row-actions,.settings-card .setting-row>button,.settings-card .setting-row>.pill{flex:0 1 auto;min-width:0;max-width:100%}
+.settings-card .setting-row>.row-actions{display:flex;flex-wrap:wrap;gap:8px}
+.settings-card .setting-row>.row-actions>*{min-width:0;max-width:100%;white-space:normal;overflow-wrap:anywhere}
+.settings-card .setting-row span,.settings-card .setting-row small,.settings-card .setting-section p,.appearance-section-head span,.appearance-custom small,.appearance-choice small,.font-option small{overflow-wrap:anywhere;word-break:normal}
+.settings-card input:not([type=checkbox]):not([type=radio]):not([type=color]):not([type=range]),.settings-card select,.settings-card textarea{width:100%;min-width:0;max-width:100%;box-sizing:border-box}
+.settings-quicknav{max-width:100%;overscroll-behavior-x:contain}
+.language-choice-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr))}
+.language-choice{min-width:0;white-space:normal}
+.language-choice-name{min-width:0;overflow-wrap:anywhere;word-break:normal}
+.appearance-section-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.appearance-current{max-width:100%;overflow-wrap:anywhere}
+.theme-grid,.appearance-choice-grid,.density-options,.font-grid,.dashboard-widget-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,145px),1fr));min-width:0}
+.theme-option,.appearance-choice,.font-option,.dashboard-widget-option,.density-options>label{min-width:0;max-width:100%;white-space:normal;overflow-wrap:anywhere}
+.appearance-choice,.font-option{height:auto;min-height:0}
+.appearance-choice small,.font-option small{line-height:1.45}
+.appearance-custom{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.appearance-custom input[type=color]{flex:0 0 48px;max-width:100%}
+.appearance-range{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:12px;align-items:center}
+.appearance-range>span{min-width:0;overflow-wrap:anywhere}
+.appearance-range input{min-width:0;width:100%;max-width:100%}
+.banner-picker{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.banner-preview{min-width:0;max-width:100%;flex:1 1 160px}
+.settings-card :where(button,a,.pill){overflow-wrap:anywhere}
+.settings-card :where(button,a){min-width:0}
+@media(max-width:700px){
+  .settings-card{padding:clamp(12px,3.5vw,18px)!important}
+  .settings-card .setting-section{gap:10px}
+  .settings-card .setting-section>div:last-child{flex-basis:calc(100% - 42px)}
+  .settings-card .setting-row{align-items:flex-start;gap:10px}
+  .settings-card .setting-row>div:first-child{flex-basis:100%}
+  .settings-card .setting-row>.row-actions{width:100%;justify-content:flex-start}
+  .settings-card .setting-row>.row-actions>*{flex:0 1 auto}
+  .appearance-range{grid-template-columns:minmax(0,1fr)}
+  .appearance-range input{width:100%}
+  .appearance-footer{align-items:stretch;flex-direction:column;gap:10px}
+  .appearance-footer button{width:100%;max-width:100%}
+  .language-choice-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .language-choice{padding:10px!important;gap:8px}
+  .settings-quicknav{width:100%}
+}
+@media(max-width:360px){
+  .language-choice-grid,.theme-grid,.appearance-choice-grid,.density-options,.font-grid,.dashboard-widget-grid{grid-template-columns:minmax(0,1fr)}
+  .language-choice{min-height:48px}
+  .settings-quicknav{gap:4px;padding:5px}
+  .settings-quicknav a{padding:7px 8px;font-size:11px}
+  .settings-card .setting-row>.row-actions>*{flex:1 1 100%}
+}
