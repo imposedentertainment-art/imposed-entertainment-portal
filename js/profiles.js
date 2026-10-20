@@ -221,8 +221,10 @@ function editProfile() {
     <label class="pf-check"><input type="checkbox" id="pf-email" ${s.show_email ? 'checked' : ''}> Show my email on my page so people can contact me</label></div>
   <div class="card pf-form"><h3>Public page privacy</h3><p class="muted">Your public page is private until you enable it. Only live releases are listed; drafts, earnings, tasks and label notes are never published.</p><label class="pf-check"><input type="checkbox" id="pf-public" ${s.is_public?'checked':''}> Publish a public artist page</label><label class="field"><span>Shareable page slug</span><input id="pf-slug" maxlength="54" value="${esc(s.public_slug)}" autocomplete="off"><small>Public URL: ${esc(location.origin+'/listen/artist/'+s.public_slug)}</small></label>${['bio','links','location','discography','email'].map(k=>`<label class="pf-check"><input type="checkbox" data-public-pref="${k}" ${s.public_profile_preferences[k]!==false?'checked':''}> Show ${({bio:'my biography',links:'my links',location:'my location',discography:'my live discography',email:'my email address'}[k])} publicly</label>`).join('')}</div>
   <div class="card pf-form"><h3>Artist links</h3><p class="muted">These become the artist’s public link hub, so fans can go straight to your music and socials. Add up to 8 links.</p>
-    ${s.links.map((l, i) => `<div class="pf-linkrow"><input data-pf-link="${i}" data-k="label" placeholder="Label" maxlength="30" value="${esc(l.label)}"><input data-pf-link="${i}" data-k="url" placeholder="https://" maxlength="200" value="${esc(l.url)}"><button class="icon-btn danger-ghost" data-pf="del-link" data-i="${i}" aria-label="Remove link">✕</button></div>`).join('')}
-    ${s.links.length < 8 ? `<button class="secondary" data-pf="add-link">+ Add link</button>` : ''}</div>
+    <div class="pf-link-presets" aria-label="Quick-add link types">${['Spotify','Apple Music','YouTube','SoundCloud','Bandcamp','Instagram','TikTok','Website'].map(label=>`<button type="button" class="secondary pf-link-preset" data-pf="preset-link" data-label="${label}">${label}</button>`).join('')}</div>
+    ${s.links.map((l, i) => `<div class="pf-linkrow"><input data-pf-link="${i}" data-k="label" placeholder="Label (e.g. Spotify)" maxlength="30" value="${esc(l.label)}"><input data-pf-link="${i}" data-k="url" placeholder="https://your-link" maxlength="512" value="${esc(l.url)}"><button type="button" class="secondary pf-link-move" data-pf="move-link-up" data-i="${i}" aria-label="Move link up" ${i===0?'disabled':''}>↑</button><button type="button" class="secondary pf-link-move" data-pf="move-link-down" data-i="${i}" aria-label="Move link down" ${i===s.links.length-1?'disabled':''}>↓</button><button type="button" class="icon-btn danger-ghost" data-pf="del-link" data-i="${i}" aria-label="Remove link">✕</button></div>`).join('')}
+    <small class="pf-link-help">Use full URLs. Empty rows are ignored; links are checked before publishing. Drag-free ordering: use ↑ and ↓.</small>
+    ${s.links.length < 8 ? `<button type="button" class="secondary" data-pf="add-link">+ Add link (${s.links.length}/8)</button>` : '<p class="muted">You have reached the 8-link limit.</p>'}</div>
   <div class="builder-buttons"><button class="primary" data-pf="save-profile">Save profile</button></div></section>`;
 }
 async function saveEditor() {
@@ -234,11 +236,24 @@ async function saveEditor() {
       const r = await uploadWithRetry('profile-media',path,f,{contentType:f.type}); newlyUploaded.push(path); return path;
     };
     const a = await up(s.avatarFile, 'avatar'), b = await up(s.bannerFile, 'banner');
-    const links = s.links.map(l => ({ label: l.label.trim(), url: safeUrl(l.url.trim()) })).filter(l => l.url);
-    const slug=slugifyArtist($('#pf-slug')?.value||s.public_slug); const prefs={...s.public_profile_preferences}; document.querySelectorAll('[data-public-pref]').forEach(x=>prefs[x.dataset.publicPref]=x.checked); const v = { ...(isAdmin() && uid !== session.user.id ? {display_name: String(s.display_name || '').trim().slice(0,80) || 'Artist'} : {}), tagline: s.tagline.trim() || null, bio: s.bio.trim() || null, location: s.location.trim() || null, accent: s.accent, show_email: !!s.show_email, links, avatar_path: a || s.avatarPath || null, banner_path: b || s.bannerPath || null, is_public: !!$('#pf-public')?.checked, public_slug: slug, public_profile_preferences:prefs };
+    if (!Array.isArray(s.links) || s.links.length > 8) throw new Error('Artist pages can have up to 8 links.');
+    const links = [];
+    for (const item of s.links) {
+      const rawUrl = String(item.url || '').trim();
+      const rawLabel = String(item.label || '').trim();
+      if (!rawUrl && !rawLabel) continue;
+      if (!rawUrl) throw new Error('Add a URL for “' + rawLabel.slice(0,30) + '”, or remove that link row.');
+      const url = safeUrl(rawUrl);
+      if (!url) throw new Error('That link URL is invalid. Use a full http:// or https:// address.');
+      if (!rawLabel) throw new Error('Give every link a label so fans know where it goes.');
+      if (links.some(existing => existing.url.toLowerCase() === url.toLowerCase())) throw new Error('Each artist link must use a different URL.');
+      links.push({ label: rawLabel.slice(0,30), url });
+    }
+    const slug=slugifyArtist($('#pf-slug')?.value||s.public_slug); if(!slug || slug.length>54 || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) throw new Error('Choose a valid page slug using letters, numbers and hyphens.');
+    const prefs={...s.public_profile_preferences}; document.querySelectorAll('[data-public-pref]').forEach(x=>prefs[x.dataset.publicPref]=x.checked); const v = { ...(isAdmin() && uid !== session.user.id ? {display_name: String(s.display_name || '').trim().slice(0,80) || 'Artist'} : {}), tagline: s.tagline.trim() || null, bio: s.bio.trim() || null, location: s.location.trim() || null, accent: s.accent, show_email: !!s.show_email, links, avatar_path: a || s.avatarPath || null, banner_path: b || s.bannerPath || null, is_public: !!$('#pf-public')?.checked, public_slug: slug, public_profile_preferences:prefs };
     const { data: savedRow, error } = await sb.from('profiles').update(v).eq('id', uid).select('*').maybeSingle(); if (error) throw new Error('Could not save profile: ' + error.message); if (!savedRow) throw new Error('Supabase did not save this profile. Check the profiles UPDATE policy allows label admins to edit artist profile fields. Your uploaded image was not attached to the account.');
     if (Array.isArray(users)) { const idx=users.findIndex(u=>String(u.id)===String(uid)); if(idx>=0) users[idx]={...users[idx],...savedRow}; }
-    if (uid === session.user.id && a && s.avatarPath && s.avatarPath !== a) sb.storage.from('profile-media').remove([s.avatarPath]); if (uid === session.user.id && b && s.bannerPath && s.bannerPath !== b) sb.storage.from('profile-media').remove([s.bannerPath]); if (uid === session.user.id) Object.assign(profile, v); if(s.avatarPreview)URL.revokeObjectURL(s.avatarPreview);if(s.bannerPreview)URL.revokeObjectURL(s.bannerPreview);toast('Profile saved', 'success'); busy = false; editState = null; editTargetId = null; await openProfile(uid);
+    if (uid === session.user.id && a && s.avatarPath && s.avatarPath !== a) sb.storage.from('profile-media').remove([s.avatarPath]); if (uid === session.user.id && b && s.bannerPath && s.bannerPath !== b) sb.storage.from('profile-media').remove([s.bannerPath]); if (uid === session.user.id) Object.assign(profile, v); if(s.avatarPreview)URL.revokeObjectURL(s.avatarPreview);if(s.bannerPreview)URL.revokeObjectURL(s.bannerPreview);toast(v.is_public ? 'Public artist page published and saved' : 'Profile saved', 'success'); busy = false; editState = null; editTargetId = null; await openProfile(uid);
   } catch (e) { if(newlyUploaded.length)await sb.storage.from('profile-media').remove(newlyUploaded).catch(()=>{}); console.error(e); toast(e.message || 'Could not save profile', 'error'); } finally { busy = false; if(saveButton&&saveButton.isConnected){saveButton.disabled=false;saveButton.textContent='Save profile';} }
 }
 
@@ -266,7 +281,9 @@ function bindProfiles() {
       else if (a === 'download-epk') { downloadEPK(pageData,pageDisc); }
       else if (a === 'copy-profile-link') { const url=pageData?.is_public&&pageData?.public_slug?location.origin+'/listen/artist/'+encodeURIComponent(pageData.public_slug):location.origin+location.pathname+'#/profile/'+encodeURIComponent(pageId); try{await navigator.clipboard.writeText(url);toast(pageData?.is_public?'Public artist link copied':'Portal link copied; sign-in is required until you publish your page','success');}catch(_){window.prompt('Copy profile link',url);} }
       else if (a === 'save-profile') await saveEditor();
-      else if (a === 'add-link') { editState.links.push({ label: '', url: '' }); render(); }
+      else if (a === 'add-link') { if(editState.links.length>=8)throw new Error('Artist pages can have up to 8 links.');editState.links.push({ label: '', url: '' }); render(); }
+      else if (a === 'preset-link') { if(editState.links.length>=8)throw new Error('Artist pages can have up to 8 links.');editState.links.push({ label: el.dataset.label || '', url: '' });render();const urlInput=document.querySelector('[data-pf-link="'+(editState.links.length-1)+'"][data-k="url"]');urlInput?.focus(); }
+      else if (a === 'move-link-up' || a === 'move-link-down') { const i=Number(el.dataset.i),j=a==='move-link-up'?i-1:i+1;if(i>=0&&j>=0&&j<editState.links.length){[editState.links[i],editState.links[j]]=[editState.links[j],editState.links[i]];render();} }
       else if (a === 'del-link') { editState.links.splice(Number(el.dataset.i), 1); render(); }
       else if (a === 'swatch') { setAccent(el.dataset.c); }
       else if (a === 'play') await playTrack(el.dataset.path);
