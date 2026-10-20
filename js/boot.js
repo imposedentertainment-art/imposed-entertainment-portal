@@ -48,24 +48,13 @@
       return;
     }
     showPortalLoading('Preparing your workspace…','Connecting securely');
-    const sessionRequest=sb.auth.getSession();
-    let startupTimeoutId;
-    const timeoutRequest=new Promise((_,reject)=>{startupTimeoutId=setTimeout(()=>{
-      const error=new Error('Supabase session check timed out. Check your connection and retry.');
-      error.code='PORTAL_STARTUP_TIMEOUT';
-      reject(error);
-    },15000);});
-    let sessionResult;
-    try { sessionResult=await Promise.race([sessionRequest,timeoutRequest]); }
-    finally { clearTimeout(startupTimeoutId); }
-    const {data,error}=sessionResult;
-    if(error) throw error;
-    session=data?.session||null;
-    // Do not force public listener links through the artist/label sign-in screen.
-    if(isListenerRoute()){ renderListenerRoute(); hidePortalLoading(); }
+    let bootSessionResolved=false;
+    let pendingAuthEvent=false;
+    let pendingAuthSession=null;
     sb.auth.onAuthStateChange((event,nextSession)=>{
       // Defer work so Supabase's auth callback lock is released before data calls.
       setTimeout(async()=>{
+        if(!bootSessionResolved){pendingAuthEvent=true;pendingAuthSession=nextSession||null;return;}
         if(isListenerRoute()){ session=nextSession||null; renderListenerRoute(); hidePortalLoading(); return; }
         const previousUserId=session?.user?.id||null;
         session=nextSession||null;
@@ -82,6 +71,23 @@
         }
       },0);
     });
+    const sessionRequest=sb.auth.getSession();
+    let startupTimeoutId;
+    const timeoutRequest=new Promise((_,reject)=>{startupTimeoutId=setTimeout(()=>{
+      const error=new Error('Supabase session check timed out. Check your connection and retry.');
+      error.code='PORTAL_STARTUP_TIMEOUT';
+      reject(error);
+    },15000);});
+    let sessionResult;
+    try { sessionResult=await Promise.race([sessionRequest,timeoutRequest]); }
+    finally { clearTimeout(startupTimeoutId); }
+    const {data,error}=sessionResult;
+    if(error) throw error;
+    session=pendingAuthEvent?pendingAuthSession:(data?.session||null);
+    bootSessionResolved=true;
+    // Do not force public listener links through the artist/label sign-in screen.
+    if(isListenerRoute()){ renderListenerRoute(); hidePortalLoading(); }
+
     if(isListenerRoute()) return;
     if(session) await loadApp();
     else { renderAuth(); hidePortalLoading(); }
