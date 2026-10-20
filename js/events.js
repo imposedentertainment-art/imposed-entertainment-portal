@@ -100,7 +100,9 @@ function ieStartEmailCodeCooldown(){
     document.querySelectorAll('[data-appearance-grain]').forEach(el=>el.onchange=()=>previewAppearance({grain:Number(el.value)}));
     document.querySelectorAll('[data-appearance-radius]').forEach(el=>el.onchange=()=>previewAppearance({radius:Number(el.value)}));
     document.querySelectorAll('[data-appearance-grain],[data-appearance-radius]').forEach(el=>el.oninput=()=>{const k=el.hasAttribute('data-appearance-grain')?'grain':'radius';applyAppearancePreferences({...getAppearancePreferences(),[k]:Number(el.value)});});
-    document.querySelectorAll('[data-banner-clear]').forEach(el=>el.onclick=()=>{previewAppearance({banner:''});toast('Banner removed','success');});
+    document.querySelectorAll('[data-banner-enabled]').forEach(el=>el.onchange=()=>{previewAppearance({bannerEnabled:el.checked});const note=document.querySelector('.banner-state-note');if(note)note.textContent=el.checked?'Banner visibility enabled.':'Banner hidden. Your design is saved.';});
+    document.querySelectorAll('[data-banner-color]').forEach(el=>el.oninput=()=>{previewAppearance({bannerColor:el.value,bannerEnabled:true});const note=document.querySelector('.banner-state-note');if(note)note.textContent='Colour selected. Banner is on.';});
+    document.querySelectorAll('[data-banner-clear]').forEach(el=>el.onclick=()=>{previewAppearance({banner:'',bannerColor:'',bannerEnabled:false});const picker=document.querySelector('[data-banner-color]');if(picker)picker.value=getAppearancePreferences().accent;const toggle=document.querySelector('[data-banner-enabled]');if(toggle)toggle.checked=false;const note=document.querySelector('.banner-state-note');if(note)note.textContent='Design cleared. Banner hidden.';toast('Banner design cleared','success');});
     document.querySelectorAll('[data-banner-file]').forEach(el=>el.onchange=async()=>{
       const file=el.files&&el.files[0];if(!file)return;
       if(!/^image\/(jpeg|png|webp)$/.test(file.type)){toast('Use a JPG, PNG or WebP image','error');el.value='';return;}
@@ -109,7 +111,7 @@ function ieStartEmailCodeCooldown(){
         const sc=Math.max(W/bmp.width,H/bmp.height);const w=bmp.width*sc,h=bmp.height*sc;cx.drawImage(bmp,(W-w)/2,(H-h)/2,w,h);
         let q=.72,out=cv.toDataURL('image/jpeg',q);while(out.length>200000&&q>.3){q-=.1;out=cv.toDataURL('image/jpeg',q);}
         if(out.length>=240000){toast('That image is too detailed. Try a simpler one.','error');return;}
-        previewAppearance({banner:out});toast('Banner updated','success');
+        previewAppearance({banner:out,bannerEnabled:true});const toggle=document.querySelector('[data-banner-enabled]');if(toggle)toggle.checked=true;const note=document.querySelector('.banner-state-note');if(note)note.textContent='Image selected. Banner is on.';toast('Banner updated','success');
       }catch(_){toast('Could not read that image','error');}
       el.value='';
     });
