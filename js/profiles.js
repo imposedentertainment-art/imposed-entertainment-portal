@@ -93,12 +93,12 @@ const accentOf = a => /^#[0-9a-f]{6}$/i.test(a || '') ? a : '#d7bd72';
 function profileCompletion(p){if(!p)return 0;const checks=[!!p.avatar_path,!!p.banner_path,!!String(p.bio||'').trim(),!!String(p.tagline||'').trim(),!!String(p.location||'').trim(),Array.isArray(p.links)&&p.links.some(l=>safeUrl(String(l.url||''))),!!p.accent];return Math.round(checks.filter(Boolean).length/checks.length*100);}
 const PRESETS = ['#d7bd72', '#8caed8', '#539df5', '#7c83ff', '#b79af0', '#ff6fae', '#f3727f', '#ffa42b', '#eadb62', '#e8eeeb'];
 function avatarHtml(p, size) {
-  // Prefer the canonical uploaded path; support older profile records that only have avatar_url.
+  // Prefer the canonical uploaded path, but retry legacy avatar_url if the storage URL fails.
   const legacyUrl = typeof p.avatar_url === 'string' ? safeUrl(p.avatar_url) : '';
-  const storedPath = typeof p.avatar_path === 'string' ? p.avatar_path.trim() : '';
-  const u = p.avatar_preview || (storedPath ? MEDIA_URL(storedPath) : '') || legacyUrl;
+  const u = p.avatar_preview || MEDIA_URL(p.avatar_path) || legacyUrl;
+  const initials = esc(String(p.display_name || p.email || '?').trim().slice(0, 2).toUpperCase());
   const fallback = legacyUrl && legacyUrl !== u ? ` data-fallback-src="${esc(legacyUrl)}"` : '';
-  return `<span class="pf-avatar" style="width:${size}px;height:${size}px;font-size:${Math.round(size / 3)}px;background:${accentOf(p.accent)}">${u ? `<img loading="${size <= 48 ? 'eager' : 'lazy'}" decoding="async" src="${esc(u)}"${fallback} alt="">` : esc(String(p.display_name || p.email || '?').trim().slice(0, 2).toUpperCase())}</span>`;
+  return `<span class="pf-avatar" style="width:${size}px;height:${size}px;font-size:${Math.round(size / 3)}px;background:${accentOf(p.accent)}">${u ? `<img loading="lazy" decoding="async" src="${esc(u)}"${fallback} alt="">` : initials}</span>`;
 }
 
 /* ---------- Discover ---------- */
