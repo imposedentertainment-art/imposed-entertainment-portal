@@ -3740,3 +3740,16 @@ body{background-image:radial-gradient(ellipse at 82% 0%,rgba(216,255,99,.035),tr
 .profile-edit-page .pf-media>div{min-width:0!important}
 .profile-edit-page .pf-file{white-space:normal!important;overflow-wrap:anywhere!important}
 @media(max-width:520px){.profile-edit-page{padding:10px!important}.profile-edit-page .page-heading h1{font-size:clamp(30px,9vw,40px)!important}.profile-edit-page .builder-buttons button{flex:1 1 100%!important}.profile-edit-page .pf-media{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+
+
+/* v1.3.11 — restore document scrolling and make dashboard artist cards actionable */
+html,body{overflow-x:hidden;overflow-y:auto!important;overscroll-behavior-y:auto}
+body{touch-action:pan-y;}
+.insight-artist-row{display:flex!important;align-items:center;gap:12px;width:100%;min-width:0;padding:12px 10px!important;text-align:left;font:inherit;color:inherit;background:transparent;border:0;border-bottom:1px solid var(--ie-border,rgba(255,255,255,.08));cursor:pointer;appearance:none;-webkit-appearance:none}
+.insight-artist-row:last-child{border-bottom:0}
+.insight-artist-row:hover{background:rgba(255,255,255,.045)!important}
+.insight-artist-row:focus-visible{outline:2px solid var(--ie-accent,#d7bd72);outline-offset:-2px}
+.insight-artist-row .pf-avatar{flex:0 0 48px;border-radius:14px}
+.insight-artist-row .release-info{flex:1;min-width:0}
+.insight-artist-arrow{flex:0 0 auto;color:var(--ie-muted,#aeb8c4);font-size:20px;opacity:.7}
+@media(max-width:520px){.insight-artist-row{padding:12px 8px!important;gap:10px}.insight-artist-row .release-info strong{white-space:normal;overflow-wrap:anywhere}}
