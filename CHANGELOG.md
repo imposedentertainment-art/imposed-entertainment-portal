@@ -2,6 +2,20 @@
 
 ## [1.3.18] - 2026-10-20
 
+### Fixed and improved
+- Roster avatars now refresh from canonical profile-media paths using signed URLs, so profile photos can appear consistently when storage is private as well as public.
+- Removed the label account's remaining Help & Support item from mobile navigation; support is role-gated in desktop and mobile menus.
+- Removed the global body scroll lock while the mobile menu is open. The menu retains its own bounded scroll area while the page remains touch-scrollable.
+- Reset the viewport to the top when navigating between workspace views and added a safe dashboard fallback for unknown browser-history routes.
+- Bumped shell and service-worker cache versions to invalidate stale assets.
+
+### Verification
+- JavaScript syntax, CSS brace balance, and cache-version consistency checked.
+- Real authenticated mobile browser and Supabase storage-policy tests are still required for final live verification.
+
+
+## [1.3.18] - 2026-10-20
+
 ### Fixed
 - Removed the mobile navigation's root/body scroll lock; the page remains vertically scrollable while the menu is open, and the menu retains its own contained scroll area.
 - Updated static asset and service-worker versions.
