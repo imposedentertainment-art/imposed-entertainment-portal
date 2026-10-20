@@ -145,3 +145,10 @@ body.personalise-theme-light :where(input,select,textarea){background:#fff;color
 @media(max-width:760px){.language-choice-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:14px 14px 6px}.language-choice{min-height:58px;padding:10px!important;gap:8px}.language-choice-flag{font-size:23px}.language-choice-note{padding:6px 14px 14px}.sidebar-language-shortcut{display:none}}
 @media(max-width:390px){.language-choice-grid{grid-template-columns:1fr}.language-choice{min-height:52px}}
 @media(prefers-reduced-motion:reduce){.language-choice{transition:none}.language-choice:hover{transform:none}}
+
+.settings-quicknav{position:sticky;top:8px;z-index:20;display:flex;gap:7px;overflow-x:auto;padding:8px;margin:0 0 16px;border:1px solid var(--line,#293442);border-radius:13px;background:color-mix(in srgb,var(--s1,#11151b) 92%,transparent);backdrop-filter:blur(12px);scrollbar-width:thin}
+.settings-quicknav a{display:inline-flex;align-items:center;justify-content:center;flex:none;min-height:36px;padding:8px 12px;border-radius:9px;color:var(--soft,#d8dce1);font-size:12px;font-weight:650;text-decoration:none;white-space:nowrap}
+.settings-quicknav a:hover,.settings-quicknav a:focus-visible{background:color-mix(in srgb,var(--accent,#d8bd73) 14%,transparent);color:var(--text,#f7f5ef);outline-color:var(--accent,#d8bd73)}
+.settings-quicknav a:active{background:color-mix(in srgb,var(--accent,#d8bd73) 22%,transparent)}
+#settings-appearance,#settings-language,#settings-account,#settings-notifications,#settings-security,#settings-data{scroll-margin-top:70px}
+@media(max-width:760px){.settings-quicknav{top:4px;margin:0 -2px 12px;border-radius:11px}.settings-quicknav a{padding:8px 10px}}
