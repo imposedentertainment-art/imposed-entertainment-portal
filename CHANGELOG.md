@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.3.7] - 2026-10-20
+
+### Fixed
+- Applied label-versus-artist account routing to the mobile navigation account link as well as desktop account controls.
+- Invalidated the service-worker cache after the final role-navigation correction.
+
+### Verification
+- Re-ran static syntax and version checks after the final navigation change.
+- Browser-level visual and role-permission tests are not available in this execution environment.
+
+
 ## [1.3.6] - 2026-10-20
 
 ### Fixed
