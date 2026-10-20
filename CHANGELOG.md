@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.3.2] - 2026-10-20
+
+### Optimised
+- Reduced first-install service-worker precaching to critical shell assets and legal documents so activation does not wait on every optional script and image.
+- Kept the existing allow-listed runtime cache for optional assets as they are requested.
+- Prioritised images near the top of the viewport and deferred lower-page images when no explicit loading policy exists.
+- Versioned the shell and service-worker cache to invalidate stale assets.
+
+### Verification
+- Static JavaScript syntax and CSS brace balance checked before commit.
+- Network performance and offline behaviour require live-browser verification.
+
+
 ## [1.3.1] - 2026-10-20
 
 ### Fixed
