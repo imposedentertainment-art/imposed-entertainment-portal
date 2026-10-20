@@ -186,6 +186,7 @@ function downloadEPK(p, disc){
 
 function openEditor() {
   const p = pageData || profile;
+  if (isAdmin() && p.id === session.user.id) { view='settings'; mobile=false; render(); toast('Label accounts manage workspace details in settings.','info'); return; }
   if (p.id !== session.user.id && !isAdmin()) { toast('You can only edit your own profile.', 'error'); return; }
   editTargetId = p.id;
   const links = Array.isArray(p.links) && p.links.length ? p.links.map(l => ({ label: l.label || '', url: l.url || '' })) : [p.instagram ? { label: 'Instagram', url: p.instagram.startsWith('@') ? 'https://instagram.com/' + p.instagram.slice(1) : p.instagram } : null, p.website ? { label: 'Website', url: p.website } : null].filter(Boolean);
@@ -243,7 +244,7 @@ function bindProfiles() {
       else if (a === 'retry-discover') { discoverRes = null; discoverError = ''; const el = $('#disc-results'); if (el) el.innerHTML = discoverList(); runSearch(discoverQ); }
       else if (a === 'clear-discover') { const q = $('#disc-q'); if (q) { q.value = ''; q.focus(); q.dispatchEvent(new Event('input', { bubbles: true })); } }
       else if (a === 'open-profile') await openProfile(el.dataset.id);
-      else if (a === 'my-page') await openProfile(session.user.id);
+      else if (a === 'my-page') { if (isAdmin()) { view='settings'; mobile=false; render(); } else await openProfile(session.user.id); }
       else if (a === 'new-release') { draft=freshDraft(); draft.artist=profile.display_name||''; wizardStep=1; draftDirty=false; backView='profile'; view='builder'; render(); }
       else if (a === 'edit-draft-release') { const rel=releases.find(r=>r.id===el.dataset.id); if(!rel || rel.owner_id!==session.user.id || !['Draft','Changes Requested'].includes(rel.status)) throw new Error('This release is not editable.'); await openDraft(rel.id); }
       else if (a === 'cancel-editor') {const target=editTargetId||session.user.id;editTargetId=null;if(editState?.avatarPreview)URL.revokeObjectURL(editState.avatarPreview);if(editState?.bannerPreview)URL.revokeObjectURL(editState.bannerPreview);editState=null;await openProfile(target);}
