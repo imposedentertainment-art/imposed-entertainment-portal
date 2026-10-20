@@ -1,0 +1,32 @@
+/* Personalisation controls: intentionally additive and isolated from feature styles. */
+:root{--user-accent:#d8bd73;--user-density:1;--user-font-scale:1;--user-glow:0}
+body{font-size:calc(1rem * var(--user-font-scale,1))}
+:where(button,a,.nav-item,.sidebar-link,.tab-btn,.primary,.new-btn):focus-visible{outline-color:var(--user-accent)!important}
+:where(.primary,.new-btn,.active,.nav-item.active,.sidebar-link.active,.tab-btn.active,[aria-current="page"]){--accent:var(--user-accent)}
+body.personalise-glow .main,body.personalise-glow .workspace,body.personalise-glow #app{background-image:radial-gradient(ellipse at 90% 0%,color-mix(in srgb,var(--user-accent) 8%,transparent),transparent 48%)}
+body.personalise-compact :where(.card,.settings-card,.detail-card,.builder-card,.approval-card,.metric,.up-card){padding:calc(var(--card-padding,20px)*.78)}
+body.personalise-comfort :where(.card,.settings-card,.detail-card,.builder-card,.approval-card,.metric,.up-card){padding:calc(var(--card-padding,20px)*1.12)}
+#ie-personalise-trigger{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:9000;width:48px;height:48px;border:1px solid #ffffff30;border-radius:50%;background:#171416;color:var(--user-accent);box-shadow:0 8px 30px #0008;display:grid;place-items:center;font-size:21px;cursor:pointer}
+#ie-personalise-trigger:hover{transform:translateY(-2px);border-color:var(--user-accent)}
+#ie-personalise-panel{position:fixed;right:18px;bottom:calc(76px + env(safe-area-inset-bottom));z-index:9001;width:min(340px,calc(100vw - 28px));max-height:min(72dvh,620px);overflow:auto;padding:20px;border:1px solid #ffffff20;border-radius:18px;background:#121012;color:#f5f1f2;box-shadow:0 24px 80px #000b;font:14px/1.5 "DM Sans",sans-serif}
+#ie-personalise-panel[hidden]{display:none}
+#ie-personalise-panel *{box-sizing:border-box}
+#ie-personalise-panel h2{font:600 20px/1.2 "Space Grotesk",sans-serif;margin:0}
+#ie-personalise-panel .ie-p-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px}
+#ie-personalise-panel .ie-p-sub{color:#b8afb5;margin:0 0 18px;font-size:12px}
+#ie-personalise-panel fieldset{border:0;border-top:1px solid #ffffff18;padding:14px 0 0;margin:14px 0 0;min-width:0}
+#ie-personalise-panel legend{font-weight:700;padding:0 0 8px}
+#ie-personalise-panel .ie-p-colours{display:flex;flex-wrap:wrap;gap:10px}
+#ie-personalise-panel .ie-p-swatch{width:34px;height:34px;border:2px solid #ffffff50;border-radius:50%;cursor:pointer;position:relative}
+#ie-personalise-panel .ie-p-swatch[aria-pressed=true]{outline:2px solid #fff;outline-offset:3px}
+#ie-personalise-panel .ie-p-swatch[aria-pressed=true]:after{content:"✓";position:absolute;inset:0;display:grid;place-items:center;color:#111;font-weight:900;text-shadow:0 1px 2px #fff}
+#ie-personalise-panel select,#ie-personalise-panel input[type=range]{width:100%;accent-color:var(--user-accent)}
+#ie-personalise-panel select{background:#211d20;color:#fff;border:1px solid #ffffff30;border-radius:9px;padding:10px;margin-top:6px}
+#ie-personalise-panel .ie-p-toggle{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:9px 0}
+#ie-personalise-panel input[type=checkbox]{accent-color:var(--user-accent);width:18px;height:18px}
+#ie-personalise-panel .ie-p-actions{display:flex;gap:8px;margin-top:18px}
+#ie-personalise-panel button:not(.ie-p-swatch){border:1px solid #ffffff2a;border-radius:9px;padding:9px 12px;background:#242024;color:#fff;cursor:pointer}
+#ie-personalise-panel .ie-p-save{background:var(--user-accent)!important;color:#17120b!important;font-weight:800;flex:1}
+#ie-personalise-panel button:focus-visible,#ie-personalise-panel select:focus-visible,#ie-personalise-panel input:focus-visible{outline:2px solid var(--user-accent);outline-offset:3px}
+@media(max-width:520px){#ie-personalise-trigger{right:12px;bottom:calc(12px + env(safe-area-inset-bottom))}#ie-personalise-panel{right:10px;bottom:calc(68px + env(safe-area-inset-bottom));max-height:75dvh}}
+@media(prefers-reduced-motion:reduce){#ie-personalise-trigger:hover{transform:none}}
