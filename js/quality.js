@@ -160,10 +160,9 @@
   // Tell users when a stale service worker has been replaced, without interrupting a form.
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.addEventListener('controllerchange', function () {
-      if (sessionStorage.getItem('ie-sw-updated-notice') === '1') return;
-      sessionStorage.setItem('ie-sw-updated-notice', '1');
       var app = document.getElementById('app');
       if (app && app.getAttribute('aria-busy') === 'true') return;
+      try { if (sessionStorage.getItem('ie-sw-updated-notice') === '1') return; sessionStorage.setItem('ie-sw-updated-notice', '1'); } catch (_) { /* Storage can be unavailable in private browsing. */ }
       var root = document.getElementById('toast-root');
       if (!root || root.querySelector('.ie-update-notice')) return;
       var notice = document.createElement('div');
