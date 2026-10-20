@@ -33,7 +33,7 @@
       if(isMobile){
         // Treat the mobile navigation as a contained menu, not another page-length section.
         // Lock background scrolling while it is open and keep scrolling inside the menu.
-        document.body.style.overflow='hidden';
+        document.body.style.overflow=mobile?'hidden':'';
         const navHeader=document.querySelector('.shell > .nav');
         const navBottom=navHeader?.getBoundingClientRect().bottom||120;
         container.style.setProperty('--mobile-nav-top',Math.max(80,Math.round(navBottom))+'px');
@@ -107,7 +107,9 @@
   }
   let lastRenderedWorkspaceView = null;
   function render(){
-    if(!session||!profile){renderAuth();return;}
+    if(!session||!profile){document.body.style.overflow='';renderAuth();return;}
+    // Keep scroll locked only while the mobile navigation is actually open.
+    document.body.style.overflow=mobile?'hidden':'';
     // Label accounts use internal operations workflows, not the artist-facing support form.
     if(isAdmin()&&view==='support'){view='dashboard';if(typeof syncHash==='function')syncHash();}
     if(typeof rememberPortalView==='function')rememberPortalView();
