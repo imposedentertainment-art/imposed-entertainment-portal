@@ -3766,3 +3766,11 @@ body{overscroll-behavior-y:auto!important;}
 .roster-profile-name:hover,.roster-profile-name:focus-visible{color:var(--ie-accent,#d7bd72);text-decoration:underline;}
 .insight-artist-cta{display:block;margin-top:4px;color:var(--ie-accent,#d7bd72)!important;font-size:11px;font-weight:700;}
 .insight-artist-row{touch-action:pan-y;}
+
+
+/* v1.3.13 — keep workspace content in the document scroll flow */
+html,body{height:auto!important;min-height:100%!important;max-height:none!important;overflow-x:hidden!important;overflow-y:auto!important;overscroll-behavior-y:auto!important}
+body{position:relative!important;touch-action:pan-y!important}
+#app,.shell,.shell .main,#main-content{height:auto!important;max-height:none!important;overflow:visible!important}
+.shell{min-height:100dvh!important}
+.shell .main{min-height:calc(100dvh - 57px)!important;padding-bottom:max(70px,env(safe-area-inset-bottom))!important}
