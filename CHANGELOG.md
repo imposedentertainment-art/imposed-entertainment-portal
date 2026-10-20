@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.3.1] - 2026-10-20
+
+### Fixed
+- Prevented the mobile menu's active-page indicator from wrapping into a vertical stack.
+- Made the mobile navigation a viewport-contained overlay with internal scrolling rather than extending the page.
+- Locked background scrolling while the mobile navigation is open and restored it when the menu closes.
+- Restricted mobile navigation to one expanded category at a time to avoid excessively long menus.
+
+### Verification
+- JavaScript syntax and CSS brace-balance checked before commit.
+- Device-level scroll and navigation tests still need confirmation after deployment.
+
+
 This project follows Semantic Versioning (MAJOR.MINOR.PATCH).
 
 ## [1.3.0] - 2026-10-20
