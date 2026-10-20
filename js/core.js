@@ -64,6 +64,7 @@
     document.querySelectorAll('[data-appearance-accent]').forEach(i=>{if(i.value!==accent)i.value=accent;});
     document.querySelectorAll('[data-appearance-density]').forEach(i=>{if(i.value!==a.density)i.value=a.density;});
     document.querySelectorAll('[data-appearance-style]').forEach(i=>{if(i.value!==a.style)i.value=a.style;});
+    window.dispatchEvent(new CustomEvent('ie-appearance-change',{detail:{accent,density:a.density,font:a.font,theme:a.theme,style:a.style,cards:a.cards,grain:a.grain,radius:a.radius}}));
   }
   const STORES = ['Spotify','Apple Music','iTunes','YouTube Music','Amazon Music','Deezer','TIDAL','Pandora','Napster','iHeartRadio','Claro Musica','JioSaavn','Anghami','KKBox','NetEase','Tencent','TikTok','Facebook','Instagram','Snapchat','CapCut','Pinterest','Nuuday','ROXi','Kuack Media','Qobuz','Joox','Boomplay','Trebel','Melon','Flo','Bugs','Genie','Vibe'];
   const GENRES = ['Electronic','Rock','Metal','Metalcore','Hip Hop','Pop','Alternative','Ambient','Other'];
