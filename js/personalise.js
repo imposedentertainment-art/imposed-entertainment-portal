@@ -1,57 +1,48 @@
-/* Imposed Entertainment — per-device workspace personalisation. No account data is sent. */
+/* Imposed Entertainment — comprehensive per-device workspace personalisation. */
 (function(){
-  'use strict';
-  var KEY='ie-workspace-personalisation-v1';
-  var presets=[['Gold','#d8bd73'],['Ice blue','#8ecdf0'],['Lavender','#c4a5f5'],['Rose','#f09aa9'],['Mint','#8dd9b5'],['White','#f2f0ee']];
-  var defaults={accent:'#d8bd73',density:'standard',fontScale:1,glow:false,contrast:false};
-  function read(){try{var v=JSON.parse(localStorage.getItem(KEY)||'{}');return Object.assign({},defaults,v)}catch(_){return Object.assign({},defaults)}}
-  var state=read();
-  function apply(){
-    var root=document.documentElement,body=document.body;
-    root.style.setProperty('--user-accent',state.accent);
-    root.style.setProperty('--user-font-scale',String(state.fontScale));
-    body.classList.toggle('personalise-glow',!!state.glow);
-    body.classList.toggle('personalise-compact',state.density==='compact');
-    body.classList.toggle('personalise-comfort',state.density==='comfortable');
-    body.classList.toggle('personalise-high-contrast',!!state.contrast);
-    var panel=document.getElementById('ie-personalise-panel');
-    if(panel)render();
-  }
-  function persist(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(_){} apply(); announce('Your workspace preferences have been saved on this device.')}
-  function announce(msg){var n=document.getElementById('ie-personalise-status');if(n)n.textContent=msg}
-  function el(tag,attrs,text){var n=document.createElement(tag);Object.keys(attrs||{}).forEach(function(k){if(k==='className')n.className=attrs[k];else n.setAttribute(k,attrs[k])});if(text!==undefined)n.textContent=text;return n}
-  function render(){
-    var panel=document.getElementById('ie-personalise-panel');if(!panel)return;
-    panel.replaceChildren();
-    var head=el('div',{className:'ie-p-head'});
-    head.append(el('h2',{},'Make it yours'));
-    var close=el('button',{'type':'button','aria-label':'Close personalisation'},'✕');close.addEventListener('click',function(){panel.hidden=true;document.getElementById('ie-personalise-trigger').focus()});head.append(close);panel.append(head);
-    panel.append(el('p',{className:'ie-p-sub'},'Personalise how your workspace looks. These choices stay on this device.'));
-    var colours=el('fieldset',{}),legend=el('legend',{},'Accent colour');colours.append(legend);
-    var swatches=el('div',{className:'ie-p-colours'});
-    presets.forEach(function(p){var b=el('button',{type:'button',className:'ie-p-swatch','aria-label':p[0],'aria-pressed':String(state.accent===p[1]),title:p[0]});b.style.background=p[1];b.addEventListener('click',function(){state.accent=p[1];apply()});swatches.append(b)});
-    colours.append(swatches);panel.append(colours);
-    var density=el('fieldset',{});density.append(el('legend',{},'Workspace spacing'));
-    var select=el('select',{'aria-label':'Workspace spacing'});
-    [['compact','Compact'],['standard','Standard'],['comfortable','Comfortable']].forEach(function(o){var op=el('option',{value:o[0]},o[1]);op.selected=state.density===o[0];select.append(op)});
-    select.addEventListener('change',function(){state.density=select.value;apply()});density.append(select);panel.append(density);
-    var scale=el('fieldset',{});scale.append(el('legend',{},'Text size'));
-    var range=el('input',{type:'range',min:'0.9',max:'1.2',step:'0.05',value:String(state.fontScale),'aria-label':'Text size'});var value=el('p',{},Math.round(state.fontScale*100)+'%');
-    range.addEventListener('input',function(){state.fontScale=Number(range.value);value.textContent=Math.round(state.fontScale*100)+'%';document.documentElement.style.setProperty('--user-font-scale',String(state.fontScale))});scale.append(range,value);panel.append(scale);
-    var toggles=el('fieldset',{});toggles.append(el('legend',{},'Visual effects'));
-    [['glow','Subtle accent glow'],['contrast','Stronger contrast']].forEach(function(o){var row=el('label',{className:'ie-p-toggle'});row.append(el('span',{},o[1]));var input=el('input',{type:'checkbox','aria-label':o[1]});input.checked=!!state[o[0]];input.addEventListener('change',function(){state[o[0]]=input.checked;apply()});row.append(input);toggles.append(row)});panel.append(toggles);
-    var actions=el('div',{className:'ie-p-actions'}),reset=el('button',{type:'button'},'Reset'),save=el('button',{type:'button',className:'ie-p-save'},'Save preferences');
-    reset.addEventListener('click',function(){state=Object.assign({},defaults);apply()});save.addEventListener('click',persist);actions.append(reset,save);panel.append(actions);
-    panel.append(el('p',{id:'ie-personalise-status','role':'status','aria-live':'polite'}));
-  }
-  function init(){
-    if(document.getElementById('ie-personalise-trigger'))return;
-    var trigger=el('button',{id:'ie-personalise-trigger',type:'button','aria-label':'Customise workspace','aria-expanded':'false','aria-controls':'ie-personalise-panel'},'✳');
-    trigger.addEventListener('click',function(){var panel=document.getElementById('ie-personalise-panel');panel.hidden=!panel.hidden;trigger.setAttribute('aria-expanded',String(!panel.hidden));if(!panel.hidden){render();var first=panel.querySelector('button');if(first)first.focus()}});
-    var panel=el('section',{id:'ie-personalise-panel','aria-label':'Workspace personalisation','role':'dialog','aria-modal':'false',hidden:''});
-    document.body.append(trigger,panel);apply();
-    document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!panel.hidden){panel.hidden=true;trigger.setAttribute('aria-expanded','false');trigger.focus()}});
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
-  window.addEventListener('pageshow',apply);
+'use strict';
+var KEY='ie-workspace-personalisation-v2';
+var presets=[['Gold','#d8bd73'],['Ice blue','#8ecdf0'],['Lavender','#c4a5f5'],['Rose','#f09aa9'],['Mint','#8dd9b5'],['White','#f2f0ee'],['Electric blue','#6ba7ff'],['Orange','#ffad73'],['Teal','#66d9c4'],['Lilac','#e0a9f5'],['Red','#ff777e'],['Lime','#c3df77']];
+var defaults={accent:'#d8bd73',theme:'dark',density:'standard',fontScale:1,font:'modern',radius:'rounded',surface:'default',glow:false,contrast:false,shadows:true,decorative:true};
+function read(){try{var v=JSON.parse(localStorage.getItem(KEY)||localStorage.getItem('ie-workspace-personalisation-v1')||'{}');return Object.assign({},defaults,v)}catch(_){return Object.assign({},defaults)}}
+var state=read(),activeTab='theme';
+function el(tag,attrs,text){var n=document.createElement(tag);Object.keys(attrs||{}).forEach(function(k){if(k==='className')n.className=attrs[k];else n.setAttribute(k,attrs[k])});if(text!==undefined)n.textContent=text;return n}
+function apply(){
+var root=document.documentElement,b=document.body;
+root.style.setProperty('--user-accent',state.accent);root.style.setProperty('--accent',state.accent);root.style.setProperty('--teal',state.accent);root.style.setProperty('--user-font-scale',String(state.fontScale));
+['dark','light','system','amoled'].forEach(function(v){b.classList.toggle('personalise-theme-'+v,state.theme===v)});
+['serif','modern','mono','display'].forEach(function(v){b.classList.toggle('personalise-font-'+v,state.font===v)});
+['sharp','rounded'].forEach(function(v){b.classList.toggle('personalise-radius-'+v,state.radius===v)});
+['glass','flat'].forEach(function(v){b.classList.toggle('personalise-surface-'+v,state.surface===v)});
+b.classList.toggle('personalise-no-shadows',!state.shadows);b.classList.toggle('personalise-glow',!!state.glow);b.classList.toggle('personalise-high-contrast',!!state.contrast);b.classList.toggle('personalise-hide-decorative',!state.decorative);b.classList.toggle('personalise-compact',state.density==='compact');b.classList.toggle('personalise-comfort',state.density==='comfortable');b.classList.toggle('personalise-round-all',state.radius==='rounded');b.classList.toggle('personalise-square-all',state.radius==='sharp');
+var meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.content=state.theme==='light'?'#f4f5f7':state.theme==='amoled'?'#000000':'#080a0d';
+}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state));localStorage.setItem('ie-workspace-personalisation-v1',JSON.stringify(state))}catch(_){}apply();var s=document.getElementById('ie-p-status');if(s)s.textContent='Preferences saved on this device.'}
+function fieldset(title,help){var f=el('fieldset',{});f.append(el('legend',{},title));if(help)f.append(el('p',{className:'ie-p-help'},help));return f}
+function control(label,selectOptions,key){var row=el('label',{className:'ie-p-control'});row.append(el('span',{},label));var s=el('select',{'aria-label':label});selectOptions.forEach(function(o){var op=el('option',{value:o[0]},o[1]);op.selected=state[key]===o[0];s.append(op)});s.addEventListener('change',function(){state[key]=s.value;apply()});row.append(s);return row}
+function toggle(label,key){var row=el('label',{className:'ie-p-toggle'});row.append(el('span',{},label));var input=el('input',{type:'checkbox','aria-label':label});input.checked=!!state[key];input.addEventListener('change',function(){state[key]=input.checked;apply()});row.append(input);return row}
+function render(){
+var panel=document.getElementById('ie-personalise-panel');if(!panel)return;panel.replaceChildren();
+var top=el('div',{className:'ie-p-top'}),head=el('div',{className:'ie-p-head'});head.append(el('h2',{},'Interface settings'));var close=el('button',{type:'button','aria-label':'Close interface settings'},'×');close.addEventListener('click',closePanel);head.append(close);top.append(head,el('p',{className:'ie-p-sub'},'Tune the whole workspace to your taste. Changes preview instantly.'));panel.append(top);
+var tabs=el('div',{className:'ie-p-tabs','role':'tablist','aria-label':'Customisation categories'});
+[['theme','Colours'],['layout','Layout'],['style','Style']].forEach(function(t){var b=el('button',{type:'button',className:'ie-p-tab',role:'tab','aria-selected':String(activeTab===t[0]),'aria-controls':'ie-p-content'},t[1]);b.addEventListener('click',function(){activeTab=t[0];render();var chosen=panel.querySelector('[aria-selected="true"]');if(chosen)chosen.focus()});tabs.append(b)});panel.append(tabs);
+var content=el('div',{id:'ie-p-content',className:'ie-p-content',role:'tabpanel'});
+if(activeTab==='theme'){
+var f=fieldset('Accent colour','Choose the highlight colour used by buttons, active states and focus outlines.');var grid=el('div',{className:'ie-p-colours'});
+presets.forEach(function(p){var b=el('button',{type:'button',className:'ie-p-swatch','aria-label':p[0],'aria-pressed':String(state.accent===p[1]),title:p[0]});b.style.background=p[1];b.addEventListener('click',function(){state.accent=p[1];apply();render()});grid.append(b)});f.append(grid);
+var custom=el('label',{className:'ie-p-control'});custom.append(el('span',{},'Custom colour'));var picker=el('input',{type:'color',value:state.accent,'aria-label':'Custom accent colour'});picker.style.width='100%';picker.style.height='38px';picker.addEventListener('input',function(){state.accent=picker.value;apply();var sw=panel.querySelectorAll('.ie-p-swatch');sw.forEach(function(x){x.setAttribute('aria-pressed','false')})});custom.append(picker);f.append(custom);content.append(f);
+var theme=fieldset('Appearance','Switch between dark, light, and deep-black themes.');theme.append(control('Colour mode',[['dark','Dark'],['light','Light'],['amoled','AMOLED black'],['system','System default']],'theme'));content.append(theme);
+}else if(activeTab==='layout'){
+var density=fieldset('Spacing','Choose how much room cards and controls take up.');density.append(control('Interface density',[['compact','Compact'],['standard','Standard'],['comfortable','Comfortable']],'density'));content.append(density);
+var text=fieldset('Readability','Adjust text size and typeface across the interface.');var row=el('label',{className:'ie-p-control'});row.append(el('span',{},'Text size'));var range=el('input',{type:'range',min:'0.85',max:'1.3',step:'0.05',value:String(state.fontScale),'aria-label':'Text size'});var size=el('span',{},Math.round(state.fontScale*100)+'%');range.addEventListener('input',function(){state.fontScale=Number(range.value);size.textContent=Math.round(state.fontScale*100)+'%';document.documentElement.style.setProperty('--user-font-scale',String(state.fontScale))});row.append(range);text.append(row,size);text.append(control('Typeface',[['modern','Modern'],['display','Display'],['serif','Serif'],['mono','Monospace']],'font'));content.append(text);
+}else{
+var shape=fieldset('Shape and surfaces','Change the feel of cards, fields and menus.');shape.append(control('Corner style',[['rounded','Rounded'],['sharp','Sharp']],'radius'));shape.append(control('Surface style',[['default','Standard'],['flat','Flat'],['glass','Glass']],'surface'));content.append(shape);
+var effects=fieldset('Effects','Reduce visual decoration or add more depth.');effects.append(toggle('Show shadows','shadows'),toggle('Accent glow','glow'),toggle('Stronger contrast','contrast'),toggle('Decorative elements','decorative'));content.append(effects);
+}
+panel.append(content);
+var actions=el('div',{className:'ie-p-actions'}),reset=el('button',{type:'button'},'Reset all'),saveBtn=el('button',{type:'button',className:'ie-p-save'},'Save changes');reset.addEventListener('click',function(){state=Object.assign({},defaults);apply();render()});saveBtn.addEventListener('click',save);actions.append(reset,saveBtn);panel.append(actions);panel.append(el('p',{id:'ie-p-status',role:'status','aria-live':'polite','style':'padding:0 18px 10px;margin:0;color:var(--muted);font-size:12px'}));
+}
+function closePanel(){var p=document.getElementById('ie-personalise-panel'),t=document.getElementById('ie-personalise-trigger');if(p)p.hidden=true;if(t){t.setAttribute('aria-expanded','false');t.focus()}}
+function init(){if(document.getElementById('ie-personalise-trigger'))return;var trigger=el('button',{id:'ie-personalise-trigger',type:'button','aria-label':'Customise interface','aria-expanded':'false','aria-controls':'ie-personalise-panel',title:'Customise interface'},'✳');var panel=el('section',{id:'ie-personalise-panel','aria-label':'Interface settings','role':'dialog','aria-modal':'false',hidden:''});trigger.addEventListener('click',function(){panel.hidden=!panel.hidden;trigger.setAttribute('aria-expanded',String(!panel.hidden));if(!panel.hidden){render();var b=panel.querySelector('[aria-selected="true"]');if(b)b.focus()}});document.body.append(trigger,panel);document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!panel.hidden)closePanel()});apply()}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();window.addEventListener('pageshow',apply);
 })();
