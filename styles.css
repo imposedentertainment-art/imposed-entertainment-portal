@@ -3580,3 +3580,41 @@ html[data-ie-theme="blood"] .page-heading h1::after,html[data-ie-theme="bone"] .
 @media(max-width:1100px){.shell .nav{width:226px!important}.shell .main{margin-left:226px!important;width:calc(100% - 226px)!important;padding-inline:22px!important}}
 @media(max-width:800px){.shell .nav{width:auto!important;inset:0 0 auto!important;height:auto!important;max-height:100dvh!important;overflow:visible!important;padding:7px 10px 0!important;border-right:0!important;border-bottom:1px solid rgba(255,255,255,.1)!important}.shell .main{width:100%!important;margin:57px 0 0!important;padding:22px 17px 78px!important;min-height:calc(100dvh - 57px)!important}}
 @media(max-width:600px){.shell .main{width:100%!important;margin:57px 0 0!important;padding:20px 12px 70px!important}}
+
+
+/* v1.2.0 — cleaner dashboard and a single, compact mobile navigation surface. */
+.dashboard-page{gap:14px}
+.dashboard-hero{min-height:218px;margin-bottom:10px}
+.dashboard-hero-copy{max-width:min(660px,72%)}
+.dashboard-hero h1{margin-top:12px}
+.dashboard-hero-actions{margin-top:17px}
+.dashboard-page>.metrics{margin:0 0 2px}
+.dashboard-page>.dashboard-panel,.dashboard-page>.changes-panel{margin-top:8px}
+.dashboard-page .section-head,.dashboard-page .panel-heading{margin-top:0}
+.dashboard-page .dashboard-lower-grid{gap:14px;margin-top:8px}
+.dashboard-page .dashboard-recent-panel,.dashboard-page .catalogue-panel{margin-top:8px}
+.dashboard-page .quick-link-row{min-height:54px}
+.dashboard-page .dashboard-action-centre{margin-top:0}
+.shell .mobile-nav{padding-top:10px}
+.shell .mobile-nav .mobile-nav-search{margin:0 0 8px}
+.shell .mobile-nav .nav-accordion:first-of-type{border-top:0}
+@media(max-width:800px){
+  .dashboard-page{gap:12px}
+  .dashboard-hero{min-height:0;padding:25px 20px;margin-bottom:4px;border-radius:19px 19px 19px 6px}
+  .dashboard-hero-copy{max-width:100%;padding-right:0}
+  .dashboard-hero h1{font-size:clamp(31px,8vw,42px);line-height:1.02;margin:13px 0 9px}
+  .dashboard-hero p{max-width:38ch;font-size:13px}
+  .dashboard-hero-actions{flex-wrap:wrap;gap:10px;margin-top:17px}
+  .dashboard-hero .primary{min-height:44px}
+  .hero-art{right:-54px;top:auto;bottom:-90px;width:180px;height:180px;opacity:.16;pointer-events:none}
+  .hero-index{right:14px;top:12px;opacity:.55}
+  .dashboard-page>.metrics{margin:0}
+  .dashboard-page .dashboard-lower-grid{margin-top:0}
+}
+@media(max-width:420px){
+  .dashboard-hero{padding:22px 16px}
+  .dashboard-hero .hero-overline{font-size:8px;letter-spacing:.12em}
+  .dashboard-hero-actions{align-items:stretch;flex-direction:column}
+  .dashboard-hero-actions .primary,.dashboard-hero-actions .hero-secondary{justify-content:center;width:100%}
+  .dashboard-hero-actions .hero-secondary{border:1px solid rgba(255,255,255,.16);border-radius:11px 11px 11px 4px;padding:12px}
+}
