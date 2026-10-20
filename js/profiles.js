@@ -330,7 +330,36 @@ function bindProfiles() {
     const pub = $('#pf-public'); if(pub) pub.onchange=()=>{editState.is_public=pub.checked;};
     const slug = $('#pf-slug'); if(slug) slug.oninput=()=>{editState.public_slug=slug.value; const small=slug.parentElement.querySelector('small');if(small)small.textContent='Public URL: '+location.origin+'/listen/artist/'+slugifyArtist(slug.value);};
     document.querySelectorAll('[data-public-pref]').forEach(x=>x.onchange=()=>editState.public_profile_preferences[x.dataset.publicPref]=x.checked);
-    document.querySelectorAll('[data-pf-file]').forEach(i => i.onchange = () => { const f = i.files && i.files[0]; if (!f) return; if(!/^image\/(jpeg|png|webp|gif)$/.test(f.type)){toast('Choose a JPG, PNG, WebP or GIF image.','error');i.value='';return;}if(f.size>2*1024*1024){toast('Images must be under 2 MB.','error');i.value='';return;}if (i.dataset.pfFile === 'avatar') {if(editState.avatarPreview)URL.revokeObjectURL(editState.avatarPreview);editState.avatarFile=f;editState.avatarPreview=URL.createObjectURL(f);} else {if(editState.bannerPreview)URL.revokeObjectURL(editState.bannerPreview);editState.bannerFile=f;editState.bannerPreview=URL.createObjectURL(f);} render(); });
+    document.querySelectorAll('[data-pf-file]').forEach(input => input.onchange = async () => {
+    const file=input.files&&input.files[0]; if(!file)return;
+    const kind=input.dataset.pfFile;
+    const reject=message=>{toast(message,'error');input.value='';};
+    if(!/^image\/(jpeg|png|webp|gif)$/.test(file.type)){reject('Choose a JPG, PNG, WebP or GIF image.');return;}
+    if(file.size>2*1024*1024){reject('Images must be under 2 MB.');return;}
+    input.disabled=true;
+    try{
+      let width=0,height=0;
+      if(typeof createImageBitmap==='function'){
+        const bitmap=await createImageBitmap(file);width=bitmap.width;height=bitmap.height;bitmap.close();
+      }else{
+        const probeUrl=URL.createObjectURL(file);
+        try{const probe=new Image();probe.src=probeUrl;await probe.decode();width=probe.naturalWidth;height=probe.naturalHeight;}
+        finally{URL.revokeObjectURL(probeUrl);}
+      }
+      if(!width||!height){reject('This image could not be decoded. Try exporting it as a JPG or PNG.');return;}
+      if(width>8000||height>8000||width*height>20000000){reject('This image is too large in dimensions. Use an image under 20 megapixels and 8,000 pixels per side.');return;}
+      const previewUrl=URL.createObjectURL(file);
+      if(kind==='avatar'){
+        if(editState.avatarPreview)URL.revokeObjectURL(editState.avatarPreview);
+        editState.avatarFile=file;editState.avatarPreview=previewUrl;
+      }else{
+        if(editState.bannerPreview)URL.revokeObjectURL(editState.bannerPreview);
+        editState.bannerFile=file;editState.bannerPreview=previewUrl;
+      }
+      render();
+    }catch(_){reject('We couldn’t read that image. Try another JPG, PNG, WebP or GIF file.');}
+    finally{input.disabled=false;}
+  });
   }
   syncPlayIcons();
 }
