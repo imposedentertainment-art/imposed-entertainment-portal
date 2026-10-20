@@ -1,0 +1,22 @@
+-- Harden remaining SECURITY DEFINER routines against search_path shadowing.
+-- Application objects are referenced via public-qualified names; pg_catalog remains first.
+ALTER FUNCTION public.accept_invite_on_signup() SET search_path = pg_catalog, public;
+ALTER FUNCTION public.consume_public_rate_limit(text, integer, integer) SET search_path = pg_catalog, public;
+ALTER FUNCTION public.enforce_invite_only() SET search_path = pg_catalog, public;
+ALTER FUNCTION public.get_public_artist_directory() SET search_path = pg_catalog, public;
+ALTER FUNCTION public.get_public_artist_page(text) SET search_path = pg_catalog, public;
+ALTER FUNCTION public.guard_release_track_feedback() SET search_path = pg_catalog, public;
+ALTER FUNCTION public.handle_new_user() SET search_path = pg_catalog, public;
+ALTER FUNCTION public.log_release_audit_change() SET search_path = pg_catalog, public;
+ALTER FUNCTION public.log_release_track_version() SET search_path = pg_catalog, public;
+ALTER FUNCTION public.notify_announcement() SET search_path = pg_catalog, public;
+ALTER FUNCTION public.notify_band_invite() SET search_path = pg_catalog, public;
+ALTER FUNCTION public.notify_comment() SET search_path = pg_catalog, public;
+ALTER FUNCTION public.notify_earnings() SET search_path = pg_catalog, public;
+ALTER FUNCTION public.notify_release_link() SET search_path = pg_catalog, public;
+ALTER FUNCTION public.notify_release_sent() SET search_path = pg_catalog, public;
+ALTER FUNCTION public.notify_release_stats() SET search_path = pg_catalog, public;
+ALTER FUNCTION public.notify_release_status() SET search_path = pg_catalog, public;
+ALTER FUNCTION public.notify_vault_file() SET search_path = pg_catalog, public;
+ALTER FUNCTION public.seed_release_tasks() SET search_path = pg_catalog, public;
+ALTER FUNCTION public.shift_release_tasks() SET search_path = pg_catalog, public;
