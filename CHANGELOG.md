@@ -2,6 +2,26 @@
 
 This project follows Semantic Versioning (MAJOR.MINOR.PATCH).
 
+## [1.3.0] - 2026-10-20
+
+### Improved
+- Replaced legacy display-font downloads with a lighter, consistent modern typography stack.
+- Reduced visual clutter with flatter surfaces, tighter spacing, quieter borders, cleaner headings and more consistent controls.
+- Reworked navigation dropdowns into compact accordions with clear open/closed indicators and a distinct active-page state.
+- Added persistent Privacy Policy and Terms of Service links to the workspace footer, while retaining sidebar and mobile links.
+- Deferred off-screen images, prioritized visible media and retained asynchronous decoding.
+- Improved public artist avatar loading priority and banner rendering.
+
+### Compatibility
+- Preserved Supabase operations, route structure, role-based navigation and listener security checks.
+- Kept reduced-motion and keyboard-focus support.
+
+### Verification
+- Static JavaScript syntax, CSS brace-balance and release-version checks performed before deployment.
+- Real-device image timing and signed-in workflow tests remain outstanding.
+
+This project follows Semantic Versioning (MAJOR.MINOR.PATCH).
+
 ## [1.2.0] - 2026-10-20
 
 ### Fixed
