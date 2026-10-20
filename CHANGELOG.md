@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.3.5] - 2026-10-20
+
+### Fixed
+- Removed the light app-shell background that conflicted with the dark workspace, causing low-contrast white headings on a pale canvas.
+- Scoped the profile editor to consistent dark surfaces and readable secondary text.
+- Removed the duplicate Cancel action in the profile editor.
+- Removed sticky positioning from profile-editor save actions so they no longer cover form fields or overlap the mobile viewport.
+- Improved mobile profile media controls with a compact two-column layout.
+- Bumped the app and service-worker asset version to invalidate stale cached styling.
+
+### Verification
+- JavaScript syntax and CSS brace balance checked; role and action handlers statically reviewed.
+- Real browser, upload, and Supabase policy tests remain necessary before claiming end-to-end perfection.
+
+
 ## [1.3.4] - 2026-10-20
 
 ### Fixed
