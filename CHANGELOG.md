@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.24] - 2026-10-20
+
+### Fixed
+- Retry Workspace Data now re-resolves the current URL after refreshing data, so a release detail page can recover in place when its first load failed.
+- Cleared stale unavailable-release route state when navigating to other views.
+- Refreshed static asset and service-worker cache versions for the route recovery fix.
+
+### Verification
+- JavaScript syntax, route handler presence, and asset/cache version consistency checked.
+- Browser-based route refresh and scrolling tests remain necessary for end-to-end confirmation.
+
+
 ## [1.3.23] - 2026-10-20
 
 ### Fixed
