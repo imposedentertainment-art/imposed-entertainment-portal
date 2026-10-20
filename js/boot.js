@@ -58,6 +58,7 @@
       setTimeout(async()=>{
         if(bootFailed)return;
         if(!bootSessionResolved){pendingAuthEvent=true;pendingAuthSession=nextSession||null;return;}
+        if(nextSession?.user?.user_metadata?.account_type==='listener'){session=nextSession; if(!isListenerRoute())history.replaceState(null,'','/listen/account'); renderListenerRoute(); hidePortalLoading(); return;}
         if(isListenerRoute()){ session=nextSession||null; renderListenerRoute(); hidePortalLoading(); return; }
         const previousUserId=session?.user?.id||null;
         session=nextSession||null;
@@ -89,6 +90,8 @@
     if(error){bootFailed=true;bootSessionResolved=true;authSubscription?.data?.subscription?.unsubscribe();throw error;}
     session=pendingAuthEvent?pendingAuthSession:(data?.session||null);
     bootSessionResolved=true;
+    // Listener accounts stay in the public listener portal and must never initialise an artist workspace profile.
+    if(session?.user?.user_metadata?.account_type==='listener'&&!isListenerRoute())history.replaceState(null,'','/listen/account');
     // Do not force public listener links through the artist/label sign-in screen.
     if(isListenerRoute()){ renderListenerRoute(); hidePortalLoading(); }
 
