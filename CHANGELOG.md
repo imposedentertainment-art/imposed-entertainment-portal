@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.4] - 2026-10-20
+
+### Fixed
+- Replaced artist-focused dashboard shortcuts on label accounts with roster, release-pipeline and operations shortcuts.
+- Hid the Artist Studio navigation entry from label accounts.
+- Fixed the empty upcoming-releases state so label accounts are directed to roster management and the release pipeline instead of being prompted to create an artist release.
+
+### Verification
+- JavaScript syntax and CSS brace balance checked before commit.
+- Role-specific live workflow tests still required.
+
+
 ## [1.3.3] - 2026-10-20
 
 ### Improved
