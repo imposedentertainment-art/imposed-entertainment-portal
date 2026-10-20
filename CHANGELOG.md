@@ -5,6 +5,14 @@
 ### Fixed
 - Apply profile visibility preferences consistently in authenticated profile lookup, search and discography RPCs, including hiding email when its visibility preference is disabled.
 - Unsubscribe the early auth listener and suppress queued callbacks if initial session resolution fails or times out, preventing stale startup callbacks and unnecessary background loads.
+- Remove the abandoned Netlify configuration and make CI validate the Cloudflare Pages static deployment contract instead.
+
+### Security
+- Restrict direct `profiles` table reads to the profile owner and label administrators; other signed-in users use the existing profile RPCs that redact private fields.
+- Fix the privileged role-change RPC search path.
+
+### Performance
+- Remove a duplicate public-profile-slug unique index and consolidate equivalent smart-link SELECT policies without changing intended visibility.
 
 ### Verification
 - Auth startup event ordering and failure cleanup checked at source level.
