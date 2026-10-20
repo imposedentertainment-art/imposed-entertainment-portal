@@ -3774,3 +3774,7 @@ body{position:relative!important;touch-action:pan-y!important}
 #app,.shell,.shell .main,#main-content{height:auto!important;max-height:none!important;overflow:visible!important}
 .shell{min-height:100dvh!important}
 .shell .main{min-height:calc(100dvh - 57px)!important;padding-bottom:max(70px,env(safe-area-inset-bottom))!important}
+
+
+/* v1.3.14 — release root scroll lock when mobile navigation closes */
+html,body{overflow-x:hidden!important;overflow-y:auto!important;}
