@@ -156,5 +156,5 @@
     if(view==='vault')await loadVaultData();
     if(view==='podcasts')await loadPodcastSubmissions();
     if(view==='statements')await loadStatementData();
-    if(window.__draftRestored)view='builder';
+    if(window.__draftRestored&&(['','/','/index.html','/dashboard'].includes(location.pathname.replace(/\/+$/,''))))view='builder';
     if(!session || session.user.id!==expectedUserId) return; render(); } catch(e){ console.error(e); toast('Some workspace data could not be loaded. Check your connection and retry.','error'); if(session && session.user.id===expectedUserId){if(!profile)renderAuth();else render();} } finally { if(!session || session.user.id===expectedUserId) hidePortalLoading(); } }
