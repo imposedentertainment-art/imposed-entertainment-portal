@@ -1,5 +1,5 @@
-/* Imposed Entertainment v1.3.1: versioned static assets; never cache query-bearing navigations/auth callbacks. */
-const CACHE_NAME = 'imposed-v1.3.1';
+/* Imposed Entertainment v1.3.2: versioned static assets; never cache query-bearing navigations/auth callbacks. */
+const CACHE_NAME = 'imposed-v1.3.2';
 const STATIC_ASSETS = [
   '/index.html', '/styles.css', '/manifest.webmanifest', '/privacy/index.html', '/terms/index.html',
   '/img/logo-64.png', '/img/logo-128.png', '/img/logo-192.png', '/img/logo-512.png',
@@ -13,11 +13,17 @@ const NETWORK_TIMEOUT_MS = 7000;
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
     const cache = await caches.open(CACHE_NAME);
-    await Promise.allSettled(STATIC_ASSETS.map(async path => {
+    // Keep first-install activation fast: precache only the app shell and legal documents.
+    // Other allow-listed assets are cached as they are requested by the app.
+    const criticalAssets = [
+      '/index.html', '/styles.css', '/js/i18n.js', '/js/core.js', '/js/boot.js',
+      '/privacy/index.html', '/terms/index.html', '/img/logo-128.png'
+    ];
+    await Promise.allSettled(criticalAssets.map(async path => {
       try {
         const response = await fetch(path, { cache: 'reload' });
         if (response.ok && response.type === 'basic') await cache.put(path, response);
-      } catch (_) { /* Offline/blocked optional assets must not prevent install. */ }
+      } catch (_) { /* Optional/offline assets must not prevent install. */ }
     }));
     await self.skipWaiting();
   })());
@@ -47,7 +53,7 @@ self.addEventListener('fetch', event => {
   const isStaticAsset = STATIC_PATHS.has(url.pathname);
   // Only accept the known release query on allow-listed public assets. All other query-bearing
   // requests (auth codes, invites, search state, user-specific data) bypass Cache Storage.
-  const isVersionedStaticAsset = isStaticAsset && url.searchParams.size === 1 && url.searchParams.get('v') === '1.3.1';
+  const isVersionedStaticAsset = isStaticAsset && url.searchParams.size === 1 && url.searchParams.get('v') === '1.3.2';
   if ((url.search && !isVersionedStaticAsset) || url.hash || /\/(auth|callback|invite)(\/|$)/i.test(url.pathname)) return;
   if (!isNavigation && !isStaticAsset) return;
 
