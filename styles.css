@@ -4056,3 +4056,23 @@ html[data-ie-cards="slab"] :is(.card,.settings-card,.detail-card,.dashboard-pane
 #app .public-artist .listener-release-actions button{min-width:0;white-space:normal}
 #app .public-artist .public-release-card[hidden]{display:none!important}
 @media(max-width:580px){#app .public-artist .listener-release-toolbar{align-items:stretch;flex-direction:column}#app .public-artist .listener-release-toolbar>input,#app .public-artist .listener-release-toolbar>label{width:100%}#app .public-artist .listener-release-toolbar select{flex:1;max-width:none}#app .public-artist .listener-release-actions>*{flex:1 1 100%}}
+
+
+/* v1.4.58 — split entry portals so listener discovery and invite-only workspace access are unmistakable. */
+.auth-portal-switch{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:0 0 23px}
+.auth-portal-choice{display:flex;align-items:center;gap:10px;min-width:0;padding:12px 11px;border:1px solid rgba(215,189,114,.18);border-radius:13px;background:rgba(255,255,255,.025);color:var(--text,#f5f5f2);text-decoration:none;transition:background .18s,border-color .18s,transform .18s}
+.auth-portal-choice:hover{border-color:rgba(215,189,114,.55);background:rgba(215,189,114,.07);transform:translateY(-1px)}
+.auth-portal-choice:focus-visible{outline:2px solid #d7bd72;outline-offset:3px}
+.auth-portal-choice.is-current{border-color:rgba(215,189,114,.48);background:linear-gradient(135deg,rgba(215,189,114,.12),rgba(215,189,114,.035));box-shadow:inset 0 0 0 1px rgba(215,189,114,.06)}
+.auth-portal-icon{display:grid;place-items:center;flex:0 0 34px;width:34px;height:34px;border-radius:10px;background:rgba(215,189,114,.1);color:#d7bd72}
+.listener-portal-choice .auth-portal-icon{background:rgba(132,163,205,.12);color:#a7c4ec}
+.auth-portal-copy{display:flex;flex-direction:column;gap:4px;min-width:0;flex:1}
+.auth-portal-copy strong{font-size:12px;line-height:1.2;font-weight:800;overflow-wrap:anywhere}
+.auth-portal-copy small{font-size:10px;line-height:1.4;color:var(--muted,#a4a69f);overflow-wrap:anywhere}
+.auth-portal-arrow{display:grid;place-items:center;flex:0 0 15px;color:#d7bd72;opacity:.8}
+.listener-portal-choice .auth-portal-arrow{color:#a7c4ec}
+.auth-portal-choice:not(.is-current) .auth-portal-arrow{opacity:.5}
+.auth-card .account-policy-note{padding:11px 13px;margin:12px 0 17px;border:1px solid rgba(215,189,114,.16);border-radius:10px;background:rgba(215,189,114,.045);font-size:12px;line-height:1.65}
+.auth-card .auth-toggle{font-weight:750}
+@media(max-width:430px){.auth-portal-switch{grid-template-columns:minmax(0,1fr);gap:7px;margin-bottom:19px}.auth-portal-choice{padding:10px 12px}.auth-portal-icon{width:32px;height:32px;flex-basis:32px}}
+@media(prefers-reduced-motion:reduce){.auth-portal-choice{transition:none}.auth-portal-choice:hover{transform:none}}
