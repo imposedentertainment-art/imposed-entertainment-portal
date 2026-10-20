@@ -117,11 +117,12 @@
   window.sendPortalEmail = async function(eventType, recordId){ try { if(!sb) return false; const {data:{session:active}}=await sb.auth.getSession(); if(!active?.access_token) return false; const {data,error}=await sb.functions.invoke('send-portal-email',{body:{event:eventType,id:recordId}}); if(error||data?.sent!==true){console.warn('Portal email was not sent',error||data?.reason||'unknown');toast('Saved successfully, but the email notification could not be sent. Check the email function setup.','error');return false;} return true; } catch(e) { console.warn('Portal email failed',e); toast('Saved successfully, but the email notification could not be sent.','error'); return false; } };
 
   /* Clean-path routing: readable URLs without .html; refresh restores the same view. */
+  let unavailableReleaseRouteId=null;
   const ROUTES=['dashboard','podcasts','support','settings','earnings','statements','operations','notifications','activity','bands','roster','discover','discography','calendar','insights','pipeline','studio','vault','business','builder'];
   function syncHash(){
     let path='/';
     if(ROUTES.includes(view)) path='/'+view;
-    else if(view==='release'&&selected?.id) path='/release/'+encodeURIComponent(selected.id);
+    else if(view==='release'&&(selected?.id||unavailableReleaseRouteId)) path='/release/'+encodeURIComponent(selected?.id||unavailableReleaseRouteId);
     else if(view==='editprofile'&&pageId) path='/profile/'+encodeURIComponent(pageId)+'/edit';
     else if(view==='profile'&&pageId) path='/profile/'+encodeURIComponent(pageId);
     if(location.pathname!==path || location.hash) history.pushState(null,'',path+location.search);
@@ -129,16 +130,17 @@
   function restoreRoute(){
     const path=decodeURIComponent(location.pathname.replace(/\/+$/,'')||'/');
     const route=path.split('/').filter(Boolean);
-    if(route.length===1&&ROUTES.includes(route[0])&&!(route[0]==='roster'&&!isAdmin())){view=route[0];return true;}
+    if(route.length===1&&ROUTES.includes(route[0])&&!(route[0]==='roster'&&!isAdmin())){unavailableReleaseRouteId=null;view=route[0];return true;}
     if(route.length===2&&route[0]==='release'){
-      const r=releases.find(x=>String(x.id)===route[1]);if(r){selected=r;view='release';return true;}return false;
+      const r=releases.find(x=>String(x.id)===route[1]);
+      unavailableReleaseRouteId=r?null:route[1];selected=r||null;view='release';return true;
     }
-    if(route.length===3&&route[0]==='profile'&&route[2]==='edit'){
+    if(route.length===3&&route[0]==='profile'&&route[2]==='edit'){unavailableReleaseRouteId=null;
       view='editprofile';pageId=route[1];
       setTimeout(()=>openProfile(route[1]).then(()=>{if(pageData&&String(pageData.id)===String(route[1]))openEditor();}).catch(()=>toast('Could not open this profile. Please try again.','error')),0);
       return true;
     }
-    if(route.length===2&&route[0]==='profile'){
+    if(route.length===2&&route[0]==='profile'){unavailableReleaseRouteId=null;
       view='profile';pageId=route[1];setTimeout(()=>openProfile(pageId).catch(()=>toast('Could not load this profile. Please try again.','error')),0);return true;
     }
     // Backwards compatibility with old links.
