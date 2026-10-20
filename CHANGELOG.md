@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.3.21] - 2026-10-20
+
+### Improved
+- Rebuilt the public artist hero with profile-image initials fallback, clear music and social navigation, release count, and stronger visual hierarchy.
+- Public release cards now display saved release artwork when available and provide a responsive layout for tracklists and streaming links.
+- Refined profile biography, link cards, and catalogue spacing for mobile.
+- Updated static asset and service-worker versions to invalidate older cached profile UI.
+
+### Verification
+- JavaScript parse, CSS brace balance, and asset version consistency checked.
+- Clean route fallback remains configured by the existing Pages catch-all rewrite.
+- Live public-session visual testing remains outstanding.
+
+
 ## [1.3.20] - 2026-10-20
 
 ### Fixed
