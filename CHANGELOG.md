@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.3.11] - 2026-10-20
+
+### Fixed
+- Fixed a mobile navigation bug that set `body` scrolling to `hidden` on normal page renders, preventing vertical scrolling across the portal.
+- Restored the scroll state on each render and when the app falls back to the authentication screen; only an actually open mobile menu keeps the page locked.
+- Dashboard artist cards now display the saved profile photo (with initials fallback) and open the selected artist profile when tapped.
+- Re-resolve the current extensionless URL after workspace data finishes loading, improving route restoration on refresh and auth rechecks.
+- Bumped asset URLs and service-worker cache version to invalidate stale navigation and scroll fixes.
+
+### Verification
+- JavaScript syntax, CSS brace balance and version consistency checked before commit.
+- Real authenticated mobile-browser checks remain outstanding.
+
+
 ## [1.3.10] - 2026-10-20
 
 ### Fixed
