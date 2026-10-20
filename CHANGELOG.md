@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.3.9] - 2026-10-20
+
+### Fixed
+- Removed Artist Studio from label accounts' mobile navigation, matching the desktop role-specific navigation.
+- Invalidated cached static assets after the mobile navigation role correction.
+
+### Verification
+- JavaScript syntax and build/cache version consistency checked.
+- Live authenticated browser testing is still required.
+
+
 ## [1.3.8] - 2026-10-20
 
 ### Fixed
