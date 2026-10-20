@@ -33,7 +33,7 @@
       if(isMobile){
         // Treat the mobile navigation as a contained menu, not another page-length section.
         // Lock background scrolling while it is open and keep scrolling inside the menu.
-        document.body.style.overflow=mobile?'hidden':'';
+        document.body.style.overflow='';
     document.body.style.overflowY=mobile?'hidden':'auto';
     document.documentElement.style.overflowY=mobile?'hidden':'auto';
         const navHeader=document.querySelector('.shell > .nav');
