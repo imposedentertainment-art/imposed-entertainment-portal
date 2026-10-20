@@ -205,4 +205,24 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .listener-account-shell .auth-legal-links{margin:18px auto 0;justify-content:center}
 .guest-account-link{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:8px 12px;border:1px solid var(--line2,#303744);border-radius:10px;color:var(--text,#f7f5ef);font-size:12px;font-weight:700;text-decoration:none}
 .guest-account-link:hover{border-color:var(--accent,#7868f4);background:var(--s2,#171e27)}
-html[data-ie-banner-enabled="false"] #main-content>.ie-banner{display:none!important;height:0!important;min-height:0!important;margin:0!important;padding:0!important;border:0!important}
+html[data-ie-banner-enabled="false"] .ie-banner{display:none!important;height:0!important;min-height:0!important;margin:0!important;padding:0!important;border:0!important}
+
+/* v1.4.60: the light theme must override the dashboard's legacy dark-only surfaces. */
+body.personalise-theme-light{color-scheme:light;background:#f4f5f7!important;color:#171a20!important;--bg:#f4f5f7;--s1:#fff;--s2:#eef0f3;--s3:#e3e6eb;--line:#d6dae1;--line2:#b7bfca;--text:#171a20;--soft:#333a45;--muted:#606a78}
+body.personalise-theme-light .shell,body.personalise-theme-light .shell .main{background:#f4f5f7!important;color:#171a20!important}
+body.personalise-theme-light .shell .nav,body.personalise-theme-light .shell .workspace-topbar{background:rgba(250,251,253,.97)!important;color:#20242b!important;border-color:#d9dee7!important;box-shadow:0 6px 22px #202b3b0a}
+body.personalise-theme-light .shell .topbar-location>b,body.personalise-theme-light .shell .topbar-location>span,body.personalise-theme-light .shell .topbar-account,body.personalise-theme-light .shell .topbar-search{color:#303846!important}
+body.personalise-theme-light .shell .topbar-account,body.personalise-theme-light .shell .topbar-search{background:#fff!important;border-color:#cbd2dc!important}
+body.personalise-theme-light .shell .dashboard-hero{background:linear-gradient(135deg,#fff,#edf2f8 70%,#f8f4f2)!important;border-color:#dfe3e9!important;color:#171a20!important;box-shadow:0 10px 30px #202b3b0a}
+body.personalise-theme-light .shell .dashboard-hero h1,body.personalise-theme-light .shell .dashboard-hero b,body.personalise-theme-light .shell .dashboard-hero .hero-overline{color:#171a20!important}
+body.personalise-theme-light .shell .dashboard-hero-copy>p,body.personalise-theme-light .shell .dashboard-hero .hero-index{color:#596575!important}
+body.personalise-theme-light .shell :is(.card,.panel,.settings-card,.detail-card,.builder-card,.approval-card,.metric,.up-card,.modal-card,.settings-quicknav){background:#fff!important;color:#171a20!important;border-color:#dfe3e9!important;box-shadow:0 5px 20px #202b3b0a}
+body.personalise-theme-light .shell :is(.card,.panel,.settings-card,.detail-card,.builder-card,.approval-card,.metric,.up-card,.modal-card) :is(h1,h2,h3,h4,strong,b,label,p,small,span,li){color:inherit}
+body.personalise-theme-light .shell :is(.muted,.sub,.hint,.description,.metric small,.metric span,.sidebar-label,.nav-group-label,.workspace-legal-footer){color:#606a78!important}
+body.personalise-theme-light .shell .desktop-nav .nav-link,body.personalise-theme-light .shell .mobile-nav button{color:#475163!important}
+body.personalise-theme-light .shell .desktop-nav .nav-link:hover,body.personalise-theme-light .shell .mobile-nav button:hover{background:#e9edf3!important;color:#151922!important}
+body.personalise-theme-light .shell :is(input,select,textarea){background:#fff!important;color:#171a20!important;border-color:#cbd2dc!important}
+body.personalise-theme-light .shell .hero-secondary{background:#fff!important;color:#303846!important;border-color:#cbd2dc!important}
+body.personalise-theme-light .shell .metric strong{color:#171a20!important}
+@media(max-width:760px){.shell .workspace-topbar{margin-bottom:12px!important}.shell .main{padding-top:0!important}body.personalise-theme-light .shell .main{background:#f4f5f7!important}}
+
