@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.3.15] - 2026-10-20
+
+### Fixed
+- Roster and discovery avatars now fall back to legacy `avatar_url` values when `avatar_path` is absent, with graceful initials fallback on image errors.
+- Profile edit URLs now preserve edit mode across refreshes (`/profile/:id/edit`) instead of reopening the read-only profile.
+- Hardened document and app-shell touch scrolling on mobile while keeping the mobile navigation independently scrollable.
+- Invalidated cached assets through a consistent build and service-worker version bump.
+
+### Verification
+- JavaScript syntax checks, CSS brace balance, and build/cache version consistency checked.
+- Live Supabase-authenticated mobile checks remain necessary to verify account image permissions and device behaviour.
+
+
 ## [1.3.14] - 2026-10-20
 
 ### Fixed
