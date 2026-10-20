@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.3.17] - 2026-10-20
+
+### Fixed and improved
+- Added a Cloudflare Pages SPA fallback for clean workspace routes while preserving dedicated privacy and terms pages.
+- Removed the body scroll lock from mobile menu state so the document remains scrollable on every workspace route.
+- Made profile image resolution support both storage paths and existing absolute HTTP(S) avatar URLs.
+- Added a one-time legacy avatar URL fallback when the preferred profile image fails to load, and prioritised small roster avatars for faster display.
+- Bumped static asset and service-worker cache versions.
+
+### Verification
+- JavaScript syntax, CSS brace balance, route fallback ordering and version references checked.
+- Authenticated mobile visual testing and Supabase image-permission verification remain outstanding.
+
+
 ## [1.3.16] - 2026-10-20
 
 ### Improved
