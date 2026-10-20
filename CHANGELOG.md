@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.34] - 2026-10-20
+
+### Fixed
+- Register the Supabase auth-state listener before reading the initial session, preventing an authentication event from being missed during startup.
+- Queue auth events received before initial session resolution and process them once startup is ready.
+- Added Netlify build configuration for the existing static-site structure while retaining shared routing and security-header files.
+
+### Verification
+- Auth boot ordering, JavaScript syntax, static routing and versioned cache references checked.
+- Real browser, authenticated-user and Netlify host regression tests remain necessary.
+
+
 ## [1.3.33] - 2026-10-20
 
 ### Fixed
