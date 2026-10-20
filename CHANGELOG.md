@@ -3,6 +3,7 @@
 ## [1.3.35] - 2026-10-20
 
 ### Fixed
+- Apply profile visibility preferences consistently in authenticated profile lookup, search and discography RPCs, including hiding email when its visibility preference is disabled.
 - Unsubscribe the early auth listener and suppress queued callbacks if initial session resolution fails or times out, preventing stale startup callbacks and unnecessary background loads.
 
 ### Verification
