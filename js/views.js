@@ -31,11 +31,11 @@
         }
       });
       if(isMobile){
-        // Treat the mobile navigation as a contained menu, not another page-length section.
-        // Lock background scrolling while it is open and keep scrolling inside the menu.
+        // Keep the page scrollable even while the mobile menu is open. The menu has its own
+        // contained scroll area, so it must not lock the document or trap touch scrolling.
         document.body.style.overflow='';
-    document.body.style.overflowY=mobile?'hidden':'auto';
-    document.documentElement.style.overflowY=mobile?'hidden':'auto';
+        document.body.style.overflowY='auto';
+        document.documentElement.style.overflowY='auto';
         const navHeader=document.querySelector('.shell > .nav');
         const navBottom=navHeader?.getBoundingClientRect().bottom||120;
         container.style.setProperty('--mobile-nav-top',Math.max(80,Math.round(navBottom))+'px');
