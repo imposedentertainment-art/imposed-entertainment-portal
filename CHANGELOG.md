@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.3.18] - 2026-10-20
+
+### Fixed
+- Removed the mobile navigation's root/body scroll lock; the page remains vertically scrollable while the menu is open, and the menu retains its own contained scroll area.
+- Updated static asset and service-worker versions.
+
+### Verification
+- JavaScript syntax and build version references checked.
+- Real-device touch and refresh checks remain outstanding.
+
+
 ## [1.3.17] - 2026-10-20
 
 ### Fixed and improved
