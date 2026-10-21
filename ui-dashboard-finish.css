@@ -342,3 +342,119 @@ html[data-ie-workspace-theme] body #app .dashboard-page .dashboard-hero :is(.her
     margin-bottom:32px !important;
   }
 }
+
+
+/* v3.2.9: targeted dashboard spacing, button contrast, and floating action fixes */
+html body #app #ie-personalise-trigger,
+html body #ie-personalise-trigger,
+html body #app .accessibility-toggle,
+html body #app .accessibility-button {
+  position:fixed !important;
+  right:max(16px,env(safe-area-inset-right)) !important;
+  bottom:max(16px,env(safe-area-inset-bottom)) !important;
+  top:auto !important;
+  left:auto !important;
+  z-index:2147483000 !important;
+  margin:0 !important;
+  transform:none !important;
+}
+html body #app .dashboard-page {
+  box-sizing:border-box;
+  padding-bottom:max(48px,calc(env(safe-area-inset-bottom) + 48px)) !important;
+  scroll-padding-bottom:calc(env(safe-area-inset-bottom) + 80px);
+}
+html body #app .dashboard-page :is(.dashboard-hero-actions,.hero-actions,.primary-actions,.dashboard-actions) {
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  gap:10px;
+  min-width:0;
+}
+html body #app .dashboard-page :is(.dashboard-hero-actions,.hero-actions,.primary-actions,.dashboard-actions) :is(button,a,[role="button"],.button,.btn) {
+  display:flex !important;
+  align-items:center !important;
+  justify-content:flex-start !important;
+  gap:10px !important;
+  width:100%;
+  min-height:48px;
+  box-sizing:border-box;
+  padding:13px 16px !important;
+  border:1px solid rgba(226,232,240,.24) !important;
+  border-radius:13px !important;
+  color:#F8FAFC !important;
+  -webkit-text-fill-color:#F8FAFC;
+  font-size:14px;
+  font-weight:650 !important;
+  line-height:1.35;
+  text-decoration:none !important;
+}
+html body #app .dashboard-page :is(.dashboard-hero-actions,.hero-actions,.primary-actions,.dashboard-actions) :is(.hero-secondary,.secondary,.secondary-action) {
+  color:#F8FAFC !important;
+  -webkit-text-fill-color:#F8FAFC;
+  background:rgba(15,23,42,.76) !important;
+  border-color:rgba(226,232,240,.28) !important;
+}
+html body #app .dashboard-page :is(.dashboard-hero-actions,.hero-actions,.primary-actions,.dashboard-actions) :is(button,a,[role="button"]):focus-visible {
+  outline:2px solid #F1F5F9 !important;
+  outline-offset:3px;
+}
+html body #app :is(.workspace-header,.app-header,.topbar,.workspace-topbar,.workspace-subbar,.workspace-sub-bar) {
+  box-sizing:border-box;
+  padding-top:max(14px,env(safe-area-inset-top)) !important;
+  min-height:64px;
+  overflow:visible !important;
+}
+html body #app :is(.workspace-header,.app-header,.topbar,.workspace-topbar,.workspace-subbar,.workspace-sub-bar) :is(.brand,.workspace-brand,.header-brand,.brand-label,.workspace-title-group) {
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:flex-start;
+  justify-content:center;
+  gap:6px !important;
+  min-width:0;
+  line-height:1.25;
+}
+html body #app :is(.workspace-header,.app-header,.topbar,.workspace-topbar,.workspace-subbar,.workspace-sub-bar) :is(.brand small,.workspace-brand small,.header-brand small,.brand-label small,.eyebrow,.workspace-label,.breadcrumb,.breadcrumbs) {
+  position:static !important;
+  display:block;
+  margin:0 0 2px !important;
+  color:#94A3B8 !important;
+  line-height:1.4;
+}
+html body #app :is(.page-header,.page-heading,.content-header,.dashboard-page-header,.workspace-page-heading) {
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:8px;
+  margin-block:20px 24px !important;
+  min-width:0;
+}
+html body #app :is(.page-header,.page-heading,.content-header,.dashboard-page-header,.workspace-page-heading) :is(h1,h2) {
+  margin-block:0 !important;
+  line-height:1.12;
+}
+html body #app .dashboard-page :is(.eyebrow,.section-eyebrow,.dashboard-kicker,.hero-index,.metric-index,.stat-index,.metric small,.stat-card small,.metric .label,.stat-card .label,.breadcrumb,.breadcrumbs) {
+  color:#94A3B8 !important;
+}
+html body #app .dashboard-page :is(.metric,.stat-card,.dashboard-metric,.metric-card) :is(.metric-value,.value,.count,strong,h2,h3) {
+  color:#F8FAFC !important;
+  -webkit-text-fill-color:#F8FAFC;
+  font-weight:750 !important;
+}
+html body #app :is(.workspace-header,.app-header,.topbar,.workspace-topbar) :is(.search-button,[aria-label*="Search"],.avatar-button,.user-menu-button,[aria-label*="menu" i]) {
+  min-width:42px;
+  min-height:42px;
+  height:42px;
+  box-sizing:border-box;
+  border-radius:12px !important;
+  padding:0 12px !important;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(255,255,255,.075) !important;
+  border:1px solid rgba(255,255,255,.18) !important;
+}
+@media(max-width:760px) {
+  html body #app .dashboard-page { padding-bottom:max(64px,calc(env(safe-area-inset-bottom) + 56px)) !important; }
+  html body #app :is(.workspace-header,.app-header,.topbar,.workspace-topbar,.workspace-subbar,.workspace-sub-bar) { padding-inline:14px !important; }
+  html body #app .dashboard-page :is(.dashboard-hero-actions,.hero-actions,.primary-actions,.dashboard-actions) :is(button,a,[role="button"],.button,.btn) { width:100%; }
+}
