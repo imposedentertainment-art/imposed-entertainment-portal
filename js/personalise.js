@@ -41,7 +41,7 @@ var shape=fieldset('Shape and surfaces','Change the feel of cards, fields and me
 var effects=fieldset('Effects','Reduce visual decoration or add more depth.');effects.append(toggle('Show shadows','shadows'),toggle('Accent glow','glow'),toggle('Stronger contrast','contrast'),toggle('Decorative elements','decorative'));content.append(effects);
 }
 panel.append(content);
-var actions=el('div',{className:'ie-p-actions'}),reset=el('button',{type:'button'},'Reset all'),saveBtn=el('button',{type:'button',className:'ie-p-save'},'Save changes');reset.addEventListener('click',function(){state=Object.assign({},defaults);apply();render()});saveBtn.addEventListener('click',save);actions.append(reset,saveBtn);panel.append(actions);panel.append(el('p',{id:'ie-p-status',role:'status','aria-live':'polite','style':'padding:0 18px 10px;margin:0;color:var(--muted);font-size:12px'}));
+var actions=el('div',{className:'ie-p-actions'}),reset=el('button',{type:'button'},'Reset all'),saveBtn=el('button',{type:'button',className:'ie-p-save'},'Save changes');reset.addEventListener('click',function(){state=Object.assign({},defaults);apply();save();render()});saveBtn.addEventListener('click',save);actions.append(reset,saveBtn);panel.append(actions);panel.append(el('p',{id:'ie-p-status',role:'status','aria-live':'polite','style':'padding:0 18px 10px;margin:0;color:var(--muted);font-size:12px'}));
 }
 function closePanel(){var p=document.getElementById('ie-personalise-panel'),t=document.getElementById('ie-personalise-trigger');if(p)p.hidden=true;if(t){t.setAttribute('aria-expanded','false');t.focus()}}
 /* Keep local visual preferences authoritative when the account-level appearance system re-renders. */
