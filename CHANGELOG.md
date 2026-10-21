@@ -1,5 +1,15 @@
 # Changelog
 
+## [3.0.0] - 2026-10-21 — Liquid Glass visual system overhaul
+
+- Rebalanced the UI away from near-opaque dark surfaces toward brighter, more transparent, layered glass.
+- Extended glass styling across dashboard cards, menus, navigation, controls, forms, dialogs, tables and common content surfaces.
+- Increased glass highlights, edge definition and backdrop saturation while retaining legibility over theme photography.
+- Tuned blur for touch devices and added reduced-transparency/reduced-motion accommodations.
+- Bumped asset and service-worker cache versions.
+
+# Changelog
+
 ## [2.9.9] - 2026-10-21 — Dashboard detail controls and scroll performance
 
 - Added working per-user controls inside “More dashboard details” for tasks, label insights, announcements, recent activity and release catalogue.
