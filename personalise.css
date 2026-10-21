@@ -152,3 +152,29 @@ body.personalise-theme-light :where(input,select,textarea){background:#fff;color
 .settings-quicknav a:active{background:color-mix(in srgb,var(--accent,#d8bd73) 22%,transparent)}
 #settings-appearance,#settings-language,#settings-account,#settings-notifications,#settings-security,#settings-data{scroll-margin-top:70px}
 @media(max-width:760px){.settings-quicknav{top:4px;margin:0 -2px 12px;border-radius:11px}.settings-quicknav a{padding:8px 10px}}
+
+/* Make every personalisation control produce a visible, accessible result. */
+html{font-size:calc(100% * var(--user-font-scale,1))}
+body{line-height:var(--user-line-height,1.5)}
+body.personalise-content-standard .main,body.personalise-content-standard .workspace-content,body.personalise-content-standard .page-content{max-width:var(--user-content-width,1100px);margin-left:auto;margin-right:auto}
+body.personalise-content-wide .main,body.personalise-content-wide .workspace-content,body.personalise-content-wide .page-content{max-width:1320px;margin-left:auto;margin-right:auto}
+body.personalise-content-full .main,body.personalise-content-full .workspace-content,body.personalise-content-full .page-content{max-width:none;width:100%}
+body.personalise-nav-floating .nav{margin:10px;border:1px solid var(--user-line);border-radius:16px;overflow:visible}
+body.personalise-nav-floating .nav-inner{border-radius:16px}
+body.personalise-nav-minimal .nav{border-right:1px solid var(--user-line);box-shadow:none}
+body.personalise-nav-minimal .nav-link{border-color:transparent!important;background:transparent!important}
+body.personalise-buttons-solid :where(button,.primary,.secondary,.new-btn,.danger-btn){box-shadow:0 2px 0 #0002}
+body.personalise-buttons-outline :where(.primary,.secondary,.new-btn,.danger-btn){background:transparent!important;border:1px solid currentColor!important;color:var(--text)!important}
+body.personalise-buttons-pill :where(button,.primary,.secondary,.new-btn,.danger-btn){border-radius:999px!important}
+body.personalise-motion-reduced *,body.personalise-motion-reduced *:before,body.personalise-motion-reduced *:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+body.personalise-motion-none *,body.personalise-motion-none *:before,body.personalise-motion-none *:after{scroll-behavior:auto!important;animation:none!important;transition:none!important}
+body.personalise-high-contrast{--line:#737b88;--line2:#a8b0bd}
+#ie-personalise-panel .ie-p-help{margin:0 0 10px;color:#b8afb5;font-size:12px;line-height:1.5}
+#ie-personalise-panel .ie-p-control{display:grid;gap:6px;margin:10px 0;color:inherit;font-size:12px}
+#ie-personalise-panel .ie-p-control select{width:100%;min-height:40px}
+#ie-personalise-panel .ie-p-content{min-width:0}
+#ie-personalise-panel .ie-p-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;margin:12px 0}
+#ie-personalise-panel .ie-p-tab{min-height:38px;padding:8px;font-size:12px}
+#ie-personalise-panel .ie-p-tab[aria-selected=true]{border-color:var(--user-accent);background:color-mix(in srgb,var(--user-accent) 16%,#242024)}
+#ie-personalise-panel .ie-p-actions{position:sticky;bottom:0;padding:10px 0 0;background:inherit}
+@media(max-width:520px){#ie-personalise-panel{right:8px;bottom:calc(64px + env(safe-area-inset-bottom));width:min(360px,calc(100vw - 16px));padding:14px}}
