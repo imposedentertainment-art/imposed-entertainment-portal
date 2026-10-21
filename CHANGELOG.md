@@ -1,3 +1,11 @@
+## 3.3.0 — Dashboard contrast, spacing and action fixes
+
+- Added a consolidated high-contrast dashboard style layer with dark card surfaces.
+- Unified hero action buttons, workspace header spacing, title stacking and utility-button sizing.
+- Positioned the personalisation/accessibility trigger at the bottom-right and increased page scroll space.
+- Updated asset cache versioning.
+- Corrected a Playwright smoke-test locator that matched multiple valid page containers.
+
 ## 3.2.9 — Dashboard overlap and contrast follow-up
 
 - Pinned the personalisation/accessibility control to the bottom-right safe area with a high stacking order.
