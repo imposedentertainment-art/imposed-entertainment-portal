@@ -74,7 +74,8 @@ if (!personalisation.includes("['light-skies','Light skies · blue & cloud']") |
   fail('Theme picker must expose the new named themes and validate saved selections.');
 }
 ['briefcase-business','mic-vocal','chart-no-axes-combined','panel-left-open','panel-left-close','check-square','shopping-bag','headphones'].forEach(name => {
-  if (!personalisation.includes('workspaceTheme:state.palette') || !events.includes("workspaceTheme:['light-skies','midnight-studio','graphite-minimal','plum-dusk','forest-room'].includes(s.workspaceTheme)")) fail('Quick customiser must sync the selected workspace theme to account preferences.');
+  if (!personalisation.includes('root.dataset.ieMode=') || !personalisation.includes('root.dataset.ieWorkspaceTheme=')) fail('Quick customiser must apply saved mode and workspace palette to the shared semantic theme attributes.');
+if (!personalisation.includes('workspaceTheme:state.palette') || !events.includes("workspaceTheme:['light-skies','midnight-studio','graphite-minimal','plum-dusk','forest-room'].includes(s.workspaceTheme)")) fail('Quick customiser must sync the selected workspace theme to account preferences.');
 if (!core.includes("['dark','light','system','amoled'].includes(out.mode)") || !core.includes("['dark','light','system','amoled'].includes(a.mode)") || !events.includes("['dark','light','system','amoled'].includes(next.mode)") || !views.includes('value="amoled"') || !themeOverhaul.includes('html[data-ie-mode="amoled"] body')) fail('AMOLED mode must be selectable, persisted, validated and styled end to end.');
 if (!coreIcons.includes("'" + name + "':") && !coreIcons.includes(name + ':')) fail('SVG icon map is missing navigation icon: ' + name);
 });
