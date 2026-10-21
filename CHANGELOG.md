@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.8.7] - 2026-10-21 — Photographic workspace themes
+
+### Changed
+- Applied the five supplied theme artworks to Light Skies, Midnight Studio, Graphite Minimal, Plum Dusk and Forest Room.
+- Added theme-specific semantic surface, border, text and input tokens so cards and navigation coordinate with each artwork.
+- Theme picker previews now use their corresponding artwork.
+- Added theme image paths to the service worker's static asset allow-list and bumped the cache version.
+
+### Deployment note
+- The five JPEGs must be present at `/themes/<theme-name>.jpg` in the deployed site for the photographic backgrounds to render. The application CSS and cache manifest reference those exact paths.
+
 ## [2.8.6] - 2026-10-21 — Shared theme attributes
 
 ### Fixed
