@@ -39,6 +39,8 @@ const boot = read('js/boot.js');
 const personalisation = read('js/personalise.js');
 const navigationCss = read('mobile-navigation.css');
 const core = read('js/core.js');
+const personalisationFixes = read('ui-personalisation-fixes.css');
+
 if (!views.includes('mobile-menu icon-btn') || !views.includes('id="mobile-navigation-menu"')) {
   fail('Workspace navigation trigger and mobile menu container must both exist.');
 }
@@ -50,6 +52,20 @@ if (!boot.includes("path==='/shop'") || !boot.includes("path==='/shop/manage'") 
 }
 if (!navigationCss.includes('.nav-inner>.mobile-menu') || !navigationCss.includes('.mobile-nav')) {
   fail('Mobile navigation styles must target the actual nested menu trigger and drawer.');
+}
+if (!personalisation.includes("palette:'midnight'") ||
+    !personalisation.includes("['midnight','graphite','navy','plum','forest']") ||
+    !personalisation.includes("'palette','density'")) {
+  fail('Workspace palette preference must be validated, applied, and included in settings import/export.');
+}
+if (!personalisationFixes.includes('.nav-accordion > button.active') ||
+    !personalisationFixes.includes('var(--user-accent, #d8bd73)') ||
+    !personalisationFixes.includes('personalise-palette-forest')) {
+  fail('Personalisation CSS must map active navigation to the chosen accent and include workspace palettes.');
+}
+if (!worker.includes("'/ui-personalisation-fixes.css'") ||
+    !html.includes('/ui-personalisation-fixes.css?v=' + version)) {
+  fail('Personalisation fixes stylesheet must be versioned and included in the service-worker asset allow-list.');
 }
 if (!personalisation.includes("s.addEventListener('change',function(){state[key]=s.value;save()})") ||
     !personalisation.includes("input.addEventListener('change',function(){state[key]=input.checked;save()")) {
