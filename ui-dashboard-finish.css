@@ -1,0 +1,225 @@
+/* Imposed Entertainment v2.9.8 — dashboard composition, responsive polish and real Liquid Glass.
+   This is intentionally last in the stylesheet order to beat legacy solid-fill rules. */
+html[data-ie-workspace-theme] body #app {
+  --ie-glass-fill:rgba(10,17,26,.48);
+  --ie-glass-fill-strong:rgba(8,14,22,.76);
+  --ie-glass-edge:rgba(255,255,255,.20);
+  --ie-panel-text:#f1f5f7;
+  --ie-panel-muted:#b7c5ce;
+}
+/* Glass needs a blurred, controlled backdrop, not a clear photo printed through every panel. */
+html[data-ie-workspace-theme] body #app :is(
+  .dashboard-panel,.metric,.action-centre,.quick-links-panel,.upcoming-panel,.next-step-panel,
+  .dashboard-widget,.dashboard-shortcut-grid,.dashboard-recent-panel,.dashboard-more,
+  .dashboard-more-content,.dashboard-page .dashboard-widget-layout > section,
+  .dashboard-page .dashboard-widget-layout > .dashboard-widget,
+  .dashboard-panel .quick-link-row,.quick-link-row,.dashboard-recent-item,.dashboard-action-item,
+  .dashboard-metric,.metric-card,.stat-card,.activity-item,.dashboard-task,.todo-card,
+  .announcement-card,.release-card,.artist-card,.profile-card,.settings-card,.form-card,
+  .submission-card,.catalogue-card,.shop-product-card,.product-card,.modal-card,.modal-content,
+  .dialog,.dropdown-menu,.popover,.context-menu,.auth-card,.auth-panel
+) {
+  color:var(--ie-panel-text);
+  background:
+    linear-gradient(135deg,rgba(255,255,255,.095),rgba(255,255,255,.018) 48%,rgba(255,255,255,.035)),
+    rgba(10,17,26,.53)!important;
+  border:1px solid rgba(255,255,255,.19)!important;
+  box-shadow:0 18px 42px rgba(0,0,0,.17),inset 0 1px 0 rgba(255,255,255,.15)!important;
+  -webkit-backdrop-filter:blur(24px) saturate(145%)!important;
+  backdrop-filter:blur(24px) saturate(145%)!important;
+}
+html[data-ie-workspace-theme] body #app :is(.dashboard-panel p,.dashboard-widget p,.dashboard-more small,.quick-link-row small,.dashboard-recent-item small,.metric small,.muted) {
+  color:var(--ie-panel-muted);
+}
+/* Give the main hero its own focal hierarchy and stop wasting nearly half a phone screen. */
+html[data-ie-workspace-theme] body #app .dashboard-page > .dashboard-hero {
+  min-height:0!important;
+  height:auto!important;
+  padding:clamp(22px,4vw,36px)!important;
+  background-image:
+    linear-gradient(112deg,rgba(5,10,16,.88) 0%,rgba(5,10,16,.72) 55%,rgba(5,10,16,.54) 100%),
+    var(--ie-theme-art)!important;
+  background-size:cover,cover!important;
+  background-position:center,center 42%!important;
+  border:1px solid rgba(255,255,255,.23)!important;
+  box-shadow:0 24px 64px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.2)!important;
+}
+html[data-ie-workspace-theme] body #app .dashboard-hero-copy { max-width:760px; }
+html[data-ie-workspace-theme] body #app .dashboard-hero-copy h1 {
+  max-width:12ch;
+  font-size:clamp(38px,5.2vw,66px)!important;
+  line-height:.98!important;
+  text-wrap:balance;
+}
+html[data-ie-workspace-theme] body #app .dashboard-hero-copy>p {
+  max-width:52ch;
+  font-size:clamp(15px,1.6vw,19px);
+  line-height:1.65;
+}
+html[data-ie-workspace-theme] body #app .dashboard-hero-actions {
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:24px;
+}
+html[data-ie-workspace-theme] body #app .dashboard-hero-actions :is(button,a) {
+  min-height:52px;
+  border-radius:16px!important;
+}
+html[data-ie-workspace-theme] body #app .dashboard-hero-actions .hero-secondary {
+  background:linear-gradient(135deg,rgba(255,255,255,.13),rgba(255,255,255,.025)),rgba(10,17,26,.26)!important;
+  border:1px solid rgba(255,255,255,.25)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.19),0 10px 24px rgba(0,0,0,.12)!important;
+  -webkit-backdrop-filter:blur(24px) saturate(150%)!important;
+  backdrop-filter:blur(24px) saturate(150%)!important;
+}
+html[data-ie-workspace-theme] body #app .dashboard-hero .hero-art:not(.hero-art-featured) { opacity:.48; }
+html[data-ie-workspace-theme] body #app .dashboard-page .dashboard-widget-layout { gap:16px!important; }
+html[data-ie-workspace-theme] body #app .dashboard-page .dashboard-widget-layout > .dashboard-widget {
+  min-width:0;
+  align-self:stretch;
+}
+html[data-ie-workspace-theme] body #app .dashboard-page .dashboard-widget-layout > .dashboard-widget > .dashboard-panel,
+html[data-ie-workspace-theme] body #app .dashboard-page .dashboard-widget-layout > .dashboard-widget > .quick-links-panel {
+  height:100%;
+  box-sizing:border-box;
+}
+html[data-ie-workspace-theme] body #app .dashboard-shortcut-grid .quick-link-row {
+  border-radius:18px!important;
+  padding:14px!important;
+  gap:13px!important;
+  min-height:86px;
+  background:
+    linear-gradient(135deg,rgba(255,255,255,.105),rgba(255,255,255,.025)),
+    rgba(13,21,32,.42)!important;
+  border:1px solid rgba(255,255,255,.16)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.11),0 8px 22px rgba(0,0,0,.1)!important;
+  -webkit-backdrop-filter:blur(22px) saturate(150%)!important;
+  backdrop-filter:blur(22px) saturate(150%)!important;
+}
+html[data-ie-workspace-theme] body #app .dashboard-shortcut-grid .quick-link-row .quick-link-icon {
+  border:1px solid rgba(255,255,255,.15);
+  background:rgba(17,34,49,.68)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.1);
+}
+html[data-ie-workspace-theme] body #app .dashboard-more {
+  background:linear-gradient(135deg,rgba(255,255,255,.09),rgba(255,255,255,.015)),rgba(10,17,26,.58)!important;
+  border:1px solid rgba(255,255,255,.2)!important;
+  border-radius:20px!important;
+  -webkit-backdrop-filter:blur(24px) saturate(145%)!important;
+  backdrop-filter:blur(24px) saturate(145%)!important;
+}
+html[data-ie-workspace-theme] body #app .dashboard-more>summary { min-height:76px; padding:18px!important; }
+html[data-ie-workspace-theme] body #app .dashboard-more-toggle {
+  display:grid;place-items:center;flex:0 0 44px;width:44px;height:44px;
+  border-radius:14px;border:1px solid rgba(255,255,255,.2);
+  background:rgba(255,255,255,.07);
+}
+/* Mobile: no desktop sizing preferences squeezing panels into unusable columns.
+   Preserve the user's saved desktop layout; only change its presentation at this breakpoint. */
+@media(max-width:760px) {
+  html[data-ie-workspace-theme] body #app .dashboard-page {
+    padding:12px!important;
+    gap:14px!important;
+    width:100%;
+    max-width:100%;
+    box-sizing:border-box;
+  }
+  html[data-ie-workspace-theme] body #app .dashboard-page > .dashboard-hero {
+    min-height:0!important;
+    padding:23px 19px 22px!important;
+    border-radius:23px!important;
+    margin:0!important;
+    align-items:flex-start;
+    background-image:
+      linear-gradient(180deg,rgba(5,10,16,.82),rgba(5,10,16,.64) 55%,rgba(5,10,16,.48)),
+      var(--ie-theme-art)!important;
+    background-position:center,center 38%!important;
+  }
+  html[data-ie-workspace-theme] body #app .dashboard-hero-copy h1 {
+    font-size:clamp(36px,10vw,50px)!important;
+    line-height:.99!important;
+    max-width:10ch;
+    margin:15px 0 14px!important;
+  }
+  html[data-ie-workspace-theme] body #app .dashboard-hero-copy>p {
+    font-size:15px!important;
+    line-height:1.6!important;
+    margin-bottom:0!important;
+  }
+  html[data-ie-workspace-theme] body #app .dashboard-hero .hero-art:not(.hero-art-featured) { display:none!important; }
+  html[data-ie-workspace-theme] body #app .dashboard-hero .hero-index {
+    right:16px!important;bottom:13px!important;font-size:9px!important;opacity:.62;
+  }
+  html[data-ie-workspace-theme] body #app .dashboard-hero-actions {
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:9px!important;
+    margin-top:21px!important;
+  }
+  html[data-ie-workspace-theme] body #app .dashboard-hero-actions :is(button,a) {
+    width:100%!important;min-width:0!important;min-height:52px!important;
+    padding:13px 15px!important;border-radius:16px!important;font-size:14px!important;
+  }
+  html[data-ie-workspace-theme] body #app .dashboard-widget-layout {
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:13px!important;
+  }
+  html[data-ie-workspace-theme] body #app .dashboard-widget-layout > [data-dashboard-widget-card] {
+    grid-column:1/-1!important;
+    width:100%!important;min-width:0!important;min-height:0!important;
+  }
+  html[data-ie-workspace-theme] body #app .dashboard-widget-tools,
+  html[data-ie-workspace-theme] body #app .dashboard-resize-handle { display:none!important; }
+  html[data-ie-workspace-theme] body #app .metrics {
+    display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important;
+  }
+  html[data-ie-workspace-theme] body #app .metrics>.metric {
+    min-width:0!important;padding:13px!important;border-radius:16px!important;
+  }
+  html[data-ie-workspace-theme] body #app .metric :is(h2,h3,.metric-value,strong) { font-size:clamp(22px,6vw,30px)!important; }
+  html[data-ie-workspace-theme] body #app .dashboard-panel,
+  html[data-ie-workspace-theme] body #app .quick-links-panel,
+  html[data-ie-workspace-theme] body #app .action-centre,
+  html[data-ie-workspace-theme] body #app .next-step-panel,
+  html[data-ie-workspace-theme] body #app .dashboard-more {
+    padding:16px!important;border-radius:19px!important;
+  }
+  html[data-ie-workspace-theme] body #app .dashboard-shortcut-grid { gap:9px!important; }
+  html[data-ie-workspace-theme] body #app .dashboard-shortcut-grid .quick-link-row {
+    min-height:76px!important;padding:12px!important;border-radius:16px!important;
+  }
+  html[data-ie-workspace-theme] body #app .dashboard-shortcut-grid .quick-link-row strong { font-size:14px!important; }
+  html[data-ie-workspace-theme] body #app .dashboard-shortcut-grid .quick-link-row small { white-space:normal!important;line-height:1.4; }
+  html[data-ie-workspace-theme] body #app .dashboard-more>summary { padding:15px 14px!important;min-height:70px; }
+  html[data-ie-workspace-theme] body #app .dashboard-page :is(.dashboard-panel,.quick-links-panel,.action-centre,.next-step-panel,.dashboard-more) {
+    overflow:hidden;overflow-wrap:anywhere;
+  }
+  html[data-ie-workspace-theme] body #app .dashboard-page :is(.panel-heading,.dashboard-panel .panel-heading) {
+    align-items:flex-start;flex-wrap:wrap;gap:10px;
+  }
+  html[data-ie-workspace-theme] body #app .dashboard-page :is(.dashboard-panel h2,.quick-links-panel h2,.action-centre h2) {
+    font-size:clamp(21px,6vw,28px)!important;line-height:1.15!important;
+  }
+  html[data-ie-workspace-theme] body #app .dashboard-page :is(button,a,[role=button]) { max-width:100%; }
+  html[data-ie-workspace-theme] body #app .dashboard-page .dashboard-widget-layout * { min-width:0; }
+  html[data-ie-workspace-theme] body #app .dashboard-page .dashboard-widget-layout .dashboard-recent-item {
+    display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;padding:12px!important;
+  }
+  html[data-ie-workspace-theme] body #app .dashboard-page .dashboard-widget-layout .dashboard-recent-item time {
+    grid-column:2;justify-self:start;
+  }
+}
+@media(max-width:380px) {
+  html[data-ie-workspace-theme] body #app .dashboard-page { padding:9px!important; }
+  html[data-ie-workspace-theme] body #app .dashboard-page > .dashboard-hero { padding:20px 15px!important; }
+  html[data-ie-workspace-theme] body #app .dashboard-hero-copy h1 { font-size:35px!important; }
+  html[data-ie-workspace-theme] body #app .dashboard-hero-actions :is(button,a) { font-size:13px!important; }
+}
+@media(prefers-reduced-transparency:reduce) {
+  html[data-ie-workspace-theme] body #app :is(.dashboard-panel,.metric,.action-centre,.quick-links-panel,.upcoming-panel,.next-step-panel,.dashboard-widget,.dashboard-shortcut-grid,.dashboard-recent-panel,.dashboard-more,.quick-link-row) {
+    -webkit-backdrop-filter:none!important;backdrop-filter:none!important;
+    background:rgba(8,14,22,.92)!important;
+  }
+}
