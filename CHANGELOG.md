@@ -1,3 +1,9 @@
+## 3.3.12 — Correct final drawer stacking conflict
+
+- Overrode the legacy open-menu selector that explicitly lowered the navigation row to `z-index: 0`, placing it behind the drawer.
+- Kept the header at the navigation layer, the toggle row above the drawer, and drawer links at the intended overlay layer.
+- Refreshed versioned assets and service-worker cache for the corrected cascade.
+
 ## 3.3.11 — Keep the mobile menu toggle above the drawer
 
 - Made the compact header row a deliberate top stacking layer and fixed its height, keeping the toggle above the drawer even when older rules change drawer geometry.
