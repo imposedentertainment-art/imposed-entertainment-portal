@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.4.76] - 2026-10-21
+
+### Security
+- Restrict release creation and deletion policies to the authenticated role instead of PostgreSQL PUBLIC, while retaining the existing owner, draft-status and label-admin checks.
+- Apply the matching Supabase migration and verify the live policy roles after deployment.
+
+### Verification
+- Supabase migration applied successfully; live policy inspection confirms both write policies target authenticated users.
+- Full browser and invite/release workflow regression testing is still required.
+
+
 ## [1.4.75] - 2026-10-21
 
 ### Fixed
