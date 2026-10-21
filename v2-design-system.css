@@ -55,3 +55,13 @@ body.personalise-theme-light :where(.nav,.topbar,.app-header,.sidebar,.side-nav,
 @media(hover:hover){:where(button:not(:disabled),.btn:not(:disabled),.button:not(:disabled)){cursor:pointer}}
 @media(max-width:760px){body{font-size:calc(15px * var(--user-font-scale,1))}:where(.main,.main-content,.page-content,.content-area,.workspace-content,.dashboard-content){padding-inline:var(--v2-space,12px)}:where(.card,.panel,.settings-card,.detail-card,.builder-card,.release-card,.artist-card,.profile-card,.form-card,.workspace-card,.stat-card,.feed-card,.playlist-card,.track-card){min-width:0;max-width:100%;overflow-wrap:anywhere}:where(button,.btn,.button,input,select,textarea){max-width:100%}:where(.modal-card,.modal-content,.dialog,.drawer,.sheet){max-width:calc(100vw - 24px);max-height:calc(100dvh - 24px);overflow:auto}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+/* Personalisation presets */
+body.personalise-nav-floating :where(.nav,.topbar,.app-header,.sidebar,.side-nav,.mobile-nav,.bottom-nav,.settings-quicknav,.app-nav){background:color-mix(in srgb,var(--v2-panel) 86%,transparent);backdrop-filter:blur(18px);border:1px solid var(--v2-line);border-radius:var(--v2-radius);box-shadow:var(--ui-shadow)}
+body.personalise-nav-minimal :where(.nav,.topbar,.app-header,.sidebar,.side-nav,.mobile-nav,.bottom-nav,.settings-quicknav,.app-nav){box-shadow:none;border-color:transparent;background:var(--v2-bg)}
+body.personalise-buttons-solid :where(button,.btn,.button,input[type=submit]){border-radius:var(--v2-control-radius);font-weight:650}
+body.personalise-buttons-outline :where(button,.btn,.button,input[type=submit]){background:transparent!important;border:1px solid var(--v2-accent)!important;color:var(--v2-ink)!important}
+body.personalise-buttons-pill :where(button,.btn,.button,input[type=submit]){border-radius:999px}
+body.personalise-buttons-soft :where(button,.btn,.button,input[type=submit]){border-radius:var(--v2-control-radius)}
+body.personalise-motion-reduced *,body.personalise-motion-reduced *::before,body.personalise-motion-reduced *::after{scroll-behavior:auto!important;transition-duration:.08s!important;animation-duration:.08s!important;animation-iteration-count:1!important}
+body.personalise-motion-none *,body.personalise-motion-none *::before,body.personalise-motion-none *::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}
