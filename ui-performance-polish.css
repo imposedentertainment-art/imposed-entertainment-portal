@@ -67,3 +67,10 @@ html[data-ie-workspace-theme="light-skies"] body #app .dashboard-detail-toggles 
 @media(prefers-reduced-motion:reduce) {
   html,body {scroll-behavior:auto!important}
 }
+
+/* 3.3.15 performance guardrails: avoid costly paint work during pointer interactions */
+html[data-ie-workspace-theme] body #app .dashboard-page.is-resizing-dashboard,
+html[data-ie-workspace-theme] body #app .dashboard-page.is-resizing-dashboard .dashboard-widget-layout,
+html[data-ie-workspace-theme] body #app .dashboard-page.is-resizing-dashboard [data-dashboard-widget-card]{scroll-behavior:auto!important;animation:none!important;transition:none!important}
+html[data-ie-workspace-theme] body #app .dashboard-page.is-resizing-dashboard [data-dashboard-widget-card]{will-change:grid-column,min-height}
+@media(prefers-reduced-motion:reduce){html[data-ie-workspace-theme] body #app *,html[data-ie-workspace-theme] body #app *::before,html[data-ie-workspace-theme] body #app *::after{scroll-behavior:auto!important;animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}}
