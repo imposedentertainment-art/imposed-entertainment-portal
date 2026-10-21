@@ -68,7 +68,8 @@ test('mobile navigation drawer and toggle sit above the backdrop', async ({ page
     const r = b.getBoundingClientRect();
     return {
       headerPosition: getComputedStyle(h).position,
-      headerZ: Number(getComputedStyle(h).zIndex),\n      navInnerZ: Number(getComputedStyle(h.querySelector('.nav-inner')).zIndex),
+      headerZ: Number(getComputedStyle(h).zIndex),
+      navInnerZ: Number(getComputedStyle(h.querySelector('.nav-inner')).zIndex),
       drawerZ: Number(getComputedStyle(d).zIndex),
       toggleAtPoint: b.contains(document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2)),
       backdropContent: getComputedStyle(h, '::before').content,
@@ -76,7 +77,8 @@ test('mobile navigation drawer and toggle sit above the backdrop', async ({ page
     };
   });
   expect(stack.headerPosition).toBe('fixed');
-  expect(stack.headerZ).toBeGreaterThanOrEqual(40);\n  expect(stack.navInnerZ).toBeGreaterThanOrEqual(stack.drawerZ);
+  expect(stack.headerZ).toBeGreaterThanOrEqual(40);
+  expect(stack.navInnerZ).toBeGreaterThanOrEqual(stack.drawerZ);
   expect(stack.drawerZ).toBeGreaterThanOrEqual(50);
   expect(stack.toggleAtPoint, JSON.stringify(stack)).toBeTruthy();
   expect(stack.backdropContent).not.toBe('none');
