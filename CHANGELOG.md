@@ -1,3 +1,10 @@
+## 3.3.4 — Mobile menu visibility hotfix
+
+- Fixed the backdrop activating just because the mobile drawer exists in the DOM.
+- Scoped the blurred backdrop to the menu button's expanded state.
+- Restored explicit hidden-state handling so the CSS display override cannot force a closed drawer visible.
+- Bumped static asset and service-worker cache versions.
+
 ## 3.3.4 — Mobile navigation visibility recovery
 
 - Explicitly honour the mobile drawer's `hidden`, `aria-hidden`, and `.is-hidden` states despite legacy `display:block!important` rules.
