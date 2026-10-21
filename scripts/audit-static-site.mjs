@@ -32,7 +32,7 @@ for (const [label, source] of [['index.html', html], ['sw.js', worker]]) {
 if (!html.includes(`content="${version}"`) || !html.includes(`data-portal-build="${version}"`)) {
   fail('index.html build metadata does not match VERSION.');
 }
-if (!worker.includes(`'${version}'`)) fail('sw.js versioned-static-asset allow-list does not match VERSION.');
+if (!worker.includes(`const CACHE_NAME = 'imposed-v${version}'`)) fail('sw.js cache name does not match VERSION.');
 try {
   const manifest = JSON.parse(read('manifest.webmanifest'));
   if (manifest.start_url && new URL(manifest.start_url, 'https://audit.invalid').search) {
