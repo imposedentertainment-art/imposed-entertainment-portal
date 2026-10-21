@@ -1,3 +1,11 @@
+## 3.3.1 — Navigation overlays and accessibility fixes
+
+- Added a versioned overlay/accessibility stylesheet after the existing UI layers.
+- Defined explicit content, floating action, sticky header and drawer stacking levels.
+- Added dark blurred navigation backdrop and high-contrast drawer, input and metadata tokens.
+- Normalised workspace title stack, header utility dimensions, mobile shortcut visibility and stat accent rails.
+- Updated page stylesheet references, service-worker cache version and release metadata.
+
 ## 3.3.0 — Dashboard contrast, spacing and action fixes
 
 - Added a consolidated high-contrast dashboard style layer with dark card surfaces.
