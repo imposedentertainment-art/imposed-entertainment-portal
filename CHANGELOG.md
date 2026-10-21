@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.3.0] - 2026-10-21 — Portable personalisation profiles
+
+### Added
+- Added settings export to a portable JSON file.
+- Added settings import with file-size limits, JSON validation, a strict preference-key allow-list and normalisation through the existing settings validator.
+- Added clear status messages for successful exports/imports and recoverable file errors.
+
+### Improved
+- Completed the 2.2.0 UI preference wiring: text scale, line height, system light/dark behavior, contrast, glow, decorative visibility, navigation and motion options.
+- Removed duplicate service-worker stylesheet entries and refreshed versioned asset references.
+
+### Verification
+- JavaScript syntax, asset/version, stylesheet structure and Cloudflare Pages static checks run against the release commit. Browser-level testing across devices remains outstanding.
+
 ## [2.2.0] - 2026-10-21 — Personalisation and responsive UI functionality
 
 ### Fixed
