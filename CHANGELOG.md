@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.4.88] - 2026-10-21
+
+### Improved
+- Reworked listener discovery into a clearer, more editorial browsing experience with consistent brand colour, stronger page hierarchy, easier-to-scan artist cards, clearer search and collection controls, and improved mobile layouts.
+- Refined shared interface surfaces, forms, buttons, focus states, spacing, and responsive overflow across the portal without changing authentication, route, or data logic.
+- Added reduced-motion-aware transitions and stronger touch targets for listener discovery controls.
+
+### Verification
+- Confirmed the existing asset audit requires VERSION, HTML build metadata, asset query versions, and service-worker cache allow-list to stay synchronized.
+- CI result for this release is pending; visual browser testing remains outstanding.
+
+
 ## [1.4.87] - 2026-10-21
 
 ### Fixed
