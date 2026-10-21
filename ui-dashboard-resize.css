@@ -111,3 +111,28 @@ html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboar
 html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-resize-handle{display:block!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;z-index:999!important}
 html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-resize-n,html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-resize-s{left:0!important;right:0!important;height:12px!important}
 html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-resize-e,html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-resize-w{top:0!important;bottom:0!important;width:12px!important}
+
+/* 3.3.15 — resize from the card's real borders; no visible tabs */
+html[data-ie-workspace-theme] body #app .dashboard-page .dashboard-edge-hit{display:none!important;position:absolute!important;z-index:40!important;margin:0!important;padding:0!important;border:0!important;background:transparent!important;opacity:0!important;touch-action:none!important;user-select:none!important;pointer-events:none!important}
+html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card]{position:relative!important;min-width:0!important;transition:none!important}
+html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-hit{display:block!important;pointer-events:auto!important}
+html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-n,
+html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-s{left:12px!important;right:12px!important;height:8px!important;cursor:ns-resize!important}
+html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-n{top:-4px!important}
+html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-s{bottom:-4px!important}
+html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-e,
+html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-w{top:12px!important;bottom:12px!important;width:8px!important;cursor:ew-resize!important}
+html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-e{right:-4px!important}
+html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-w{left:-4px!important}
+html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-ne,
+html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-nw,
+html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-se,
+html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-sw{width:16px!important;height:16px!important;cursor:nwse-resize!important}
+html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-ne{top:-5px!important;right:-5px!important;cursor:nesw-resize!important}
+html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-nw{top:-5px!important;left:-5px!important}
+html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-se{bottom:-5px!important;right:-5px!important}
+html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-sw{bottom:-5px!important;left:-5px!important;cursor:nesw-resize!important}
+html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card].is-edge-resizing{outline:1px solid var(--accent,#788cff)!important;outline-offset:1px!important}
+html[data-ie-workspace-theme] body #app .dashboard-page.is-resizing-dashboard,
+html[data-ie-workspace-theme] body #app .dashboard-page.is-resizing-dashboard *{cursor:inherit!important;user-select:none!important}
+@media(max-width:800px){html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-edge-hit{display:none!important}}
