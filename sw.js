@@ -1,5 +1,5 @@
-/* Imposed Entertainment v2.7.4: versioned static assets; never cache query-bearing navigations/auth callbacks. */
-const CACHE_NAME = 'imposed-v2.7.4';
+/* Imposed Entertainment v2.7.5: versioned static assets; never cache query-bearing navigations/auth callbacks. */
+const CACHE_NAME = 'imposed-v2.7.5';
 const STATIC_ASSETS = [
   '/index.html', '/shop.css', '/mobile-navigation.css', '/js/shop.js', '/styles.css', '/ui-polish.css', '/ui-next.css', '/ui-research.css', '/ui-overhaul.css', '/ui-system-v2.css', '/quality.css', '/theme-system.css', '/auth-overhaul.css', '/v2-design-system.css', '/manifest.webmanifest', '/privacy/index.html', '/terms/index.html',
   '/img/logo-64.png', '/img/logo-128.png', '/img/logo-192.png', '/img/logo-512.png',
@@ -53,7 +53,7 @@ self.addEventListener('fetch', event => {
   const isStaticAsset = STATIC_PATHS.has(url.pathname);
   // Only accept the known release query on allow-listed public assets. All other query-bearing
   // requests (auth codes, invites, search state, user-specific data) bypass Cache Storage.
-  const isVersionedStaticAsset = isStaticAsset && url.searchParams.size === 1 && ['2.7.4'].includes(url.searchParams.get('v'));
+  const isVersionedStaticAsset = isStaticAsset && url.searchParams.size === 1 && ['2.7.5'].includes(url.searchParams.get('v'));
   if ((url.search && !isVersionedStaticAsset) || url.hash || /\/(auth|callback|invite)(\/|$)/i.test(url.pathname)) return;
   if (!isNavigation && !isStaticAsset) return;
 
