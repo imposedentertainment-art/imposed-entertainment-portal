@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.9.6] - 2026-10-21 — Full Liquid Glass coverage
+
+- Extended Liquid Glass beyond dashboard widgets to global navigation, headers, sidebars, page sections, profiles, artist/release views, catalogue, shop, forms, tables, inputs, menus, popovers, dialogs and status controls.
+- Standardised translucent material, theme-tinted fills, blur, subtle specular highlights, borders and ambient depth across routes.
+- Preserved distinct Light Skies contrast and added reduced-transparency and unsupported-backdrop-filter fallbacks.
+- Bumped all asset query versions and the service-worker cache.
+
+# Changelog
+
 ## [2.9.5] - 2026-10-21 — Liquid Glass interface
 
 - Introduced a cohesive Liquid Glass material across dashboard panels, cards, menus, modals, form controls and secondary actions.
