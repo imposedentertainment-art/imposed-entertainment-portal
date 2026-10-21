@@ -1,6 +1,17 @@
 # Changelog
 
-## [2.7.8] - 2026-10-21 — Mobile navigation drawer recovery
+## [2.7.9] - 2026-10-21 — Authentication screen redesign
+
+### Improved
+- Refined artist/label and listener sign-in screens with calmer contrast, clearer hierarchy, a more compact brand story, cleaner portal choices, and a more legible form card.
+- Improved mobile spacing and compact portal selection while preserving existing sign-in, invitation, OAuth, Turnstile and password controls.
+- Bumped stylesheet asset versions and service-worker cache namespace to prevent stale authentication styles.
+
+### Verification
+- Source-level CSS structure and version consistency checked. Live visual QA and authenticated browser tests remain outstanding.
+
+
+## [2.7.9] - 2026-10-21 — Mobile navigation drawer recovery
 
 ### Fixed
 - Corrected the mobile drawer height calculation to measure the compact navigation header instead of the full header containing the open drawer. This prevents the menu from collapsing to zero height.
