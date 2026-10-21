@@ -1,5 +1,20 @@
 # Changelog
 
+## [2.7.2] - 2026-10-21 — Printful catalogue integration foundation
+
+### Added
+- Added a Printful catalogue browser to the authenticated Product Studio, with search, product previews, variant-count hints and draft-prefill controls.
+- Added a JWT-protected Supabase Edge Function that verifies artist/label-admin access and proxies catalogue requests using a server-side Printful API token.
+- Documented setup for the `PRINTFUL_API_TOKEN` Edge Function secret and safe testing without checkout.
+
+### Safety
+- No Printful token is exposed to the browser. Catalogue selections only prefill a draft; they do not create a Printful sync product, trigger fulfilment, or enable ordering.
+- Payment and physical music remain deferred.
+
+### Verification
+- Static release checks are queued after commit. Live Printful API calls require a valid token secret and an authorised Printful store.
+
+
 ## [2.7.1] - 2026-10-21 — Ordering status clarity
 
 ### Improved
