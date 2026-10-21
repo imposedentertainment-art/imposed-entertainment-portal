@@ -1,3 +1,11 @@
+## 3.2.6 — Major UI personalisation and responsive polish
+
+- Connected selected typeface and line-spacing controls to live global interface tokens.
+- Applied user-selected content width to common workspace containers.
+- Implemented visual treatments for outlined/minimal cards, artwork shapes, outline/pill buttons, floating/minimal navigation, and decorative-element visibility.
+- Improved the customisation panel's tab layout, control spacing, focus states, scrolling, and small-screen dimensions.
+- Updated asset versioning and service-worker cache version.
+
 ## 3.2.5 — UI system consistency and responsive fixes
 
 - Added a final unified UI compatibility layer for consistent focus states, component geometry, overflow handling, and responsive constraints.
