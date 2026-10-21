@@ -39,7 +39,7 @@
   Cache-Control: no-store
 
 /sw.js
-  Cache-Control: no-cache, must-revalidate
+  Cache-Control: no-store, no-cache, must-revalidate
 
 /ui-polish.css
   Cache-Control: public, max-age=86400, stale-while-revalidate=604800
