@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.2.2] - 2026-10-21 — Unified token bridge and mobile refinements
+
+- Connect existing personalisation controls to glass opacity, blur, saturation, borders, radii, density, accent glow and motion tokens.
+- Fix service-worker release cache/version matching and allow-list the mobile contrast stylesheet.
+- Keep the current Supabase preference model and account appearance persistence; no schema migration or destructive database operation.
+
+
 ## [3.2.0] - 2026-10-21 — Tokenized design-system foundation
 
 - Introduced central semantic design tokens for glass opacity, blur, border intensity, radii, spacing, typography and shadows.
