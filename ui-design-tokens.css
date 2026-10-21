@@ -1,11 +1,11 @@
-/* v3.2.0 central semantic design tokens; personalization overrides these values at runtime. */
+/* v3.2.2 central semantic design tokens; controlled by the established personalisation engine. */
 :root{
  --ui-accent:var(--user-accent,var(--accent,#d8bd73));
- --ui-glass-opacity:.10;--ui-glass-strong-opacity:.16;--ui-glass-border-opacity:.34;
- --ui-glass-blur:22px;--ui-glass-saturation:155%;--ui-glass-highlight-opacity:.48;
+ --ui-glass-opacity:var(--user-glass-opacity,.15);--ui-glass-strong-opacity:var(--user-glass-strong-opacity,.25);--ui-glass-border-opacity:var(--user-glass-border-opacity,.42);
+ --ui-glass-blur:var(--user-glass-blur,20px);--ui-glass-saturation:var(--user-glass-saturation,165%);--ui-glass-highlight-opacity:var(--user-glass-highlight-opacity,.48);
  --ui-glass-shadow:0 14px 40px rgba(3,12,24,.12);
- --ui-radius-sm:calc(8px * var(--ui-radius-scale,1));--ui-radius-md:calc(16px * var(--ui-radius-scale,1));--ui-radius-lg:calc(24px * var(--ui-radius-scale,1));
- --ui-space-unit:calc(4px * var(--ui-density-scale,1));
+ --ui-radius-sm:calc(8px * var(--user-radius-scale,1));--ui-radius-md:calc(16px * var(--user-radius-scale,1));--ui-radius-lg:calc(24px * var(--user-radius-scale,1));
+ --ui-space-unit:calc(4px * var(--user-density-scale,1));
  --ui-font-scale:var(--user-font-scale,1);
  --ui-surface:rgba(220,237,250,var(--ui-glass-opacity));
  --ui-surface-strong:rgba(220,237,250,var(--ui-glass-strong-opacity));
@@ -21,14 +21,14 @@ html body #app :is(.dashboard-panel,.metric,.metric-card,.stat-card,.action-cent
  backdrop-filter:blur(var(--ui-glass-blur)) saturate(var(--ui-glass-saturation))!important;
 }
 html body #app :is(button,.button,a.button,.btn,[role="button"],.nav a,.nav button,.menu-item,.tab,.chip,.pill,.icon-button,.toolbar button,.quick-link-row,.dashboard-shortcut,.shortcut-item){
- border-radius:var(--ui-radius-sm);
+ border-radius:var(--ui-radius-sm);box-shadow:var(--ui-accent-glow,none);
  -webkit-backdrop-filter:blur(calc(var(--ui-glass-blur)*.7)) saturate(var(--ui-glass-saturation));
  backdrop-filter:blur(calc(var(--ui-glass-blur)*.7)) saturate(var(--ui-glass-saturation));
 }
 html body #app :is(input,select,textarea){border-radius:var(--ui-radius-sm);font-size:calc(1em * var(--ui-font-scale))}
 html body #app{font-size:calc(16px * var(--ui-font-scale))}
 html body #app :is(.dashboard-panel,.card,.panel,.surface,.settings-panel,.content-card,.workspace-card,.widget-card){padding:calc(var(--ui-space-unit)*4)}
-html body #app :is(button,.button,.btn,a.button){transition:background-color .16s ease,border-color .16s ease,box-shadow .16s ease}
+html body #app :is(button,.button,.btn,a.button){transition:background-color var(--user-motion-duration,180ms) ease,border-color var(--user-motion-duration,180ms) ease,box-shadow var(--user-motion-duration,180ms) ease}
 @media(max-width:760px),(pointer:coarse){:root{--ui-glass-blur:14px}html body #app :is(.dashboard-panel,.card,.panel,.surface,.settings-panel,.content-card,.workspace-card,.widget-card){padding:calc(var(--ui-space-unit)*3)}}
 @media(prefers-reduced-transparency:reduce){:root{--ui-glass-blur:0px;--ui-glass-opacity:.88;--ui-glass-strong-opacity:.93}}
 @media(prefers-reduced-motion:reduce){html body #app *{transition-duration:.01ms!important;animation-duration:.01ms!important;scroll-behavior:auto!important}}
