@@ -458,3 +458,168 @@ html body #app :is(.workspace-header,.app-header,.topbar,.workspace-topbar) :is(
   html body #app :is(.workspace-header,.app-header,.topbar,.workspace-topbar,.workspace-subbar,.workspace-sub-bar) { padding-inline:14px !important; }
   html body #app .dashboard-page :is(.dashboard-hero-actions,.hero-actions,.primary-actions,.dashboard-actions) :is(button,a,[role="button"],.button,.btn) { width:100%; }
 }
+
+
+/* v3.3.0: unified dashboard layout and accessible contrast system */
+:root {
+  --ie-dash-text: #FFFFFF;
+  --ie-dash-secondary: #E2E8F0;
+  --ie-dash-meta: #CBD5E1;
+  --ie-dash-surface: rgba(2, 6, 23, 0.94);
+  --ie-dash-button-bg: rgba(255, 255, 255, 0.08);
+  --ie-dash-button-border: rgba(255, 255, 255, 0.2);
+}
+html body #app .dashboard-page {
+  box-sizing: border-box;
+  padding-bottom: 5rem !important;
+  margin-bottom: 3rem !important;
+  min-height: 100%;
+  overflow: visible;
+  scroll-padding-bottom: 5rem;
+}
+html body #app .dashboard-page .dashboard-hero {
+  color: var(--ie-dash-text) !important;
+  background-color: var(--ie-dash-surface) !important;
+  background-image:
+    linear-gradient(112deg, rgba(2,6,23,.94), rgba(2,6,23,.84) 58%, rgba(2,6,23,.72)),
+    var(--ie-theme-art) !important;
+  background-blend-mode: normal;
+}
+html body #app .dashboard-page .dashboard-hero :is(h1,h2,h3,p,a,small,strong,span,.eyebrow,.hero-index) {
+  text-shadow: 0 1px 3px rgba(0,0,0,.55);
+}
+html body #app .dashboard-page .dashboard-hero :is(h1,h2,h3,strong) {
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF;
+}
+html body #app .dashboard-page .dashboard-hero :is(p,.description,.subtitle,.hero-index,.eyebrow,.muted,small) {
+  color: var(--ie-dash-secondary) !important;
+  -webkit-text-fill-color: var(--ie-dash-secondary);
+}
+html body #app .dashboard-page :is(.dashboard-panel,.metric,.action-centre,.quick-links-panel,.upcoming-panel,.next-step-panel,.dashboard-widget,.dashboard-shortcut-grid,.dashboard-recent-panel,.dashboard-more,.dashboard-more-content,.dashboard-metric,.metric-card,.stat-card) {
+  color: var(--ie-dash-text) !important;
+  background-color: var(--ie-dash-surface) !important;
+  border-color: rgba(226,232,240,.22) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(125%);
+  backdrop-filter: blur(24px) saturate(125%);
+}
+html body #app .dashboard-page :is(.dashboard-panel,.metric,.action-centre,.quick-links-panel,.upcoming-panel,.next-step-panel,.dashboard-widget,.dashboard-shortcut-grid,.dashboard-recent-panel,.dashboard-more,.dashboard-more-content,.dashboard-metric,.metric-card,.stat-card) :is(h1,h2,h3,h4,h5,h6,strong,b,.metric-value,.value,.count) {
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF;
+}
+html body #app .dashboard-page :is(.dashboard-panel,.metric,.action-centre,.quick-links-panel,.upcoming-panel,.next-step-panel,.dashboard-widget,.dashboard-shortcut-grid,.dashboard-recent-panel,.dashboard-more,.dashboard-more-content,.dashboard-metric,.metric-card,.stat-card) :is(p,small,label,.muted,.subtle,.description,.hint,.eyebrow,.hero-index,.metric-index,.stat-index,.label,.breadcrumb,.breadcrumbs,time) {
+  color: var(--ie-dash-secondary) !important;
+  -webkit-text-fill-color: var(--ie-dash-secondary);
+}
+/* One button system for every hero/stacked dashboard action, including Reset layout. */
+html body #app .dashboard-page :is(.dashboard-hero-actions,.hero-actions,.primary-actions,.dashboard-actions,.dashboard-panel,.quick-links-panel,.action-centre) :is(.dashboard-hero-actions button,.dashboard-hero-actions a,.hero-actions button,.hero-actions a,.primary-actions button,.primary-actions a,.dashboard-actions button,.dashboard-actions a,.quick-link-row,.dashboard-action-item,.reset-layout,button[data-action*="reset" i],a[data-action*="reset" i]) {
+  box-sizing: border-box;
+}
+html body #app .dashboard-page :is(.dashboard-hero-actions,.hero-actions,.primary-actions,.dashboard-actions) :is(button,a,[role="button"],.button,.btn),
+html body #app .dashboard-page :is(button,a,[role="button"])[data-action*="reset" i],
+html body #app .dashboard-page :is(button,a,[role="button"])[aria-label*="reset layout" i],
+html body #app .dashboard-page :is(.reset-layout,.dashboard-reset-layout) {
+  width: 100% !important;
+  min-height: 48px;
+  box-sizing: border-box;
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF;
+  background: rgba(255,255,255,0.08) !important;
+  border: 1px solid rgba(255,255,255,0.2) !important;
+  border-radius: 9999px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: .5rem !important;
+  padding: .75rem 1rem !important;
+  font-size: 14px !important;
+  font-weight: 650 !important;
+  font-family: inherit;
+  line-height: 1.25;
+  letter-spacing: normal;
+  text-decoration: none !important;
+  opacity: 1 !important;
+  box-shadow: none;
+}
+html body #app .dashboard-page :is(.dashboard-hero-actions,.hero-actions,.primary-actions,.dashboard-actions) :is(button,a,[role="button"],.button,.btn):hover {
+  background: rgba(255,255,255,.14) !important;
+  border-color: rgba(255,255,255,.42) !important;
+}
+html body #app .dashboard-page :is(.dashboard-hero-actions,.hero-actions,.primary-actions,.dashboard-actions) :is(button,a,[role="button"],.button,.btn):focus-visible {
+  outline: 3px solid #FFFFFF !important;
+  outline-offset: 3px;
+}
+/* Workspace top bar: breathing room, no clipped sticky contents. */
+html body #app :is(.workspace-header,.app-header,.topbar,.workspace-topbar) {
+  margin-top: .75rem !important;
+  padding: .5rem 1rem !important;
+  box-sizing: border-box;
+  min-height: 56px;
+  overflow: visible !important;
+}
+html body #app :is(.workspace-subbar,.workspace-sub-bar,.page-header,.page-heading,.content-header,.dashboard-page-header,.workspace-page-heading) {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start;
+  gap: .25rem !important;
+  min-width: 0;
+  margin-block: 1rem 1.5rem !important;
+  overflow: visible !important;
+}
+html body #app :is(.workspace-subbar,.workspace-sub-bar,.page-header,.page-heading,.content-header,.dashboard-page-header,.workspace-page-heading) :is(h1,h2) {
+  position: static !important;
+  display: block;
+  margin: 0 !important;
+  line-height: 1.15;
+}
+html body #app :is(.workspace-subbar,.workspace-sub-bar,.page-header,.page-heading,.content-header,.dashboard-page-header,.workspace-page-heading) :is(.eyebrow,.workspace-label,.breadcrumb,.breadcrumbs,small) {
+  position: static !important;
+  display: block;
+  margin: 0 !important;
+  color: #E2E8F0 !important;
+  -webkit-text-fill-color: #E2E8F0;
+  font-size: .75rem;
+  line-height: 1.4;
+}
+html body #app :is(.workspace-header,.app-header,.topbar,.workspace-topbar) :is(.search-button,[aria-label*="Search"],.avatar-button,.user-menu-button,[aria-label="LA"],.header-utility button,.header-utility a) {
+  width: 42px !important;
+  min-width: 42px !important;
+  height: 42px !important;
+  min-height: 42px !important;
+  box-sizing: border-box;
+  padding: 0 .5rem !important;
+  border-radius: .5rem !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 42px;
+}
+/* Keep the floating Aa action away from all page controls. */
+html body #app #ie-personalise-trigger,
+html body #ie-personalise-trigger,
+html body #app .accessibility-toggle,
+html body #app .accessibility-button,
+html body #app [data-accessibility-toggle] {
+  position: fixed !important;
+  inset: auto 1rem 1rem auto !important;
+  z-index: 50 !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+@media (max-width: 760px) {
+  html body #app :is(.workspace-header,.app-header,.topbar,.workspace-topbar) {
+    margin-top: max(.75rem,env(safe-area-inset-top)) !important;
+    padding-inline: 1rem !important;
+  }
+  html body #app .dashboard-page {
+    padding-bottom: max(5rem,calc(env(safe-area-inset-bottom) + 5rem)) !important;
+    margin-bottom: 3rem !important;
+  }
+}
+@media (prefers-reduced-transparency: reduce) {
+  html body #app .dashboard-page :is(.dashboard-hero,.dashboard-panel,.metric,.action-centre,.quick-links-panel,.upcoming-panel,.next-step-panel,.dashboard-widget,.dashboard-shortcut-grid,.dashboard-recent-panel,.dashboard-more,.dashboard-more-content,.dashboard-metric,.metric-card,.stat-card) {
+    background: #020617 !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+}
