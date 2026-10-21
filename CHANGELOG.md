@@ -4,6 +4,17 @@
 
 ### Fixed
 - Mobile navigation drawer height now accounts for the actual header position and mobile viewport/safe-area, preventing the menu from extending below the visible screen.
+- Navigation marks route links such as Shop as active, not just button-based workspace views.
+- Expanded static audit coverage for menu markup/CSS selectors, desktop and mobile shop access, shop routes, and persisted personalisation controls.
+
+### Verification
+- JavaScript syntax, asset/version integrity, CSS structure and cross-file route/control checks run in GitHub Actions.
+- Static checks do not replace end-to-end browser tests against the live Supabase project.
+
+## [2.7.6] - 2026-10-21 — Site-wide regression hardening
+
+### Fixed
+- Mobile navigation drawer height now accounts for the actual header position and mobile viewport/safe-area, preventing the menu from extending below the visible screen.
 - Navigation now marks real route links such as Shop as active, not just button-based workspace views.
 - Expanded the static audit with cross-file regression checks for menu markup/CSS selectors, desktop and mobile shop access, shop routes, and persisted personalisation controls.
 
