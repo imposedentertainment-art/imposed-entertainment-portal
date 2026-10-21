@@ -23,7 +23,17 @@
  html body .shell>header.nav>.mobile-nav .mobile-legal-links{display:flex!important;justify-content:space-between;gap:12px;padding:15px 4px 4px!important;border-top:1px solid #28333f}
  html body .shell>header.nav>.mobile-nav .mobile-legal-links a{color:#aeb9c6!important;font-size:12px}
  html body .shell>header.nav>.mobile-nav .mobile-nav-no-results{margin:8px 0;padding:14px;border:1px dashed #394655;border-radius:10px;color:#aeb9c6;font-size:13px}
- html body .shell>header.nav>.mobile-menu{display:flex!important;position:relative!important;z-index:10043!important;flex:0 0 44px!important;align-items:center!important;justify-content:center!important;width:44px!important;min-width:44px!important;height:44px!important;min-height:44px!important;margin-left:auto!important;border:1px solid #3a4655!important;border-radius:12px!important;background:#171f28!important;color:#f4f6fa!important;visibility:visible!important;opacity:1!important}
+ html body .shell>header.nav>.nav-inner>.mobile-menu{display:flex!important;position:relative!important;z-index:10043!important;flex:0 0 44px!important;align-items:center!important;justify-content:center!important;width:44px!important;min-width:44px!important;height:44px!important;min-height:44px!important;margin-left:auto!important;border:1px solid #3a4655!important;border-radius:12px!important;background:#171f28!important;color:#f4f6fa!important;visibility:visible!important;opacity:1!important}
 }
 @media(max-width:420px){html body .shell>header.nav>.mobile-nav{padding-inline:10px!important}html body .shell>header.nav>.mobile-nav .nav-accordion-title{min-height:46px!important}}
 @media(prefers-reduced-motion:reduce){html body .shell>header.nav>.mobile-nav,html body .shell>header.nav>.mobile-nav *{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+
+/* v2.7.5 integration fixes: real trigger nesting, shop link and live personalisation tokens. */
+@media(max-width:760px){
+ html body .shell>header.nav>.nav-inner>.mobile-menu{display:flex!important;visibility:visible!important;opacity:1!important;position:relative!important;z-index:10043!important;flex:0 0 44px!important;width:44px!important;min-width:44px!important;height:44px!important;min-height:44px!important;align-items:center!important;justify-content:center!important;margin-left:auto!important;border:1px solid #3a4655!important;border-radius:12px!important;background:#171f28!important;color:#f4f6fa!important}
+ html body .shell>header.nav>.nav-inner>.mobile-menu svg{display:block!important;width:21px!important;height:21px!important}
+ html body .shell>.nav>.mobile-nav .nav-shop-link{display:flex!important;align-items:center!important;gap:10px!important;min-height:44px!important;padding:11px 12px!important;border:1px solid transparent!important;border-radius:9px!important;color:#d5dee8!important;text-decoration:none!important;font-size:13px!important}
+ html body .shell>.nav>.mobile-nav .nav-shop-link:hover{background:#1c2732!important;color:#fff!important}
+}
+.desktop-nav .nav-shop-link{display:flex;align-items:center;gap:10px;color:inherit;text-decoration:none}
+.desktop-nav .nav-shop-link svg{flex:none;width:17px;height:17px}
