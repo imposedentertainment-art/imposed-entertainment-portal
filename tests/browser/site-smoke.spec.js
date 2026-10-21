@@ -84,3 +84,41 @@ test('mobile navigation drawer and toggle sit above the backdrop', async ({ page
   expect(stack.backdropContent).not.toBe('none');
   expect(stack.shortcutDisplay).toBe('none');
 });
+
+test('artist workspace preserves theme artwork, glass panels and saved widget sizing', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
+  await page.evaluate(() => {
+    document.documentElement.dataset.ieWorkspaceTheme = 'midnight-studio';
+    document.documentElement.dataset.ieMode = 'dark';
+    document.body.className = 'personalise-palette-midnight-studio';
+    document.querySelector('#app').innerHTML = `
+      <main class="page dashboard-page">
+        <section class="dashboard-hero"><div class="dashboard-hero-copy"><h1>Artist workspace</h1></div><div class="hero-art"><div class="hero-record"></div></div></section>
+        <div class="dashboard-widget-layout">
+          <section class="dashboard-widget" data-dashboard-widget-card="metrics" data-widget-size="half"><section class="dashboard-panel">Metrics</section></section>
+          <section class="dashboard-widget" data-dashboard-widget-card="shortcuts" data-widget-size="third"><section class="quick-links-panel">Shortcuts</section></section>
+        </div>
+      </main>`;
+  });
+  const result = await page.evaluate(() => {
+    const hero = document.querySelector('.dashboard-hero');
+    const cards = [...document.querySelectorAll('[data-dashboard-widget-card]')];
+    return {
+      themeArt: getComputedStyle(document.body).getPropertyValue('--ie-theme-art').trim(),
+      heroBackground: getComputedStyle(hero).backgroundImage,
+      heroColumns: getComputedStyle(hero).gridTemplateColumns,
+      cardSpans: cards.map(card => getComputedStyle(card).gridColumnStart + '/' + getComputedStyle(card).gridColumnEnd),
+      glassBlur: getComputedStyle(cards[0]).backdropFilter || getComputedStyle(cards[0]).webkitBackdropFilter,
+      bodyTheme: document.body.classList.contains('personalise-palette-midnight-studio')
+    };
+  });
+  expect(result.themeArt).toContain('midnight-studio.jpg');
+  expect(result.heroBackground).toContain('url(');
+  expect(result.heroColumns).not.toBe('none');
+  expect(result.cardSpans[0]).not.toBe('1 / -1');
+  expect(result.cardSpans[1]).not.toBe('1 / -1');
+  expect(result.glassBlur).not.toBe('none');
+  expect(result.bodyTheme).toBeTruthy();
+});
+
