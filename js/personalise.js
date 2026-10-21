@@ -10,6 +10,8 @@ function notifyAccount(){try{window.dispatchEvent(new CustomEvent('ie-personalis
 function el(tag,attrs,text){var n=document.createElement(tag);Object.keys(attrs||{}).forEach(function(k){if(k==='className')n.className=attrs[k];else n.setAttribute(k,attrs[k])});if(text!==undefined)n.textContent=text;return n}
 function apply(){
 var root=document.documentElement,b=document.body;
+/* The quick customiser must drive the same semantic theme attributes as account settings, including for signed-out visitors. */
+root.dataset.ieMode=['dark','light','system','amoled'].includes(state.theme)?state.theme:'dark';root.dataset.ieWorkspaceTheme=['light-skies','midnight-studio','graphite-minimal','plum-dusk','forest-room'].includes(state.palette)?state.palette:'midnight-studio';
 root.style.setProperty('--user-accent',state.accent);root.style.setProperty('--accent',state.accent);root.style.setProperty('--teal',state.accent);root.style.setProperty('--user-font-scale',String(state.fontScale));root.style.setProperty('--user-line-height',String(state.lineHeight));root.style.setProperty('--user-content-width',state.contentWidth==='standard'?'1100px':state.contentWidth==='wide'?'1320px':'none');
 ['dark','light','system','amoled'].forEach(function(v){b.classList.toggle('personalise-theme-'+v,state.theme===v)});['light-skies','midnight-studio','graphite-minimal','plum-dusk','forest-room'].forEach(function(v){b.classList.toggle('personalise-palette-'+v,state.palette===v)});['standard','wide','full'].forEach(function(v){b.classList.toggle('personalise-content-'+v,state.contentWidth===v)});
 ['serif','modern','mono','display'].forEach(function(v){b.classList.toggle('personalise-font-'+v,state.font===v)});
