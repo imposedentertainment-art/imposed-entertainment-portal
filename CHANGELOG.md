@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.4.86] - 2026-10-21
+
+### Improved
+- Strengthened static-site release validation: every local JavaScript and CSS asset must use the current version query and be included in the service-worker allow-list, except the intentionally network-only config.js.
+- Added explicit consistency checks for versioned local assets and offline-cache coverage to catch stale asset references before deployment.
+- Refreshed HTML asset URLs and service-worker cache namespace to ensure clients request the audited release.
+
+### Verification
+- Repository files and Supabase function permissions reviewed before this change.
+- Static checks are expanded in this release; browser end-to-end, live storage access and CI execution still require runtime verification.
+
 ## [1.4.85] - 2026-10-21
 
 ### Fixed
