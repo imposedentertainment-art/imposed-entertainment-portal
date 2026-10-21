@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.9.2] - 2026-10-21 — Portal UI refinement
+
+- Improved page spacing, heading hierarchy and text rhythm across the portal.
+- Refined dashboard metrics, action panels, shortcuts and upcoming-release cards.
+- Improved mobile tap targets, roster row wrapping, form controls and horizontal table handling.
+- Added more consistent keyboard focus states and subtle hover feedback for pointer devices.
+- Refined appearance settings navigation and layout at narrow viewport widths.
+- Kept user-selected themes, accent colours, and reduced-motion preferences in control.
+- Fixed duplicate theme stylesheet entries in the service-worker asset list and added the new refinement stylesheet to precache allow-lists.
+- Bumped asset URLs and cache namespace to 2.9.2.
+
 ## [2.9.1] - 2026-10-21 — Theme imagery on the dashboard hero
 
 - Fixed the Overview dashboard hero so the selected original theme photograph appears directly behind the welcome message and actions, not only on the page background/theme picker.
