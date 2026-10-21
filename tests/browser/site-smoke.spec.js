@@ -78,7 +78,7 @@ test('mobile navigation drawer and toggle sit above the backdrop', async ({ page
   expect(stack.headerPosition).toBe('fixed');
   expect(stack.headerZ).toBeGreaterThanOrEqual(40);
   expect(stack.drawerZ).toBeGreaterThanOrEqual(50);
-  expect(stack.toggleAtPoint).toBeTruthy();
+  expect(stack.toggleAtPoint, JSON.stringify(stack)).toBeTruthy();
   expect(stack.backdropContent).not.toBe('none');
   expect(stack.shortcutDisplay).toBe('none');
 });
