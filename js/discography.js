@@ -44,18 +44,34 @@
     return `<div class="steps" role="img" aria-label="Progress: ${names.filter((n, i) => flags[i]).join(', ') || 'not started'}">${names.map((n, i) => `<span class="st ${flags[i] ? 'done' : i === cur ? 'cur' : ''}"><i>${flags[i] ? icon('check', 9) : ''}</i>${n}</span>`).join('')}</div>`;
   }
 
-  /* Cover thumbnails */
+  /* Cover thumbnails: resolve only rendered cards and use constant-time release lookups. */
   const coverHtml = r => { const c = r.artwork_path && discCovers[r.artwork_path]; return c ? `<img loading="lazy" decoding="async" src="${esc(c.url)}" alt="">` : icon('disc', 22); };
+  let coverHydrationPromise = null;
   async function hydrateCovers() {
     if (!sb || !session) return;
+    const nodes = Array.from(document.querySelectorAll('[data-cover]'));
+    if (!nodes.length) return;
+    const releaseById = new Map(releases.map(r => [String(r.id), r]));
     const stale = Date.now() - 50 * 60 * 1000;
-    const paths = [...new Set(releases.filter(r => r.artwork_path && document.querySelector(`[data-cover="${r.id}"]`) && !(discCovers[r.artwork_path] && discCovers[r.artwork_path].t > stale)).map(r => r.artwork_path))];
+    const paths = [...new Set(nodes.map(el => releaseById.get(String(el.dataset.cover))).filter(r => r && r.artwork_path && !(discCovers[r.artwork_path] && discCovers[r.artwork_path].t > stale)).map(r => r.artwork_path))];
     if (paths.length) {
-      const { data, error } = await sb.storage.from('artwork').createSignedUrls(paths, 3600);
-      if (error || !data) return;
-      data.forEach(d => { if (d.signedUrl) discCovers[d.path] = { url: d.signedUrl, t: Date.now() }; });
+      if (coverHydrationPromise) {
+        await coverHydrationPromise;
+      } else {
+        coverHydrationPromise = sb.storage.from('artwork').createSignedUrls(paths, 3600);
+        try {
+          const { data, error } = await coverHydrationPromise;
+          if (error || !data) return;
+          const timestamp = Date.now();
+          data.forEach(d => { if (d.signedUrl) discCovers[d.path] = { url: d.signedUrl, t: timestamp }; });
+        } finally { coverHydrationPromise = null; }
+      }
     }
-    document.querySelectorAll('[data-cover]').forEach(el => { const r = releases.find(x => x.id === el.dataset.cover); if (r && r.artwork_path && discCovers[r.artwork_path] && !el.querySelector('img')) el.innerHTML = coverHtml(r); });
+    nodes.forEach(el => {
+      if (!el.isConnected || el.querySelector('img')) return;
+      const release = releaseById.get(String(el.dataset.cover));
+      if (release?.artwork_path && discCovers[release.artwork_path]) el.innerHTML = coverHtml(release);
+    });
   }
 
   function discCard(r) {
