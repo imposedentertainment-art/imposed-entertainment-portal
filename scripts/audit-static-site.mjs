@@ -38,6 +38,7 @@ const views = read('js/views.js');
 const boot = read('js/boot.js');
 const personalisation = read('js/personalise.js');
 const navigationCss = read('mobile-navigation.css');
+const core = read('js/core.js');
 if (!views.includes('mobile-menu icon-btn') || !views.includes('id="mobile-navigation-menu"')) {
   fail('Workspace navigation trigger and mobile menu container must both exist.');
 }
@@ -53,6 +54,14 @@ if (!navigationCss.includes('.nav-inner>.mobile-menu') || !navigationCss.include
 if (!personalisation.includes("s.addEventListener('change',function(){state[key]=s.value;save()})") ||
     !personalisation.includes("input.addEventListener('change',function(){state[key]=input.checked;save()")) {
   fail('Personalisation controls must persist changes instead of only changing their preview.');
+if (!boot.includes('Retry a single transient Supabase Auth failure') ||
+    !boot.includes('const transient=Number(lastError?.status)>=500')) {
+  fail('Supabase startup must retry transient session-read failures.');
+}
+if (!core.includes('if(refreshed.error)throw refreshed.error') ||
+    !core.includes('Your session could not be refreshed')) {
+  fail('Storage uploads must not continue with a stale access token after refresh failure.');
+}
 }
 
 
