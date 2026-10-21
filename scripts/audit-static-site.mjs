@@ -74,7 +74,9 @@ if (!personalisation.includes("['light-skies','Light skies · blue & cloud']") |
   fail('Theme picker must expose the new named themes and validate saved selections.');
 }
 ['briefcase-business','mic-vocal','chart-no-axes-combined','panel-left-open','panel-left-close','check-square','shopping-bag','headphones'].forEach(name => {
-  if (!coreIcons.includes("'" + name + "':") && !coreIcons.includes(name + ':')) fail('SVG icon map is missing navigation icon: ' + name);
+  if (!personalisation.includes('workspaceTheme:state.palette') || !events.includes("workspaceTheme:['light-skies','midnight-studio','graphite-minimal','plum-dusk','forest-room'].includes(s.workspaceTheme)")) fail('Quick customiser must sync the selected workspace theme to account preferences.');
+if (!core.includes("['dark','light','system','amoled'].includes(out.mode)") || !core.includes("['dark','light','system','amoled'].includes(a.mode)") || !events.includes("['dark','light','system','amoled'].includes(next.mode)") || !views.includes('value="amoled"') || !themeOverhaul.includes('html[data-ie-mode="amoled"] body')) fail('AMOLED mode must be selectable, persisted, validated and styled end to end.');
+if (!coreIcons.includes("'" + name + "':") && !coreIcons.includes(name + ':')) fail('SVG icon map is missing navigation icon: ' + name);
 });
 if (!coreIcons.includes("p[name]||p.music")) fail('Unknown icon names must use a visible SVG fallback.');
 if (!personalisationFixes.includes('.nav-accordion > button.active') ||
@@ -140,7 +142,7 @@ if (!themeOverhaul.includes('html[data-ie-mode="light"] body') ||
     !core.includes("root.style.setProperty('--user-accent',accent)")) {
   fail('Light mode must override legacy dark navigation and surfaces, Light Skies must keep its cloud palette, and account accents must be global.');
 }
-if (html.includes('2.8.3') || worker.includes('2.8.3')) fail('HTML and service worker must not retain stale 2.8.3 asset versions.');
+if (html.includes('2.8.4') || worker.includes('2.8.4')) fail('HTML and service worker must not retain stale 2.8.4 asset versions.');
 
 const localRef = (value) => {
   if (!value || /^(?:[a-z][a-z0-9+.-]*:|\/\/|#)/i.test(value)) return null;
