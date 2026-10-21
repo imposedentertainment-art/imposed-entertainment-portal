@@ -57,7 +57,7 @@ function ieStartEmailCodeCooldown(){
   window.addEventListener('ie-personalise-change', function(event) {
     if (!session || !profile || !sb) return;
     const d = event && event.detail || {};
-    const current = Object.assign({theme:'slate',workspaceTheme:'midnight-studio',accent:'#536579',mode:'dark',surfaceTint:'graphite',shadowIntensity:2,fontScale:100,contrast:'standard',motion:'system',lineHeight:100,borderWidth:1,saturation:100,density:'comfortable',style:'classic',font:'poster',cards:'slab',grain:35,radius:2,banner:'',bannerColor:'',bannerEnabled:false,dashboard:{metrics:true,tasks:true,insights:true,announcements:true,upcoming:true,activity:true,catalogue:true},dashboardLayout:{}}, (profile.notification_preferences && profile.notification_preferences.appearance) || {});
+    const current = getAppearancePreferences();
     const fontMap = {modern:'clean',display:'poster',serif:'occult',mono:'typewriter'};
     const densityMap = {compact:'compact',standard:'comfortable',comfortable:'spacious'};
     const next = Object.assign({}, current, {
