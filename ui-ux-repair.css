@@ -142,3 +142,88 @@ html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboar
     display:flex!important;
   }
 }
+
+/* 3.3.19 — single-surface liquid glass: the widget shell is the resizable surface.
+   Inner content wrappers must not draw a second, smaller card on top of it. */
+html body #app .dashboard-page .dashboard-widget-layout>[data-dashboard-widget-card]{
+  position:relative!important;box-sizing:border-box!important;min-width:0!important;
+  min-height:var(--dashboard-custom-height,0px)!important;height:auto;
+  border:1px solid var(--ie-glass-border,rgba(255,255,255,.16))!important;
+  border-radius:var(--ie-radius,20px)!important;
+  background:linear-gradient(145deg,rgba(255,255,255,.105),rgba(255,255,255,.025) 48%,rgba(100,160,220,.055)),rgba(18,25,38,.48)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.19),inset 0 0 0 1px rgba(255,255,255,.025),0 14px 40px rgba(0,0,0,.16)!important;
+  -webkit-backdrop-filter:blur(28px) saturate(165%)!important;backdrop-filter:blur(28px) saturate(165%)!important;
+  overflow:visible!important;isolation:isolate;
+}
+html body #app .dashboard-page .dashboard-widget-layout>[data-dashboard-widget-card]>:not(.dashboard-widget-tools):not(.dashboard-edge-hit):not(.dashboard-resize-handle){
+  box-sizing:border-box!important;width:100%!important;max-width:none!important;min-width:0!important;
+  background:transparent!important;border:0!important;outline:0!important;box-shadow:none!important;
+  -webkit-backdrop-filter:none!important;backdrop-filter:none!important;
+}
+html body #app .dashboard-page .dashboard-widget-layout>[data-dashboard-widget-card]>:is(.dashboard-panel,.quick-links-panel,.dashboard-more,.action-centre,.upcoming-panel,.metric,.next-step-panel){
+  min-height:inherit!important;height:100%;border-radius:inherit!important;padding:clamp(16px,2vw,26px)!important;
+}
+html body #app .dashboard-page .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-more-content,
+html body #app .dashboard-page .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-detail-customise,
+html body #app .dashboard-page .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-shortcut-grid{
+  background:transparent!important;border:0!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
+}
+html body #app .dashboard-page .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-widget-tools{
+  position:absolute!important;top:8px!important;right:10px!important;z-index:45!important;
+  display:none;align-items:center;gap:5px;padding:5px!important;border:1px solid rgba(255,255,255,.18)!important;
+  border-radius:14px!important;background:rgba(20,28,42,.56)!important;
+  -webkit-backdrop-filter:blur(18px) saturate(160%)!important;backdrop-filter:blur(18px) saturate(160%)!important;
+}
+html body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-widget-tools{display:flex!important}
+html body #app .dashboard-page .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-hit{
+  display:none!important;position:absolute!important;z-index:60!important;padding:0!important;margin:0!important;
+  border:0!important;border-radius:0!important;background:transparent!important;opacity:0!important;touch-action:none!important;user-select:none!important;
+}
+html body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-hit{display:block!important;pointer-events:auto!important}
+html body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-n,
+html body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-s{left:14px!important;right:14px!important;height:14px!important}
+html body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-n{top:-7px!important;cursor:ns-resize!important}
+html body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-s{bottom:-7px!important;cursor:ns-resize!important}
+html body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-e,
+html body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-w{top:14px!important;bottom:14px!important;width:14px!important}
+html body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-e{right:-7px!important;cursor:ew-resize!important}
+html body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-w{left:-7px!important;cursor:ew-resize!important}
+html body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-ne,
+html body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-nw,
+html body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-se,
+html body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-sw{width:22px!important;height:22px!important}
+html body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-ne{top:-8px!important;right:-8px!important;cursor:nesw-resize!important}
+html body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-nw{top:-8px!important;left:-8px!important;cursor:nwse-resize!important}
+html body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-se{bottom:-8px!important;right:-8px!important;cursor:nwse-resize!important}
+html body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-sw{bottom:-8px!important;left:-8px!important;cursor:nesw-resize!important}
+html body #app .dashboard-page.is-resizing-dashboard,
+html body #app .dashboard-page.is-resizing-dashboard *{user-select:none!important}
+@media(max-width:800px){
+  html body #app .dashboard-page.is-customising .dashboard-widget-layout{grid-template-columns:repeat(12,minmax(0,1fr))!important}
+  html body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card]{grid-column:var(--dashboard-grid-column,span var(--dashboard-span,12))!important;min-height:var(--dashboard-custom-height,180px)!important}
+  html body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-hit{display:block!important}
+  html body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-widget-tools{display:flex!important}
+}
+/* Liquid-glass surface language applied consistently across navigation, controls,
+   forms, menus, overlays, cards, tables, profile tiles and media surfaces. */
+html body #app :is(.sidebar,.mobile-nav,.mobile-nav-panel,.topbar,.header,.toolbar,.nav-item,.nav-link,.nav-accordion,.dropdown-menu,.account-menu,.popover,.notification-panel,.modal-panel,.modal-card,.modal-content,.dialog,.toast,.card,.panel,.surface,.settings-panel,.content-card,.workspace-card,.workspace-panel,.widget-card,.widget-panel,.form-card,.form-panel,.profile-card,.artist-card,.band-card,.release-card,.release-panel,.shop-product-card,.product-card,.stat-card,.metric-card,.insight-card,.activity-card,.list-card,.table-wrap,.table-container,.search-panel,.filter-panel,.pagination,.notice,.callout,.empty-state,.announcement-card,.todo-card,.submission-card,.catalogue-panel,.action-card,.shortcut-card,.dashboard-recent-item,.dashboard-action-item,.dashboard-detail-slot,.dashboard-detail-customise,.dashboard-more summary){
+  background-color:rgba(255,255,255,.045)!important;
+  background-image:linear-gradient(145deg,rgba(255,255,255,.085),rgba(255,255,255,.018) 52%,rgba(125,180,255,.025))!important;
+  border-color:rgba(255,255,255,.14)!important;
+  -webkit-backdrop-filter:blur(20px) saturate(155%)!important;backdrop-filter:blur(20px) saturate(155%)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 10px 30px rgba(0,0,0,.09)!important;
+}
+html body #app :is(button,.button,.btn,a.button,input,select,textarea,.chip,.tab,.pill,.menu-item,.quick-link-row,.icon-btn,[role=button]){
+  border-color:rgba(255,255,255,.16)!important;
+  background-image:linear-gradient(135deg,rgba(255,255,255,.09),rgba(255,255,255,.025))!important;
+  -webkit-backdrop-filter:blur(14px) saturate(150%)!important;backdrop-filter:blur(14px) saturate(150%)!important;
+}
+html body #app :is(input,select,textarea){background-color:rgba(255,255,255,.055)!important}
+html body #app :is(.sidebar,.mobile-nav,.mobile-nav-panel,.topbar,.header,.toolbar,.dropdown-menu,.account-menu,.popover,.notification-panel,.modal-panel,.modal-card,.modal-content,.dialog,.toast,.card,.panel,.surface,.settings-panel,.content-card,.workspace-card,.workspace-panel,.widget-card,.widget-panel,.profile-card,.artist-card,.band-card,.release-card,.shop-product-card,.product-card,.table-wrap,.table-container,.form-panel,.form-card){
+  border-radius:var(--ie-radius,18px)!important;
+}
+html[data-ie-workspace-theme="light-skies"] body #app :is(.sidebar,.mobile-nav,.mobile-nav-panel,.topbar,.header,.toolbar,.dropdown-menu,.account-menu,.popover,.notification-panel,.modal-panel,.modal-card,.modal-content,.dialog,.toast,.card,.panel,.surface,.settings-panel,.content-card,.workspace-card,.workspace-panel,.widget-card,.widget-panel,.profile-card,.artist-card,.band-card,.release-card,.shop-product-card,.product-card,.table-wrap,.table-container,.form-panel,.form-card){
+  background-color:rgba(255,255,255,.58)!important;background-image:linear-gradient(145deg,rgba(255,255,255,.76),rgba(255,255,255,.34))!important;border-color:rgba(255,255,255,.64)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.86),0 12px 32px rgba(40,70,100,.08)!important;
+}
+@media(prefers-reduced-transparency:reduce){html body #app :is(.sidebar,.mobile-nav,.mobile-nav-panel,.topbar,.dropdown-menu,.account-menu,.popover,.notification-panel,.modal-panel,.modal-card,.dialog,.toast,.card,.panel,.surface,.settings-panel,.content-card,.workspace-card,.widget-card,.widget-panel){backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
