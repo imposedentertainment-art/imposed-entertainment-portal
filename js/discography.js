@@ -39,7 +39,19 @@
     relTotalsCache.set(key, result);
     return result;
   }
-  const relEarned = id => earnings.filter(x => x.release_id === id).reduce((t, x) => t + Number(x.amount || 0), 0);
+  let earnedCacheSource = null;
+  let earnedByRelease = new Map();
+  const relEarned = id => {
+    if (earnedCacheSource !== earnings) {
+      earnedCacheSource = earnings;
+      earnedByRelease = new Map();
+      earnings.forEach(row => {
+        const key = String(row.release_id);
+        earnedByRelease.set(key, (earnedByRelease.get(key) || 0) + Number(row.amount || 0));
+      });
+    }
+    return earnedByRelease.get(String(id)) || 0;
+  };
 
   /* Four-step progress: Files, Details, Review, Live */
   const hasAudio = r => { const t = allTracks.filter(x => x.release_id === r.id); return t.length > 0 && t.every(x => x.audio_path); };
