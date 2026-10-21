@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.4.83] - 2026-10-21
+
+### Expanded personalisation and accessibility
+- Added fine-grained contrast, motion preference, line spacing, border thickness and colour intensity controls.
+- Preferences are validated, previewed immediately, and stored alongside existing appearance options through the existing account-scoped profile preferences.
+- Added high-contrast token overrides, adjustable component outlines, saturation, line-height scaling, reduced-motion override and system reduced-motion support.
+- Kept existing dashboard layout, banners, palettes, fonts, density, and card appearance options intact.
+- Bumped static asset and service-worker cache versions.
+
+### Verification
+- Static source checks verify control markup, event handlers, preference sanitisation, root CSS token application, balanced CSS braces and consistent version references.
+- Full browser regression, accessibility audit, authenticated save/reload test and live deployment remain to be completed.
+
 ## [1.4.82] - 2026-10-21
 
 ### Customisation engine and global appearance controls
