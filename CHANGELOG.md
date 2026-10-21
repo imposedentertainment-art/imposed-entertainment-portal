@@ -1,3 +1,10 @@
+## 3.3.5 — Mobile drawer stacking and dashboard polish
+
+- Reworked the drawer overlay to use the actual conditional `.mobile-nav` markup and a stable header-local stacking context.
+- Kept the menu toggle and drawer above the backdrop while obscuring page content behind the open menu.
+- Reapplied dashboard safe-area padding, floating Aa positioning, high-contrast text, and mobile shortcut visibility.
+- Refreshed asset URLs and service-worker cache.
+
 ## 3.3.4 — Mobile menu visibility hotfix
 
 - Fixed the backdrop activating just because the mobile drawer exists in the DOM.
