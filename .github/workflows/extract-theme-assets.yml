@@ -1,0 +1,65 @@
+name: Extract original theme photographs
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'themes.zip'
+      - '.github/workflows/extract-theme-assets.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  extract-theme-photos:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Extract the five original JPEGs
+        shell: python
+        run: |
+          import pathlib, zipfile
+          archive = pathlib.Path("themes.zip")
+          if not archive.is_file():
+              raise SystemExit("themes.zip is missing from the repository root")
+          wanted = {
+              "light-skies.jpg",
+              "midnight-studio.jpg",
+              "graphite-minimal.jpg",
+              "plum-dusk.jpg",
+              "forest-room.jpg",
+          }
+          found = {}
+          with zipfile.ZipFile(archive) as z:
+              for info in z.infolist():
+                  base = pathlib.PurePosixPath(info.filename).name.lower()
+                  if base in wanted and not info.is_dir():
+                      if info.file_size > 12 * 1024 * 1024:
+                          raise SystemExit(f"Refusing unexpectedly large image: {info.filename}")
+                      data = z.read(info)
+                      if not data.startswith(bytes.fromhex("ffd8ff")):
+                          raise SystemExit(f"Expected original JPEG bytes: {info.filename}")
+                      found[base] = data
+          missing = wanted - found.keys()
+          if missing:
+              raise SystemExit("ZIP is missing required photographs: " + ", ".join(sorted(missing)))
+          out = pathlib.Path("themes")
+          out.mkdir(exist_ok=True)
+          for name, data in found.items():
+              (out / name).write_bytes(data)
+              print(f"Extracted themes/{name} ({len(data)} bytes)")
+      - name: Commit extracted photographs
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add themes/light-skies.jpg themes/midnight-studio.jpg themes/graphite-minimal.jpg themes/plum-dusk.jpg themes/forest-room.jpg
+          if git diff --cached --quiet; then
+            echo "Original theme photographs are already up to date."
+            exit 0
+          fi
+          git commit -m "Extract original theme photographs from themes.zip"
+          git push
