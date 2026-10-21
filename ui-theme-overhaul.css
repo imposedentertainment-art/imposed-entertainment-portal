@@ -180,3 +180,72 @@ body.personalise-palette-light-skies :where(.main,.main-content,.page,.page-cont
 body.personalise-palette-light-skies :where(.main,.main-content,.page,.page-content,.workspace,.workspace-content,.content-area,.dashboard-page) :where(.card,.panel,.metric,.release-card,.artist-card,.profile-card,.settings-card,.detail-card,.form-card,.builder-card,.approval-card,.up-card,.collection-card,.listener-card) {
   backdrop-filter:blur(2px);
 }
+
+
+/* v2.8.3: preferences are mapped to actual UI tokens and common component families. */
+:root {
+ --user-radius:16px; --user-font:var(--ui,system-ui,sans-serif);
+ --ui-link:var(--user-accent,var(--accent)); --ui-focus:var(--user-accent,var(--accent));
+}
+body {font-family:var(--user-font,var(--ui,system-ui,sans-serif))!important;font-size:calc(16px * var(--user-font-scale,1));line-height:var(--user-line-height,1.5)!important;color:var(--ui-text-soft,var(--soft,#d0d3d5));}
+body.personalise-font-modern {--user-font:var(--ui,"DM Sans",system-ui,sans-serif)}
+body.personalise-font-display {--user-font:var(--display,"Space Grotesk",system-ui,sans-serif)}
+body.personalise-font-serif {--user-font:Georgia,"Times New Roman",serif}
+body.personalise-font-mono {--user-font:ui-monospace,SFMono-Regular,Consolas,monospace}
+body.personalise-radius-sharp {--user-radius:3px}
+body.personalise-radius-rounded {--user-radius:18px}
+body.personalise-surface-flat {--ui-shadow:none}
+body.personalise-surface-glass {--ui-shadow:0 16px 40px rgba(0,0,0,.13)}
+body.personalise-cards-outlined :where(.card,.panel,.metric,.release-card,.artist-card,.profile-card,.settings-card,.detail-card,.form-card,.builder-card,.approval-card,.up-card,.collection-card,.listener-card,.modal-card) {box-shadow:none!important;border:1px solid var(--ui-border)!important}
+body.personalise-cards-minimal :where(.card,.panel,.metric,.release-card,.artist-card,.profile-card,.settings-card,.detail-card,.form-card,.builder-card,.approval-card,.up-card,.collection-card,.listener-card,.modal-card) {box-shadow:none!important;border-color:transparent!important;background:transparent!important}
+body.personalise-no-shadows :where(.card,.panel,.metric,.release-card,.artist-card,.profile-card,.settings-card,.detail-card,.form-card,.builder-card,.approval-card,.up-card,.collection-card,.listener-card,.modal-card,#ie-personalise-panel) {box-shadow:none!important}
+body.personalise-glow :where(button.primary,.primary,.new-btn,.nav-link.active,.mobile-nav button.active) {box-shadow:0 0 0 1px color-mix(in srgb,var(--user-accent) 60%,transparent),0 0 20px color-mix(in srgb,var(--user-accent) 25%,transparent)!important}
+body.personalise-high-contrast {--ui-text:#fff;--ui-text-soft:#fff;--ui-text-muted:#d4d9e0;--muted:#d4d9e0;--soft:#fff}
+body.personalise-hide-decorative :where(.ie-banner,.decorative,.decoration,.ambient-art,.background-art,.auth-story-art,.hero-decoration) {display:none!important}
+body.personalise-compact {--ie-control-height:36px;--user-radius:10px}
+body.personalise-compact :where(.card,.panel,.metric,.settings-card,.detail-card,.form-card,.release-card,.artist-card,.profile-card) {padding-top:clamp(8px,1.2vw,14px);padding-bottom:clamp(8px,1.2vw,14px)}
+body.personalise-comfort {--ie-control-height:48px;--user-radius:20px}
+body.personalise-comfort :where(.card,.panel,.metric,.settings-card,.detail-card,.form-card,.release-card,.artist-card,.profile-card) {padding-top:clamp(20px,2.5vw,30px);padding-bottom:clamp(20px,2.5vw,30px)}
+body.personalise-content-wide :where(#app .main,#app .main-content,#app .page-content,#app .workspace-content,.main,.main-content,.page-content,.workspace-content) {max-width:1320px;width:100%;margin-inline:auto}
+body.personalise-content-full :where(#app .main,#app .main-content,#app .page-content,#app .workspace-content,.main,.main-content,.page-content,.workspace-content) {max-width:none;width:100%}
+body.personalise-nav-floating :where(.desktop-nav,.mobile-nav,.sidebar,.side-nav) {border-radius:16px;box-shadow:var(--ui-shadow);border:1px solid var(--ui-border)}
+body.personalise-nav-minimal :where(.desktop-nav,.mobile-nav,.sidebar,.side-nav) {box-shadow:none!important;border-color:transparent!important;background:transparent!important}
+body.personalise-buttons-solid :where(button,.primary,.secondary,.new-btn,.danger-btn) {border-radius:var(--user-radius);font-weight:750}
+body.personalise-buttons-outline :where(button,.primary,.secondary,.new-btn,.danger-btn) {background:transparent!important;border:1px solid var(--user-accent)!important;color:var(--ui-text)!important;box-shadow:none!important}
+body.personalise-buttons-pill :where(button,.primary,.secondary,.new-btn,.danger-btn) {border-radius:999px!important}
+body.personalise-motion-reduced *,body.personalise-motion-none * {scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+body.personalise-motion-none * {animation:none!important;transition:none!important}
+body :where(.nav-link.active,.mobile-nav button.active,.mobile-nav button[aria-current="page"],.mobile-nav a[aria-current="page"],.nav-accordion[open]>.nav-accordion-title) {
+ border-color:color-mix(in srgb,var(--user-accent,#d8bd73) 60%,var(--ui-border,#2b3541))!important;
+ box-shadow:inset 4px 0 var(--user-accent,#d8bd73)!important;
+}
+body :where(.nav-link.active,.mobile-nav button.active,.mobile-nav button[aria-current="page"],.mobile-nav a[aria-current="page"],.nav-accordion[open]>.nav-accordion-title) svg,
+body :where(.nav-link.active,.mobile-nav button.active,.mobile-nav button[aria-current="page"],.mobile-nav a[aria-current="page"]) :where(svg, i) {color:var(--user-accent,#d8bd73)!important}
+body :where(button,input,select,textarea,[role="button"],a):focus-visible {outline-color:var(--user-accent,#d8bd73)!important}
+body.personalise-theme-light {
+ color-scheme:light!important;
+ --ui-page:#f2f5f9;--ui-surface:#fff;--ui-surface-raised:#e7edf4;--ui-surface-hover:#dce5ef;
+ --ui-border:#cbd5e1;--ui-border-strong:#9aaabd;--ui-text:#172536;--ui-text-soft:#293b4f;--ui-text-muted:#526579;--ui-input:#fff;
+ --bg:#f2f5f9;--s1:#fff;--s2:#e7edf4;--s3:#dce5ef;--line:#cbd5e1;--line2:#9aaabd;--text:#172536;--soft:#293b4f;--muted:#526579;
+ --ui-shadow:0 10px 28px rgba(29,52,77,.09);
+}
+body.personalise-theme-light,
+body.personalise-theme-light :where(.nav,.workspace-topbar,.sidebar,.side-nav,.main,.main-content,.page,.page-content,.workspace,.workspace-content,.content-area) {
+ background-color:var(--ui-page)!important;color:var(--ui-text-soft)!important
+}
+body.personalise-theme-light :where(.card,.panel,.metric,.release-card,.artist-card,.profile-card,.settings-card,.detail-card,.form-card,.builder-card,.approval-card,.up-card,.collection-card,.listener-card,.modal-card,.dropdown-menu,.popover,.menu-panel,.settings-section,.setting-section) {
+ background-color:var(--ui-surface)!important;color:var(--ui-text-soft)!important;border-color:var(--ui-border)!important;box-shadow:var(--ui-shadow)
+}
+body.personalise-theme-light :where(h1,h2,h3,h4,h5,h6,strong,b,label,legend,.nav-link,.nav-accordion-title) {color:var(--ui-text)!important}
+body.personalise-theme-light :where(p,small,.muted,.sub,.help-text,.description,.setting-description) {color:var(--ui-text-muted)!important}
+body.personalise-theme-light :where(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]),select,textarea,[contenteditable="true"]) {background:var(--ui-input)!important;color:var(--ui-text)!important;border-color:var(--ui-border-strong)!important}
+body.personalise-theme-light :where(button:not(.primary):not(.new-btn):not(.danger-btn),.secondary,.icon-btn) {color:var(--ui-text)!important}
+body.personalise-theme-light :where(.nav-link.active,.mobile-nav button.active,.mobile-nav button[aria-current="page"],.nav-accordion[open]>.nav-accordion-title) {background:color-mix(in srgb,var(--user-accent) 13%,#fff)!important;color:var(--ui-text)!important}
+body.personalise-theme-light #ie-personalise-panel {background:#fff!important;color:var(--ui-text)!important;border-color:var(--ui-border)!important}
+@media(prefers-color-scheme:light) {
+ body.personalise-theme-system {color-scheme:light!important;--ui-page:#f2f5f9;--ui-surface:#fff;--ui-surface-raised:#e7edf4;--ui-border:#cbd5e1;--ui-border-strong:#9aaabd;--ui-text:#172536;--ui-text-soft:#293b4f;--ui-text-muted:#526579;--ui-input:#fff;--bg:#f2f5f9;--s1:#fff;--s2:#e7edf4;--line:#cbd5e1;--line2:#9aaabd;--text:#172536;--soft:#293b4f;--muted:#526579}
+ body.personalise-theme-system,:is(body.personalise-theme-system) :where(.nav,.workspace-topbar,.sidebar,.side-nav,.main,.main-content,.page,.page-content,.workspace,.workspace-content,.content-area) {background-color:var(--ui-page)!important;color:var(--ui-text-soft)!important}
+ body.personalise-theme-system :where(.card,.panel,.metric,.release-card,.artist-card,.profile-card,.settings-card,.detail-card,.form-card,.builder-card,.approval-card,.up-card,.collection-card,.listener-card,.modal-card,.dropdown-menu,.popover,.menu-panel,.settings-section,.setting-section) {background-color:var(--ui-surface)!important;color:var(--ui-text-soft)!important;border-color:var(--ui-border)!important}
+ body.personalise-theme-system :where(h1,h2,h3,h4,h5,h6,strong,b,label,legend,.nav-link,.nav-accordion-title) {color:var(--ui-text)!important}
+ body.personalise-theme-system :where(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]),select,textarea,[contenteditable="true"]) {background:var(--ui-input)!important;color:var(--ui-text)!important;border-color:var(--ui-border-strong)!important}
+}
