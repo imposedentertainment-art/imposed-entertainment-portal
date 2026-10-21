@@ -16,7 +16,7 @@ self.addEventListener('install', event => {
     // Keep first-install activation fast: precache only the app shell and legal documents.
     // Other allow-listed assets are cached as they are requested by the app.
     const criticalAssets = [
-      '/index.html', '/styles.css', '/ui-polish.css', '/ui-next.css', '/ui-research.css', '/ui-overhaul.css', '/quality.css', '/personalise.css', '/js/personalise.js', '/js/quality.js', '/js/i18n.js', '/js/core.js', '/js/boot.js',
+      '/index.html', '/styles.css', '/ui-polish.css', '/ui-next.css', '/ui-research.css', '/ui-overhaul.css', '/ui-system-v2.css', '/quality.css', '/personalise.css', '/js/personalise.js', '/js/quality.js', '/js/i18n.js', '/js/core.js', '/js/boot.js',
       '/privacy/index.html', '/terms/index.html', '/img/logo-128.png'
     ];
     await Promise.allSettled(criticalAssets.map(async path => {
