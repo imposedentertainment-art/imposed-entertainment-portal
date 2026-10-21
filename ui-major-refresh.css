@@ -101,3 +101,62 @@ body :where(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([
   html[data-ie-workspace-theme] body { background-attachment:scroll,scroll!important; }
   body *,body *::before,body *::after { transition-duration:.01ms!important; animation-duration:.01ms!important; animation-iteration-count:1!important; }
 }
+
+/* v2.9.1 — make the chosen original theme photograph unmistakable on the
+   dashboard hero itself, including the compact mobile dashboard. */
+html[data-ie-workspace-theme] body .dashboard-page > .dashboard-hero {
+  position:relative!important;
+  isolation:isolate;
+  overflow:hidden;
+  background-color:var(--ui-surface,#10141d)!important;
+  background-image:
+    linear-gradient(105deg,rgba(7,11,17,.92) 0%,rgba(7,11,17,.78) 44%,rgba(7,11,17,.38) 100%),
+    var(--ie-theme-art)!important;
+  background-size:cover,cover!important;
+  background-position:center,center 42%!important;
+  background-repeat:no-repeat!important;
+  border-color:color-mix(in srgb,var(--user-accent,#79bd91) 36%,var(--ui-border,#28352f))!important;
+  box-shadow:0 22px 60px rgba(0,0,0,.24);
+}
+html[data-ie-workspace-theme="light-skies"] body .dashboard-page > .dashboard-hero {
+  background-image:
+    linear-gradient(105deg,rgba(236,246,253,.95) 0%,rgba(236,246,253,.78) 48%,rgba(236,246,253,.22) 100%),
+    var(--ie-theme-art)!important;
+}
+html[data-ie-workspace-theme] body .dashboard-page > .dashboard-hero .dashboard-hero-copy,
+html[data-ie-workspace-theme] body .dashboard-page > .dashboard-hero .hero-overline,
+html[data-ie-workspace-theme] body .dashboard-page > .dashboard-hero .hero-index,
+html[data-ie-workspace-theme] body .dashboard-page > .dashboard-hero .dashboard-hero-actions {
+  position:relative;
+  z-index:2;
+}
+html[data-ie-workspace-theme]:not([data-ie-workspace-theme="light-skies"]) body .dashboard-page > .dashboard-hero .dashboard-hero-copy :where(h1,p),
+html[data-ie-workspace-theme]:not([data-ie-workspace-theme="light-skies"]) body .dashboard-page > .dashboard-hero .hero-overline,
+html[data-ie-workspace-theme]:not([data-ie-workspace-theme="light-skies"]) body .dashboard-page > .dashboard-hero .hero-index {
+  color:#f4f7f5!important;
+}
+html[data-ie-workspace-theme="light-skies"] body .dashboard-page > .dashboard-hero .dashboard-hero-copy :where(h1,p),
+html[data-ie-workspace-theme="light-skies"] body .dashboard-page > .dashboard-hero .hero-overline,
+html[data-ie-workspace-theme="light-skies"] body .dashboard-page > .dashboard-hero .hero-index {
+  color:#17354c!important;
+}
+html[data-ie-workspace-theme] body .dashboard-page > .dashboard-hero .hero-art {
+  z-index:1;
+  opacity:.24;
+  pointer-events:none;
+}
+html[data-ie-workspace-theme] body .dashboard-page > .dashboard-hero .hero-art-featured {
+  opacity:1;
+}
+html[data-ie-workspace-theme] body .dashboard-page > .dashboard-hero .hero-art:not(.hero-art-featured) .hero-record {
+  opacity:.55;
+}
+html[data-ie-workspace-theme] body .dashboard-page > .dashboard-hero .hero-art:not(.hero-art-featured) .hero-art-glow {
+  opacity:.18;
+}
+@media(max-width:760px) {
+  html[data-ie-workspace-theme] body .dashboard-page > .dashboard-hero {
+    background-position:center,center!important;
+    background-size:cover,cover!important;
+  }
+}
