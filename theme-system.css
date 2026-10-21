@@ -84,3 +84,13 @@ body.personalise-content-full :where(.main,.main-content,.page-content,.content-
 body.personalise-theme-light :where(.boot-skeleton,.app-loading,.loading-card,.image-load-fallback){background-color:var(--ui-surface)!important;color:var(--ui-text)!important;border-color:var(--ui-border)!important}
 body.personalise-theme-light :where(.nav,.topbar,.app-header,.sidebar,.side-nav,.mobile-nav,.bottom-nav,.settings-quicknav){border-color:var(--ui-border)!important}
 body.personalise-theme-light :where(.nav a,.nav button,.sidebar a,.sidebar button,.side-nav a,.side-nav button,.mobile-nav a,.bottom-nav a){color:var(--ui-text-soft)!important}
+
+/* The floating personalisation studio is part of the product UI and follows the same theme tokens. */
+#ie-personalise-panel{background:var(--ui-surface)!important;color:var(--ui-text-soft)!important;border-color:var(--ui-border)!important;box-shadow:var(--ui-shadow)}
+#ie-personalise-panel :where(h1,h2,h3,h4,legend,strong){color:var(--ui-text)!important}
+#ie-personalise-panel :where(p,small,.ie-p-help,.ie-p-sub){color:var(--ui-text-muted)!important}
+#ie-personalise-panel :where(fieldset,.ie-p-content,.ie-p-top,.ie-p-actions,.ie-p-tabs){background:var(--ui-surface)!important;color:var(--ui-text-soft)!important;border-color:var(--ui-border)!important}
+#ie-personalise-panel :where(select,input:not([type=checkbox]):not([type=range]):not([type=color]),textarea){background:var(--ui-input)!important;color:var(--ui-text)!important;border-color:var(--ui-border-strong)!important}
+#ie-personalise-panel :where(button,.ie-p-tab){color:var(--ui-text-soft);border-color:var(--ui-border)}
+#ie-personalise-panel :where(button[aria-pressed=true],.ie-p-tab[aria-selected=true]){background:color-mix(in srgb,var(--ui-link) 16%,var(--ui-surface))!important;color:var(--ui-text)!important}
+body.personalise-theme-light #ie-personalise-panel{background:var(--ui-surface)!important;color:var(--ui-text-soft)!important;border-color:var(--ui-border)!important}
