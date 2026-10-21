@@ -65,3 +65,55 @@ body.personalise-buttons-pill :where(button,.btn,.button,input[type=submit]){bor
 body.personalise-buttons-soft :where(button,.btn,.button,input[type=submit]){border-radius:var(--v2-control-radius)}
 body.personalise-motion-reduced *,body.personalise-motion-reduced *::before,body.personalise-motion-reduced *::after{scroll-behavior:auto!important;transition-duration:.08s!important;animation-duration:.08s!important;animation-iteration-count:1!important}
 body.personalise-motion-none *,body.personalise-motion-none *::before,body.personalise-motion-none *::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}
+
+
+/* V2 interaction layer: motion, responsive menus, accessible active states. */
+:root{--v2-ease:cubic-bezier(.2,.75,.25,1);--v2-duration:220ms}
+@keyframes v2-rise-in{from{opacity:0;transform:translateY(12px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes v2-fade-in{from{opacity:0}to{opacity:1}}
+@keyframes v2-menu-in{from{opacity:0;transform:translateY(-7px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes v2-shimmer{to{background-position:-200% 0}}
+@keyframes v2-pulse{0%,100%{box-shadow:0 0 0 0 color-mix(in srgb,var(--v2-accent) 0%,transparent)}50%{box-shadow:0 0 0 5px color-mix(in srgb,var(--v2-accent) 12%,transparent)}}
+#app>.page,#app>.auth-shell{animation:v2-rise-in .42s var(--v2-ease) both}
+:where(.card,.panel,.settings-card,.artist-card,.release-card,.profile-card,.workspace-card,.stat-card,.feed-card,.playlist-card,.track-card,.modal-card,.modal-content,.dialog,.drawer,.sheet){transition:background-color .22s ease,border-color .22s ease,box-shadow .22s ease,transform .22s var(--v2-ease)}
+:where(.card,.artist-card,.release-card,.profile-card,.workspace-card,.stat-card,.feed-card,.playlist-card,.track-card):hover{transform:translateY(-2px)}
+:where(button,.btn,.button,[role=button],.nav a,.sidebar a,.side-nav a,.mobile-nav a,.bottom-nav a,.settings-quicknav button){transition:color .16s ease,background-color .16s ease,border-color .16s ease,box-shadow .2s ease,transform .2s var(--v2-ease)}
+:where(button:not(:disabled),.btn:not(:disabled),.button:not(:disabled),[role=button]):hover{filter:brightness(1.06)}
+:where(.dropdown-menu,.context-menu,.popover,.menu-panel,[role=menu],.select-menu,.command-menu){transform-origin:top center;animation:v2-menu-in .18s var(--v2-ease) both}
+:where(.modal,.overlay,.dialog-backdrop){animation:v2-fade-in .18s ease both}
+:where(.modal-card,.modal-content,.dialog,.drawer,.sheet){animation:v2-rise-in .24s var(--v2-ease) both}
+:where(.skeleton,.skeleton-line,.loading-skeleton){background:linear-gradient(100deg,var(--v2-panel) 20%,var(--v2-raised) 40%,var(--v2-panel) 60%);background-size:200% 100%;animation:v2-shimmer 1.4s linear infinite}
+:where(.settings-quicknav button){appearance:none;display:inline-flex;align-items:center;justify-content:center;flex:none;min-height:38px;padding:8px 13px;border:1px solid transparent;border-radius:10px;background:transparent;color:var(--v2-copy);font-size:12px;font-weight:650;white-space:nowrap;cursor:pointer}
+.settings-quicknav button:hover,.settings-quicknav button:focus-visible{background:color-mix(in srgb,var(--v2-accent) 13%,var(--v2-panel));color:var(--v2-ink)}
+.settings-quicknav button[aria-current=location],.settings-quicknav button[aria-pressed=true],.settings-quicknav button.is-active{background:color-mix(in srgb,var(--v2-accent) 18%,var(--v2-panel));border-color:color-mix(in srgb,var(--v2-accent) 40%,var(--v2-line));color:var(--v2-ink)}
+:where(#settings-appearance,#settings-language,#settings-account,#settings-notifications,#settings-security,#settings-data){scroll-margin-top:88px}
+#ie-personalise-trigger{background:var(--v2-panel);color:var(--v2-accent);border:1px solid var(--v2-line-strong);transition:transform .22s var(--v2-ease),box-shadow .22s ease,background .22s ease}
+#ie-personalise-trigger:hover{transform:translateY(-3px) rotate(8deg);box-shadow:0 12px 38px color-mix(in srgb,var(--v2-accent) 20%,transparent)}
+#ie-personalise-panel{padding:0;display:flex;flex-direction:column;gap:0;background:var(--v2-panel);color:var(--v2-copy);border:1px solid var(--v2-line-strong);box-shadow:0 28px 100px #0009;animation:v2-rise-in .22s var(--v2-ease) both}
+#ie-personalise-panel[hidden]{display:none}
+#ie-personalise-panel .ie-p-top{padding:18px 18px 0}
+#ie-personalise-panel .ie-p-tabs{position:sticky;top:0;z-index:2;background:var(--v2-panel);padding:10px 18px}
+#ie-personalise-panel .ie-p-content{overflow:visible}
+#ie-personalise-panel .ie-p-sub{color:var(--v2-muted)}
+#ie-personalise-panel .ie-p-help{color:var(--v2-muted)}
+#ie-personalise-panel fieldset{border-color:var(--v2-line)}
+#ie-personalise-panel select{background:var(--v2-bg);color:var(--v2-ink);border-color:var(--v2-line-strong)}
+#ie-personalise-panel .ie-p-actions{position:sticky;bottom:0;background:var(--v2-panel);padding:12px 18px 16px;margin:0;border-top:1px solid var(--v2-line)}
+#ie-personalise-panel .ie-p-actions button{flex:1}
+#ie-personalise-panel .ie-p-save{background:var(--v2-accent)!important;color:#16130d!important;border-color:transparent!important}
+#ie-personalise-panel button:not(.ie-p-swatch){background:var(--v2-raised);color:var(--v2-ink);border-color:var(--v2-line)}
+#ie-personalise-panel .ie-p-tab[aria-selected=true]{background:color-mix(in srgb,var(--v2-accent) 13%,var(--v2-panel))!important;color:var(--v2-accent)!important}
+#ie-personalise-panel .ie-p-control{min-width:0}
+#ie-personalise-panel .ie-p-control>span{overflow-wrap:anywhere}
+#ie-personalise-panel .ie-p-status{color:var(--v2-muted)}
+body.personalise-theme-light #ie-personalise-panel{background:var(--v2-panel);color:var(--v2-copy)}
+body.personalise-theme-light #ie-personalise-panel .ie-p-tabs,body.personalise-theme-light #ie-personalise-panel .ie-p-actions{background:var(--v2-panel)}
+@media(max-width:600px){
+ #ie-personalise-panel{left:10px;right:10px;bottom:calc(68px + env(safe-area-inset-bottom));width:auto;max-height:min(76dvh,720px);border-radius:18px}
+ .settings-quicknav{scroll-snap-type:x proximity}
+ .settings-quicknav button{scroll-snap-align:start}
+}
+@media(prefers-reduced-motion:reduce){
+ #app>.page,#app>.auth-shell,:where(.dropdown-menu,.context-menu,.popover,.menu-panel,[role=menu],.select-menu,.command-menu),:where(.modal,.overlay,.dialog-backdrop),:where(.modal-card,.modal-content,.dialog,.drawer,.sheet),:where(.skeleton,.skeleton-line,.loading-skeleton){animation:none!important}
+ :where(.card,.panel,.settings-card,.artist-card,.release-card,.profile-card,.workspace-card,.stat-card,.feed-card,.playlist-card,.track-card,button,.btn,.button){transition:none!important;transform:none!important}
+}
