@@ -1,0 +1,71 @@
+/* Imposed Entertainment 3.2.5 — unified UI contract.
+   This is the single final compatibility layer while legacy CSS is consolidated safely.
+   Keep user preference variables authoritative and avoid adding new competing theme defaults. */
+:root {
+  --ui-accent: var(--user-accent, var(--accent, #d8bd73));
+  --ui-glass-opacity: var(--user-glass-opacity, .15);
+  --ui-glass-strong-opacity: var(--user-glass-strong-opacity, .25);
+  --ui-glass-border-opacity: var(--user-glass-border-opacity, .42);
+  --ui-glass-blur: var(--user-glass-blur, 20px);
+  --ui-glass-saturation: var(--user-glass-saturation, 165%);
+  --ui-glass-highlight-opacity: var(--user-glass-highlight-opacity, .48);
+  --ui-radius-scale: var(--user-radius-scale, 1);
+  --ui-density-scale: var(--user-density-scale, 1);
+  --ui-font-scale: var(--user-font-scale, 1);
+  --ui-space-unit: calc(4px * var(--ui-density-scale));
+  --ui-radius-sm: calc(8px * var(--ui-radius-scale));
+  --ui-radius-md: calc(16px * var(--ui-radius-scale));
+  --ui-radius-lg: calc(24px * var(--ui-radius-scale));
+  --ui-surface: rgba(220,237,250,var(--ui-glass-opacity));
+  --ui-surface-strong: rgba(220,237,250,var(--ui-glass-strong-opacity));
+  --ui-glass-border: rgba(255,255,255,var(--ui-glass-border-opacity));
+}
+/* Use the same semantic geometry and focus behaviour across legacy components. */
+html body #app :is(.card,.panel,.settings-card,.detail-card,.form-card,.profile-card,.artist-card,.release-card,.collection-card,.listener-card,.content-card,.workspace-card,.widget-card) {
+  border-radius: var(--ui-radius-md);
+}
+html body #app :is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]),select,textarea,[contenteditable="true"]) {
+  border-radius: var(--ui-radius-sm);
+  max-width: 100%;
+}
+html body #app :is(button,a,[role="button"],input,select,textarea,[tabindex]):focus-visible {
+  outline: 2px solid var(--ui-accent);
+  outline-offset: 3px;
+}
+html body #app :is(img,video,canvas,svg) { max-width: 100%; }
+html body #app :is(.table-wrap,.table-container,.table-scroll,.data-table-wrap) {
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+}
+html body #app :is(.page,.page-content,.workspace-content,.content-area) {
+  min-width: 0;
+}
+html body #app :is(.card,.panel,.settings-card,.detail-card,.form-card,.profile-card,.artist-card,.release-card,.collection-card,.listener-card,.content-card,.workspace-card,.widget-card) {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 760px) {
+  html body #app { --ui-space-unit: calc(3.5px * var(--ui-density-scale)); }
+  html body #app :is(.page,.page-content,.workspace-content,.content-area,.dashboard-page) {
+    min-width: 0;
+    max-width: 100%;
+  }
+  html body #app :is(.table-wrap,.table-container,.table-scroll,.data-table-wrap) {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+@media (prefers-reduced-transparency: reduce) {
+  :root { --ui-glass-blur: 0px; --ui-glass-opacity: .92; --ui-glass-strong-opacity: .96; }
+  html body #app :is(.card,.panel,.settings-card,.detail-card,.form-card,.profile-card,.artist-card,.release-card,.collection-card,.listener-card,.content-card,.workspace-card,.widget-card) {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html body #app *, html body #app *::before, html body #app *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
