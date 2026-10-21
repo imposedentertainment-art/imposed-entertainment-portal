@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.4.77] - 2026-10-21
+
+### Improved — UI/UX
+- Added a finishing design-system layer for clearer focus states, more consistent interaction feedback, resilient headings and action rows, and cleaner responsive overflow handling.
+- Improved small-screen form sizing, modal viewport containment, table readability, safe-area-aware navigation spacing and reduced-motion behavior.
+- Kept the existing appearance customisation tokens in control; the new layer is additive and does not change application data or route logic.
+
+### Verification
+- Reviewed the existing stylesheet cascade and wired the new layer after the current design system.
+- Static source and version consistency checks are performed for this commit; live visual and authenticated browser regression testing remains outstanding.
+
+
 ## [1.4.76] - 2026-10-21
 
 ### Security
