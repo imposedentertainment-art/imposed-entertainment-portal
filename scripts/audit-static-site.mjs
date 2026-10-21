@@ -33,6 +33,29 @@ if (!read('_headers').includes('Content-Security-Policy:')) fail('_headers is mi
 if (!read('_headers').includes('Cache-Control: no-store')) fail('_headers is missing no-store protection for configuration/private responses.');
 if (/service_role|SUPABASE_SECRET_KEY|sb_secret_/i.test(config)) fail('config.js appears to contain a server-side Supabase secret.');
 
+// Cross-file regression checks for navigation, routes and saved interface preferences.
+const views = read('js/views.js');
+const boot = read('js/boot.js');
+const personalisation = read('js/personalise.js');
+const navigationCss = read('mobile-navigation.css');
+if (!views.includes('class="mobile-menu"') || !views.includes('id="mobile-navigation-menu"')) {
+  fail('Workspace navigation trigger and mobile menu container must both exist.');
+}
+if (!views.includes('class="nav-link nav-shop-link" href="/shop"') || !views.includes('class="nav-shop-link" href="/shop"')) {
+  fail('Shop must be directly reachable from desktop and mobile workspace navigation.');
+}
+if (!boot.includes("path==='/shop'") || !boot.includes("path==='/shop/manage'") || !boot.includes('renderShopRoute()')) {
+  fail('Shop catalogue and product-management routes must be recognised by the app router.');
+}
+if (!navigationCss.includes('.nav-inner>.mobile-menu') || !navigationCss.includes('.mobile-nav')) {
+  fail('Mobile navigation styles must target the actual nested menu trigger and drawer.');
+}
+if (!personalisation.includes("s.addEventListener('change',function(){state[key]=s.value;save()})") ||
+    !personalisation.includes("input.addEventListener('change',function(){state[key]=input.checked;save()")) {
+  fail('Personalisation controls must persist changes instead of only changing their preview.');
+}
+
+
 const localRef = (value) => {
   if (!value || /^(?:[a-z][a-z0-9+.-]*:|\/\/|#)/i.test(value)) return null;
   const pathname = value.split(/[?#]/, 1)[0];
