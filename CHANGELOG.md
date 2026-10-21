@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.8.6] - 2026-10-21 — Shared theme attributes
+
+### Fixed
+- The floating customiser now applies its saved colour mode and workspace palette to the same semantic document attributes used by the main Appearance page, including signed-out sessions.
+- Added a regression assertion for the shared theme attributes.
+
+### Verification
+- Automated static checks validate the mode/palette wiring; live browser testing is still outstanding.
+
 ## [2.8.5] - 2026-10-21 — Personalisation sync and AMOLED mode
 
 ### Fixed
