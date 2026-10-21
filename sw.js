@@ -1,7 +1,7 @@
-/* Imposed Entertainment v2.8.6: versioned static assets; never cache query-bearing navigations/auth callbacks. */
-const CACHE_NAME = 'imposed-v2.8.6';
+/* Imposed Entertainment v2.8.7: versioned static assets; never cache query-bearing navigations/auth callbacks. */
+const CACHE_NAME = 'imposed-v2.8.7';
 const STATIC_ASSETS = [
-  '/index.html', '/shop.css', '/mobile-navigation.css', '/ui-personalisation-fixes.css', '/ui-theme-overhaul.css', '/js/shop.js', '/styles.css', '/ui-polish.css', '/ui-next.css', '/ui-research.css', '/ui-overhaul.css', '/ui-system-v2.css', '/quality.css', '/theme-system.css', '/auth-overhaul.css', '/v2-design-system.css', '/manifest.webmanifest', '/privacy/index.html', '/terms/index.html',
+  '/index.html', '/themes/light-skies.jpg', '/themes/midnight-studio.jpg', '/themes/graphite-minimal.jpg', '/themes/plum-dusk.jpg', '/themes/forest-room.jpg', '/shop.css', '/mobile-navigation.css', '/ui-personalisation-fixes.css', '/ui-theme-overhaul.css', '/js/shop.js', '/styles.css', '/ui-polish.css', '/ui-next.css', '/ui-research.css', '/ui-overhaul.css', '/ui-system-v2.css', '/quality.css', '/theme-system.css', '/auth-overhaul.css', '/v2-design-system.css', '/manifest.webmanifest', '/privacy/index.html', '/terms/index.html',
   '/img/logo-64.png', '/img/logo-128.png', '/img/logo-192.png', '/img/logo-512.png',
   '/js/i18n.js', '/js/core.js', '/js/boot.js', '/js/data.js', '/js/audio.js',
   '/js/extras.js', '/js/podcasts.js', '/js/business.js', '/js/views.js', '/js/release.js', '/js/profiles.js',
