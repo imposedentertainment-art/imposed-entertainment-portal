@@ -4076,3 +4076,33 @@ html[data-ie-cards="slab"] :is(.card,.settings-card,.detail-card,.dashboard-pane
 .auth-card .auth-toggle{font-weight:750}
 @media(max-width:430px){.auth-portal-switch{grid-template-columns:minmax(0,1fr);gap:7px;margin-bottom:19px}.auth-portal-choice{padding:10px 12px}.auth-portal-icon{width:32px;height:32px;flex-basis:32px}}
 @media(prefers-reduced-motion:reduce){.auth-portal-choice{transition:none}.auth-portal-choice:hover{transform:none}}
+
+
+/* Listener portal — editorial discovery and personal music collection */
+#app .guest-discover .listener-welcome-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:24px 0 20px;position:relative;z-index:2}
+#app .guest-discover .listener-welcome-actions .primary,#app .guest-discover .listener-welcome-actions .secondary{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 19px;border-radius:13px;text-decoration:none;font-weight:800;cursor:pointer}
+#app .guest-discover .listener-welcome-actions .primary{background:linear-gradient(115deg,#ffb39a,#e78b77);color:#21120e;border:0}
+#app .guest-discover .listener-welcome-actions .secondary{background:rgba(255,255,255,.035);border:1px solid var(--listener-line);color:#edf2fa}
+#app .guest-discover .listener-value-points{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;max-width:780px;margin:24px 0 0;position:relative;z-index:1}
+#app .guest-discover .listener-value-points span{display:flex;flex-direction:column;gap:8px;padding:14px 15px;border:1px solid var(--listener-line);border-radius:13px;background:rgba(17,26,39,.62);font-size:12px;font-weight:700;color:#dce5f2}
+#app .guest-discover .listener-value-points b{font-size:10px;letter-spacing:.16em;color:#ffb39a}
+#app .guest-discover .listener-verify-step{display:inline-flex;margin-bottom:8px;color:#ffb39a;font-size:10px;font-weight:850;letter-spacing:.16em}
+#app .guest-discover #listener-verification{scroll-margin-top:24px}
+#app .guest-discover .listener-saved-music{margin:22px 0;padding:clamp(18px,3vw,30px);border:1px solid var(--listener-line);border-radius:22px;background:linear-gradient(145deg,rgba(23,35,53,.96),rgba(12,19,29,.98));}
+#app .guest-discover .listener-saved-music[hidden]{display:none!important}
+#app .guest-discover .listener-saved-music-head{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+#app .guest-discover .listener-saved-music-head h2{margin:4px 0;font-size:clamp(24px,3vw,34px);letter-spacing:-.045em}
+#app .guest-discover .listener-saved-music-head p:not(.eyebrow){margin:0;color:var(--listener-muted);font-size:13px}
+#app .guest-discover .listener-saved-music-head .eyebrow{margin:0;color:#ffb39a!important;font-size:10px;letter-spacing:.16em}
+#app .guest-discover .listener-saved-release{display:flex;align-items:center;gap:14px;padding:13px 0;border-top:1px solid var(--listener-line)}
+#app .guest-discover .listener-saved-release-art{display:grid;place-items:center;width:48px;height:48px;flex:0 0 48px;border-radius:12px;background:linear-gradient(140deg,#4a3441,#202c40);color:#ffd0c1;font-size:22px}
+#app .guest-discover .listener-saved-release>div{display:flex;flex-direction:column;gap:4px;min-width:0;flex:1}
+#app .guest-discover .listener-saved-release strong{color:#f1f4fa;font-size:14px;overflow-wrap:anywhere}
+#app .guest-discover .listener-saved-release small{color:var(--listener-muted);font-size:12px}
+#app .guest-discover .listener-saved-release>a{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;border-radius:10px;padding:9px 12px;white-space:nowrap}
+#app .guest-discover .listener-saved-empty{padding:26px 12px;text-align:center;border:1px dashed var(--listener-line);border-radius:15px}
+#app .guest-discover .listener-saved-empty strong{font-size:15px}
+#app .guest-discover .listener-saved-empty p{color:var(--listener-muted);font-size:13px}
+#app .guest-discover #show-saved-releases{color:#ffd0c1}
+@media(max-width:700px){#app .guest-discover .listener-value-points{grid-template-columns:1fr;gap:8px}#app .guest-discover .listener-value-points span{flex-direction:row;align-items:center;gap:12px;padding:11px 13px}#app .guest-discover .listener-saved-release{align-items:flex-start;flex-wrap:wrap}#app .guest-discover .listener-saved-release>a{margin-left:62px}#app .guest-discover .listener-welcome-actions>*{flex:1}}
+@media(prefers-reduced-motion:reduce){#app .guest-discover .listener-welcome-actions *{scroll-behavior:auto;transition:none}}
