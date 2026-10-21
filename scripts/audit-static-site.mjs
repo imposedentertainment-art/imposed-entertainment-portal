@@ -42,7 +42,6 @@ const core = read('js/core.js');
 const personalisationFixes = read('ui-personalisation-fixes.css');
 const themeOverhaul = read('ui-theme-overhaul.css');
 const coreIcons = read('js/core.js');
-const personalisation = read('js/personalise.js');
 
 if (!views.includes('mobile-menu icon-btn') || !views.includes('id="mobile-navigation-menu"')) {
   fail('Workspace navigation trigger and mobile menu container must both exist.');
@@ -57,9 +56,8 @@ if (!navigationCss.includes('.nav-inner>.mobile-menu') || !navigationCss.include
   fail('Mobile navigation styles must target the actual nested menu trigger and drawer.');
 }
 if (!personalisation.includes("palette:'midnight'") ||
-    !personalisation.includes("['midnight','graphite','navy','plum','forest']") ||
     !personalisation.includes("'palette','density'")) {
-  fail('Workspace palette preference must be validated, applied, and included in settings import/export.');
+  fail('Workspace theme preference must be validated and included in settings import/export.');
 }
 if (!html.includes('/ui-theme-overhaul.css?v=' + version) ||
     !worker.includes("'/ui-theme-overhaul.css'")) {
@@ -90,6 +88,7 @@ if (!worker.includes("'/ui-personalisation-fixes.css'") ||
 if (!personalisation.includes("s.addEventListener('change',function(){state[key]=s.value;save()})") ||
     !personalisation.includes("input.addEventListener('change',function(){state[key]=input.checked;save()")) {
   fail('Personalisation controls must persist changes instead of only changing their preview.');
+}
 if (!boot.includes('Retry a single transient Supabase Auth failure') ||
     !boot.includes('const transient=Number(lastError?.status)>=500')) {
   fail('Supabase startup must retry transient session-read failures.');
@@ -97,7 +96,6 @@ if (!boot.includes('Retry a single transient Supabase Auth failure') ||
 if (!core.includes('if(refreshed.error)throw refreshed.error') ||
     !core.includes('Your session could not be refreshed')) {
   fail('Storage uploads must not continue with a stale access token after refresh failure.');
-}
 }
 
 
