@@ -455,3 +455,68 @@ html[data-ie-mode="amoled"] body :where(.card,.panel,.metric,.release-card,.arti
 html[data-ie-mode="amoled"] body :where(h1,h2,h3,h4,h5,h6,strong,b,label,legend) {color:#fafafa!important}
 html[data-ie-mode="amoled"] body :where(p,small,.muted,.sub,.help-text,.description,.setting-description) {color:#a7a7a7!important}
 html[data-ie-mode="amoled"] body :where(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]),select,textarea,[contenteditable="true"]) {background:#050505!important;color:#fafafa!important;border-color:#454545!important}
+
+
+
+/* v2.8.7 — photographic workspace themes supplied in themes.zip.
+   The image is a backdrop only; readable, independently tinted surfaces remain above it. */
+html[data-ie-workspace-theme="light-skies"] body {
+  --ui-page:#dfeefa;--ui-surface:rgba(247,251,255,.91);--ui-surface-raised:rgba(232,242,251,.94);
+  --ui-border:#b8cfe1;--ui-border-strong:#8eafc9;--ui-text:#18344d;--ui-text-soft:#2f4c65;--ui-text-muted:#58738a;--ui-input:rgba(255,255,255,.96);
+  --bg:#dfeefa;--s1:rgba(247,251,255,.91);--s2:rgba(232,242,251,.94);--line:#b8cfe1;--line2:#8eafc9;--text:#18344d;--soft:#2f4c65;--muted:#58738a;
+  background-color:#dfeefa!important;
+  background-image:linear-gradient(180deg,rgba(229,241,251,.36),rgba(232,242,250,.58)),url('/themes/light-skies.jpg')!important;
+  background-position:center,center 36%!important;background-size:cover,cover!important;background-repeat:no-repeat!important;background-attachment:fixed,fixed!important;
+}
+html[data-ie-workspace-theme="midnight-studio"] body {
+  --ui-page:#080a10;--ui-surface:rgba(8,10,17,.88);--ui-surface-raised:rgba(16,18,30,.92);
+  --ui-border:#343449;--ui-border-strong:#514d70;--ui-text:#f7f4ff;--ui-text-soft:#ded8ed;--ui-text-muted:#a7a0bc;--ui-input:rgba(9,10,17,.94);
+  --bg:#080a10;--s1:rgba(8,10,17,.88);--s2:rgba(16,18,30,.92);--line:#343449;--line2:#514d70;--text:#f7f4ff;--soft:#ded8ed;--muted:#a7a0bc;
+  background-color:#080a10!important;
+  background-image:linear-gradient(180deg,rgba(4,5,12,.48),rgba(4,5,12,.76)),url('/themes/midnight-studio.jpg')!important;
+  background-position:center,center 42%!important;background-size:cover,cover!important;background-repeat:no-repeat!important;background-attachment:fixed,fixed!important;
+}
+html[data-ie-workspace-theme="graphite-minimal"] body {
+  --ui-page:#101216;--ui-surface:rgba(13,15,19,.91);--ui-surface-raised:rgba(28,30,36,.94);
+  --ui-border:#3a3d46;--ui-border-strong:#555a66;--ui-text:#f3f4f6;--ui-text-soft:#dedfe4;--ui-text-muted:#a6a9b2;--ui-input:rgba(14,16,20,.96);
+  --bg:#101216;--s1:rgba(13,15,19,.91);--s2:rgba(28,30,36,.94);--line:#3a3d46;--line2:#555a66;--text:#f3f4f6;--soft:#dedfe4;--muted:#a6a9b2;
+  background-color:#101216!important;
+  background-image:linear-gradient(180deg,rgba(7,9,12,.60),rgba(7,9,12,.82)),url('/themes/graphite-minimal.jpg')!important;
+  background-position:center,center 45%!important;background-size:cover,cover!important;background-repeat:no-repeat!important;background-attachment:fixed,fixed!important;
+}
+html[data-ie-workspace-theme="plum-dusk"] body {
+  --ui-page:#100c19;--ui-surface:rgba(17,10,25,.88);--ui-surface-raised:rgba(36,20,47,.92);
+  --ui-border:#543451;--ui-border-strong:#804a78;--ui-text:#fff3ff;--ui-text-soft:#ead6ed;--ui-text-muted:#bda3c5;--ui-input:rgba(18,10,26,.94);
+  --bg:#100c19;--s1:rgba(17,10,25,.88);--s2:rgba(36,20,47,.92);--line:#543451;--line2:#804a78;--text:#fff3ff;--soft:#ead6ed;--muted:#bda3c5;
+  background-color:#100c19!important;
+  background-image:linear-gradient(180deg,rgba(8,5,16,.43),rgba(8,5,16,.73)),url('/themes/plum-dusk.jpg')!important;
+  background-position:center,center 50%!important;background-size:cover,cover!important;background-repeat:no-repeat!important;background-attachment:fixed,fixed!important;
+}
+html[data-ie-workspace-theme="forest-room"] body {
+  --ui-page:#0b1511;--ui-surface:rgba(7,18,13,.89);--ui-surface-raised:rgba(18,39,27,.93);
+  --ui-border:#355744;--ui-border-strong:#527c60;--ui-text:#f0fff3;--ui-text-soft:#d5e9d9;--ui-text-muted:#a1c0a8;--ui-input:rgba(8,19,13,.95);
+  --bg:#0b1511;--s1:rgba(7,18,13,.89);--s2:rgba(18,39,27,.93);--line:#355744;--line2:#527c60;--text:#f0fff3;--soft:#d5e9d9;--muted:#a1c0a8;
+  background-color:#0b1511!important;
+  background-image:linear-gradient(180deg,rgba(4,15,9,.43),rgba(4,15,9,.74)),url('/themes/forest-room.jpg')!important;
+  background-position:center,center 45%!important;background-size:cover,cover!important;background-repeat:no-repeat!important;background-attachment:fixed,fixed!important;
+}
+
+/* Theme-aware translucent surfaces allow the selected artwork to show without sacrificing contrast. */
+html[data-ie-workspace-theme] body :where(.nav,.topbar,.app-header,.sidebar,.side-nav,.mobile-nav,.bottom-nav,.workspace-topbar,.settings-quicknav) {
+  background-color:var(--ui-surface)!important;background-image:none!important;border-color:var(--ui-border)!important;backdrop-filter:blur(18px) saturate(125%);
+}
+html[data-ie-workspace-theme] body :where(.card,.panel,.metric,.release-card,.artist-card,.profile-card,.settings-card,.detail-card,.form-card,.builder-card,.approval-card,.up-card,.collection-card,.listener-card,.modal-card,.modal-content,.dialog,.dialog-content,.table-wrap,.table-container,.settings-section,.setting-section) {
+  background-color:var(--ui-surface)!important;background-image:none!important;border-color:var(--ui-border)!important;backdrop-filter:blur(14px) saturate(120%);
+}
+html[data-ie-workspace-theme="light-skies"] body :where(.nav,.topbar,.app-header,.sidebar,.side-nav,.mobile-nav,.bottom-nav,.workspace-topbar,.settings-quicknav,.card,.panel,.metric,.release-card,.artist-card,.profile-card,.settings-card,.detail-card,.form-card,.builder-card,.approval-card,.up-card,.collection-card,.listener-card,.modal-card,.modal-content,.dialog,.dialog-content,.table-wrap,.table-container,.settings-section,.setting-section) {box-shadow:0 12px 36px rgba(46,78,108,.10)!important}
+html[data-ie-workspace-theme] body :where(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]),select,textarea,[contenteditable="true"]) {background-color:var(--ui-input)!important;color:var(--ui-text)!important;border-color:var(--ui-border-strong)!important}
+html[data-ie-workspace-theme] body :where(h1,h2,h3,h4,h5,h6,strong,b,label,legend) {color:var(--ui-text)!important}
+html[data-ie-workspace-theme] body :where(p,small,.muted,.sub,.help-text,.description,.setting-description) {color:var(--ui-text-muted)}
+/* Keep previews in the theme picker visually representative of each selected backdrop. */
+.workspace-theme-light-skies .workspace-theme-preview{background-image:linear-gradient(145deg,rgba(235,246,255,.28),rgba(215,233,247,.55)),url('/themes/light-skies.jpg')!important;background-size:cover!important}
+.workspace-theme-midnight-studio .workspace-theme-preview{background-image:linear-gradient(145deg,rgba(4,5,12,.25),rgba(4,5,12,.55)),url('/themes/midnight-studio.jpg')!important;background-size:cover!important}
+.workspace-theme-graphite-minimal .workspace-theme-preview{background-image:linear-gradient(145deg,rgba(7,9,12,.42),rgba(7,9,12,.7)),url('/themes/graphite-minimal.jpg')!important;background-size:cover!important}
+.workspace-theme-plum-dusk .workspace-theme-preview{background-image:linear-gradient(145deg,rgba(8,5,16,.25),rgba(8,5,16,.55)),url('/themes/plum-dusk.jpg')!important;background-size:cover!important}
+.workspace-theme-forest-room .workspace-theme-preview{background-image:linear-gradient(145deg,rgba(4,15,9,.25),rgba(4,15,9,.55)),url('/themes/forest-room.jpg')!important;background-size:cover!important}
+@media(prefers-reduced-motion:reduce){html[data-ie-workspace-theme] body{background-attachment:scroll,scroll!important}}
+@media(max-width:700px){html[data-ie-workspace-theme] body{background-attachment:scroll,scroll!important;background-position:center,center top!important}}
