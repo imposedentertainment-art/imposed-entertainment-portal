@@ -221,12 +221,22 @@
     enhanceNavigation();bind();window.dispatchEvent(new CustomEvent('ie-view-rendered'));setTimeout(hydrateCovers,0);
     // Decode images off the critical path and defer below-the-fold media. The global error handler
     // in index.html replaces failed images with accessible fallbacks.
-    document.querySelectorAll('#main-content img').forEach(img=>{
-      if(!img.hasAttribute('decoding')) img.decoding='async';
-      const r=img.getBoundingClientRect();
-      const near=r.bottom>0&&r.top<window.innerHeight*.9;
-      if(!img.hasAttribute('loading'))img.loading=near?'eager':'lazy';
-      if(!img.hasAttribute('fetchpriority'))img.fetchPriority=near?'high':'low';
+    // Batch geometry reads before attribute/class writes. Interleaving getBoundingClientRect()
+    // with DOM mutations forces repeated synchronous layout on media-heavy pages.
+    const pageImages=Array.from(document.querySelectorAll('#main-content img'));
+    const viewportHeight=window.innerHeight||800;
+    const imageNearViewport=pageImages.map(img=>{
+      if(img.hasAttribute('loading')&&img.hasAttribute('fetchpriority'))return null;
+      const rect=img.getBoundingClientRect();
+      return rect.bottom>0&&rect.top<viewportHeight*.9;
+    });
+    pageImages.forEach((img,index)=>{
+      if(!img.hasAttribute('decoding'))img.decoding='async';
+      const near=imageNearViewport[index];
+      if(near!==null){
+        if(!img.hasAttribute('loading'))img.loading=near?'eager':'lazy';
+        if(!img.hasAttribute('fetchpriority'))img.fetchPriority=near?'high':'low';
+      }
       if(img.complete&&img.naturalWidth>0)img.classList.add('media-loaded');
       else if(!img.dataset.mediaLoadBound){img.dataset.mediaLoadBound='1';img.addEventListener('load',()=>img.classList.add('media-loaded'),{once:true});}
     });
