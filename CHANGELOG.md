@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.7.5] - 2026-10-21 — Navigation, shop discovery and personalisation fixes
+
+### Fixed
+- Corrected the mobile menu trigger selector to match its actual nested location inside `.nav-inner`, restoring the visible menu toggle.
+- Added direct Shop links to desktop and mobile workspace navigation.
+- Included anchors as well as buttons in the mobile navigation search filter.
+- Made personalisation selects, toggles and accent swatches save immediately; range controls preview changes live and save on release.
+- Applied visible typography, line-height, content-width, navigation, button, card and motion preferences.
+- Normalised invalid saved navigation/button/motion values and corrected the four-tab customisation grid.
+
+### Verification
+- Updated static asset versions and service-worker cache namespace together.
+- Automated checks are triggered by the commits; live browser and device verification remains necessary.
+
 ## [2.7.4] - 2026-10-21 — Mobile navigation recovery
 
 ### Fixed
