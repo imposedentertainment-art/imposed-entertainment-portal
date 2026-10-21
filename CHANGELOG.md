@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.4.75] - 2026-10-21
+
+### Fixed
+- Removed the query string from the installed PWA start URL so the service worker can serve the app shell when launching offline; query-bearing navigations intentionally bypass the cache.
+- Synchronized the build marker, asset URLs, service-worker cache key and release notes for the new version.
+
+### Verification
+- Repository-wide JavaScript syntax and static deployment checks run in GitHub Actions.
+- Offline launch and authenticated browser workflows still require device/browser regression testing.
+
+
 ## [1.3.35] - 2026-10-20
 
 ### Fixed
