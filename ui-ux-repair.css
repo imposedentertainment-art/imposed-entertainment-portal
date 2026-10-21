@@ -430,3 +430,72 @@ html[data-ie-mode="light"] #app :is(.dashboard-widget-layout > [data-dashboard-w
 @media(prefers-reduced-motion:reduce) {
   #app * { scroll-behavior:auto!important; animation-duration:.01ms!important; transition-duration:.01ms!important; }
 }
+
+
+/* 3.3.23 — complete the cross-portal pass: auth, listener, public artist and setup routes. */
+#app :is(.auth-shell,.auth-layout,.auth-page,.auth-card,.auth-panel,.login-card,.login-panel,.signup-card,.setup-card,.listener-shell,.listener-page,.listener-card,.public-artist,.public-profile,.public-release,.artist-public-page,.smart-link-page,.discover-page,.shop-page,.shop-shell,.account-page) {
+  min-width:0;
+  border-color:var(--ie-glass-line,rgba(255,255,255,.16));
+}
+#app :is(.auth-card,.auth-panel,.login-card,.login-panel,.signup-card,.setup-card,.listener-card,.listener-panel,.public-artist-card,.public-profile-card,.public-release-card,.smart-link-card,.discover-card,.shop-card,.shop-product-card) {
+  border:1px solid var(--ie-glass-line,rgba(255,255,255,.16));
+  border-radius:clamp(16px,2vw,26px);
+  background:linear-gradient(145deg,rgba(255,255,255,.085),rgba(255,255,255,.02) 52%,rgba(0,0,0,.035)),var(--ie-glass-fill,rgba(18,23,32,.76));
+  box-shadow:var(--ie-glass-shadow,0 14px 38px rgba(0,0,0,.14),inset 0 1px 0 rgba(255,255,255,.11));
+  -webkit-backdrop-filter:blur(20px) saturate(150%);
+  backdrop-filter:blur(20px) saturate(150%);
+}
+#app :is(.auth-shell,.auth-layout,.auth-page,.listener-shell,.listener-page,.public-artist,.public-profile,.public-release,.artist-public-page,.smart-link-page,.discover-page,.shop-page,.shop-shell) :is(h1,h2,h3,p,small,label,button,a) {
+  overflow-wrap:anywhere;
+}
+#app :is(.auth-shell,.auth-layout,.auth-page,.listener-shell,.listener-page,.public-artist,.public-profile,.public-release,.artist-public-page,.smart-link-page,.discover-page,.shop-page,.shop-shell) :is(input,select,textarea) {
+  width:100%; max-width:100%; min-width:0; box-sizing:border-box;
+}
+#app :is(.auth-shell,.auth-layout,.auth-page,.listener-shell,.listener-page,.public-artist,.public-profile,.public-release,.artist-public-page,.smart-link-page,.discover-page,.shop-page,.shop-shell) :is(img,video,iframe) {
+  max-width:100%;
+}
+#app :is(.auth-shell,.auth-layout,.auth-page,.listener-shell,.listener-page,.public-artist,.public-profile,.public-release,.artist-public-page,.smart-link-page,.discover-page,.shop-page,.shop-shell) :is(.artist-banner,.profile-banner,.hero-banner,.cover-art,.release-artwork) {
+  overflow:hidden; border-radius:inherit;
+}
+#app :is(.auth-shell,.auth-layout,.auth-page,.listener-shell,.listener-page,.public-artist,.public-profile,.public-release,.artist-public-page,.smart-link-page,.discover-page,.shop-page,.shop-shell) :is(button,.button,[role=button]) {
+  min-height:40px;
+}
+#app :is(.auth-shell,.auth-layout,.auth-page,.listener-shell,.listener-page,.public-artist,.public-profile,.public-release,.artist-public-page,.smart-link-page,.discover-page,.shop-page,.shop-shell) :is(.primary,.primary-button,.btn-primary,[data-primary]) {
+  box-shadow:0 6px 18px color-mix(in srgb,var(--user-accent,var(--accent,#b3122a)) 22%,transparent),inset 0 1px 0 rgba(255,255,255,.16);
+}
+#app :is(.artist-grid,.release-grid,.profile-grid,.product-grid,.discover-grid,.catalogue-grid,.public-artist-grid) {
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,245px),1fr)); gap:clamp(12px,1.6vw,22px);
+}
+#app :is(.artist-grid,.release-grid,.profile-grid,.product-grid,.discover-grid,.catalogue-grid,.public-artist-grid) > * { min-width:0; }
+#app :is(.artist-card,.release-card,.profile-card,.product-card,.public-artist-card,.public-profile-card,.public-release-card,.shop-product-card) {
+  overflow:hidden; transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;
+}
+#app :is(.artist-card,.release-card,.profile-card,.product-card,.public-artist-card,.public-profile-card,.public-release-card,.shop-product-card):hover {
+  transform:translateY(-2px);
+  border-color:color-mix(in srgb,var(--user-accent,var(--accent,#b3122a)) 42%,var(--ie-glass-line,rgba(255,255,255,.16)));
+}
+#app :is(.artist-card,.release-card,.profile-card,.product-card,.public-artist-card,.public-profile-card,.public-release-card,.shop-product-card) :is(h2,h3,h4,p,small) {
+  min-width:0; overflow-wrap:anywhere;
+}
+#app :is(.artist-card,.release-card,.profile-card,.product-card,.public-artist-card,.public-profile-card,.public-release-card,.shop-product-card) img {
+  object-fit:cover;
+}
+#app :is(.sidebar,.app-sidebar,.workspace-sidebar) { overscroll-behavior:contain; }
+#app :is(.sidebar,.app-sidebar,.workspace-sidebar) a,
+#app :is(.sidebar,.app-sidebar,.workspace-sidebar) button { min-height:40px; }
+#app :is(.topbar,.app-header,.workspace-header) { isolation:isolate; }
+#app :is(.modal-backdrop,.dialog-backdrop,.overlay,.drawer-backdrop) { overscroll-behavior:contain; }
+#app :is(.modal-card,.modal-content,.dialog,.drawer,.side-panel) { max-height:min(88dvh,900px); overflow:auto; overscroll-behavior:contain; }
+@media(max-width:600px) {
+  #app :is(.auth-card,.auth-panel,.login-card,.login-panel,.signup-card,.setup-card,.listener-card,.listener-panel,.public-artist-card,.public-profile-card,.public-release-card,.smart-link-card,.discover-card,.shop-card,.shop-product-card) {
+    border-radius:18px; padding:clamp(14px,4vw,22px);
+  }
+  #app :is(.artist-grid,.release-grid,.profile-grid,.product-grid,.discover-grid,.catalogue-grid,.public-artist-grid) { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+  #app :is(.modal-card,.modal-content,.dialog,.drawer,.side-panel) { max-height:calc(100dvh - 24px); }
+}
+@media(max-width:380px) {
+  #app :is(.artist-grid,.release-grid,.profile-grid,.product-grid,.discover-grid,.catalogue-grid,.public-artist-grid) { grid-template-columns:minmax(0,1fr); }
+}
+@media(hover:none) {
+  #app :is(.artist-card,.release-card,.profile-card,.product-card,.public-artist-card,.public-profile-card,.public-release-card,.shop-product-card):hover { transform:none; }
+}
