@@ -1,5 +1,5 @@
 
-/* Imposed Entertainment UI stability layer — 3.3.7
+/* Imposed Entertainment UI stability layer — 3.3.8
    Loaded last to reconcile legacy styles without changing application behaviour. */
 
 /* The shell must not trap the fixed sidebar and its overlay in a low stacking context. */
