@@ -501,9 +501,16 @@ html[data-ie-mode="light"] #app :is(.dashboard-widget-layout > [data-dashboard-w
 }
 
 /* 3.3.25 corrective pass — preserve the existing dashboard sizing logic and restore real glass surfaces. */
+/* Preserve the selected palette's real backdrop; never paint over its theme image. */
 html,body{min-height:100%;background-color:var(--bg,#080a0d)}
-body{background-image:var(--ie-page-background,radial-gradient(ellipse at 12% 0%,color-mix(in srgb,var(--user-accent,var(--accent,#b3122a)) 13%,transparent),transparent 38rem),radial-gradient(ellipse at 92% 18%,rgba(90,117,160,.11),transparent 34rem));background-attachment:fixed}
 #app{min-height:100vh;position:relative}
+body.personalise-palette-light-skies{background-attachment:fixed}
+body.personalise-palette-midnight-studio,body.personalise-palette-graphite-minimal,body.personalise-palette-plum-dusk,body.personalise-palette-forest-room{background-attachment:fixed}
+body.personalise-palette-midnight-studio{--ie-theme-art:url('/themes/midnight-studio.jpg')}
+body.personalise-palette-graphite-minimal{--ie-theme-art:url('/themes/graphite-minimal.jpg')}
+body.personalise-palette-plum-dusk{--ie-theme-art:url('/themes/plum-dusk.jpg')}
+body.personalise-palette-forest-room{--ie-theme-art:url('/themes/forest-room.jpg')}
+body.personalise-palette-light-skies{--ie-theme-art:url('/themes/light-skies.jpg')}
 #app .dashboard-page{width:100%;max-width:1440px;margin-inline:auto;min-width:0}
 #app .dashboard-page .dashboard-hero{position:relative;isolation:isolate;display:grid;grid-template-columns:minmax(0,1fr) minmax(190px,.62fr);align-items:center;gap:clamp(18px,3vw,40px);min-height:250px;padding:clamp(22px,3vw,40px);margin-bottom:clamp(18px,2.5vw,30px);overflow:hidden;border:1px solid rgba(255,255,255,.14);border-radius:28px;background:linear-gradient(115deg,rgba(17,21,30,.83),rgba(18,23,34,.64) 58%,rgba(26,25,36,.56));box-shadow:0 24px 64px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.12);-webkit-backdrop-filter:blur(24px) saturate(155%);backdrop-filter:blur(24px) saturate(155%)}
 #app .dashboard-page .dashboard-hero::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 88% 35%,color-mix(in srgb,var(--user-accent,var(--accent,#b3122a)) 26%,transparent),transparent 26rem),linear-gradient(135deg,rgba(255,255,255,.055),transparent 52%)}
