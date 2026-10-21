@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.9.7] - 2026-10-21 — Liquid Glass specificity and transparency fix
+
+- Fixed CSS specificity conflicts that left existing component styles opaque despite the original Liquid Glass rules.
+- Explicitly restyled dashboard hero secondary actions, shared cards, controls, navigation and page header surfaces with stronger translucent glass layers.
+- Reduced the glass fill opacity so theme photography remains visible behind secondary actions.
+- Updated asset versions and service-worker cache.
+
+# Changelog
+
 ## [2.9.6] - 2026-10-21 — Full Liquid Glass coverage
 
 - Extended Liquid Glass beyond dashboard widgets to global navigation, headers, sidebars, page sections, profiles, artist/release views, catalogue, shop, forms, tables, inputs, menus, popovers, dialogs and status controls.
