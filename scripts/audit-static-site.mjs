@@ -40,6 +40,9 @@ const personalisation = read('js/personalise.js');
 const navigationCss = read('mobile-navigation.css');
 const core = read('js/core.js');
 const personalisationFixes = read('ui-personalisation-fixes.css');
+const themeOverhaul = read('ui-theme-overhaul.css');
+const coreIcons = read('js/core.js');
+const personalisation = read('js/personalise.js');
 
 if (!views.includes('mobile-menu icon-btn') || !views.includes('id="mobile-navigation-menu"')) {
   fail('Workspace navigation trigger and mobile menu container must both exist.');
@@ -58,6 +61,23 @@ if (!personalisation.includes("palette:'midnight'") ||
     !personalisation.includes("'palette','density'")) {
   fail('Workspace palette preference must be validated, applied, and included in settings import/export.');
 }
+if (!html.includes('/ui-theme-overhaul.css?v=' + version) ||
+    !worker.includes("'/ui-theme-overhaul.css'")) {
+  fail('Full theme stylesheet must be versioned and included in the service-worker asset allow-list.');
+}
+if (!themeOverhaul.includes('personalise-palette-light-skies') ||
+    !themeOverhaul.includes('radial-gradient') ||
+    !themeOverhaul.includes('personalise-palette-forest-room')) {
+  fail('Named themes must include the Light Skies cloud treatment and alternate complete themes.');
+}
+if (!personalisation.includes("['light-skies','Light skies · blue & cloud']") ||
+    !personalisation.includes("'light-skies','midnight-studio','graphite-minimal','plum-dusk','forest-room'")) {
+  fail('Theme picker must expose the new named themes and validate saved selections.');
+}
+['briefcase-business','mic-vocal','chart-no-axes-combined','panel-left-open','panel-left-close','check-square','shopping-bag','headphones'].forEach(name => {
+  if (!coreIcons.includes("'" + name + "':")) fail('SVG icon map is missing navigation icon: ' + name);
+});
+if (!coreIcons.includes("p[name]||p.music")) fail('Unknown icon names must use a visible SVG fallback.');
 if (!personalisationFixes.includes('.nav-accordion > button.active') ||
     !personalisationFixes.includes('var(--user-accent, #d8bd73)') ||
     !personalisationFixes.includes('personalise-palette-forest')) {
