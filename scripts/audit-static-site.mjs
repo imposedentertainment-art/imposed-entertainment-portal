@@ -137,7 +137,7 @@ if (!criticalAssetsBlock || !criticalAssetsBlock[1].includes("'/ui-theme-overhau
 }
 
 
-if (/\\bgetAppearancePreferences\\s*\\(/.test(events)) fail('Appearance preference bridge must not call an undefined getter.');
+if (/\bgetAppearancePreferences\s*\(/.test(events)) fail('Appearance preference bridge must not call an undefined getter.');
 if (!events.includes('profile.notification_preferences && profile.notification_preferences.appearance')) fail('Quick customiser must merge account appearance defaults before saving.');
 if (!core.includes("workspaceTheme:'midnight-studio'") ||
     !core.includes("root.dataset.ieWorkspaceTheme") ||
