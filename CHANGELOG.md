@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.7.4] - 2026-10-21 — Mobile navigation recovery
+
+### Fixed
+- Corrected the CSS cascade conflict between legacy mobile-device rules and newer drawer styling that caused the menu to be hidden or misplaced.
+- Added a dedicated stylesheet loaded after every existing UI layer so the mobile drawer, toggle, search, accordion sections and active-page states win over conflicting legacy selectors.
+- Anchored the menu below the sticky header instead of using fixed positioning inside a backdrop-filter containing block.
+- Restored a solid, scrollable menu surface with safe-area spacing and reliable tap targets.
+
+### Verification
+- Updated asset versions, build metadata and the service-worker cache allow-list together.
+- Automated static checks are triggered by the commits; live-device visual testing remains necessary.
+
 ## [2.7.3] - 2026-10-21 — Mobile navigation fix
 
 ### Fixed
