@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.8.9] - 2026-10-21 — Theme artwork icons in picker
+
+### Fixed
+- Replaced generic line-based theme preview swatches with thumbnails using each theme's bundled artwork.
+- Kept accessible decorative images hidden from screen readers and added responsive thumbnail sizing.
+- Bumped document asset versions and service-worker cache namespace so the updated picker can be fetched.
+
+### Verification
+- Static source checks pending; confirm live rendering after Cloudflare Pages deploys.
+
+
 ## [2.8.8] - 2026-10-21 — Theme artwork bundled
 
 ### Changed
