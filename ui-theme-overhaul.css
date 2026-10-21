@@ -172,3 +172,11 @@ body .boot-skeleton-line,body .boot-skeleton-grid i {border-radius:12px}
 @media(prefers-reduced-motion:reduce) {
   body :where(button,a,.card,.panel,.metric) {transition:none!important;scroll-behavior:auto!important}
 }
+
+/* Let the Light Skies atmosphere show through the workspace canvas, not just the page margins. */
+body.personalise-palette-light-skies :where(.main,.main-content,.page,.page-content,.workspace,.workspace-content,.content-area,.dashboard-page) {
+  background-color:transparent!important;
+}
+body.personalise-palette-light-skies :where(.main,.main-content,.page,.page-content,.workspace,.workspace-content,.content-area,.dashboard-page) :where(.card,.panel,.metric,.release-card,.artist-card,.profile-card,.settings-card,.detail-card,.form-card,.builder-card,.approval-card,.up-card,.collection-card,.listener-card) {
+  backdrop-filter:blur(2px);
+}
