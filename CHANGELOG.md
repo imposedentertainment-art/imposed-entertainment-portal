@@ -1,3 +1,12 @@
+## 3.3.3 — Dashboard-wide UI refactor
+
+- Consolidated contrast tokens across dashboard cards, headings, actions, badges and placeholders.
+- Standardised hero action button shape, spacing, typography and icon alignment.
+- Increased safe scroll clearance and horizontal page gutters to prevent clipped content and scrollbar collisions.
+- Strengthened navigation/search modal backdrop layering and drawer text contrast.
+- Standardised header spacing, stat accent rails, mobile keyboard shortcut visibility and floating Aa placement.
+- Refreshed page asset versions and service-worker cache.
+
 ## 3.3.2 — Real navigation DOM integration
 
 - Corrected overlay selectors to target the actual `.shell > header.nav > .mobile-nav` markup.
