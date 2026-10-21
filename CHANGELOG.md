@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.4.89] - 2026-10-21
+
+### Added
+- Added Listener Room, a personalized landing section inside artist discovery with live saved-artist, saved-release, and recent-discovery counts.
+- Added resume browsing, saved-artist shortcuts, fresh roster suggestions, quick vibe searches, and surprise discovery actions connected to the existing artist directory and collection.
+- Built the Listener Room from the current public artist response and local/cloud-synced listener collection, without introducing a new backend dependency or collecting new personal data.
+
+### Improved
+- Added a responsive dashboard layout with clear empty states, mobile-specific spacing, keyboard focus, and reduced-motion support.
+
+### Verification
+- Static consistency checks are pending after this commit; browser testing and CI confirmation remain outstanding.
+
+
 ## [1.4.88] - 2026-10-21
 
 ### Improved
