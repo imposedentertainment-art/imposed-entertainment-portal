@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.4.78] - 2026-10-21
+
+### Improved — research-led UI/UX
+- Added a visible Quick jump action for the existing keyboard-accessible navigation palette, with Ctrl/⌘+K discoverability and a mobile-menu entry.
+- Mobile navigation now identifies the current page with an explicit `aria-current="page"` marker, synced from the desktop active destination.
+- Standardised navigation tap targets around a comfortable 44px, strengthened active/focus feedback, and improved form-validation helper/error presentation.
+- Aligned browser chrome colour with the current base surface and corrected the duplicated service-worker stylesheet entry from v1.4.77.
+
+### Research basis
+- Nielsen Norman Group, [10 Usability Heuristics](https://www.nngroup.com/articles/ten-usability-heuristics/) — system status, consistency, recognition and recovery.
+- Baymard Institute, [Dashboard card consistency](https://baymard.com/research-articles/cards-dashboard-layout) and [inline form validation](https://baymard.com/research-articles/inline-form-validation?isVariant=b).
+- W3C, [What's New in WCAG 2.2](https://www.w3.org/WAI/standards-guidelines/wcag/new-in-22/) — perceivable focus and usable target size.
+
+### Verification
+- Updated app shell, style layer, navigation interaction, service-worker cache and version file together.
+- Static JS/CSS/version checks required; live browser and authenticated regression testing remains outstanding.
+
+
 ## [1.4.77] - 2026-10-21
 
 ### Improved — UI/UX
