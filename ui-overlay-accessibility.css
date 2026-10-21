@@ -110,3 +110,72 @@ html body:has(.nav>.mobile-nav:not([hidden])) #ie-personalise-trigger{
   z-index:30!important;pointer-events:none!important;
 }
 html body .nav>.mobile-nav:not([hidden]){isolation:isolate}
+
+/* v3.3.2 integration correction: target the real .shell > header.nav markup. */
+html body .shell{position:relative;z-index:0;min-width:0}
+html body .shell>header.nav{
+  position:sticky!important;top:0!important;z-index:40!important;
+  margin-top:1rem!important;padding:.75rem 1rem!important;
+  box-sizing:border-box;overflow:visible!important;
+}
+html body .shell>header.nav>.nav-inner{
+  position:relative!important;z-index:1!important;display:flex!important;
+  align-items:center!important;min-width:0;
+}
+html body .shell>header.nav .topbar-location,
+html body .shell>header.nav .workspace-title,
+html body .shell>header.nav .brand-title{
+  display:flex!important;flex-direction:column!important;
+  align-items:flex-start!important;gap:.25rem!important;
+  position:static!important;min-width:0;
+}
+html body .shell>header.nav .topbar-tools :is(.topbar-search,.topbar-icon,.topbar-account),
+html body .shell>header.nav>.nav-inner :is(.topbar-search,.topbar-icon,.topbar-account){
+  width:2.5rem!important;min-width:2.5rem!important;height:2.5rem!important;
+  min-height:2.5rem!important;flex:0 0 2.5rem!important;border-radius:.5rem!important;
+}
+html body .shell>header.nav>.mobile-nav{
+  color:#f8fafc!important;background:rgba(15,23,42,.97)!important;
+  -webkit-backdrop-filter:blur(12px)!important;backdrop-filter:blur(12px)!important;
+}
+html body .shell>header.nav>.mobile-nav :is(a,button,[role=menuitem],.nav-accordion-title){
+  display:flex!important;align-items:center!important;justify-content:space-between!important;
+  gap:.625rem!important;box-sizing:border-box;width:100%;min-height:44px;
+  padding:.75rem 1rem!important;color:#f8fafc!important;
+  -webkit-text-fill-color:#f8fafc;line-height:1.35;text-align:left;
+}
+html body .shell>header.nav>.mobile-nav :is(.mobile-nav-label,.nav-meta,.nav-description,small){
+  color:#cbd5e1!important;-webkit-text-fill-color:#cbd5e1;
+}
+html body .shell>header.nav>.mobile-nav .mobile-nav-search input::placeholder{
+  color:#94a3b8!important;opacity:1!important;
+}
+/* When open, place the real drawer above the blurred page backdrop. */
+html body:has(.shell>header.nav>.mobile-nav:not([hidden])) .shell>header.nav{
+  z-index:50!important;
+}
+html body:has(.shell>header.nav>.mobile-nav:not([hidden])) .shell>header.nav>.nav-inner{
+  z-index:0!important;
+}
+html body:has(.shell>header.nav>.mobile-nav:not([hidden])) .shell>header.nav>.mobile-nav{
+  position:absolute!important;z-index:50!important;isolation:isolate;
+}
+html body:has(.shell>header.nav>.mobile-nav:not([hidden]))::before{
+  content:"";position:fixed;inset:0;z-index:39;
+  background:rgba(15,23,42,.75);
+  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+  pointer-events:auto;
+}
+/* Do not let the Aa control intercept drawer interaction. */
+html body:has(.shell>header.nav>.mobile-nav:not([hidden])) #ie-personalise-trigger{
+  z-index:30!important;pointer-events:none!important;
+}
+html body #app :is(.main,.page,.page-content,.workspace-content,.dashboard-page,.content-area,.dashboard-content){
+  padding-bottom:6rem!important;
+}
+@media(max-width:767px){
+  html body .shell>header.nav>.nav-inner .topbar-search kbd,
+  html body .shell>header.nav>.nav-inner .mobile-nav-search-hint,
+  html body #app .keyboard-shortcut,html body #app .search-shortcut,
+  html body #app kbd[aria-label*="shortcut" i]{display:none!important}
+}
