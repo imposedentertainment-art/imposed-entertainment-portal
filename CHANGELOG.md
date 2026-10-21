@@ -1,5 +1,22 @@
 # Changelog
 
+## [2.2.0] - 2026-10-21 — Personalisation and responsive UI functionality
+
+### Fixed
+- Connected advertised text scaling and line spacing preferences to global typography.
+- Implemented the system theme's light-mode behavior when the device requests light appearance.
+- Added visible behavior for high-contrast mode, accent glow, decorative-element visibility, minimal navigation, solid buttons and reduced/no-motion preferences.
+- Removed a duplicate service-worker asset entry and ensured the unified stylesheet is versioned consistently.
+
+### Improved
+- Strengthened accessible contrast, preference consistency, and cross-screen design-system behavior.
+- Kept existing feature modules and authentication/data flows intact.
+
+### Verification
+- Automated JavaScript syntax, asset/version, CSS structure and Cloudflare Pages static checks run against the release commit. Real-browser and device testing is still required.
+
+# Changelog
+
 ## [2.1.0] - 2026-10-21 — Unified UI and personalisation release
 
 ### Added
