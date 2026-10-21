@@ -1,5 +1,5 @@
 
-/* Imposed Entertainment UI stability layer — 3.3.8
+/* Imposed Entertainment UI stability layer — 3.3.9
    Loaded last to reconcile legacy styles without changing application behaviour. */
 
 /* The shell must not trap the fixed sidebar and its overlay in a low stacking context. */
@@ -200,3 +200,8 @@ html body #app :is(button,a,[role=button]):focus-visible{outline:2px solid #fff;
     -webkit-backdrop-filter:none!important;backdrop-filter:none!important;
   }
 }
+
+/* v3.3.9: the app wrapper also used to trap the fixed header in a z-index:0 stacking context. */
+html body #app{position:relative!important;z-index:auto!important;isolation:auto!important;}
+/* Disable the older generic .nav drawer backdrop too; the header-local backdrop above is the only mobile-nav overlay. */
+html body:has(.nav>.mobile-nav:not([hidden]))::before{content:none!important;display:none!important;}
