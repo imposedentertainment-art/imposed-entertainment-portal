@@ -1,3 +1,9 @@
+## 3.3.11 — Keep the mobile menu toggle above the drawer
+
+- Made the compact header row a deliberate top stacking layer and fixed its height, keeping the toggle above the drawer even when older rules change drawer geometry.
+- Kept the drawer scrollable below the header and retained the page-covering glass backdrop.
+- Refreshed the service-worker cache and added an assertion for header-row stacking.
+
 ## 3.3.10 — Keep mobile menu controls clear of the drawer
 
 - Forced the compact mobile header into a single row and constrained the brand wordmark so the drawer cannot overlap the menu toggle.
