@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.4.87] - 2026-10-21
+
+### Fixed
+- Hardened band-invite responses with an explicit authenticated-user requirement and row locking so concurrent accept/decline requests cannot both process a pending invitation.
+- Added the corresponding versioned Supabase migration to the repository.
+- Strengthened static-site release validation: local JavaScript and CSS assets must use the current version query, and app-shell assets must be included in the service-worker allow-list except the intentionally network-only config.js.
+- Refreshed HTML asset URLs and service-worker cache namespace to ensure clients request the audited release.
+
+### Verification
+- Applied the invite hardening migration to Supabase and added its matching migration file to the repository.
+- Repository static checks and browser end-to-end tests still need execution in CI and a real browser; no full production-readiness claim is made.
+
 ## [1.4.86] - 2026-10-21
 
 ### Improved
