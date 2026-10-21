@@ -1,0 +1,121 @@
+/* Imposed Entertainment 1.4.80 — high-impact visual system refinement.
+   Additive presentation layer: respects existing theme/personalisation variables and app behaviour. */
+:root{
+  --ie80-radius:16px;
+  --ie80-radius-sm:11px;
+  --ie80-border:color-mix(in srgb,var(--ui-border,#28313b) 84%,transparent);
+  --ie80-shadow:0 16px 42px rgb(0 0 0 / .16);
+  --ie80-ease:cubic-bezier(.2,.75,.25,1);
+}
+body{font-feature-settings:"ss01" on; -webkit-font-smoothing:antialiased}
+#app{width:100%;min-width:0}
+:where(.shell,.workspace,.main,.content,.page,.page-content,.dashboard-page){min-width:0}
+:where(.page,.dashboard-page,.settings-page){width:100%;max-width:100%}
+:where(.page-heading,.dashboard-hero,.panel-title,.section-head){
+  gap:12px;min-width:0;
+}
+:where(.page-heading h1,.dashboard-hero h1,.page-heading h2){
+  letter-spacing:-.035em;line-height:1.04;text-wrap:balance;
+}
+:where(.page-heading .sub,.page-heading p,.dashboard-hero p,.panel-title p){
+  max-width:68ch;line-height:1.65;
+}
+:where(.card,.panel,.settings-card,.dashboard-panel,.metric-card,.up-card,.detail-card,.release-card,.profile-card,.roster-list,.invite-card){
+  min-width:0;
+  border-color:var(--ie80-border);
+  border-radius:var(--ie80-radius);
+  background-color:var(--ui-surface,var(--surface,#11151b));
+  background-image:linear-gradient(145deg,color-mix(in srgb,var(--ui-text,#f6f3eb) 2.2%,transparent),transparent 46%);
+}
+:where(.card,.panel,.settings-card,.dashboard-panel,.metric-card,.up-card,.detail-card,.release-card,.profile-card){
+  box-shadow:0 1px 0 rgb(255 255 255 / .018);
+  transition:border-color 180ms var(--ie80-ease),box-shadow 180ms var(--ie80-ease),transform 180ms var(--ie80-ease);
+}
+@media(hover:hover) and (pointer:fine){
+  :where(.card,.panel,.settings-card,.dashboard-panel,.metric-card,.up-card,.detail-card,.release-card,.profile-card):hover{
+    border-color:color-mix(in srgb,var(--user-accent,var(--accent,#d7bd72)) 38%,var(--ui-border,#28313b));
+    box-shadow:var(--ie80-shadow);
+  }
+}
+:where(.primary,.new-btn,button.primary){
+  font-weight:750;letter-spacing:-.012em;
+  box-shadow:0 5px 14px color-mix(in srgb,var(--user-accent,var(--accent,#d7bd72)) 12%,transparent);
+}
+:where(.secondary,.icon-btn,button.secondary){
+  border-color:var(--ie80-border);
+}
+:where(button,a,input,select,textarea,[role=button]){
+  -webkit-tap-highlight-color:transparent;
+}
+:where(button,a,[role=button]):focus-visible{
+  outline:2px solid var(--user-accent,var(--accent,#d7bd72))!important;
+  outline-offset:3px;
+}
+:where(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]),select,textarea){
+  border-radius:var(--ie80-radius-sm);
+  min-width:0;max-width:100%;
+}
+:where(input,select,textarea)::placeholder{color:var(--ui-text-muted,#929ba6);opacity:.82}
+:where(.field,.form-field,label.field){min-width:0}
+:where(.field>span,.field label,.form-label){line-height:1.45}
+:where(.toolbar,.action-row,.button-row,.form-actions,.row-actions,.page-heading-actions){
+  gap:9px;min-width:0;flex-wrap:wrap;
+}
+:where(.toolbar,.action-row,.button-row,.form-actions,.row-actions,.page-heading-actions)>*{max-width:100%;min-width:0}
+:where(.pill,.badge,.tag,.status-pill){font-weight:700;letter-spacing:.005em}
+:where(.metric,.metric-card){overflow:hidden}
+:where(.metric-value,.metric-card strong,.stat-value){font-variant-numeric:tabular-nums;letter-spacing:-.04em}
+:where(.table-wrap,.table-responsive,.data-table-wrap){max-width:100%;overflow-x:auto;overscroll-behavior-inline:contain}
+:where(table){min-width:100%}
+:where(th){letter-spacing:.07em}
+:where(td,th){overflow-wrap:anywhere}
+:where(.empty,.empty-state){padding:clamp(22px,4vw,40px);text-wrap:pretty}
+:where(.modal,.dialog,[role=dialog],.command-palette){
+  max-width:min(720px,calc(100vw - 24px));
+  max-height:calc(100dvh - 24px);
+  overflow:auto;overscroll-behavior:contain;
+  border-radius:var(--ie80-radius);
+}
+:where(.toast,.toast-item,[role=alert],[role=status]){overflow-wrap:anywhere}
+:where(img,video,canvas){max-width:100%}
+:where(.profile-hero,.artist-hero,.public-profile-hero){
+  min-width:0;overflow:hidden;
+}
+:where(.profile-hero h1,.artist-hero h1,.public-profile-hero h1){text-wrap:balance;overflow-wrap:anywhere}
+:where(.release-grid,.artist-grid,.profile-grid,.dashboard-grid,.metric-grid,.settings-grid){
+  min-width:0;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));
+}
+:where(.release-card,.artist-card,.profile-card,.roster-row,.release-row){min-width:0}
+:where(.release-info,.artist-info,.profile-info){min-width:0;overflow-wrap:anywhere}
+:where(.release-info strong,.artist-info strong,.profile-info strong){overflow-wrap:anywhere}
+:where(.sidebar,.desktop-nav,.mobile-nav){scrollbar-width:thin}
+:where(.sidebar,.mobile-nav){overscroll-behavior:contain}
+:where(.page-heading,.section-head,.panel-heading){scroll-margin-top:calc(84px + env(safe-area-inset-top,0px))}
+@media(max-width:900px){
+  :where(.page,.dashboard-page,.settings-page){padding-inline:clamp(14px,3vw,24px)}
+  :where(.page-heading,.dashboard-hero){align-items:flex-start}
+  :where(.page-heading-actions,.dashboard-hero-actions){width:100%}
+}
+@media(max-width:640px){
+  :root{--ie80-radius:14px;--ie80-radius-sm:10px}
+  :where(.page,.dashboard-page,.settings-page){padding-inline:14px}
+  :where(.page-heading h1,.dashboard-hero h1){font-size:clamp(1.8rem,8vw,2.45rem)}
+  :where(.page-heading-actions,.dashboard-hero-actions,.form-actions,.button-row){align-items:stretch}
+  :where(.page-heading-actions,.dashboard-hero-actions,.form-actions,.button-row)>button,
+  :where(.page-heading-actions,.dashboard-hero-actions,.form-actions,.button-row)>.primary,
+  :where(.page-heading-actions,.dashboard-hero-actions,.form-actions,.button-row)>.secondary{max-width:100%}
+  :where(.card,.panel,.settings-card,.dashboard-panel,.metric-card,.up-card,.detail-card){padding-inline:clamp(12px,4vw,18px)}
+  :where(.setting-row,.roster-row,.release-row){flex-wrap:wrap;gap:10px}
+  :where(.setting-row)>:last-child{max-width:100%}
+  :where(.table-wrap,.table-responsive,.data-table-wrap){margin-inline:-4px}
+  :where(.modal,.dialog,[role=dialog],.command-palette){max-width:calc(100vw - 16px);max-height:calc(100dvh - 16px);border-radius:12px}
+}
+@media(max-width:380px){
+  :where(.page,.dashboard-page,.settings-page){padding-inline:10px}
+  :where(.row-actions,.toolbar,.action-row){gap:7px}
+  :where(.row-actions)>button,:where(.row-actions)>a{flex:1 1 auto}
+}
+@media(prefers-reduced-motion:reduce){
+  :where(.card,.panel,.settings-card,.dashboard-panel,.metric-card,.up-card,.detail-card,.release-card,.profile-card){transition:none!important}
+  :where(.card,.panel,.settings-card,.dashboard-panel,.metric-card,.up-card,.detail-card,.release-card,.profile-card):hover{transform:none!important}
+}
