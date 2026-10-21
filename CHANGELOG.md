@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.9.3] - 2026-10-21 — Working dashboard panel resizing
+
+- Fixed dashboard width controls so full, half and one-third sizes map to real grid column spans.
+- Added draggable corner handles to dashboard panels; resizing adjusts width and height and saves the result to the user's appearance preferences.
+- Added keyboard resizing with arrow keys while dashboard customisation is enabled.
+- Kept panel reorder, shape, reset and visibility preferences compatible.
+- Added touch-friendly resize affordances and responsive fallbacks.
+- Bumped asset URLs and service-worker cache to 2.9.3.
+
+# Changelog
+
 ## [2.9.2] - 2026-10-21 — Portal UI refinement
 
 - Improved page spacing, heading hierarchy and text rhythm across the portal.
