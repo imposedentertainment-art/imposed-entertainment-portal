@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.2.0] - 2026-10-21 — Tokenized design-system foundation
+
+- Introduced central semantic design tokens for glass opacity, blur, border intensity, radii, spacing, typography and shadows.
+- Standardized token consumption across common app surfaces, while keeping the existing preference engine and data flow intact.
+- Updated asset versioning and service-worker cache namespace.
+- No database schema or production data changes.
+
+# Changelog
+
 ## [3.1.0] - 2026-10-21 — Liquid Glass refinement
 
 - Reduced the default tint and darkening effect so theme photographs show through more clearly.
