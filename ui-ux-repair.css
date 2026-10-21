@@ -1,0 +1,111 @@
+/* Imposed Entertainment UI repair layer — 3.3.13
+   Keep this layer small and semantic; user-selected theme tokens remain authoritative. */
+:root {
+  --ie-ui-content-max: 1480px;
+  --ie-ui-focus: var(--user-accent, var(--ui-accent, #d8bd73));
+  --ie-ui-border: color-mix(in srgb, currentColor 13%, transparent);
+  --ie-ui-ease: cubic-bezier(.2,.75,.25,1);
+}
+html { text-size-adjust: 100%; -webkit-text-size-adjust: 100%; }
+body { text-rendering: optimizeLegibility; }
+#app { min-width: 0; }
+#app :is(main, .main, .main-content, .page, .page-content, .workspace-content, .content-area, .dashboard-page) {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+#app :is(.main, .main-content, .page, .page-content, .workspace-content, .content-area, .dashboard-page) > :is(.page-header, .page-heading, .section-heading, .workspace-heading) {
+  max-width: var(--ie-ui-content-max);
+  margin-inline: auto;
+}
+#app :is(.dashboard-grid, .stats-grid, .dashboard-stats, .card-grid, .artist-grid, .release-grid, .product-grid) {
+  align-items: stretch;
+  min-width: 0;
+}
+#app :is(.dashboard-panel, .metric, .metric-card, .stat-card, .action-centre, .quick-links-panel, .upcoming-panel, .next-step-panel, .dashboard-widget, .dashboard-recent-panel, .todo-card, .announcement-card, .release-card, .artist-card, .profile-card, .settings-card, .form-card, .submission-card, .catalogue-panel, .shop-product-card, .product-card, .settings-panel, .content-card, .workspace-card, .widget-card) {
+  min-width: 0;
+  box-sizing: border-box;
+}
+#app :is(button, .button, a.button, [role="button"]) {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+#app :is(button, .button, a.button, [role="button"]):not(:disabled):not([aria-disabled="true"]) {
+  transition: transform 140ms var(--ie-ui-ease), box-shadow 160ms var(--ie-ui-ease), background-color 160ms ease, border-color 160ms ease;
+}
+@media (hover:hover) and (pointer:fine) {
+  #app :is(button, .button, a.button, [role="button"]):not(:disabled):not([aria-disabled="true"]):hover {
+    filter: brightness(1.06);
+  }
+  #app :is(.dashboard-panel, .metric-card, .stat-card, .release-card, .artist-card, .profile-card, .product-card, .widget-card):hover {
+    border-color: color-mix(in srgb, var(--ie-ui-focus) 38%, transparent);
+  }
+}
+#app :is(button, .button, a.button, [role="button"]):active:not(:disabled) { transform: translateY(1px); }
+#app :is(button, input, select, textarea, [role="button"], a):focus-visible {
+  outline: 2px solid var(--ie-ui-focus);
+  outline-offset: 3px;
+}
+#app :is(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]), select, textarea) {
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+#app textarea { resize: vertical; }
+#app :is(input, select, textarea):disabled,
+#app :is(button, [role="button"])[aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: .62;
+}
+#app :is(.empty-state, .no-results, .empty-panel) {
+  min-width: 0;
+  text-wrap: pretty;
+}
+#app :is(.modal, .dialog, .modal-card, .modal-content, [role="dialog"], .drawer, .popover, .dropdown-menu) {
+  overscroll-behavior: contain;
+}
+#app :is(.modal, .dialog, [role="dialog"]) :is(.modal-body, .dialog-body, .modal-content, .form-body) {
+  min-width: 0;
+}
+#app :is(table, .data-table) { border-collapse: separate; border-spacing: 0; }
+#app :is(.table-wrap, .table-container, .table-scroll, .data-table-wrap) {
+  scrollbar-width: thin;
+  overscroll-behavior-x: contain;
+}
+#app img, #app video { height: auto; }
+#app img[width][height] { height: auto; }
+#app :is(.avatar, .profile-avatar, .artist-avatar, .brand img, .user-avatar) { flex-shrink: 0; }
+#app :is(.eyebrow, .meta, .metadata, .helper-text, .form-hint, .muted) { overflow-wrap: anywhere; }
+#app :is(.toast, .notification, .network-status, .app-loading, .loading-card) { box-sizing: border-box; }
+#app [hidden], body [hidden] { display: none !important; }
+@media (max-width: 760px) {
+  #app :is(.main, .main-content, .page, .page-content, .workspace-content, .content-area, .dashboard-page) {
+    padding-inline: max(14px, env(safe-area-inset-left)) max(14px, env(safe-area-inset-right));
+  }
+  #app :is(.dashboard-grid, .stats-grid, .dashboard-stats, .card-grid, .artist-grid, .release-grid, .product-grid) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  #app :is(.dashboard-grid, .stats-grid, .dashboard-stats, .card-grid, .artist-grid, .release-grid, .product-grid) > * {
+    min-width: 0;
+    max-width: 100%;
+  }
+  #app :is(.page-header, .page-heading, .section-heading, .workspace-heading) {
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  #app :is(.page-header, .page-heading, .section-heading, .workspace-heading) :is(button, .button) {
+    max-width: 100%;
+  }
+  #app :is(.table-wrap, .table-container, .table-scroll, .data-table-wrap) table {
+    min-width: 620px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  #app *, #app *::before, #app *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
