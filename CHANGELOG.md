@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.1.0] - 2026-10-21 — Unified UI and personalisation release
+
+### Added
+- Added a final, shared design-system layer to make legacy workspace pages, forms, navigation, cards and listener surfaces feel more consistent.
+- Expanded interface settings with card treatments (elevated, outlined, minimal) and artwork shapes (rounded, square, circular).
+- Added a dedicated Cards customisation tab, with responsive controls and a clearer four-category settings layout.
+- Improved the customisation panel's focus visibility, keyboard close behavior styling, safe-area placement, small-screen sizing and reduced-motion support.
+
+### Improved
+- Improved responsive page widths, card grids, form sizing, touch targets, focus indicators and light/AMOLED theme surfaces.
+- Added stronger light-theme component overrides, accessible contrast affordances and consistent card/surface behavior across the portal.
+- Versioned the new stylesheet and included it in the service-worker asset allow-list and critical precache set.
+
+### Verification
+- Repository asset/version checks and CSS/JS syntax checks must pass against this commit. Real-device visual checks remain necessary before calling the UI fully verified.
+
 ## [2.0.1] - 2026-10-21 — Mobile layout hotfix
 
 ### Fixed
