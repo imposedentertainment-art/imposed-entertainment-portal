@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.4.82] - 2026-10-21
+
+### Customisation engine and global appearance controls
+- Extended the existing account-backed appearance preferences with explicit Dark, Light and System modes without reusing the existing accent-palette key.
+- Added workspace surface tint (graphite, warm charcoal, cool slate), configurable shadow intensity and global text scale to the Settings appearance panel.
+- Preserved existing palette, font, card, density, banner and dashboard-layout preferences; new values are sanitized before applying and before being persisted through the existing owner-scoped profile preference update.
+- Added semantic light-mode surface, text, input and navigation styling plus system-preference media-query handling and responsive controls.
+- Kept the local personalisation panel and account-level appearance settings interoperable through the existing appearance events; no new Supabase table, policy, or migration was required.
+- Refreshed static asset query versions and service-worker cache allow-list version together.
+
+### Verification
+- Repository and Supabase were audited before editing: vanilla HTML/CSS/JavaScript frontend, Supabase JS client, central core state and event-driven views, and RLS-protected account preferences stored in `profiles.notification_preferences.appearance`.
+- Static patch-anchor and source checks passed before writing. Live browser visual QA, console inspection, authenticated preference round-trip testing, and deployment verification are still required; no claim of full end-to-end validation is made.
+
 ## [1.4.81] - 2026-10-21
 
 ### Major UI overhaul — editorial dark workspace
