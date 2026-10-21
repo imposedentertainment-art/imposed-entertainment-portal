@@ -49,3 +49,32 @@
  html body .shell>header.nav>.mobile-nav{max-height:calc(100dvh - var(--mobile-nav-top,130px) - env(safe-area-inset-bottom,0px))!important;overscroll-behavior-y:contain!important}
  html body .shell>header.nav>.mobile-nav .nav-shop-link[aria-current=page]{border-color:#554e89!important;background:#292541!important;color:#fff!important;box-shadow:inset 3px 0 #a294ff!important}
 }
+
+
+/* v2.7.8: reconcile the real sidebar DOM with older mobile-grid overrides. */
+@media(max-width:760px){
+  /* Legacy UI layers forced this container into a two-column grid. That made grouped
+     navigation sections sit beside each other and compete for the drawer's scroll height. */
+  html.ie-mobile-device body .shell>header.nav>.mobile-nav,
+  html body .shell>header.nav>.mobile-nav{
+    display:block!important;
+    grid-template-columns:none!important;
+    grid-auto-flow:row!important;
+    position:absolute!important;
+    top:100%!important;
+    left:0!important;
+    right:0!important;
+    bottom:auto!important;
+    width:100%!important;
+    max-height:calc(100dvh - var(--mobile-nav-top,66px) - env(safe-area-inset-bottom,0px))!important;
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+    overscroll-behavior-y:contain!important;
+    -webkit-overflow-scrolling:touch!important;
+    box-sizing:border-box!important;
+  }
+  html.ie-mobile-device body .shell>header.nav>.mobile-nav .nav-accordion,
+  html body .shell>header.nav>.mobile-nav .nav-accordion{display:block!important;width:100%!important}
+  html.ie-mobile-device body .shell>header.nav>.nav-inner>.mobile-menu,
+  html body .shell>header.nav>.nav-inner>.mobile-menu{flex:0 0 44px!important;display:flex!important}
+}
