@@ -70,7 +70,7 @@ body.personalise-high-contrast :where(p,small,label,.muted,.subtle,.description,
 #ie-personalise-panel .ie-p-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
 #ie-personalise-panel h2{font:600 20px/1.2 "Space Grotesk",sans-serif;margin:0}
 #ie-personalise-panel .ie-p-sub{color:var(--muted,#b8afb5);margin:7px 0 0;font-size:12px}
-#ie-personalise-panel .ie-p-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;padding:10px 18px;border-bottom:1px solid var(--line,#ffffff18)}
+#ie-personalise-panel .ie-p-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;padding:10px 18px;border-bottom:1px solid var(--line,#ffffff18)}
 #ie-personalise-panel .ie-p-tab{padding:8px 5px!important;border:1px solid transparent!important;background:transparent!important;color:var(--muted,#aaa)!important;font-size:12px}
 #ie-personalise-panel .ie-p-tab[aria-selected=true]{background:color-mix(in srgb,var(--user-accent) 13%,transparent)!important;border-color:color-mix(in srgb,var(--user-accent) 30%,transparent)!important;color:var(--user-accent)!important}
 #ie-personalise-panel .ie-p-content{padding:4px 18px 18px}
@@ -178,3 +178,25 @@ body.personalise-high-contrast{--line:#737b88;--line2:#a8b0bd}
 #ie-personalise-panel .ie-p-tab[aria-selected=true]{border-color:var(--user-accent);background:color-mix(in srgb,var(--user-accent) 16%,#242024)}
 #ie-personalise-panel .ie-p-actions{position:sticky;bottom:0;padding:10px 0 0;background:inherit}
 @media(max-width:520px){#ie-personalise-panel{right:8px;bottom:calc(64px + env(safe-area-inset-bottom));width:min(360px,calc(100vw - 16px));padding:14px}}
+
+/* v2.7.5: make every exposed personalisation control affect a visible token. */
+html{font-size:calc(16px * var(--user-font-scale,1))}
+body{line-height:var(--user-line-height,1.5)}
+body.personalise-font-serif{--ui:"Georgia","Times New Roman",serif}
+body.personalise-font-modern{--ui:"DM Sans",Inter,system-ui,sans-serif}
+body.personalise-font-mono{--ui:"SFMono-Regular",Consolas,monospace}
+body.personalise-font-display{--ui:"Space Grotesk","DM Sans",system-ui,sans-serif}
+body{font-family:var(--user-font,var(--ui,"DM Sans",system-ui,sans-serif))}
+body.personalise-content-standard .shell .main{max-width:1100px}
+body.personalise-content-wide .shell .main{max-width:1320px}
+body.personalise-content-full .shell .main{max-width:none}
+body.personalise-nav-floating .nav{box-shadow:0 12px 36px rgba(0,0,0,.16)}
+body.personalise-nav-floating .mobile-nav{box-shadow:0 18px 36px rgba(0,0,0,.32)}
+body.personalise-nav-minimal .nav{border-color:transparent!important;box-shadow:none!important}
+body.personalise-buttons-solid :where(button,.primary,.new-btn){filter:saturate(1.12)}
+body.personalise-buttons-outline :where(button.primary,button.new-btn,.primary,.new-btn){background:transparent!important;border:1px solid var(--user-accent)!important;color:var(--user-accent)!important}
+body.personalise-buttons-pill :where(button,.primary,.new-btn){border-radius:999px!important}
+body.personalise-cards-outlined :where(.card,.settings-card,.detail-card,.builder-card,.approval-card,.metric,.up-card){box-shadow:none!important;border:1px solid var(--line2,var(--line))!important}
+body.personalise-cards-minimal :where(.card,.settings-card,.detail-card,.builder-card,.approval-card,.metric,.up-card){box-shadow:none!important;background:transparent!important;border-color:transparent!important}
+body.personalise-motion-reduced *,body.personalise-motion-none *{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+body.personalise-motion-none *{animation:none!important;transition:none!important}
