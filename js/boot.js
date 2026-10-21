@@ -18,7 +18,7 @@
   function isListenerRoute(){
     const q=new URLSearchParams(location.search);
     const path=location.pathname.replace(/\/+$/,'')||'/';
-    return q.has('explore') || q.has('artist') || path==='/listen' || path==='/listen/account' || /^\/listen\/artist\/[^/]+$/.test(path) || /^\/link\/[^/]+$/.test(path);
+    return q.has('explore') || q.has('artist') || path==='/listen' || path==='/shop' || path==='/listen/account' || /^\/listen\/artist\/[^/]+$/.test(path) || /^\/link\/[^/]+$/.test(path);
   }
   function renderListenerRoute(){
     const q=new URLSearchParams(location.search);
@@ -26,6 +26,7 @@
     let slug=q.get('artist');
     const match=path.match(/^\/listen\/artist\/([^/]+)$/);
     const linkMatch=path.match(/^\/link\/([^/]+)$/);
+    if(path==='/shop'){renderShopRoute();return;}
     if(path==='/listen/account'){renderListenerAccount();return;}
     if(linkMatch){let linkSlug;try{linkSlug=decodeURIComponent(linkMatch[1]);}catch(_){linkSlug=linkMatch[1];}renderPublicSmartLink(linkSlug);return;}
     if(!slug&&match){try{slug=decodeURIComponent(match[1]);}catch(_){slug=match[1];}}
