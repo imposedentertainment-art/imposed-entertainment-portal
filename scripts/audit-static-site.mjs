@@ -223,6 +223,30 @@ for (const path of stylesheetPaths) {
   if (opens !== closes) fail(`${path} has unbalanced CSS braces (${opens} opening, ${closes} closing).`);
 }
 
+
+/* Regression guards for the artist workspace visual system. */
+const repairCss = read('ui-ux-repair.css');
+const dashboardCss = read('ui-dashboard-finish.css');
+const resizeCss = read('ui-dashboard-resize.css');
+for (const palette of ['light-skies','midnight-studio','graphite-minimal','plum-dusk','forest-room']) {
+  if (!repairCss.includes(`/themes/${palette}.jpg`)) fail(`Artist workspace must map the ${palette} palette to its background artwork.`);
+}
+if (/body:not\(\.personalise-hide-decorative\)\s*\{[^}]*background-image\s*:/s.test(repairCss)) {
+  fail('Global repair CSS must not override the selected palette background image.');
+}
+if (repairCss.includes('grid-column:var(--dashboard-grid-column,span 12)!important')) {
+  fail('Global repair CSS must not force every dashboard widget to full width.');
+}
+if (!resizeCss.includes('[data-widget-size="half"]') || !resizeCss.includes('[data-widget-size="third"]')) {
+  fail('Dashboard layout must retain half-width and third-width widget sizing.');
+}
+if (!dashboardCss.includes('var(--ie-theme-art)')) {
+  fail('Dashboard hero must use the active workspace theme artwork.');
+}
+if (!html.includes('ui-ux-repair.css?v=' + version) || !worker.includes("'/ui-ux-repair.css'")) {
+  fail('Final UI repair layer must be versioned and available to the service worker.');
+}
+
 if (errors.length) {
   console.error('Static-site audit failed:');
   for (const error of errors) console.error(` - ${error}`);
