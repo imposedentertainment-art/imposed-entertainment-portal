@@ -389,3 +389,54 @@ html[data-ie-mode="system"][data-ie-theme] body .nav,html[data-ie-mode="system"]
 html[data-ie-mode="light"] .workspace-theme-option{background:#fff!important;color:#1c344b!important}
 html[data-ie-mode="light"] .workspace-theme-copy small{color:#526579}
 @media(max-width:620px){.workspace-theme-grid{grid-template-columns:1fr}.workspace-theme-option{padding:10px}.workspace-theme-preview{flex-basis:64px;width:64px;height:48px}}
+
+
+/* Light mode is authoritative over legacy palettes that hard-code dark surfaces. */
+html[data-ie-mode="light"] body {
+ color-scheme:light!important;
+ --ui-page:#f2f5f9;--ui-surface:#fff;--ui-surface-raised:#e7edf4;--ui-surface-hover:#dce5ef;
+ --ui-border:#cbd5e1;--ui-border-strong:#9aaabd;--ui-text:#172536;--ui-text-soft:#293b4f;--ui-text-muted:#526579;--ui-input:#fff;
+ --bg:#f2f5f9;--s1:#fff;--s2:#e7edf4;--s3:#dce5ef;--line:#cbd5e1;--line2:#9aaabd;--text:#172536;--soft:#293b4f;--muted:#526579;
+ background:#f2f5f9!important;background-image:none!important;color:#293b4f!important;
+}
+html[data-ie-mode="light"][data-ie-workspace-theme="light-skies"] body {
+ --ui-page:#eaf3fb;--ui-surface:#f8fbff;--ui-surface-raised:#dceaf7;--ui-surface-hover:#d1e3f4;--ui-border:#c3d7e8;--ui-border-strong:#9dbbd3;--ui-text:#1c344b;--ui-text-soft:#334e67;--ui-text-muted:#5f7890;--ui-input:#fff;
+ --bg:#eaf3fb;--s1:#f8fbff;--s2:#dceaf7;--s3:#d1e3f4;--line:#c3d7e8;--line2:#9dbbd3;--text:#1c344b;--soft:#334e67;--muted:#5f7890;
+ background-color:#eaf3fb!important;
+ background-image:radial-gradient(ellipse 190px 70px at 9% 9%,rgba(255,255,255,.88) 0 48%,transparent 70%),radial-gradient(ellipse 250px 95px at 92% 21%,rgba(255,255,255,.7) 0 46%,transparent 72%),radial-gradient(ellipse 220px 82px at 18% 56%,rgba(255,255,255,.6) 0 45%,transparent 72%),radial-gradient(ellipse 300px 105px at 84% 82%,rgba(255,255,255,.75) 0 43%,transparent 72%),linear-gradient(155deg,#edf6ff,#e4eff9 52%,#eef5fb)!important;
+}
+html[data-ie-mode="light"][data-ie-theme] body .nav,
+html[data-ie-mode="light"][data-ie-theme] body .topbar,
+html[data-ie-mode="light"][data-ie-theme] body .app-header,
+html[data-ie-mode="light"][data-ie-theme] body .sidebar,
+html[data-ie-mode="light"][data-ie-theme] body .side-nav,
+html[data-ie-mode="light"][data-ie-theme] body .mobile-nav,
+html[data-ie-mode="light"][data-ie-theme] body .workspace-topbar,
+html[data-ie-mode="light"][data-ie-theme] body .bottom-nav {
+ background:var(--ui-surface)!important;background-image:none!important;color:var(--ui-text)!important;border-color:var(--ui-border)!important;
+}
+html[data-ie-mode="light"][data-ie-theme] body .card,
+html[data-ie-mode="light"][data-ie-theme] body .panel,
+html[data-ie-mode="light"][data-ie-theme] body .metric,
+html[data-ie-mode="light"][data-ie-theme] body .release-card,
+html[data-ie-mode="light"][data-ie-theme] body .artist-card,
+html[data-ie-mode="light"][data-ie-theme] body .profile-card,
+html[data-ie-mode="light"][data-ie-theme] body .settings-card,
+html[data-ie-mode="light"][data-ie-theme] body .detail-card,
+html[data-ie-mode="light"][data-ie-theme] body .form-card,
+html[data-ie-mode="light"][data-ie-theme] body .builder-card,
+html[data-ie-mode="light"][data-ie-theme] body .approval-card,
+html[data-ie-mode="light"][data-ie-theme] body .up-card,
+html[data-ie-mode="light"][data-ie-theme] body .collection-card,
+html[data-ie-mode="light"][data-ie-theme] body .listener-card {
+ background:var(--ui-surface)!important;background-image:none!important;color:var(--ui-text-soft)!important;border-color:var(--ui-border)!important;box-shadow:var(--ui-shadow)!important;
+}
+html[data-ie-mode="light"][data-ie-theme] body h1,html[data-ie-mode="light"][data-ie-theme] body h2,html[data-ie-mode="light"][data-ie-theme] body h3,html[data-ie-mode="light"][data-ie-theme] body h4,html[data-ie-mode="light"][data-ie-theme] body h5,html[data-ie-mode="light"][data-ie-theme] body h6,html[data-ie-mode="light"][data-ie-theme] body strong,html[data-ie-mode="light"][data-ie-theme] body b,html[data-ie-mode="light"][data-ie-theme] body label {color:var(--ui-text)!important}
+html[data-ie-mode="light"][data-ie-theme] body input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]),html[data-ie-mode="light"][data-ie-theme] body select,html[data-ie-mode="light"][data-ie-theme] body textarea {background:var(--ui-input)!important;color:var(--ui-text)!important;border-color:var(--ui-border-strong)!important}
+html[data-ie-mode="light"][data-ie-theme] body .nav a,html[data-ie-mode="light"][data-ie-theme] body .nav button,html[data-ie-mode="light"][data-ie-theme] body .sidebar a,html[data-ie-mode="light"][data-ie-theme] body .sidebar button,html[data-ie-mode="light"][data-ie-theme] body .mobile-nav a,html[data-ie-mode="light"][data-ie-theme] body .mobile-nav button {color:var(--ui-text-soft)!important}
+html[data-ie-mode="light"][data-ie-theme] body .nav .active,html[data-ie-mode="light"][data-ie-theme] body .nav [aria-current="page"],html[data-ie-mode="light"][data-ie-theme] body .mobile-nav .active,html[data-ie-mode="light"][data-ie-theme] body .mobile-nav [aria-current="page"] {background:color-mix(in srgb,var(--user-accent,#478ec4) 15%,var(--ui-surface))!important;color:var(--ui-text)!important;border-color:var(--user-accent,#478ec4)!important;box-shadow:inset 4px 0 var(--user-accent,#478ec4)!important}
+@media(prefers-color-scheme:light) {
+ html[data-ie-mode="system"] body {color-scheme:light!important;--ui-page:#f2f5f9;--ui-surface:#fff;--ui-surface-raised:#e7edf4;--ui-border:#cbd5e1;--ui-border-strong:#9aaabd;--ui-text:#172536;--ui-text-soft:#293b4f;--ui-text-muted:#526579;--ui-input:#fff;--bg:#f2f5f9;--s1:#fff;--s2:#e7edf4;--line:#cbd5e1;--line2:#9aaabd;--text:#172536;--soft:#293b4f;--muted:#526579;background:#f2f5f9!important;background-image:none!important;color:#293b4f!important}
+ html[data-ie-mode="system"][data-ie-workspace-theme="light-skies"] body {--ui-page:#eaf3fb;--ui-surface:#f8fbff;--ui-surface-raised:#dceaf7;--ui-border:#c3d7e8;--ui-border-strong:#9dbbd3;--ui-text:#1c344b;--ui-text-soft:#334e67;--ui-text-muted:#5f7890;--ui-input:#fff;--bg:#eaf3fb;--s1:#f8fbff;--s2:#dceaf7;--line:#c3d7e8;--line2:#9dbbd3;--text:#1c344b;--soft:#334e67;--muted:#5f7890;background:#eaf3fb!important;background-image:radial-gradient(ellipse 190px 70px at 9% 9%,rgba(255,255,255,.88) 0 48%,transparent 70%),radial-gradient(ellipse 250px 95px at 92% 21%,rgba(255,255,255,.7) 0 46%,transparent 72%),linear-gradient(155deg,#edf6ff,#e4eff9 52%,#eef5fb)!important}
+ html[data-ie-mode="system"] body :where(.card,.panel,.settings-card,.metric,.release-card,.artist-card,.profile-card,.detail-card,.form-card,.builder-card,.approval-card,.up-card) {background-color:var(--ui-surface)!important;color:var(--ui-text-soft)!important;border-color:var(--ui-border)!important}
+}
