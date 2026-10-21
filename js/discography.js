@@ -4,6 +4,7 @@
    Also holds release cover thumbnails (signed URLs) and the four-step progress strip. */
   let relStats = [], allTracks = [], discFilter = 'All', discQ = '', discSort = 'updated', backView = 'dashboard';
   const discCovers = {};
+  const relTotalsCache = new Map();
   const DISC_BUCKETS = [
     { key: 'Changes requested', test: r => r.status === 'Changes Requested', note: 'The label asked for changes. Edit and resubmit.' },
     { key: 'Drafts', test: r => r.status === 'Draft', note: 'Saved, not submitted yet. Pick one up where you left off.' },
@@ -17,7 +18,7 @@
   const isDiscAction = a => a === 'discography' || a.startsWith('disc-') || a.startsWith('stat-') || a === 'export-stats' || a === 'export-performance';
   const backTarget = () => ['discography','calendar'].includes(backView) ? backView : 'dashboard';
 
-  async function loadStats() { const r = await sb.from('release_stats').select('*').order('period', { ascending: false }); relStats = r.data || []; }
+  async function loadStats() { const r = await sb.from('release_stats').select('*').order('period', { ascending: false }); relStats = r.data || []; relTotalsCache.clear(); }
 
   /* One number per period: an "All platforms" row wins, otherwise platform rows add up.
      Listeners only come from "All platforms" rows because they overlap across platforms. */
@@ -30,8 +31,13 @@
     });
   }
   function relTotals(id) {
+    const key = String(id);
+    const cached = relTotalsCache.get(key);
+    if (cached) return cached;
     const p = statPeriods(id), l = [...p].reverse().find(x => x.listeners != null);
-    return { periods: p, streams: p.reduce((t, x) => t + x.streams, 0), saves: p.reduce((t, x) => t + x.saves, 0), listeners: l ? l.listeners : null };
+    const result = { periods: p, streams: p.reduce((t, x) => t + x.streams, 0), saves: p.reduce((t, x) => t + x.saves, 0), listeners: l ? l.listeners : null };
+    relTotalsCache.set(key, result);
+    return result;
   }
   const relEarned = id => earnings.filter(x => x.release_id === id).reduce((t, x) => t + Number(x.amount || 0), 0);
 
