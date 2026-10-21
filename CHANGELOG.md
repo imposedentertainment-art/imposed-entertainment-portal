@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.8.11] - 2026-10-21 — Correct photo asset cache list
+
+### Fixed
+- Removed stale SVG theme assets from the service-worker precache now that the original JPEGs are extracted and used.
+- Bumped release and cache version so clients fetch the corrected theme assets.
+
+
 ## [2.8.10] - 2026-10-21 — Original theme photographs
 
 ### Fixed
