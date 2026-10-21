@@ -312,3 +312,37 @@ html body #ie-personalise-trigger,#ie-personalise-trigger{
     background:rgba(15,23,42,.96)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
   }
 }
+
+/* v3.3.4: restore the mobile menu's closed/open visibility state. */
+@media(max-width:760px){
+  /* mobile-navigation.css sets display:block!important; explicitly honour the
+     hidden state used by the menu controller so the drawer cannot disappear
+     behind its own backdrop or remain visible when closed. */
+  html body .shell>header.nav>.mobile-nav[hidden],
+  html body .shell>header.nav>.mobile-nav[aria-hidden="true"],
+  html body .shell>header.nav>.mobile-nav.is-hidden{
+    display:none!important;visibility:hidden!important;opacity:0!important;
+    pointer-events:none!important;
+  }
+  html body .shell>header.nav>.mobile-nav:not([hidden]):not([aria-hidden="true"]):not(.is-hidden){
+    display:block!important;visibility:visible!important;opacity:1!important;
+    pointer-events:auto!important;z-index:50!important;
+  }
+  /* Keep the header's stacking context above the backdrop, drawer above header controls. */
+  html body .shell>header.nav{position:sticky!important;z-index:40!important;isolation:isolate}
+  html body .shell>header.nav>.nav-inner{position:relative!important;z-index:1!important}
+  html body .shell>header.nav>.nav-inner>.mobile-menu{position:relative!important;z-index:2!important}
+  html body:has(.shell>header.nav>.mobile-nav:not([hidden]):not([aria-hidden="true"]):not(.is-hidden))::before{
+    content:"";position:fixed;inset:0;z-index:39;
+    background:rgba(15,23,42,.8);
+    -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+    pointer-events:auto;
+  }
+  html body:has(.shell>header.nav>.mobile-nav:not([hidden]):not([aria-hidden="true"]):not(.is-hidden)) #ie-personalise-trigger{
+    z-index:30!important;pointer-events:none!important;
+  }
+}
+/* Do not create a backdrop for closed or hidden dialogs. */
+html body :is([role=dialog],.search-modal,.modal,.drawer,.slide-over)[hidden]{
+  display:none!important;visibility:hidden!important;pointer-events:none!important;
+}
