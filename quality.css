@@ -226,3 +226,115 @@ body.personalise-theme-light .shell .hero-secondary{background:#fff!important;co
 body.personalise-theme-light .shell .metric strong{color:#171a20!important}
 @media(max-width:760px){.shell .workspace-topbar{margin-bottom:12px!important}.shell .main{padding-top:0!important}body.personalise-theme-light .shell .main{background:#f4f5f7!important}}
 
+
+
+/* v1.4.62 — site-wide theme contract.
+   All feature areas (auth, listener discovery, workspace, settings, modals and forms)
+   share these surfaces instead of retaining isolated pure-white legacy panels. */
+:root{
+  --ui-page:#080a0e;--ui-surface:#11151c;--ui-surface-raised:#171d26;
+  --ui-surface-soft:#1d2530;--ui-border:#2b3542;--ui-text:#f3f5f8;
+  --ui-muted:#aab4c1;--ui-input:#0d1117;--ui-shadow:0 12px 34px #0003;
+}
+body{background:var(--ui-page)!important;color:var(--ui-text);color-scheme:dark}
+body :is(.auth-shell,.auth-panel,.auth-card,.guest-shell,.guest-welcome,.guest-directory,.listener-account-shell,.shell,.main,#main-content){
+  color:var(--ui-text);
+}
+body :is(.auth-shell,.guest-shell,.guest-welcome,.guest-directory,.listener-account-shell){
+  background-color:var(--ui-page);
+}
+body :is(.auth-card,.auth-panel,.guest-card,.guest-account-card,.guest-artist-card,.guest-release-card,.guest-feature-card,.profile-card,.release-card,.auth-form-card,.form-card,.settings-card,.appearance-card,.appearance-section,.card,.panel,.modal-card,.detail-card,.builder-card,.approval-card,.metric,.up-card,.settings-quicknav,.popover,.dropdown-menu,.context-menu,.notification-panel,.search-panel,.search-results,.empty-state,.table-wrap,.data-table-wrap){
+  color:var(--ui-text);
+  border-color:var(--ui-border);
+}
+body :is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]),select,textarea){
+  background-color:var(--ui-input);color:var(--ui-text);border-color:var(--ui-border);
+}
+body :is(input,select,textarea)::placeholder{color:var(--ui-muted);opacity:1}
+body :is(.muted,.subtle,.description,.hint,.help-text,.form-hint,.field-help,.empty-description,.guest-directory-intro,.auth-subtitle,.auth-legal,.settings-card p,.appearance-section p,.setting-row span,.setting-section p){color:var(--ui-muted)}
+body :is(.modal-backdrop,.dialog-backdrop,.overlay){background:rgb(0 0 0 / .68)}
+body :is(.nav,.workspace-topbar,.topbar,.sidebar,.mobile-nav,.settings-quicknav,.dropdown-menu,.context-menu,.notification-panel,.search-panel){
+  background-color:var(--ui-surface);
+  border-color:var(--ui-border);
+}
+body :is(.nav-link,.mobile-nav button,.tab-btn,.sidebar-link,.nav-item){color:var(--ui-muted)}
+body :is(.nav-link,.mobile-nav button,.tab-btn,.sidebar-link,.nav-item):hover{background-color:var(--ui-surface-raised);color:var(--ui-text)}
+body :is(button,a,[role=button]){ -webkit-tap-highlight-color:transparent }
+body :is(button,a,[role=button]):focus-visible{outline:2px solid var(--user-accent,var(--accent,#9b8cff));outline-offset:3px}
+body :is(table,th,td){border-color:var(--ui-border)}
+body hr{border-color:var(--ui-border)}
+body :is(pre,code,.code-block){background-color:var(--ui-surface-raised);color:var(--ui-text);border-color:var(--ui-border)}
+body :is(.toast,.toast-message,.notification-toast){background:var(--ui-surface-raised);color:var(--ui-text);border-color:var(--ui-border)}
+body #ie-personalise-panel{background:var(--ui-surface)!important;color:var(--ui-text)!important;border-color:var(--ui-border)!important}
+body #ie-personalise-panel select{background:var(--ui-input)!important;color:var(--ui-text)!important}
+
+/* Explicit dark and AMOLED modes neutralise old components that hard-code white. */
+body.personalise-theme-dark,body.personalise-theme-amoled{
+  --bg:var(--ui-page);--s1:var(--ui-surface);--s2:var(--ui-surface-raised);--s3:var(--ui-surface-soft);
+  --line:var(--ui-border);--line2:#3a4655;--text:var(--ui-text);--soft:#d9e0e8;--muted:var(--ui-muted);
+  --user-bg:var(--ui-page);--user-surface:var(--ui-surface);--user-surface2:var(--ui-surface-raised);
+}
+body.personalise-theme-dark :is(.shell,.main,.workspace,.page,.auth-shell,.auth-panel,.auth-card,.guest-shell,.guest-welcome,.guest-directory,.listener-account-shell){background-color:var(--ui-page)!important;color:var(--ui-text)}
+body.personalise-theme-dark :is(.auth-card,.auth-panel,.guest-card,.guest-account-card,.guest-artist-card,.guest-release-card,.guest-feature-card,.profile-card,.release-card,.auth-form-card,.form-card,.settings-card,.appearance-card,.appearance-section,.card,.panel,.modal-card,.detail-card,.builder-card,.approval-card,.metric,.up-card,.settings-quicknav,.popover,.dropdown-menu,.context-menu,.notification-panel,.search-panel,.search-results,.empty-state,.table-wrap,.data-table-wrap){
+  background-color:var(--ui-surface)!important;color:var(--ui-text)!important;border-color:var(--ui-border)!important;box-shadow:var(--ui-shadow);
+}
+body.personalise-theme-dark :is(.dashboard-hero,.hero-card,.welcome-card){background:linear-gradient(135deg,#171d27,#10141b 72%,#191923)!important;color:var(--ui-text)!important;border-color:var(--ui-border)!important}
+body.personalise-theme-dark :is(.dashboard-hero,.hero-card,.welcome-card) :is(h1,h2,h3,p,small,span,b,strong){color:inherit}
+body.personalise-theme-dark :is(.auth-card,.auth-panel,.guest-card,.profile-card,.release-card,.settings-card,.appearance-card,.appearance-section,.card,.panel,.modal-card,.detail-card,.builder-card,.approval-card,.metric,.up-card) :is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]),select,textarea){
+  background-color:var(--ui-input)!important;color:var(--ui-text)!important;border-color:var(--ui-border)!important;
+}
+body.personalise-theme-dark :is(.auth-card,.auth-panel,.guest-card,.profile-card,.release-card,.settings-card,.appearance-card,.appearance-section,.card,.panel,.modal-card,.detail-card,.builder-card,.approval-card,.metric,.up-card) :is(h1,h2,h3,h4,p,small,label,legend,td,th){color:inherit}
+body.personalise-theme-dark :is(.muted,.subtle,.description,.hint,.help-text,.form-hint,.field-help,.empty-description,.guest-directory-intro,.auth-subtitle,.auth-legal){color:var(--ui-muted)!important}
+body.personalise-theme-dark :is(.primary,.btn-primary,.button-primary,.new-btn,[data-variant=primary]){color:var(--accent-ink,#fff)!important}
+
+/* Light mode is intentionally soft grey, never a full-screen sheet of glaring white. */
+body.personalise-theme-light{
+  color-scheme:light;--ui-page:#eef0f4;--ui-surface:#f7f8fa;--ui-surface-raised:#e9edf2;
+  --ui-surface-soft:#e1e6ed;--ui-border:#d0d6df;--ui-text:#202630;--ui-muted:#596575;
+  --ui-input:#fbfcfd;--ui-shadow:0 8px 24px #202b3b0b;
+  --bg:#eef0f4;--s1:#f7f8fa;--s2:#e9edf2;--s3:#e1e6ed;--line:#d0d6df;--line2:#b8c1cd;
+  --text:#202630;--soft:#384252;--muted:#596575;--user-bg:#eef0f4;
+  background:#eef0f4!important;color:#202630!important;
+}
+body.personalise-theme-light :is(.shell,.main,.workspace,.page,.auth-shell,.auth-panel,.auth-card,.guest-shell,.guest-welcome,.guest-directory,.listener-account-shell,#main-content){
+  background-color:var(--ui-page)!important;color:var(--ui-text)!important;
+}
+body.personalise-theme-light :is(.nav,.workspace-topbar,.topbar,.sidebar,.mobile-nav,.settings-quicknav,.dropdown-menu,.context-menu,.notification-panel,.search-panel){
+  background-color:var(--ui-surface)!important;color:var(--ui-text)!important;border-color:var(--ui-border)!important;box-shadow:var(--ui-shadow);
+}
+body.personalise-theme-light :is(.auth-card,.auth-panel,.guest-card,.guest-account-card,.guest-artist-card,.guest-release-card,.guest-feature-card,.profile-card,.release-card,.auth-form-card,.form-card,.settings-card,.appearance-card,.appearance-section,.card,.panel,.modal-card,.detail-card,.builder-card,.approval-card,.metric,.up-card,.popover,.dropdown-menu,.context-menu,.notification-panel,.search-panel,.search-results,.empty-state,.table-wrap,.data-table-wrap){
+  background-color:var(--ui-surface)!important;color:var(--ui-text)!important;border-color:var(--ui-border)!important;box-shadow:var(--ui-shadow);
+}
+body.personalise-theme-light :is(.dashboard-hero,.hero-card,.welcome-card){
+  background:linear-gradient(135deg,#f8f9fb,#e7edf5 72%,#f0eaf0)!important;color:#202630!important;border-color:#d7dde6!important;box-shadow:var(--ui-shadow);
+}
+body.personalise-theme-light :is(.dashboard-hero,.hero-card,.welcome-card) :is(h1,h2,h3,p,small,span,b,strong){color:inherit}
+body.personalise-theme-light :is(.auth-card,.auth-panel,.guest-card,.profile-card,.release-card,.settings-card,.appearance-card,.appearance-section,.card,.panel,.modal-card,.detail-card,.builder-card,.approval-card,.metric,.up-card) :is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]),select,textarea){
+  background-color:var(--ui-input)!important;color:var(--ui-text)!important;border-color:var(--ui-border)!important;
+}
+body.personalise-theme-light :is(.auth-card,.auth-panel,.guest-card,.profile-card,.release-card,.settings-card,.appearance-card,.appearance-section,.card,.panel,.modal-card,.detail-card,.builder-card,.approval-card,.metric,.up-card) :is(h1,h2,h3,h4,p,small,label,legend,td,th){color:inherit}
+body.personalise-theme-light :is(.muted,.subtle,.description,.hint,.help-text,.form-hint,.field-help,.empty-description,.guest-directory-intro,.auth-subtitle,.auth-legal,.setting-row span,.setting-section p){color:var(--ui-muted)!important}
+body.personalise-theme-light :is(.nav-link,.mobile-nav button,.tab-btn,.sidebar-link,.nav-item){color:#485364}
+body.personalise-theme-light :is(.nav-link,.mobile-nav button,.tab-btn,.sidebar-link,.nav-item):hover{background-color:#e9edf2;color:#202630}
+body.personalise-theme-light #ie-personalise-panel{background:#f7f8fa!important;color:#202630!important;border-color:#d0d6df!important;box-shadow:0 20px 55px #202b3b24}
+body.personalise-theme-light #ie-personalise-panel select{background:#fbfcfd!important;color:#202630!important;border-color:#d0d6df!important}
+body.personalise-theme-light :is(.primary,.btn-primary,.button-primary,.new-btn,[data-variant=primary]){color:var(--accent-ink,#fff)}
+
+/* "System" follows the device rather than forcing a bright palette on dark-mode phones. */
+@media(prefers-color-scheme:dark){
+  body.personalise-theme-system{
+    color-scheme:dark;--ui-page:#080a0e;--ui-surface:#11151c;--ui-surface-raised:#171d26;--ui-surface-soft:#1d2530;
+    --ui-border:#2b3542;--ui-text:#f3f5f8;--ui-muted:#aab4c1;--ui-input:#0d1117;
+    --bg:#080a0e;--s1:#11151c;--s2:#171d26;--s3:#1d2530;--line:#2b3542;--line2:#3a4655;--text:#f3f5f8;--soft:#d9e0e8;--muted:#aab4c1;
+    background:#080a0e!important;color:#f3f5f8!important;
+  }
+  body.personalise-theme-system :is(.shell,.main,.workspace,.page,.auth-shell,.auth-panel,.auth-card,.guest-shell,.guest-welcome,.guest-directory,.listener-account-shell,#main-content){background-color:var(--ui-page)!important;color:var(--ui-text)!important}
+  body.personalise-theme-system :is(.auth-card,.auth-panel,.guest-card,.guest-account-card,.guest-artist-card,.guest-release-card,.guest-feature-card,.profile-card,.release-card,.auth-form-card,.form-card,.settings-card,.appearance-card,.appearance-section,.card,.panel,.modal-card,.detail-card,.builder-card,.approval-card,.metric,.up-card,.popover,.dropdown-menu,.context-menu,.notification-panel,.search-panel,.search-results,.empty-state,.table-wrap,.data-table-wrap){background-color:var(--ui-surface)!important;color:var(--ui-text)!important;border-color:var(--ui-border)!important}
+}
+body.personalise-theme-amoled{--ui-page:#000;--ui-surface:#050505;--ui-surface-raised:#0b0b0b;--ui-surface-soft:#121212;--ui-border:#282828;--ui-text:#f5f5f5;--ui-muted:#b4b4b4;--ui-input:#050505}
+body.personalise-theme-amoled :is(.shell,.main,.workspace,.page,.auth-shell,.auth-panel,.auth-card,.guest-shell,.guest-welcome,.guest-directory,.listener-account-shell,#main-content){background-color:#000!important;color:#f5f5f5!important}
+body.personalise-theme-amoled :is(.auth-card,.auth-panel,.guest-card,.guest-account-card,.guest-artist-card,.guest-release-card,.guest-feature-card,.profile-card,.release-card,.auth-form-card,.form-card,.settings-card,.appearance-card,.appearance-section,.card,.panel,.modal-card,.detail-card,.builder-card,.approval-card,.metric,.up-card,.popover,.dropdown-menu,.context-menu,.notification-panel,.search-panel,.search-results,.empty-state,.table-wrap,.data-table-wrap){background-color:#050505!important;color:#f5f5f5!important;border-color:#282828!important}
+@media(max-width:760px){
+  body :is(.auth-shell,.guest-shell,.guest-welcome,.guest-directory,.listener-account-shell){min-height:100dvh}
+  body :is(.card,.panel,.settings-card,.appearance-card,.appearance-section,.modal-card){max-width:100%;min-width:0}
+}
