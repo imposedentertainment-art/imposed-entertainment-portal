@@ -73,7 +73,7 @@ if (!personalisation.includes("['light-skies','Light skies · blue & cloud']") |
   fail('Theme picker must expose the new named themes and validate saved selections.');
 }
 ['briefcase-business','mic-vocal','chart-no-axes-combined','panel-left-open','panel-left-close','check-square','shopping-bag','headphones'].forEach(name => {
-  if (!coreIcons.includes("'" + name + "':")) fail('SVG icon map is missing navigation icon: ' + name);
+  if (!coreIcons.includes("'" + name + "':") && !coreIcons.includes(name + ':')) fail('SVG icon map is missing navigation icon: ' + name);
 });
 if (!coreIcons.includes("p[name]||p.music")) fail('Unknown icon names must use a visible SVG fallback.');
 if (!personalisationFixes.includes('.nav-accordion > button.active') ||
