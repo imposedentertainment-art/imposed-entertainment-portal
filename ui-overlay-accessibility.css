@@ -1,0 +1,97 @@
+/* v3.3.1 — navigation overlays, dashboard contrast and viewport safety */
+:root{
+  --ie-layer-content:0;
+  --ie-layer-fab:30;
+  --ie-layer-header:40;
+  --ie-layer-drawer:50;
+  --ie-text-primary:#fff;
+  --ie-text-secondary:#cbd5e1;
+  --ie-text-muted:#94a3b8;
+  --ie-overlay:rgba(15,23,42,.75);
+}
+/* Keep the normal content in a predictable stacking context. */
+html body #app{position:relative;z-index:0;min-width:0}
+html body #app :is(.main,.page,.page-content,.workspace-content,.dashboard-page,.content-area,.dashboard-content){position:relative;z-index:0;min-width:0;padding-bottom:6rem!important;margin-bottom:3rem}
+/* The sticky workspace bar sits above content but below open navigation. */
+html body #app .workspace-topbar{
+  position:sticky;top:0;z-index:40!important;
+  margin-top:1rem!important;padding:.75rem 1rem!important;
+  box-sizing:border-box;overflow:visible!important;
+}
+html body #app .topbar-location,.topbar-location{display:flex!important;flex-direction:column!important;align-items:flex-start;gap:.25rem!important;min-width:0}
+html body #app .topbar-location span{color:#cbd5e1!important;line-height:1.4}
+html body #app .topbar-location b{color:#fff!important;line-height:1.2}
+html body #app .topbar-tools :is(.topbar-search,.topbar-icon,.topbar-account){
+  box-sizing:border-box!important;width:2.5rem!important;min-width:2.5rem!important;
+  height:2.5rem!important;min-height:2.5rem!important;border-radius:.5rem!important;
+  display:inline-flex;align-items:center;justify-content:center;flex:0 0 2.5rem;
+}
+html body #app .topbar-search{padding:0!important}
+html body #app .topbar-search span{display:none}
+html body #app .topbar-search kbd{display:none!important}
+html body #app .topbar-location :is(span,small,.eyebrow,.meta){color:#cbd5e1!important}
+/* Floating personalisation control is never allowed above the drawer layer. */
+html body #ie-personalise-trigger,#ie-personalise-trigger,
+html body #app #ie-personalise-trigger{
+  position:fixed!important;top:auto!important;left:auto!important;
+  right:1rem!important;bottom:1rem!important;z-index:30!important;
+  margin:0!important;transform:none!important;
+}
+/* When a navigation menu is open, block and obscure every background control. */
+html body:has(.nav>.mobile-nav:not([hidden])) .workspace-topbar,
+html body:has(.nav>.mobile-nav:not([hidden])) #ie-personalise-trigger{z-index:30!important}
+html body .nav{position:relative;z-index:40}
+html body .nav>.mobile-nav:not([hidden]){
+  position:absolute!important;z-index:50!important;isolation:isolate;
+  background:rgba(15,23,42,.97)!important;color:#f8fafc!important;
+  -webkit-backdrop-filter:blur(12px)!important;backdrop-filter:blur(12px)!important;
+}
+/* Full-viewport backdrop: placed below the drawer, above the app/header. */
+html body .ie-navigation-backdrop{
+  position:fixed!important;inset:0!important;z-index:49!important;
+  background:rgba(15,23,42,.75)!important;
+  -webkit-backdrop-filter:blur(12px)!important;backdrop-filter:blur(12px)!important;
+  border:0!important;margin:0!important;padding:0!important;
+}
+/* Drawer controls and navigation text are always readable on dark glass. */
+html body .nav>.mobile-nav:not([hidden]),
+html body .nav>.mobile-nav:not([hidden]) :is(a,button,[role=menuitem],.nav-accordion-title,.mobile-nav-label){
+  color:#f8fafc!important;-webkit-text-fill-color:#f8fafc;
+}
+html body .nav>.mobile-nav:not([hidden]) :is(input,textarea,[type=search]){color:#f8fafc!important}
+html body .nav>.mobile-nav:not([hidden]) :is(input,textarea,[type=search])::placeholder{color:#94a3b8!important;opacity:1!important}
+html body .nav>.mobile-nav:not([hidden]) :is(.mobile-nav-label,.nav-accordion-title small,.nav-meta,.nav-description){color:#cbd5e1!important}
+html body .nav>.mobile-nav:not([hidden]) :is(a,button,[role=menuitem]){
+  display:flex!important;align-items:center!important;justify-content:space-between!important;
+  gap:.625rem!important;box-sizing:border-box;width:100%;min-height:44px;
+  padding:.75rem 1rem!important;line-height:1.35;text-align:left;
+}
+html body .nav>.mobile-nav:not([hidden]) :is(a.active,button.active,[aria-current=page]){
+  color:#fff!important;-webkit-text-fill-color:#fff;
+  background:rgba(148,163,184,.18)!important;border-color:rgba(226,232,240,.25)!important;
+}
+/* Eliminate dark-blue foreground tokens on dark drawer and dashboard surfaces. */
+html body #app :is(.dashboard-hero,.dashboard-panel,.stat,.stat-card,.metric,.metric-card,.card,.panel,.workspace-card,.widget-card)
+:is(h1,h2,h3,h4,h5,h6,strong,b,.metric-value,.value,.count){color:#fff!important;-webkit-text-fill-color:#fff}
+html body #app :is(.dashboard-hero,.dashboard-panel,.stat,.stat-card,.metric,.metric-card,.card,.panel,.workspace-card,.widget-card)
+:is(p,small,label,.muted,.subtle,.description,.hint,.eyebrow,.hero-index,.metric-index,.stat-index,.breadcrumb,.breadcrumbs,time){color:#cbd5e1!important;-webkit-text-fill-color:#cbd5e1}
+html body #app :is(input,textarea,[type=search])::placeholder{color:#94a3b8!important;opacity:1!important}
+/* Stat-card accent rails are consistent and do not stretch the card layout. */
+html body #app :is(.stat,.stat-card,.metric,.metric-card){position:relative;overflow:hidden}
+html body #app :is(.stat,.stat-card,.metric,.metric-card)::before{
+  width:4px!important;height:100%!important;border-radius:2px!important;
+  top:0!important;bottom:0!important;left:0!important;right:auto!important;
+}
+/* Hide keyboard hints on touch-sized viewports; desktop keeps the shortcut visible. */
+@media(max-width:767px){
+ html body #app .topbar-search kbd,
+ html body #app kbd[aria-label*="shortcut" i],
+ html body #app .keyboard-shortcut,
+ html body #app .search-shortcut{display:none!important}
+ html body #app :is(.main,.page,.page-content,.workspace-content,.dashboard-page,.content-area,.dashboard-content){padding-bottom:max(6rem,calc(env(safe-area-inset-bottom) + 6rem))!important}
+ html body #app .workspace-topbar{margin-top:max(1rem,env(safe-area-inset-top))!important;padding:.75rem 1rem!important}
+}
+@media(prefers-reduced-transparency:reduce){
+ html body .ie-navigation-backdrop{background:rgba(15,23,42,.94)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+ html body .nav>.mobile-nav:not([hidden]){background:#0f172a!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+}
