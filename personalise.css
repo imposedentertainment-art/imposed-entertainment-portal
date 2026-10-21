@@ -274,3 +274,88 @@ body.personalise-hide-decorative :is(.decorative,.ambient-glow,.background-orb,.
 @media (prefers-reduced-motion: reduce) {
   #ie-personalise-panel *, #ie-personalise-trigger { transition: none !important; animation: none !important; }
 }
+
+
+/* v3.2.7: colour-mode fix. Mode takes precedence over workspace palette for actual surfaces. */
+:root { color-scheme: dark; }
+html[data-ie-mode="dark"], body.personalise-theme-dark { color-scheme: dark; }
+html[data-ie-mode="light"], body.personalise-theme-light { color-scheme: light; }
+html[data-ie-mode="amoled"], body.personalise-theme-amoled { color-scheme: dark; }
+html[data-ie-mode="system"], body.personalise-theme-system { color-scheme: light dark; }
+
+body.personalise-theme-light,
+html[data-ie-mode="light"] body {
+  --bg: #f4f6f9 !important;
+  --s1: #ffffff !important;
+  --s2: #eef1f5 !important;
+  --s3: #e4e8ee !important;
+  --line: #d5dbe4 !important;
+  --line2: #b9c2cf !important;
+  --text: #171b23 !important;
+  --soft: #343d4a !important;
+  --muted: #5d6878 !important;
+  --user-bg: #f4f6f9 !important;
+  background: #f4f6f9 !important;
+  color: #171b23 !important;
+}
+body.personalise-theme-light #app,
+html[data-ie-mode="light"] body #app,
+body.personalise-theme-light #app :is(.main,.main-content,.page-content,.workspace-content,.content-area,.dashboard-content,.page-container) {
+  background-color: #f4f6f9;
+  color: #171b23;
+}
+body.personalise-theme-light #app :is(.card,.panel,.settings-card,.detail-card,.builder-card,.approval-card,.metric,.up-card,.profile-card,.artist-card,.release-card,.collection-card,.modal-card,.settings-panel,.widget-card,.workspace-card) {
+  background-color: #fff;
+  color: #171b23;
+  border-color: #dbe1e9;
+}
+body.personalise-theme-light #app :is(p,small,label,.muted,.subtle,.description,.hint,.secondary-text,.field-hint) { color: #5d6878; }
+body.personalise-theme-light #app :is(h1,h2,h3,h4,h5,h6,strong,b,legend) { color: #171b23; }
+body.personalise-theme-light #app :is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]),select,textarea,[contenteditable="true"]) {
+  background-color: #fff;
+  color: #171b23;
+  border-color: #c8d0dc;
+}
+body.personalise-theme-light #app :is(.sidebar,.main-sidebar,.app-sidebar,.topbar,.header,.mobile-nav,.bottom-nav) {
+  background-color: #f9fafc;
+  color: #202733;
+  border-color: #d8dee7;
+}
+body.personalise-theme-light #app :is(a,button,[role="button"]) { color: inherit; }
+body.personalise-theme-light #app :is(button,.button,.btn) { border-color: #c8d0dc; }
+body.personalise-theme-amoled,
+html[data-ie-mode="amoled"] body {
+  --bg: #000 !important;
+  --s1: #050505 !important;
+  --s2: #090909 !important;
+  --s3: #101010 !important;
+  --line: #262626 !important;
+  --line2: #414141 !important;
+  --text: #f5f5f5 !important;
+  --soft: #dedede !important;
+  --muted: #aaa !important;
+  --user-bg: #000 !important;
+  background: #000 !important;
+  color: #f5f5f5 !important;
+}
+body.personalise-theme-amoled #app,
+html[data-ie-mode="amoled"] body #app,
+body.personalise-theme-amoled #app :is(.main,.main-content,.page-content,.workspace-content,.content-area,.dashboard-content,.page-container) {
+  background-color: #000;
+  color: #f5f5f5;
+}
+body.personalise-theme-amoled #app :is(.card,.panel,.settings-card,.detail-card,.builder-card,.approval-card,.metric,.up-card,.profile-card,.artist-card,.release-card,.collection-card,.modal-card,.settings-panel,.widget-card,.workspace-card) {
+  background-color: #050505;
+  color: #f5f5f5;
+  border-color: #292929;
+}
+@media (prefers-color-scheme: light) {
+  body.personalise-theme-system {
+    --bg: #f4f6f9 !important; --s1: #fff !important; --s2: #eef1f5 !important;
+    --s3: #e4e8ee !important; --line: #d5dbe4 !important; --line2: #b9c2cf !important;
+    --text: #171b23 !important; --soft: #343d4a !important; --muted: #5d6878 !important;
+    background: #f4f6f9 !important; color: #171b23 !important;
+  }
+  body.personalise-theme-system #app :is(.main,.main-content,.page-content,.workspace-content,.content-area,.dashboard-content,.page-container) { background-color: #f4f6f9; color: #171b23; }
+  body.personalise-theme-system #app :is(.card,.panel,.settings-card,.detail-card,.builder-card,.approval-card,.metric,.up-card,.profile-card,.artist-card,.release-card,.collection-card,.modal-card,.settings-panel,.widget-card,.workspace-card) { background-color: #fff; color: #171b23; border-color: #dbe1e9; }
+}
