@@ -35,6 +35,7 @@ if (/service_role|SUPABASE_SECRET_KEY|sb_secret_/i.test(config)) fail('config.js
 
 // Cross-file regression checks for navigation, routes and saved interface preferences.
 const views = read('js/views.js');
+const events = read('js/events.js');
 const boot = read('js/boot.js');
 const personalisation = read('js/personalise.js');
 const navigationCss = read('mobile-navigation.css');
