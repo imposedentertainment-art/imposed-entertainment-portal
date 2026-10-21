@@ -94,7 +94,23 @@
         }
       },0);
     });
-    const sessionRequest=sb.auth.getSession();
+    // Retry a single transient Supabase Auth failure before failing the whole app boot.
+    // Auth can return a temporary 5xx/context-cancelled response while rotating refresh tokens.
+    const sessionRequest=(async()=>{
+      let lastError;
+      for(let attempt=0;attempt<2;attempt++){
+        try{
+          const result=await sb.auth.getSession();
+          if(!result.error)return result;
+          lastError=result.error;
+        }catch(error){lastError=error;}
+        const message=String(lastError?.message||lastError||'');
+        const transient=Number(lastError?.status)>=500||/context canceled|network|fetch failed|temporarily unavailable|timeout/i.test(message);
+        if(!transient||attempt===1)throw lastError;
+        await new Promise(resolve=>setTimeout(resolve,500));
+      }
+      throw lastError;
+    })();
     let startupTimeoutId;
     const timeoutRequest=new Promise((_,reject)=>{startupTimeoutId=setTimeout(()=>{
       const error=new Error('Supabase session check timed out. Check your connection and retry.');
