@@ -49,8 +49,9 @@ for (const match of html.matchAll(/\b(?:src|href)=["']([^"']+)["']/gi)) {
   if (target.startsWith('..') || !existsSync(resolve(root, target))) {
     fail(`index.html references a missing local asset: ${value}`);
   }
-  if (/\.(?:js|css)$/i.test(path) && !new URL(value, 'https://audit.invalid').searchParams.has('v')) {
-    warnings.push(`Local script/stylesheet is not versioned for cache invalidation: ${value}`);
+  if (/\.(?:js|css)$/i.test(path)) {
+    const assetVersion = new URL(value, 'https://audit.invalid').searchParams.get('v');
+    if (assetVersion !== version) fail(`Local script/stylesheet must use v=${version}: ${value}`);
   }
 }
 
@@ -65,9 +66,19 @@ const staticBlock = worker.match(/const STATIC_ASSETS\s*=\s*\[([\s\S]*?)\];/);
 if (!staticBlock) fail('sw.js STATIC_ASSETS allow-list could not be parsed.');
 else {
   const paths = [...staticBlock[1].matchAll(/['"]([^'"]+)['"]/g)].map((m) => m[1]);
+  const allowList = new Set(paths);
   for (const path of paths) {
     if (!path.startsWith('/')) fail(`Service-worker asset path must be root-relative: ${path}`);
     else if (!existsSync(resolve(root, path.slice(1)))) fail(`Service-worker allow-list references a missing file: ${path}`);
+  }
+  // All local JS/CSS loaded by the app shell must be eligible for offline caching,
+  // except config.js, which is intentionally network-only and bypassed by the worker.
+  for (const match of html.matchAll(/\b(?:src|href)=["']([^"']+)["']/gi)) {
+    const value = match[1];
+    const path = localRef(value);
+    if (path && /\.(?:js|css)$/i.test(path) && path !== 'config.js' && !allowList.has('/' + path)) {
+      fail(`HTML loads a local script/stylesheet missing from the service-worker allow-list: ${value}`);
+    }
   }
 }
 
