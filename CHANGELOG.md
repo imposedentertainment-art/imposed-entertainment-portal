@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.7.1] - 2026-10-21 — Ordering status clarity
+
+### Improved
+- Made it explicit throughout the public shop and product workspace that ordering is currently unavailable.
+- Kept catalogue browsing and product-listing management available while payment integration is deferred.
+- No payment provider, checkout flow, or fulfilment integration was added in this release.
+
+### Verification
+- Updated portal build metadata, asset query versions, and service-worker cache namespace together.
+
+
 ## [2.7.0] - 2026-10-21 — Shop management workspace
 
 ### Added
