@@ -30,7 +30,7 @@ var tabs=el('div',{className:'ie-p-tabs','role':'tablist','aria-label':'Customis
 var content=el('div',{id:'ie-p-content',className:'ie-p-content',role:'tabpanel'});
 if(activeTab==='theme'){
 var f=fieldset('Accent colour','Choose the highlight colour used by buttons, active states and focus outlines.');var grid=el('div',{className:'ie-p-colours'});
-presets.forEach(function(p){var b=el('button',{type:'button',className:'ie-p-swatch','aria-label':p[0],'aria-pressed':String(state.accent===p[1]),title:p[0]});b.style.background=p[1];b.addEventListener('click',function(){state.accent=p[1];apply();render()});grid.append(b)});f.append(grid);
+presets.forEach(function(p){var b=el('button',{type:'button',className:'ie-p-swatch','aria-label':p[0],'aria-pressed':String(state.accent===p[1]),title:p[0]});b.style.background=p[1];b.addEventListener('click',function(){state.accent=p[1];save();render()});grid.append(b)});f.append(grid);
 var custom=el('label',{className:'ie-p-control'});custom.append(el('span',{},'Custom colour'));var picker=el('input',{type:'color',value:state.accent,'aria-label':'Custom accent colour'});picker.style.width='100%';picker.style.height='38px';picker.addEventListener('input',function(){state.accent=picker.value;apply();var sw=panel.querySelectorAll('.ie-p-swatch');sw.forEach(function(x){x.setAttribute('aria-pressed','false')})});picker.addEventListener('change',save);custom.append(picker);f.append(custom);content.append(f);
 var theme=fieldset('Appearance','Switch between dark, light, and deep-black themes.');theme.append(control('Colour mode',[['dark','Dark'],['light','Light'],['amoled','AMOLED black'],['system','System default']],'theme'));content.append(theme);
 }else if(activeTab==='layout'){
