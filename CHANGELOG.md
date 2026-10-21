@@ -1,3 +1,10 @@
+## 3.3.4 — Mobile navigation visibility recovery
+
+- Explicitly honour the mobile drawer's `hidden`, `aria-hidden`, and `.is-hidden` states despite legacy `display:block!important` rules.
+- Restrict the blurred backdrop to an open, visible drawer and restore the content/header/drawer stacking order.
+- Keep the menu toggle clickable and disable the floating personalisation button only while the drawer is open.
+- Refresh the stylesheet version, service-worker cache, and release metadata.
+
 ## 3.3.3 — Dashboard-wide UI refactor
 
 - Consolidated contrast tokens across dashboard cards, headings, actions, badges and placeholders.
