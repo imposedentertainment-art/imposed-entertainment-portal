@@ -23,7 +23,7 @@
     const order=Array.isArray(v.order)?v.order.filter((k,i,a)=>IE_DASHBOARD_WIDGETS.includes(k)&&a.indexOf(k)===i):[];
     IE_DASHBOARD_WIDGETS.forEach(k=>{if(!order.includes(k))order.push(k);});
     const sizes={},shapes={},heights={};
-    IE_DASHBOARD_WIDGETS.forEach(k=>{sizes[k]=['full','half','third'].includes(v.sizes?.[k])?v.sizes[k]:IE_APPEARANCE_DEFAULTS.dashboardLayout.sizes[k];shapes[k]=['soft','square','pill'].includes(v.shapes?.[k])?v.shapes[k]:IE_APPEARANCE_DEFAULTS.dashboardLayout.shapes[k];heights[k]=Math.min(720,Math.max(180,Math.round(Number(v.heights?.[k])||0)))||0;});
+    IE_DASHBOARD_WIDGETS.forEach(k=>{sizes[k]=['full','half','third'].includes(v.sizes?.[k])?v.sizes[k]:IE_APPEARANCE_DEFAULTS.dashboardLayout.sizes[k];shapes[k]=['soft','square','pill'].includes(v.shapes?.[k])?v.shapes[k]:IE_APPEARANCE_DEFAULTS.dashboardLayout.shapes[k];const h=Number(v.heights?.[k]);heights[k]=Number.isFinite(h)&&h>0?Math.min(720,Math.max(180,Math.round(h))):0;});
     return {order,sizes,shapes,heights};
   }
   function getAppearancePreferences(){
