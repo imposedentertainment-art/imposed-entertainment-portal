@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.4.90] - 2026-10-21
+
+### Improved
+- Upgraded listener collection portability to a complete v2 backup that includes saved artists, saved releases, and recent discovery history, while retaining compatibility with existing v1 exports.
+- Added validation and bounded field lengths during import; only saved artists and releases belonging to the currently available public roster are restored.
+
+### Verification
+- Asset-version consistency and stylesheet structure checks will be re-run after commit. CI and browser verification remain pending.
+
+
 ## [1.4.89] - 2026-10-21
 
 ### Added
