@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.8.0] - 2026-10-21 — Reliable update delivery
+
+### Fixed
+- Service-worker update checks now bypass the browser HTTP cache and run on page load, rather than waiting for a browser's normal update-check interval.
+- When an existing service worker takes control after an update, the page reloads once to ensure the active document uses the newly deployed app shell and assets.
+- Kept first-time service-worker installation from interrupting the initial page load and guarded update reloads against loops.
+- Versioned the app shell and service-worker cache together so this release invalidates prior cached assets.
+
+### Verification
+- Source-level update-flow and release-version consistency checks performed. Live Cloudflare cache propagation and real-device update behaviour still require deployment testing.
+
 ## [2.7.9] - 2026-10-21 — Authentication screen redesign
 
 ### Improved
