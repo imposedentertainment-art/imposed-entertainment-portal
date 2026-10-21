@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.7.3] - 2026-10-21 — Mobile navigation fix
+
+### Fixed
+- Rebuilt the open mobile navigation as an opaque, viewport-filling drawer so dashboard content no longer bleeds through the menu.
+- Reduced oversized accordion headers and improved link spacing, active-page clarity, sticky search, contained scrolling and small-screen safe-area padding.
+- Kept the desktop navigation and workspace layout unchanged.
+
+### Verification
+- Updated portal asset versions and service-worker cache namespace together. Static checks are run after commit; live-device visual testing is still required.
+
+# Changelog
+
 ## [2.7.2] - 2026-10-21 — Printful catalogue integration foundation
 
 ### Added
