@@ -10,6 +10,7 @@
 
 ### Verification
 - Applied the invite hardening migration to Supabase and added its matching migration file to the repository.
+- Corrected release commit ordering so CI evaluates the complete, synchronized v1.4.87 tree instead of an intermediate commit with the previous VERSION file.
 - Repository static checks and browser end-to-end tests still need execution in CI and a real browser; no full production-readiness claim is made.
 
 ## [1.4.86] - 2026-10-21
