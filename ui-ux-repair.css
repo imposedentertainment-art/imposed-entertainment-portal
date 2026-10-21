@@ -290,3 +290,143 @@ html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboar
  html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card]{grid-column:var(--dashboard-grid-column,span var(--dashboard-span,12))!important}
  html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-hit{display:block!important;pointer-events:auto!important}
 }
+
+
+/* 3.3.22 — cross-role UI consistency.
+   These rules intentionally do NOT depend on data-ie-workspace-theme: artists,
+   label staff, admins, and public/auth screens must share the same quality layer. */
+:root {
+  --ie-glass-line: color-mix(in srgb, var(--user-accent, var(--accent, #b3122a)) 24%, var(--ui-border, rgba(255,255,255,.16)));
+  --ie-glass-fill: color-mix(in srgb, var(--ui-surface, #151a22) 76%, transparent);
+  --ie-glass-highlight: rgba(255,255,255,.13);
+  --ie-glass-shadow: 0 14px 38px rgba(0,0,0,.14), inset 0 1px 0 rgba(255,255,255,.11);
+}
+#app { min-width:0; }
+#app :is(main,.main,.main-content,.page,.page-content,.workspace-content,.content-area,.dashboard-page,.artist-page,.profile-page,.settings-page) {
+  min-width:0;
+}
+#app :is(.page-header,.page-heading,.section-heading,.workspace-heading,.panel-heading) {
+  gap:clamp(10px,1.5vw,20px);
+  min-width:0;
+}
+#app :is(.page-header,.page-heading,.section-heading,.workspace-heading) :is(h1,h2,p,.subtitle,.description) {
+  min-width:0; overflow-wrap:anywhere;
+}
+#app :is(.dashboard-panel,.metric,.metric-card,.stat-card,.action-centre,.quick-links-panel,.upcoming-panel,.next-step-panel,.dashboard-more,.dashboard-more-content,.dashboard-detail-customise,.release-card,.artist-card,.profile-card,.settings-card,.form-card,.submission-card,.catalogue-panel,.shop-product-card,.product-card,.modal-card,.modal-content,.dialog,.settings-panel,.action-card,.shortcut-card,.insight-card,.activity-card,.release-panel,.artist-panel,.band-card,.stat-panel,.list-card,.content-card,.search-panel,.filter-panel,.table-wrap,.table-container,.workspace-card,.workspace-panel,.widget-card,.widget-panel) {
+  min-width:0;
+  border-color:var(--ie-glass-line);
+  background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.018) 42%,rgba(0,0,0,.035)),var(--ie-glass-fill);
+  box-shadow:var(--ie-glass-shadow);
+  -webkit-backdrop-filter:blur(18px) saturate(145%);
+  backdrop-filter:blur(18px) saturate(145%);
+}
+#app :is(nav,.sidebar,.topbar,.app-header,.workspace-header,.toolbar,.filter-bar,.tabs,.tab-list,.dropdown-menu,.account-menu,.popover,.notification-panel,.command-palette,.modal-card,.modal-content,.dialog) {
+  border-color:var(--ie-glass-line);
+  background-color:var(--ie-glass-fill);
+  -webkit-backdrop-filter:blur(22px) saturate(155%);
+  backdrop-filter:blur(22px) saturate(155%);
+}
+#app :is(button,.button,[role=button],input,select,textarea,.form-control,.icon-button) {
+  min-width:0; max-width:100%;
+}
+#app :is(button,.button,[role=button],.icon-button) {
+  transition:background-color .18s ease,border-color .18s ease,box-shadow .18s ease,transform .18s ease;
+}
+#app :is(button,.button,[role=button]):focus-visible,
+#app :is(input,select,textarea,a):focus-visible {
+  outline:2px solid var(--user-accent,var(--accent,#b3122a));
+  outline-offset:3px;
+}
+#app :is(input,select,textarea,.form-control) {
+  border-color:var(--ie-glass-line);
+  background:color-mix(in srgb,var(--ui-surface,#151a22) 72%,transparent);
+}
+#app :is(.table-wrap,.table-container) { max-width:100%; overflow:auto; }
+#app table { min-width:0; }
+#app :is(img,video,canvas,svg) { max-width:100%; }
+#app :is(.empty-state,.notice,.callout,.alert,.banner,.announcement) { overflow-wrap:anywhere; }
+#app :is(.dashboard-widget-layout,[data-dashboard-widget-card]) { min-width:0; }
+#app .dashboard-widget-layout {
+  display:grid!important;
+  grid-template-columns:repeat(12,minmax(0,1fr))!important;
+  align-items:stretch;
+  gap:clamp(12px,1.7vw,22px)!important;
+}
+#app .dashboard-widget-layout > [data-dashboard-widget-card] {
+  position:relative!important; box-sizing:border-box!important; min-width:0!important;
+  grid-column:var(--dashboard-grid-column,span var(--dashboard-span,12))!important;
+  height:var(--dashboard-custom-height,auto)!important;
+  min-height:180px;
+  border:1px solid var(--ie-glass-line)!important;
+  border-radius:22px!important;
+  background:linear-gradient(145deg,rgba(255,255,255,.09),rgba(255,255,255,.025) 46%,rgba(0,0,0,.06)),var(--ie-glass-fill)!important;
+  box-shadow:var(--ie-glass-shadow)!important;
+  -webkit-backdrop-filter:blur(22px) saturate(155%)!important;
+  backdrop-filter:blur(22px) saturate(155%)!important;
+  overflow:auto;
+}
+#app .dashboard-widget-layout > [data-dashboard-widget-card] > :not(.dashboard-widget-tools):not(.dashboard-edge-hit):not(.dashboard-resize-handle) {
+  min-width:0; max-width:100%;
+}
+#app .dashboard-widget-layout > [data-dashboard-widget-card] > :is(.dashboard-panel,.quick-links-panel,.dashboard-more,.action-centre,.upcoming-panel,.metric,.next-step-panel) {
+  border:0!important; outline:0!important; box-shadow:none!important;
+  background:transparent!important;
+  -webkit-backdrop-filter:none!important; backdrop-filter:none!important;
+}
+#app .dashboard-widget-layout > [data-dashboard-widget-card] .dashboard-widget-tools {
+  border:1px solid var(--ie-glass-line)!important;
+  border-radius:14px!important;
+  background:color-mix(in srgb,var(--ui-surface,#151a22) 65%,transparent)!important;
+  -webkit-backdrop-filter:blur(18px) saturate(145%)!important;
+  backdrop-filter:blur(18px) saturate(145%)!important;
+}
+#app .dashboard-page.is-customising .dashboard-widget-layout > [data-dashboard-widget-card] {
+  overflow:visible!important;
+  outline:1px dashed color-mix(in srgb,var(--user-accent,var(--accent,#b3122a)) 55%,transparent)!important;
+  outline-offset:3px;
+}
+#app .dashboard-page.is-customising .dashboard-widget-layout > [data-dashboard-widget-card] .dashboard-edge-hit {
+  display:block!important; position:absolute!important; z-index:100!important; opacity:0!important;
+  background:transparent!important; border:0!important; margin:0!important; padding:0!important;
+  pointer-events:auto!important; touch-action:none!important;
+}
+#app .dashboard-page.is-customising .dashboard-widget-layout > [data-dashboard-widget-card] .dashboard-edge-n,
+#app .dashboard-page.is-customising .dashboard-widget-layout > [data-dashboard-widget-card] .dashboard-edge-s {
+  left:12px!important; right:12px!important; height:16px!important; cursor:ns-resize!important;
+}
+#app .dashboard-page.is-customising .dashboard-widget-layout > [data-dashboard-widget-card] .dashboard-edge-n { top:-8px!important; }
+#app .dashboard-page.is-customising .dashboard-widget-layout > [data-dashboard-widget-card] .dashboard-edge-s { bottom:-8px!important; }
+#app .dashboard-page.is-customising .dashboard-widget-layout > [data-dashboard-widget-card] .dashboard-edge-e,
+#app .dashboard-page.is-customising .dashboard-widget-layout > [data-dashboard-widget-card] .dashboard-edge-w {
+  top:12px!important; bottom:12px!important; width:16px!important; cursor:ew-resize!important;
+}
+#app .dashboard-page.is-customising .dashboard-widget-layout > [data-dashboard-widget-card] .dashboard-edge-e { right:-8px!important; }
+#app .dashboard-page.is-customising .dashboard-widget-layout > [data-dashboard-widget-card] .dashboard-edge-w { left:-8px!important; }
+#app .dashboard-page.is-customising .dashboard-widget-layout > [data-dashboard-widget-card] :is(.dashboard-edge-ne,.dashboard-edge-nw,.dashboard-edge-se,.dashboard-edge-sw) {
+  width:24px!important; height:24px!important;
+}
+#app .dashboard-page.is-customising .dashboard-widget-layout > [data-dashboard-widget-card] .dashboard-edge-ne { top:-10px!important; right:-10px!important; cursor:nesw-resize!important; }
+#app .dashboard-page.is-customising .dashboard-widget-layout > [data-dashboard-widget-card] .dashboard-edge-nw { top:-10px!important; left:-10px!important; cursor:nwse-resize!important; }
+#app .dashboard-page.is-customising .dashboard-widget-layout > [data-dashboard-widget-card] .dashboard-edge-se { bottom:-10px!important; right:-10px!important; cursor:nwse-resize!important; }
+#app .dashboard-page.is-customising .dashboard-widget-layout > [data-dashboard-widget-card] .dashboard-edge-sw { bottom:-10px!important; left:-10px!important; cursor:nesw-resize!important; }
+html[data-ie-mode="light"] #app :is(.dashboard-widget-layout > [data-dashboard-widget-card],.dashboard-panel,.metric,.metric-card,.stat-card,.action-centre,.quick-links-panel,.release-card,.artist-card,.profile-card,.settings-card,.form-card,.product-card,.modal-card,.dialog,.workspace-card,.workspace-panel) {
+  --ie-glass-fill:rgba(255,255,255,.74);
+  --ie-glass-highlight:rgba(255,255,255,.75);
+  box-shadow:0 12px 32px rgba(27,37,54,.09),inset 0 1px 0 rgba(255,255,255,.8);
+}
+@media(max-width:800px) {
+  #app .dashboard-page.is-customising .dashboard-widget-layout { grid-template-columns:repeat(12,minmax(0,1fr))!important; }
+  #app .dashboard-page.is-customising .dashboard-widget-layout > [data-dashboard-widget-card] { grid-column:span var(--dashboard-span,12)!important; }
+  #app .dashboard-page.is-customising .dashboard-widget-layout > [data-dashboard-widget-card] .dashboard-edge-hit { display:block!important; pointer-events:auto!important; }
+  #app :is(.page-header,.page-heading,.section-heading,.workspace-heading) { align-items:flex-start; flex-wrap:wrap; }
+  #app :is(.table-wrap,.table-container) { -webkit-overflow-scrolling:touch; }
+}
+@media(prefers-reduced-transparency:reduce) {
+  #app :is(.dashboard-widget-layout > [data-dashboard-widget-card],.dashboard-panel,.metric,.metric-card,.stat-card,.action-centre,.quick-links-panel,.release-card,.artist-card,.profile-card,.settings-card,.form-card,.product-card,.modal-card,.dialog,.workspace-card,.workspace-panel,nav,.sidebar,.topbar,.app-header,.workspace-header,.toolbar,.dropdown-menu,.account-menu,.popover,.notification-panel) {
+    -webkit-backdrop-filter:none!important; backdrop-filter:none!important;
+    background:var(--ui-surface,#151a22)!important;
+  }
+}
+@media(prefers-reduced-motion:reduce) {
+  #app * { scroll-behavior:auto!important; animation-duration:.01ms!important; transition-duration:.01ms!important; }
+}
