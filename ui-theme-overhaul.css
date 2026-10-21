@@ -520,3 +520,11 @@ html[data-ie-workspace-theme] body :where(p,small,.muted,.sub,.help-text,.descri
 .workspace-theme-forest-room .workspace-theme-preview{background-image:linear-gradient(145deg,rgba(4,15,9,.25),rgba(4,15,9,.55)),url('/themes/forest-room.svg')!important;background-size:cover!important}
 @media(prefers-reduced-motion:reduce){html[data-ie-workspace-theme] body{background-attachment:scroll,scroll!important}}
 @media(max-width:700px){html[data-ie-workspace-theme] body{background-attachment:scroll,scroll!important;background-position:center,center top!important}}
+
+
+/* v2.8.9 — show the supplied theme artwork in picker thumbnails instead of generic wireframe swatches. */
+.workspace-theme-preview{position:relative;display:block;flex:0 0 74px;width:74px;height:54px;min-width:74px;overflow:hidden;border-radius:10px;border:1px solid var(--preview-border,var(--ui-border,#2b3541));background:var(--preview-bg,#11161d)!important;isolation:isolate}
+.workspace-theme-preview img{display:block;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;border-radius:inherit}
+.workspace-theme-preview i,.workspace-theme-preview b{display:none!important}
+.workspace-theme-option{align-items:center}
+@media(max-width:480px){.workspace-theme-preview{flex-basis:64px;width:64px;height:52px;min-width:64px}}
