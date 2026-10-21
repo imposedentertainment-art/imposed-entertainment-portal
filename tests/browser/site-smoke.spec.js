@@ -70,7 +70,7 @@ test('mobile navigation drawer and toggle sit above the backdrop', async ({ page
       headerPosition: getComputedStyle(h).position,
       headerZ: Number(getComputedStyle(h).zIndex),
       drawerZ: Number(getComputedStyle(d).zIndex),
-      toggleAtPoint: document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2) === b,
+      toggleAtPoint: b.contains(document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2)),
       backdropContent: getComputedStyle(h, '::before').content,
       shortcutDisplay: getComputedStyle(d.querySelector('kbd')).display
     };
