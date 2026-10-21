@@ -57,7 +57,7 @@ function ieStartEmailCodeCooldown(){
   window.addEventListener('ie-personalise-change', function(event) {
     if (!session || !profile || !sb) return;
     const d = event && event.detail || {};
-    const current = getAppearancePreferences();
+    const current = Object.assign({theme:'slate',workspaceTheme:'midnight-studio',accent:'#536579',mode:'dark',surfaceTint:'graphite',shadowIntensity:2,fontScale:100,contrast:'standard',motion:'system',lineHeight:100,borderWidth:1,saturation:100,density:'comfortable',style:'classic',font:'poster',cards:'slab',grain:35,radius:2,banner:'',bannerColor:'',bannerEnabled:false,dashboard:{metrics:true,tasks:true,insights:true,announcements:true,upcoming:true,activity:true,catalogue:true},dashboardLayout:{}}, (profile.notification_preferences && profile.notification_preferences.appearance) || {});
     const fontMap = {modern:'clean',display:'poster',serif:'occult',mono:'typewriter'};
     const densityMap = {compact:'compact',standard:'comfortable',comfortable:'spacious'};
     const next = Object.assign({}, current, {
@@ -70,7 +70,8 @@ function ieStartEmailCodeCooldown(){
       lineHeight: Math.min(130, Math.max(90, Math.round((Number(d.lineHeight) || 1.5) / 1.5 * 100))),
       radius: d.radius === 'sharp' ? 4 : 16,
       saturation: d.surface === 'flat' ? 100 : 150,
-      motion: d.motion === 'none' || d.motion === 'reduced' ? 'reduced' : 'full'
+      motion: d.motion === 'none' || d.motion === 'reduced' ? 'reduced' : 'full',
+      contrast: d.contrast ? 'high' : 'standard'
     });
     saveAppearancePreferences(next);
   });
