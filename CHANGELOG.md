@@ -1,3 +1,12 @@
+## 3.3.8 — Consolidated UI bug fixes and regression coverage
+
+- Restored the desktop navigation as a fixed sidebar instead of a sticky header.
+- Removed page-level pseudo-element backdrops that sat above the entire application shell and hid both the mobile menu and appearance launcher.
+- Put the mobile drawer backdrop inside the navigation stacking context, keeping the toggle and drawer above it.
+- Restored a reliable visible appearance icon and safe-area-aware floating button.
+- Added browser regression tests for appearance settings, mobile drawer visibility, overlay stacking, keyboard hints, and horizontal overflow.
+- Added the consolidated stylesheet to the service-worker cache allow-list and bumped the application version.
+
 ## 3.3.7 — UI stability and regression fixes
 
 - Removed conflicting emergency overrides that forced the desktop sidebar into a sticky top bar.
