@@ -53,6 +53,27 @@ function ieStartEmailCodeCooldown(){
       profile.notification_preferences=prefs;if(status)status.textContent='Appearance saved to your account.';
     });
   }
+  // Persist quick-customiser changes using the existing account appearance pipeline and RLS.
+  window.addEventListener('ie-personalise-change', function(event) {
+    if (!session || !profile || !sb) return;
+    const d = event && event.detail || {};
+    const current = getAppearancePreferences();
+    const fontMap = {modern:'clean',display:'poster',serif:'occult',mono:'typewriter'};
+    const densityMap = {compact:'compact',standard:'comfortable',comfortable:'spacious'};
+    const next = Object.assign({}, current, {
+      accent: /^#[0-9a-f]{6}$/i.test(String(d.accent || '')) ? d.accent : current.accent,
+      mode: ['dark','light','system','amoled'].includes(d.mode) ? d.mode : current.mode,
+      workspaceTheme: ['light-skies','midnight-studio','graphite-minimal','plum-dusk','forest-room'].includes(d.workspaceTheme) ? d.workspaceTheme : current.workspaceTheme,
+      density: densityMap[d.density] || current.density,
+      font: fontMap[d.font] || current.font,
+      fontScale: Math.min(125, Math.max(85, Math.round((Number(d.fontScale) || 1) * 100))),
+      lineHeight: Math.min(130, Math.max(90, Math.round((Number(d.lineHeight) || 1.5) / 1.5 * 100))),
+      radius: d.radius === 'sharp' ? 4 : 16,
+      saturation: d.surface === 'flat' ? 100 : 150,
+      motion: d.motion === 'none' || d.motion === 'reduced' ? 'reduced' : 'full'
+    });
+    saveAppearancePreferences(next);
+  });
   function bindDashboardLayout(){
     const root=document.querySelector('.dashboard-page');
     if(!root)return;
