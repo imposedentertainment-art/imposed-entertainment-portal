@@ -1,4 +1,4 @@
-/* v3.2.2 central semantic design tokens; controlled by the established personalisation engine. */
+/* v3.2.5 canonical semantic tokens. User settings override these defaults; responsive rules should not redefine root defaults. */
 :root{
  --ui-accent:var(--user-accent,var(--accent,#d8bd73));
  --ui-glass-opacity:var(--user-glass-opacity,.15);--ui-glass-strong-opacity:var(--user-glass-strong-opacity,.25);--ui-glass-border-opacity:var(--user-glass-border-opacity,.42);
