@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.2.3] - 2026-10-21 — Mobile glass and dashboard consistency
+
+- Apply Liquid Glass to the actual mobile navigation drawer and accordion selectors, with consistent spacing and legible active states.
+- Normalize dashboard widget grid sizing and add accessible reduced-motion-aware skeleton styling hooks.
+- Keep all existing routes, data queries and account-preference storage in place.
+
+
 ## [3.2.2] - 2026-10-21 — Unified token bridge and mobile refinements
 
 - Connect existing personalisation controls to glass opacity, blur, saturation, borders, radii, density, accent glow and motion tokens.
