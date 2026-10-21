@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.8.4] - 2026-10-21 — Unified themes and light mode
+
+### Fixed
+- Added Light Skies, Midnight Studio, Graphite Minimal, Plum Dusk and Forest Room to the main Settings → Appearance page.
+- Replaced the old named colour preset grid with complete workspace themes and an independent custom accent.
+- Made account appearance preferences and the floating customiser share the same workspace theme and colour mode.
+- Added high-specificity light-mode rules that override legacy hard-coded dark navigation, card, form and text styles.
+- Synced the account accent into the global accent token so active navigation and focus states use the selected colour.
+
+### Update delivery
+- Bumped HTML asset URLs and service-worker cache version to 2.8.4.
+
+### Verification
+- Static CI checks cover theme persistence, main settings options, light-mode overrides and cache-version consistency.
+- Live visual verification on an authenticated phone browser is still required.
+
 ## [2.8.3] - 2026-10-21 — Functional personalisation and reliable refresh
 
 ### Fixed
