@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.4.84] - 2026-10-21
+
+### Added
+- Added portable appearance presets: export the current validated appearance to a JSON file and import it on another device or account.
+- Imports accept only the portal's versioned preset format, enforce a file-size limit, whitelist supported preference keys, and run values through the existing appearance sanitisation/persistence path.
+- Added responsive preset controls with clear guidance; preset files contain appearance settings only, not account, release or profile records.
+- Bumped static asset URLs and service-worker cache namespace to refresh the release consistently.
+
+### Verification
+- Static checks confirm import/export controls and handlers, schema/version checks, key allow-list, file-size limit, and consistent build/cache references.
+- Full browser interaction, cross-device import/export, authenticated save/reload and live deployment still require runtime testing.
+
+# Changelog
+
 ## [1.4.83] - 2026-10-21
 
 ### Expanded personalisation and accessibility
