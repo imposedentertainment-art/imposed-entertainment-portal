@@ -10,9 +10,26 @@ function notifyAccount(){try{window.dispatchEvent(new CustomEvent('ie-personalis
 function el(tag,attrs,text){var n=document.createElement(tag);Object.keys(attrs||{}).forEach(function(k){if(k==='className')n.className=attrs[k];else n.setAttribute(k,attrs[k])});if(text!==undefined)n.textContent=text;return n}
 function apply(){
 var root=document.documentElement,b=document.body;
+/* Single token bridge: the established preference state drives all new design tokens. */
+var densityScale=state.density==='compact'?.82:state.density==='comfortable'?1.16:1;
+var radiusScale=state.radius==='sharp'?.48:1;
+var glassOpacity=state.surface==='flat'?.96:state.surface==='glass'?.105:.15;
+var blur=state.surface==='flat'?0:state.surface==='glass'?26:20;
+var glow=state.glow?'.34':'.08';
+root.style.setProperty('--user-glass-opacity',String(glassOpacity));
+root.style.setProperty('--user-glass-strong-opacity',String(Math.min(.96,glassOpacity+.10)));
+root.style.setProperty('--user-glass-border-opacity',state.contrast?'.72':'.42');
+root.style.setProperty('--user-glass-blur',blur+'px');
+root.style.setProperty('--user-glass-saturation',state.surface==='flat'?'100%':'165%');
+root.style.setProperty('--user-glass-highlight-opacity',state.contrast?'.7':'.48');
+root.style.setProperty('--user-radius-scale',String(radiusScale));
+root.style.setProperty('--user-density-scale',String(densityScale));
+root.style.setProperty('--user-accent-glow',glow);
+root.style.setProperty('--user-motion-duration',state.motion==='none'?'0ms':state.motion==='reduced'?'90ms':'180ms');
+root.style.setProperty('--ui-glass-shadow',state.shadows?'0 14px 40px rgba(3,12,24,.18)':'none');
 /* The quick customiser must drive the same semantic theme attributes as account settings, including for signed-out visitors. */
 root.dataset.ieMode=['dark','light','system','amoled'].includes(state.theme)?state.theme:'dark';root.dataset.ieWorkspaceTheme=['light-skies','midnight-studio','graphite-minimal','plum-dusk','forest-room'].includes(state.palette)?state.palette:'midnight-studio';
-root.style.setProperty('--user-accent',state.accent);root.style.setProperty('--accent',state.accent);root.style.setProperty('--teal',state.accent);root.style.setProperty('--user-font-scale',String(state.fontScale));root.style.setProperty('--user-line-height',String(state.lineHeight));root.style.setProperty('--user-content-width',state.contentWidth==='standard'?'1100px':state.contentWidth==='wide'?'1320px':'none');
+root.style.setProperty('--user-accent',state.accent);root.style.setProperty('--accent',state.accent);root.style.setProperty('--teal',state.accent);root.style.setProperty('--user-font-scale',String(state.fontScale));root.style.setProperty('--user-line-height',String(state.lineHeight));root.style.setProperty('--user-content-width',state.contentWidth==='standard'?'1100px':state.contentWidth==='wide'?'1320px':'none');root.style.setProperty('--ui-accent-glow', '0 0 28px color-mix(in srgb, '+state.accent+' '+(state.glow?'34%':'0%')+', transparent)');
 ['dark','light','system','amoled'].forEach(function(v){b.classList.toggle('personalise-theme-'+v,state.theme===v)});['light-skies','midnight-studio','graphite-minimal','plum-dusk','forest-room'].forEach(function(v){b.classList.toggle('personalise-palette-'+v,state.palette===v)});['standard','wide','full'].forEach(function(v){b.classList.toggle('personalise-content-'+v,state.contentWidth===v)});
 ['serif','modern','mono','display'].forEach(function(v){b.classList.toggle('personalise-font-'+v,state.font===v)});
 ['sharp','rounded'].forEach(function(v){b.classList.toggle('personalise-radius-'+v,state.radius===v)});
