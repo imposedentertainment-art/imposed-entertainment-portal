@@ -99,6 +99,24 @@ if (!core.includes('if(refreshed.error)throw refreshed.error') ||
 }
 
 
+
+if (personalisation.includes("palette:'midnight'")) fail('Personalisation defaults must use the current named theme system.');
+if (!themeOverhaul.includes('body.personalise-theme-light') ||
+    !themeOverhaul.includes('--ui-text:#172536') ||
+    !themeOverhaul.includes('personalise-font-mono') ||
+    !themeOverhaul.includes('personalise-content-wide') ||
+    !themeOverhaul.includes('personalise-motion-none') ||
+    !themeOverhaul.includes('var(--user-accent,#d8bd73)')) {
+  fail('Light mode, typography, layout, motion, and accent preferences must map to semantic UI tokens.');
+}
+if ((views.match(/data-action="settings"[^>]*>\$\{icon\('settings',17\)\} Account settings/g) || []).length > 0) {
+  fail('Mobile navigation must not show a duplicate Account settings action alongside Settings & preferences.');
+}
+if (html.includes('2.8.2') || worker.includes('2.8.2')) fail('HTML and service worker must not retain stale 2.8.2 asset versions.');
+if (!worker.includes("'/ui-theme-overhaul.css', '/js/personalise.js'")) {
+  fail('Theme overhaul CSS must be included in critical service-worker assets.');
+}
+
 const localRef = (value) => {
   if (!value || /^(?:[a-z][a-z0-9+.-]*:|\/\/|#)/i.test(value)) return null;
   const pathname = value.split(/[?#]/, 1)[0];
