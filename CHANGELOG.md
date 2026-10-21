@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.4.80] - 2026-10-21
+
+### Overhauled — visual system, layout and interaction polish
+- Added a dedicated visual refinement layer for more consistent card surfaces, restrained depth, clearer typography hierarchy and stronger, theme-aware interaction states.
+- Standardised responsive action rows, form controls, modal viewport containment, profile/release content wrapping and horizontally scrollable tables.
+- Improved narrow-screen page gutters, heading scale, card spacing and row wrapping to reduce cramped or overflowing layouts on phones and tablets.
+- Preserved existing Supabase operations, route handlers and user appearance preferences; the new layer uses current theme/accent variables and includes reduced-motion handling.
+- Added the stylesheet to the app shell and service-worker asset allow-list; refreshed build and cache version references.
+
+### Verification
+- Static source, version/cache consistency and CSS structural checks are required; live visual, browser-console and authenticated end-to-end testing remain outstanding.
+
+
+
+
 ## [1.4.79] - 2026-10-21
 
 ### Improved — dashboard clarity and responsive behaviour
