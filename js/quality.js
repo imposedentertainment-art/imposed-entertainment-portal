@@ -118,6 +118,14 @@
     if (item.action === 'discover') { var discover = document.querySelector('[data-pf="discover"]'); if (discover) discover.click(); }
   }
 
+  // Keep the command palette discoverable as a real in-product action as well as a shortcut.
+  document.addEventListener('click', function (event) {
+    var trigger = event.target && event.target.closest ? event.target.closest('[data-ie-quicknav-open]') : null;
+    if (!trigger) return;
+    event.preventDefault();
+    open();
+  });
+
   document.addEventListener('keydown', function (event) {
     if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
       event.preventDefault();
@@ -145,6 +153,19 @@
     });
   }
   improveMedia(document);
+  function syncMobileCurrent() {
+    var active = document.querySelector('.desktop-nav .nav-link.active, .desktop-nav button[data-pf].active');
+    if (!active) return;
+    var action = active.getAttribute('data-action');
+    var profileAction = active.getAttribute('data-pf');
+    document.querySelectorAll('.mobile-nav button').forEach(function (button) {
+      var current = action ? button.getAttribute('data-action') === action : !!profileAction && button.getAttribute('data-pf') === profileAction;
+      button.classList.toggle('active', current);
+      if (current) button.setAttribute('aria-current', 'page');
+      else button.removeAttribute('aria-current');
+    });
+  }
+  syncMobileCurrent();
   var observer = new MutationObserver(function (records) {
     records.forEach(function (record) {
       record.addedNodes.forEach(function (node) {
@@ -154,6 +175,7 @@
         }
       });
     });
+    syncMobileCurrent();
   });
   observer.observe(document.documentElement, { childList: true, subtree: true });
 
