@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.4.81] - 2026-10-21
+
+### Major UI overhaul — editorial dark workspace
+- Rebuilt the final visual layer around the app's semantic theme tokens: deep graphite surfaces, warm accent details, translucent navigation, fine borders and consistent radii/shadows.
+- Restructured the visual hierarchy of the workspace shell, sticky navigation/top bar, dashboard hero, summary metrics, action panels and shortcuts for a more deliberate, premium music-industry workspace.
+- Redesigned the dashboard hero as a responsive two-column editorial feature with record artwork, dynamic upcoming-release card and clearer primary/secondary actions; it collapses cleanly on smaller screens.
+- Unified form fields, tables, modal surfaces, buttons, cards, loading/auth surfaces, public artist heroes and release artwork presentation.
+- Added fluid desktop/tablet/mobile breakpoints, overflow-safe grids, content wrapping, clearer active navigation, keyboard focus, hover feedback and reduced-motion handling.
+- Kept existing view rendering, Supabase client/query flows, authentication, role permissions and personalisation state intact; no database migration was needed for this presentation-only release.
+- Refreshed app asset URLs and service-worker cache version together.
+
+### Verification
+- Audited the static frontend structure and existing Supabase client initialization, and inspected the live public table inventory; all listed public tables have RLS enabled.
+- Verified stylesheet linkage, version/cache consistency, CSS brace balance, responsive breakpoints and reduced-motion rules. Browser visual QA, authenticated workflow regression and live deployment verification remain outstanding.
+
+
+
+
 ## [1.4.80] - 2026-10-21
 
 ### Overhauled — visual system, layout and interaction polish
