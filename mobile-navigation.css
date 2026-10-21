@@ -43,3 +43,9 @@
  html body .shell>header.nav>.mobile-nav{max-height:calc(100dvh - var(--mobile-nav-top,130px) - env(safe-area-inset-bottom,0px))!important;overscroll-behavior-y:contain!important}
  html body .shell>header.nav>.mobile-nav .nav-shop-link[aria-current=page]{border-color:#554e89!important;background:#292541!important;color:#fff!important;box-shadow:inset 3px 0 #a294ff!important}
 }
+
+/* v2.7.6: fit drawer to the real sticky header position and viewport. */
+@media(max-width:760px){
+ html body .shell>header.nav>.mobile-nav{max-height:calc(100dvh - var(--mobile-nav-top,130px) - env(safe-area-inset-bottom,0px))!important;overscroll-behavior-y:contain!important}
+ html body .shell>header.nav>.mobile-nav .nav-shop-link[aria-current=page]{border-color:#554e89!important;background:#292541!important;color:#fff!important;box-shadow:inset 3px 0 #a294ff!important}
+}
