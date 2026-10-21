@@ -1,3 +1,10 @@
+## 3.2.5 — UI system consistency and responsive fixes
+
+- Added a final unified UI compatibility layer for consistent focus states, component geometry, overflow handling, and responsive constraints.
+- Made the canonical design-token defaults authoritative instead of redefining them in the mobile stylesheet.
+- Updated stylesheet cache-busting and the service-worker cache version to ensure the new UI layer can be fetched.
+- Preserved existing theme and personalisation classes; no user preferences or backend data were changed.
+
 # Changelog
 
 ## [3.2.4] - 2026-10-21 — Quality and migration safety
