@@ -1,5 +1,15 @@
 # Changelog
 
+## [3.1.0] - 2026-10-21 — Liquid Glass refinement
+
+- Reduced the default tint and darkening effect so theme photographs show through more clearly.
+- Added layered specular highlights, translucent gradients, finer edges and subtler shadows.
+- Extended the visual system across navigation, menus, buttons, form fields, tables and dashboard content.
+- Tuned mobile blur separately to balance transparency with scrolling performance.
+- Refreshed static asset and service-worker cache versions.
+
+# Changelog
+
 ## [3.0.0] - 2026-10-21 — Liquid Glass visual system overhaul
 
 - Rebalanced the UI away from near-opaque dark surfaces toward brighter, more transparent, layered glass.
