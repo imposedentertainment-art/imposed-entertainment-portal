@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.4.79] - 2026-10-21
+
+### Improved — dashboard clarity and responsive behaviour
+- Refined the action-centre hierarchy, task copy wrapping and button hit areas so next steps remain readable and actionable at tablet and phone widths.
+- Reflowed action rows on narrower screens to prevent status counts and buttons competing for space.
+- Improved dashboard customisation controls on small screens, including wrapping size/shape selectors and long widget labels.
+- Refreshed the service-worker cache version so clients can fetch the latest dashboard styles.
+
+### Verification
+- Static checks cover stylesheet link syntax, version/cache consistency, asset-list uniqueness and CSS brace balance. Live browser and authenticated end-to-end testing remains outstanding.
+
+
 ## [1.4.78] - 2026-10-21
 
 ### Improved — research-led UI/UX
