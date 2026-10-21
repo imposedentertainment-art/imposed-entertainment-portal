@@ -1,3 +1,10 @@
+## 3.3.9 — Fix application stacking context and overlay regression
+
+- Removed the app wrapper's low stacking context so fixed navigation can layer correctly.
+- Disabled the legacy generic page-level mobile-menu backdrop that covered the entire application; the navigation header now owns the drawer backdrop.
+- Preserved modal backdrops for dialogs while keeping the menu toggle and drawer above the menu backdrop.
+- Added diagnostics to the mobile drawer browser test and refreshed the service-worker cache version.
+
 ## 3.3.8 — Consolidated UI bug fixes and regression coverage
 
 - Restored the desktop navigation as a fixed sidebar instead of a sticky header.
