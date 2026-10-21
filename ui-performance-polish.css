@@ -74,3 +74,27 @@ html[data-ie-workspace-theme] body #app .dashboard-page.is-resizing-dashboard .d
 html[data-ie-workspace-theme] body #app .dashboard-page.is-resizing-dashboard [data-dashboard-widget-card]{scroll-behavior:auto!important;animation:none!important;transition:none!important}
 html[data-ie-workspace-theme] body #app .dashboard-page.is-resizing-dashboard [data-dashboard-widget-card]{will-change:grid-column,min-height}
 @media(prefers-reduced-motion:reduce){html[data-ie-workspace-theme] body #app *,html[data-ie-workspace-theme] body #app *::before,html[data-ie-workspace-theme] body #app *::after{scroll-behavior:auto!important;animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}}
+
+/* 3.3.17 — mobile rendering budget: large translucent surfaces are costly to composite
+   on mobile GPUs. Preserve layout and colour, but remove the most expensive blur layers. */
+@media(max-width:800px){
+  html[data-ie-workspace-theme] body #app .shell,
+  html[data-ie-workspace-theme] body #app .sidebar,
+  html[data-ie-workspace-theme] body #app .mobile-nav,
+  html[data-ie-workspace-theme] body #app .mobile-nav-panel,
+  html[data-ie-workspace-theme] body #app .card,
+  html[data-ie-workspace-theme] body #app .metric,
+  html[data-ie-workspace-theme] body #app .dashboard-widget-layout>[data-dashboard-widget-card],
+  html[data-ie-workspace-theme] body #app .modal-panel,
+  html[data-ie-workspace-theme] body #app .toast,
+  html[data-ie-workspace-theme] body #app .nav-accordion{
+    -webkit-backdrop-filter:none!important;
+    backdrop-filter:none!important;
+  }
+  html[data-ie-workspace-theme] body #app .shell,
+  html[data-ie-workspace-theme] body #app .sidebar,
+  html[data-ie-workspace-theme] body #app .card,
+  html[data-ie-workspace-theme] body #app .dashboard-widget-layout>[data-dashboard-widget-card]{
+    background-attachment:scroll!important;
+  }
+}
