@@ -1,3 +1,11 @@
+## 3.2.8 — Dashboard contrast and layout refinement
+
+- Increased dashboard hero and supporting copy contrast against dark glass backgrounds.
+- Standardised stat count and metadata contrast, primary action sizing, and workspace header controls.
+- Added spacing and safe-area padding for page titles, top headers and the bottom stat row.
+- Improved glass surface tint/blur and positioned accessibility/customisation floating controls clear of page content.
+- Updated asset and service-worker cache version.
+
 ## 3.2.7 — Fix colour mode switching
 
 - Made the selected Dark, Light, AMOLED and System modes explicitly set colour-scheme and semantic surface/text tokens.
