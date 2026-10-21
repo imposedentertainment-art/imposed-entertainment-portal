@@ -1,5 +1,20 @@
 # Changelog
 
+## [2.8.1] - 2026-10-21 — Personalisation fixes and palette controls
+
+### Fixed
+- Mobile active-navigation states and open accordion headings now use the chosen accent colour instead of hard-coded purple.
+- Custom accent colours now propagate to selected navigation, focus states, active controls, and menu highlights consistently.
+- Standardised active-state styling across mobile and desktop navigation and fixed the personalisation launcher glyph overlap.
+
+### Added
+- Added five workspace surface palettes: Midnight, Graphite, Deep Navy, Plum Dusk, and Forest Night.
+- Palette selection is stored with existing local preferences and included in settings export/import and reset.
+- Added regression checks for palette state, CSS accent usage, and release asset registration.
+
+### Verification
+- JavaScript syntax, CSS structure, asset references, and personalisation behaviour are checked by the repository workflow. Visual testing on a real phone remains necessary after deployment.
+
 ## [2.8.0] - 2026-10-21 — Reliable update delivery
 
 ### Fixed
