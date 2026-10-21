@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.2.4] - 2026-10-21 — Quality and migration safety
+
+- Reconcile duplicate tracked migration version prefix by assigning the shop catalogue migration a unique, ordered version. The duplicate version was not recorded in the live Supabase migration history; no production SQL was applied.
+- Add Chromium browser smoke tests for local asset failures, mobile horizontal overflow and direct privacy/terms routes.
+- Add an automated browser-test stage to GitHub Actions alongside existing syntax and static audits.
+- Security review confirms `get_invite` is intentionally callable without sign-in for invitation onboarding; its body only returns fields for a matching pending, unexpired code. Keep this public workflow, continue reviewing token entropy and edge rate limiting. No broad SECURITY DEFINER grants were revoked.
+
+
 ## [3.2.3] - 2026-10-21 — Mobile glass and dashboard consistency
 
 - Apply Liquid Glass to the actual mobile navigation drawer and accordion selectors, with consistent spacing and legible active states.
