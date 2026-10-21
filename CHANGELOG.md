@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.5.0] - 2026-10-21 — Listener merch marketplace
+
+### Added
+- Added a dedicated Merch & Artist Shops shelf to the Listener Room, powered by public shop links artists already publish on their profiles.
+- Added official shop links to public artist pages when an artist has links labelled for merch, shops, stores, vinyl, physical releases or recognised music storefronts.
+- Added quick Shop merch links to directory cards for artists with a detected shop link.
+- Added external-link safety attributes, clear messaging that checkout and fulfilment remain with the artist's chosen shop, and responsive layouts for mobile screens.
+
+### Compatibility
+- Reuses existing public artist links and the existing verified directory response; no new database table, checkout handling, API dependency or personal data collection is introduced.
+- Artists can surface shops by adding a clearly labelled shop/merch/Bandcamp/physical-release link to their existing public profile links.
+- Service-worker cache namespace and local asset versions updated together.
+
+### Verification
+- Static syntax and release consistency checks should run in GitHub Actions after commit. Live browser and mobile interaction tests remain outstanding.
+
 ## [2.4.0] - 2026-10-21 — Listener discovery experience overhaul
 
 ### Improved
