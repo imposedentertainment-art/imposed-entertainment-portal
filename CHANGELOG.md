@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.7.0] - 2026-10-21 — Shop management workspace
+
+### Added
+- Added authenticated `/shop/manage` product studio for artists and label administrators.
+- Create, edit, publish, unpublish through draft status, mark availability, feature label-shop products, and archive owned listings.
+- Added validation for product title, category, price and HTTPS artwork URLs; management uses the signed-in user's Supabase session and existing RLS.
+- Added responsive product-editor and inventory styling.
+
+### Safety
+- Checkout and fulfilment remain disabled. Listings do not accept payment or create orders.
+- Artists can manage their own collection; label shop management is restricted to label administrators by database policy.
+
 ## [2.6.0] - 2026-10-21 — Unified shop foundation
 
 ### Added
