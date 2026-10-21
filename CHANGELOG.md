@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.8.10] - 2026-10-21 — Original theme photographs
+
+### Fixed
+- Extracted the five original JPEGs from the repository-root `themes.zip` into the public `themes/` directory via GitHub Actions.
+- Updated theme-picker thumbnails and full-page backgrounds to use the original JPEGs rather than generated SVG substitutes.
+- Added the JPEGs to the service-worker precache and bumped the release/cache namespace to 2.8.10.
+
+### Automation
+- Added `.github/workflows/extract-theme-assets.yml` so the uploaded archive is extracted automatically on future changes.
+
+
 ## [2.8.9] - 2026-10-21 — Theme artwork icons in picker
 
 ### Fixed
