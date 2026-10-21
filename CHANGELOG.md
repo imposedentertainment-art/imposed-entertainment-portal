@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.0.0] - 2026-10-21 — Major listener platform release
+
+### Added
+- Introduced personal listener collections for grouping public artists by mood, moment, or discovery theme.
+- Added collection creation, artist-to-collection actions, item counts, collection previews, deletion confirmation, and bounded collection/item limits.
+- Added cross-device collection sync for authenticated listener accounts through a new owner-only Supabase table; guest collections remain local to the current browser.
+- Added validation for collection names and items and enforced per-user row-level security policies on the new collection table.
+
+### Changed
+- Reset the public build and service-worker cache version to 2.0.0 to mark a product-level milestone rather than another patch increment.
+- Preserved existing listener-library and artist discovery flows.
+
+### Verification
+- Static checks and GitHub Actions will be checked after commit. Browser-level QA remains a separate required step.
+
+
 ## [1.4.90] - 2026-10-21
 
 ### Improved
