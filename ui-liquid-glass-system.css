@@ -1,0 +1,103 @@
+/* v3.0.0 — Liquid Glass system-wide visual overhaul.
+   Keep surfaces bright, translucent and visibly refractive; theme photos should remain visible. */
+:root {
+ --ie-glass-fill:rgba(225,239,250,.115);
+ --ie-glass-fill-strong:rgba(226,240,250,.19);
+ --ie-glass-line:rgba(255,255,255,.34);
+ --ie-glass-highlight:rgba(255,255,255,.46);
+ --ie-glass-shadow:0 14px 40px rgba(5,15,28,.12);
+ --ie-glass-blur:22px;
+}
+html body #app {
+ --glass-bg:rgba(220,237,250,.12);
+ --glass-bg-strong:rgba(220,237,250,.19);
+ --glass-border:rgba(255,255,255,.34);
+}
+html body #app :is(
+ .dashboard-panel,.metric,.metric-card,.stat-card,.action-centre,.quick-links-panel,
+ .upcoming-panel,.next-step-panel,.dashboard-widget,.dashboard-widget-layout,
+ .dashboard-shortcut-grid,.dashboard-recent-panel,.dashboard-more,.dashboard-more-content,
+ .dashboard-shortcut-grid .quick-link-row,.dashboard-recent-item,.dashboard-action-item,
+ .todo-card,.announcement-card,.release-card,.artist-card,.profile-card,.settings-card,
+ .form-card,.submission-card,.catalogue-panel,.shop-product-card,.product-card,
+ .modal-card,.modal-content,.dialog,.card,.panel,.surface,.settings-panel,
+ .dashboard-detail-customise,.dashboard-detail-toggles label,.dashboard-more summary,
+ .action-card,.shortcut-card,.insight-card,.activity-card,.release-panel,.artist-panel,
+ .band-card,.stat-panel,.list-card,.content-card,.empty-state,.notice,.callout,
+ .search-panel,.filter-panel,.table-wrap,.table-container,.pagination,.toolbar,
+ .nav-search,.account-menu,.dropdown-menu,.popover,.tooltip-panel,.notification-panel,
+ .toast,.banner,.announcement,.form-panel,.input-group,.field,.select-wrap,
+ .profile-header,.profile-hero,.artist-header,.release-header,.submission-header,
+ .workspace-card,.workspace-panel,.widget-card,.widget-panel
+) {
+ background-color:var(--ie-glass-fill)!important;
+ background-image:linear-gradient(135deg,rgba(255,255,255,.16),rgba(255,255,255,.035) 46%,rgba(255,255,255,.075))!important;
+ border-color:var(--ie-glass-line)!important;
+ box-shadow:inset 0 1px 0 var(--ie-glass-highlight),inset 0 0 0 1px rgba(255,255,255,.035),var(--ie-glass-shadow)!important;
+ -webkit-backdrop-filter:blur(var(--ie-glass-blur)) saturate(155%)!important;
+ backdrop-filter:blur(var(--ie-glass-blur)) saturate(155%)!important;
+}
+html body #app :is(button,.button,a.button,[role="button"],input,select,textarea,
+ .btn,.nav a,.nav button,.menu-item,.tab,.chip,.badge,.pill,.icon-button,.toolbar button,
+ .dashboard-more summary,.quick-link-row,.dashboard-shortcut,.shortcut-item) {
+ -webkit-backdrop-filter:blur(18px) saturate(150%);
+ backdrop-filter:blur(18px) saturate(150%);
+}
+html body #app :is(button,.button,a.button,.btn,.quick-link-row,.dashboard-shortcut,.shortcut-item,.menu-item,.tab,.chip,.pill,.icon-button) {
+ background-image:linear-gradient(145deg,rgba(255,255,255,.20),rgba(255,255,255,.055))!important;
+ border-color:rgba(255,255,255,.30)!important;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.30),0 5px 18px rgba(4,12,24,.09)!important;
+}
+html body #app :is(input,select,textarea) {
+ background-color:rgba(235,245,255,.12)!important;
+ border-color:rgba(255,255,255,.28)!important;
+ box-shadow:inset 0 1px 3px rgba(4,12,24,.08)!important;
+}
+html body #app :is(header,.site-header,.nav,.nav-inner,.topbar,.sidebar,.mobile-nav,.bottom-nav,.app-header) {
+ background-color:rgba(226,240,250,.13)!important;
+ background-image:linear-gradient(120deg,rgba(255,255,255,.16),rgba(255,255,255,.045))!important;
+ border-color:rgba(255,255,255,.28)!important;
+ -webkit-backdrop-filter:blur(26px) saturate(165%)!important;
+ backdrop-filter:blur(26px) saturate(165%)!important;
+}
+html body #app :is(.dashboard-panel,.metric,.metric-card,.stat-card,.action-centre,.quick-links-panel,.upcoming-panel,.next-step-panel,.dashboard-widget,.dashboard-more,.card,.panel,.surface,.settings-panel,.content-card,.workspace-card,.workspace-panel,.widget-card,.widget-panel) > :is(header,.panel-header,.card-header,.section-header) {
+ background:linear-gradient(110deg,rgba(255,255,255,.13),rgba(255,255,255,.035))!important;
+ border-color:rgba(255,255,255,.20)!important;
+}
+html body #app :is(.dashboard-panel,.metric,.metric-card,.stat-card,.action-centre,.quick-links-panel,.upcoming-panel,.next-step-panel,.dashboard-widget,.dashboard-more,.card,.panel,.surface,.settings-panel,.content-card,.workspace-card,.workspace-panel,.widget-card,.widget-panel) :is(hr,.divider) {
+ border-color:rgba(255,255,255,.20)!important;
+}
+html body #app :is(button,a,[role="button"],.quick-link-row,.dashboard-shortcut,.shortcut-item):focus-visible {
+ outline:2px solid rgba(255,255,255,.9)!important;outline-offset:3px;
+}
+html body #app :is(button,a,[role="button"],.quick-link-row,.dashboard-shortcut,.shortcut-item) {transition:background-color .16s ease,border-color .16s ease,transform .16s ease}
+@media(hover:hover) and (pointer:fine) {
+ html body #app :is(button,.button,a.button,.btn,.quick-link-row,.dashboard-shortcut,.shortcut-item,.menu-item,.tab,.chip,.pill,.icon-button):hover {
+  background-color:rgba(255,255,255,.22)!important;border-color:rgba(255,255,255,.48)!important;
+  transform:translateY(-1px);
+ }
+}
+html[data-ie-workspace-theme="light-skies"] body #app :is(.dashboard-panel,.metric,.metric-card,.stat-card,.action-centre,.quick-links-panel,.upcoming-panel,.next-step-panel,.dashboard-widget,.dashboard-more,.card,.panel,.surface,.settings-panel,.content-card,.workspace-card,.workspace-panel,.widget-card,.widget-panel,.dashboard-detail-customise) {
+ background-color:rgba(239,248,255,.20)!important;
+ background-image:linear-gradient(135deg,rgba(255,255,255,.32),rgba(255,255,255,.09))!important;
+ border-color:rgba(255,255,255,.54)!important;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.65),0 14px 40px rgba(32,67,94,.10)!important;
+}
+html[data-ie-workspace-theme="light-skies"] body #app :is(button,.button,a.button,.btn,input,select,textarea,.quick-link-row,.dashboard-shortcut,.shortcut-item,.menu-item,.tab,.chip,.pill,.icon-button) {
+ background-color:rgba(239,248,255,.24)!important;border-color:rgba(255,255,255,.52)!important;
+}
+@media(max-width:760px),(pointer:coarse) {
+ :root {--ie-glass-blur:16px}
+ html body #app :is(.dashboard-panel,.metric,.metric-card,.stat-card,.action-centre,.quick-links-panel,.upcoming-panel,.next-step-panel,.dashboard-widget,.dashboard-widget-layout,.dashboard-shortcut-grid,.dashboard-recent-panel,.dashboard-more,.dashboard-more-content,.dashboard-detail-customise,.quick-link-row,.dashboard-recent-item,.dashboard-action-item,.todo-card,.announcement-card,.release-card,.artist-card,.profile-card,.settings-card,.form-card,.submission-card,.catalogue-panel,.shop-product-card,.product-card,.modal-card,.modal-content,.dialog,.card,.panel,.surface,.settings-panel,.action-card,.shortcut-card,.insight-card,.activity-card,.release-panel,.artist-panel,.band-card,.stat-panel,.list-card,.content-card,.empty-state,.notice,.callout,.search-panel,.filter-panel,.table-wrap,.table-container,.pagination,.toolbar,.account-menu,.dropdown-menu,.popover,.notification-panel,.form-panel,.workspace-card,.workspace-panel,.widget-card,.widget-panel) {
+  -webkit-backdrop-filter:blur(12px) saturate(140%)!important;
+  backdrop-filter:blur(12px) saturate(140%)!important;
+ }
+}
+@media(prefers-reduced-transparency:reduce) {
+ html body #app :is(.dashboard-panel,.metric,.metric-card,.stat-card,.action-centre,.quick-links-panel,.upcoming-panel,.next-step-panel,.dashboard-widget,.dashboard-more,.card,.panel,.surface,.settings-panel,.content-card,.workspace-card,.workspace-panel,.widget-card,.widget-panel,.modal-card,.modal-content,.dialog) {
+  -webkit-backdrop-filter:none!important;backdrop-filter:none!important;background-color:rgba(35,47,60,.84)!important;
+ }
+}
+@media(prefers-reduced-motion:reduce) {
+ html body #app * {transition-duration:.01ms!important;animation-duration:.01ms!important;scroll-behavior:auto!important}
+}
