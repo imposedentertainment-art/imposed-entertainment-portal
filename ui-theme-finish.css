@@ -1,0 +1,154 @@
+/* Imposed Entertainment v2.9.4 — remove stray banner strip and make theme art the coherent workspace backdrop. */
+html[data-ie-workspace-theme] {
+  min-height:100%;
+  background:#07100d;
+}
+html[data-ie-workspace-theme] body {
+  position:relative;
+  isolation:isolate;
+  min-height:100vh;
+  min-height:100dvh;
+  background:transparent!important;
+  background-image:none!important;
+}
+html[data-ie-workspace-theme] body::before {
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  background-image:
+    linear-gradient(180deg,var(--ie-theme-wash,rgba(7,10,14,.52)),color-mix(in srgb,var(--ie-theme-wash,rgba(7,10,14,.52)) 75%,rgba(0,0,0,.32))),
+    var(--ie-theme-art);
+  background-position:center,center 38%;
+  background-size:cover,cover;
+  background-repeat:no-repeat;
+}
+html[data-ie-workspace-theme="light-skies"] body::before {
+  background-image:linear-gradient(180deg,rgba(230,241,250,.28),rgba(232,241,249,.56)),var(--ie-theme-art);
+}
+html[data-ie-workspace-theme] body #app,
+html[data-ie-workspace-theme] body .shell,
+html[data-ie-workspace-theme] body .shell > .main,
+html[data-ie-workspace-theme] body .shell > .main-content,
+html[data-ie-workspace-theme] body .main,
+html[data-ie-workspace-theme] body .main-content,
+html[data-ie-workspace-theme] body .page,
+html[data-ie-workspace-theme] body .dashboard-page {
+  background-color:transparent!important;
+  background-image:none!important;
+}
+html[data-ie-workspace-theme] body .ie-banner {
+  display:none!important;
+  height:0!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+}
+/* Keep navigation intentionally quiet so the artwork belongs to the workspace, not a random cropped strip. */
+html[data-ie-workspace-theme] body .shell > .nav {
+  background:rgba(6,12,18,.94)!important;
+  border-bottom:1px solid color-mix(in srgb,var(--user-accent,#79bd91) 24%,transparent)!important;
+  backdrop-filter:blur(22px) saturate(135%);
+  -webkit-backdrop-filter:blur(22px) saturate(135%);
+}
+html[data-ie-workspace-theme] body .workspace-topbar {
+  background:color-mix(in srgb,var(--ui-page,rgba(7,12,15,.84)) 76%,transparent)!important;
+  backdrop-filter:blur(20px) saturate(125%);
+  -webkit-backdrop-filter:blur(20px) saturate(125%);
+  border-bottom:1px solid color-mix(in srgb,var(--user-accent,#79bd91) 22%,var(--ui-border,#29352f))!important;
+}
+html[data-ie-workspace-theme] body .dashboard-page {
+  gap:clamp(16px,2vw,26px);
+}
+html[data-ie-workspace-theme] body .dashboard-page > .dashboard-hero {
+  min-height:clamp(520px,65vh,790px);
+  padding:clamp(22px,4vw,38px)!important;
+  border:1px solid color-mix(in srgb,var(--user-accent,#79bd91) 42%,rgba(255,255,255,.16))!important;
+  border-radius:clamp(20px,2.8vw,30px)!important;
+  background-color:rgba(7,11,17,.3)!important;
+  background-image:linear-gradient(110deg,rgba(5,9,14,.84) 0%,rgba(5,9,14,.63) 48%,rgba(5,9,14,.28) 100%),var(--ie-theme-art)!important;
+  background-size:cover,cover!important;
+  background-position:center,center 46%!important;
+  box-shadow:0 24px 70px rgba(0,0,0,.22),inset 0 1px rgba(255,255,255,.08);
+}
+html[data-ie-workspace-theme="light-skies"] body .dashboard-page > .dashboard-hero {
+  background-image:linear-gradient(110deg,rgba(238,247,253,.94) 0%,rgba(238,247,253,.76) 52%,rgba(238,247,253,.24) 100%),var(--ie-theme-art)!important;
+}
+html[data-ie-workspace-theme] body :where(.dashboard-panel,.metric,.action-centre,.quick-links-panel,.upcoming-panel,.next-step-panel,.dashboard-widget) {
+  min-width:0;
+}
+html[data-ie-workspace-theme] body :where(.dashboard-panel,.metric,.action-centre,.quick-links-panel,.upcoming-panel,.next-step-panel) {
+  background:linear-gradient(145deg,rgba(13,19,27,.78),rgba(8,13,19,.66))!important;
+  border:1px solid color-mix(in srgb,var(--user-accent,#79bd91) 20%,rgba(255,255,255,.1))!important;
+  box-shadow:0 16px 40px rgba(0,0,0,.14),inset 0 1px rgba(255,255,255,.035);
+  backdrop-filter:blur(14px) saturate(125%);
+  -webkit-backdrop-filter:blur(14px) saturate(125%);
+}
+html[data-ie-workspace-theme="light-skies"] body :where(.dashboard-panel,.metric,.action-centre,.quick-links-panel,.upcoming-panel,.next-step-panel) {
+  background:linear-gradient(145deg,rgba(249,252,255,.88),rgba(230,240,249,.78))!important;
+  border-color:rgba(67,100,130,.2)!important;
+}
+html[data-ie-workspace-theme] body .dashboard-hero .dashboard-hero-copy h1 {
+  max-width:12ch;
+  font-size:clamp(40px,6.2vw,76px)!important;
+  line-height:.98!important;
+  letter-spacing:-.06em!important;
+  text-wrap:balance;
+}
+html[data-ie-workspace-theme] body .dashboard-hero .dashboard-hero-copy > p {
+  max-width:50ch;
+  font-size:clamp(16px,1.65vw,20px);
+  line-height:1.7;
+}
+html[data-ie-workspace-theme] body .dashboard-hero .dashboard-hero-actions {
+  width:min(100%,620px);
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+  gap:12px;
+  margin-top:clamp(20px,3vw,32px);
+}
+html[data-ie-workspace-theme] body .dashboard-hero .dashboard-hero-actions > :where(button,a) {
+  min-height:54px;
+  border-radius:15px!important;
+  font-weight:750;
+}
+html[data-ie-workspace-theme] body .dashboard-hero .dashboard-hero-actions > .primary {
+  box-shadow:0 9px 24px color-mix(in srgb,var(--user-accent,#79bd91) 22%,transparent);
+}
+html[data-ie-workspace-theme] body .dashboard-hero .dashboard-hero-actions > :not(.primary) {
+  background:rgba(12,18,27,.48)!important;
+  border-color:rgba(230,239,247,.22)!important;
+  backdrop-filter:blur(12px);
+}
+html[data-ie-workspace-theme="light-skies"] body .dashboard-hero .dashboard-hero-actions > :not(.primary) {
+  color:#19354b!important;
+  background:rgba(255,255,255,.55)!important;
+  border-color:rgba(32,63,88,.24)!important;
+}
+html[data-ie-workspace-theme] body :where(.card,.panel,.settings-card,.detail-card,.form-card,.builder-card,.release-card,.artist-card,.profile-card,.approval-card,.collection-card,.listener-card,.modal-card,.dashboard-panel,.metric) {
+  border-radius:18px;
+}
+@media(max-width:760px) {
+  html[data-ie-workspace-theme] body::before { background-position:center,center top; }
+  html[data-ie-workspace-theme] body .shell > .nav { background:rgba(5,11,17,.97)!important; }
+  html[data-ie-workspace-theme] body .workspace-topbar { padding:18px 18px 16px!important; }
+  html[data-ie-workspace-theme] body .dashboard-page { padding:12px!important; }
+  html[data-ie-workspace-theme] body .dashboard-page > .dashboard-hero {
+    min-height:clamp(560px,72vh,780px);
+    padding:24px 18px!important;
+    background-position:center,center!important;
+    border-radius:22px!important;
+  }
+  html[data-ie-workspace-theme] body .dashboard-hero .dashboard-hero-copy h1 { font-size:clamp(38px,10vw,58px)!important; }
+  html[data-ie-workspace-theme] body .dashboard-hero .dashboard-hero-actions { width:100%; }
+}
+@media(max-width:420px) {
+  html[data-ie-workspace-theme] body .dashboard-page { padding:10px!important; }
+  html[data-ie-workspace-theme] body .dashboard-page > .dashboard-hero { padding:22px 16px!important; min-height:570px; }
+  html[data-ie-workspace-theme] body .dashboard-hero .dashboard-hero-copy h1 { font-size:36px!important; }
+}
+@media(prefers-reduced-motion:reduce) {
+  html[data-ie-workspace-theme] body::before { background-attachment:scroll; }
+}
