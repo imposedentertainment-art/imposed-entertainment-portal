@@ -22,9 +22,9 @@
     const v=value&&typeof value==='object'?value:{};
     const order=Array.isArray(v.order)?v.order.filter((k,i,a)=>IE_DASHBOARD_WIDGETS.includes(k)&&a.indexOf(k)===i):[];
     IE_DASHBOARD_WIDGETS.forEach(k=>{if(!order.includes(k))order.push(k);});
-    const sizes={},shapes={},heights={};
-    IE_DASHBOARD_WIDGETS.forEach(k=>{sizes[k]=Number.isFinite(Number(v.sizes?.[k]))&&Number(v.sizes[k])>=3&&Number(v.sizes[k])<=12?Math.round(Number(v.sizes[k])):({'third':4,'half':6,'full':12}[v.sizes?.[k]]||({'third':4,'half':6,'full':12}[IE_APPEARANCE_DEFAULTS.dashboardLayout.sizes[k]]||12));shapes[k]=['soft','square','pill'].includes(v.shapes?.[k])?v.shapes[k]:IE_APPEARANCE_DEFAULTS.dashboardLayout.shapes[k];const h=Number(v.heights?.[k]);heights[k]=Number.isFinite(h)&&h>0?Math.min(720,Math.max(180,Math.round(h))):0;});
-    return {order,sizes,shapes,heights};
+    const sizes={},shapes={},heights={},starts={};
+    IE_DASHBOARD_WIDGETS.forEach(k=>{sizes[k]=Number.isFinite(Number(v.sizes?.[k]))&&Number(v.sizes[k])>=3&&Number(v.sizes[k])<=12?Math.round(Number(v.sizes[k])):({'third':4,'half':6,'full':12}[v.sizes?.[k]]||({'third':4,'half':6,'full':12}[IE_APPEARANCE_DEFAULTS.dashboardLayout.sizes[k]]||12));shapes[k]=['soft','square','pill'].includes(v.shapes?.[k])?v.shapes[k]:IE_APPEARANCE_DEFAULTS.dashboardLayout.shapes[k];const h=Number(v.heights?.[k]);heights[k]=Number.isFinite(h)&&h>0?Math.min(900,Math.max(180,Math.round(h))):0;const st=Number(v.starts?.[k]);starts[k]=Number.isFinite(st)&&st>=1&&st<=12?Math.round(st):0;});
+    return {order,sizes,shapes,heights,starts};
   }
   function getAppearancePreferences(){
     const saved=(profile&&profile.notification_preferences&&profile.notification_preferences.appearance)||{};
@@ -64,7 +64,7 @@
     const dashboard=a.dashboard&&typeof a.dashboard==='object'?a.dashboard:IE_APPEARANCE_DEFAULTS.dashboard;
     ['metrics','tasks','announcements','upcoming','activity','catalogue'].forEach(k=>{root.dataset['ieDashboard'+k[0].toUpperCase()+k.slice(1)]=dashboard[k]===false?'false':'true';});
     const dashboardLayout=normaliseDashboardLayout(a.dashboardLayout);
-    document.querySelectorAll('[data-dashboard-widget-card]').forEach(el=>{const k=el.dataset.dashboardWidgetCard;el.dataset.widgetSize=String(dashboardLayout.sizes[k]||12);el.style.gridColumn='span '+(dashboardLayout.sizes[k]||12);el.style.setProperty('--dashboard-span',String(dashboardLayout.sizes[k]||12));el.dataset.widgetShape=dashboardLayout.shapes[k]||'soft';if(dashboardLayout.heights[k])el.style.setProperty('--dashboard-custom-height',dashboardLayout.heights[k]+'px');else el.style.removeProperty('--dashboard-custom-height');});
+    document.querySelectorAll('[data-dashboard-widget-card]').forEach(el=>{const k=el.dataset.dashboardWidgetCard;el.dataset.widgetSize=String(dashboardLayout.sizes[k]||12);el.style.gridColumn=dashboardLayout.starts[k]?(dashboardLayout.starts[k]+' / span '+(dashboardLayout.sizes[k]||12)):('span '+(dashboardLayout.sizes[k]||12));el.dataset.widgetStart=String(dashboardLayout.starts[k]||1);el.style.setProperty('--dashboard-span',String(dashboardLayout.sizes[k]||12));el.style.setProperty('--dashboard-span',String(dashboardLayout.sizes[k]||12));el.dataset.widgetShape=dashboardLayout.shapes[k]||'soft';if(dashboardLayout.heights[k])el.style.setProperty('--dashboard-custom-height',dashboardLayout.heights[k]+'px');else el.style.removeProperty('--dashboard-custom-height');});
     document.querySelectorAll('[data-dashboard-shape]').forEach(el=>{if(el.value!==dashboardLayout.shapes[el.dataset.dashboardShape])el.value=dashboardLayout.shapes[el.dataset.dashboardShape];});
     document.querySelectorAll('[data-dashboard-widget]').forEach(i=>{i.checked=dashboard[i.dataset.dashboardWidget]!==false;});
     root.style.setProperty('--user-accent',accent);root.style.setProperty('--accent-user',accent);root.style.setProperty('--accent-user-hover',accent.toLowerCase()===String(theme.accent).toLowerCase()?theme.hover:accent);root.style.setProperty('--accent-user-ink',theme.ink);root.style.setProperty('--accent-user-soft',theme.soft);
