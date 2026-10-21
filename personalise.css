@@ -359,8 +359,3 @@ body.personalise-theme-amoled #app :is(.card,.panel,.settings-card,.detail-card,
   body.personalise-theme-system #app :is(.main,.main-content,.page-content,.workspace-content,.content-area,.dashboard-content,.page-container) { background-color: #f4f6f9; color: #171b23; }
   body.personalise-theme-system #app :is(.card,.panel,.settings-card,.detail-card,.builder-card,.approval-card,.metric,.up-card,.profile-card,.artist-card,.release-card,.collection-card,.modal-card,.settings-panel,.widget-card,.workspace-card) { background-color: #fff; color: #171b23; border-color: #dbe1e9; }
 }
-
-/* v3.3.6: explicit visible fallback for the theme/customisation launcher. */
-html body #ie-personalise-trigger{font-size:21px!important;color:#fff!important;z-index:30!important}
-html body #ie-personalise-trigger::before{content:none!important;display:none!important}
-html body #ie-personalise-panel[hidden]{display:none!important}
