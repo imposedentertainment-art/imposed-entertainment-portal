@@ -1,0 +1,107 @@
+/* Imposed Entertainment v2.1.0 — unified UI and personalisation layer.
+   Deliberately loaded last: normalises legacy component generations without changing app logic. */
+:root{
+  color-scheme:dark;
+  --ie-ui-bg:#080a0d;--ie-ui-surface:#11161d;--ie-ui-raised:#171e27;
+  --ie-ui-text:#f5f4ef;--ie-ui-muted:#a4adb8;--ie-ui-border:#2b3541;
+  --ie-ui-accent:var(--user-accent,#d8bd73);
+  --ie-ui-radius:var(--user-radius,16px);
+  --ie-ui-gap:clamp(12px,1.8vw,22px);
+}
+html{min-width:320px;scrollbar-gutter:stable}
+body{background:var(--ie-ui-bg);color:var(--ie-ui-text);overflow-wrap:anywhere}
+body :where(#app,.shell,.main,.main-content,.page,.page-content,.workspace,.workspace-content,.content-area,.dashboard-page){min-width:0;max-width:100%}
+body :where(input,select,textarea){min-width:0;max-width:100%;font:inherit}
+body :where(button,a,input,select,textarea,[tabindex]):focus-visible{outline:2px solid var(--ie-ui-accent);outline-offset:3px}
+body :where(.card,.panel,.metric,.release-card,.artist-card,.profile-card,.settings-card,.detail-card,.form-card,.builder-card,.approval-card,.up-card,.collection-card,.listener-card){
+  min-width:0;border-radius:var(--ie-ui-radius);overflow-wrap:anywhere;
+  transition:background-color .18s ease,border-color .18s ease,box-shadow .18s ease,transform .18s ease;
+}
+body.personalise-cards-elevated :where(.card,.panel,.metric,.release-card,.artist-card,.profile-card,.settings-card,.detail-card,.form-card,.builder-card,.approval-card,.up-card,.collection-card,.listener-card){
+  box-shadow:0 10px 28px rgb(0 0 0 / .16);border:1px solid color-mix(in srgb,var(--ie-ui-border) 82%,transparent);
+}
+body.personalise-cards-outlined :where(.card,.panel,.metric,.release-card,.artist-card,.profile-card,.settings-card,.detail-card,.form-card,.builder-card,.approval-card,.up-card,.collection-card,.listener-card){
+  box-shadow:none!important;border:1px solid var(--ie-ui-border)!important;background:transparent;
+}
+body.personalise-cards-minimal :where(.card,.panel,.metric,.release-card,.artist-card,.profile-card,.settings-card,.detail-card,.form-card,.builder-card,.approval-card,.up-card,.collection-card,.listener-card){
+  box-shadow:none!important;border-color:transparent!important;background:color-mix(in srgb,var(--ie-ui-surface) 62%,transparent);
+}
+body.personalise-artwork-square :where(.artist-card img,.release-card img,.profile-card img,.artist-artwork,.release-artwork,.cover-art,.listener-card img){border-radius:3px!important}
+body.personalise-artwork-rounded :where(.artist-card img,.release-card img,.profile-card img,.artist-artwork,.release-artwork,.cover-art,.listener-card img){border-radius:var(--ie-ui-radius)!important}
+body.personalise-artwork-circle :where(.artist-card img,.profile-card img,.artist-avatar,.artist-card .avatar,.profile-card .avatar){border-radius:50%!important;aspect-ratio:1;object-fit:cover}
+body.personalise-theme-light{
+  color-scheme:light;
+  --ie-ui-bg:#f3f5f8;--ie-ui-surface:#fff;--ie-ui-raised:#e9edf2;
+  --ie-ui-text:#171b22;--ie-ui-muted:#566170;--ie-ui-border:#d4dbe4;
+  background:#f3f5f8!important;color:#202630!important;
+}
+body.personalise-theme-light :where(.nav,.workspace-topbar,.mobile-nav,.sidebar,.side-nav,.panel,.card,.metric,.modal-card,.settings-card,.detail-card,.form-card,.builder-card,.release-card,.artist-card,.profile-card,.collection-card,.listener-card){
+  background-color:var(--ie-ui-surface);color:var(--ie-ui-text);border-color:var(--ie-ui-border);
+}
+body.personalise-theme-light :where(h1,h2,h3,h4,h5,strong,label,.nav-link,.sidebar a,.side-nav a,.mobile-nav a){color:var(--ie-ui-text)}
+body.personalise-theme-light :where(p,.muted,.sub,.description,.helper-text,small,.page-heading>p:last-child){color:var(--ie-ui-muted)}
+body.personalise-theme-light :where(input,select,textarea){background:#fff!important;color:#171b22!important;border-color:#c7d0db!important}
+body.personalise-theme-amoled{--ie-ui-bg:#000;--ie-ui-surface:#050505;--ie-ui-raised:#101010;--ie-ui-border:#252525;background:#000!important}
+body.personalise-surface-flat :where(.card,.panel,.metric,.release-card,.artist-card,.profile-card,.settings-card){box-shadow:none!important}
+body.personalise-surface-glass :where(.card,.panel,.metric,.release-card,.artist-card,.profile-card,.settings-card){backdrop-filter:blur(16px);background:color-mix(in srgb,var(--ie-ui-surface) 82%,transparent)}
+body.personalise-no-shadows :where(.card,.panel,.metric,.modal-card,.nav,.workspace-topbar,.sidebar,.side-nav){box-shadow:none!important}
+body.personalise-nav-floating .nav{margin:8px clamp(8px,2vw,24px);width:calc(100% - clamp(16px,4vw,48px));border:1px solid var(--ie-ui-border);border-radius:18px}
+body.personalise-buttons-outline :where(button.primary,button.secondary,.primary,.secondary,.new-btn){background:transparent!important;border:1px solid currentColor!important}
+body.personalise-buttons-pill :where(button,.primary,.secondary,.new-btn,.danger-btn){border-radius:999px!important}
+body.personalise-compact{--ie-ui-gap:10px}
+body.personalise-comfort{--ie-ui-gap:clamp(18px,2.5vw,30px)}
+body.personalise-compact :where(.card,.panel,.metric,.release-card,.artist-card,.profile-card){padding:clamp(10px,1vw,14px)}
+body.personalise-comfort :where(.card,.panel,.metric,.release-card,.artist-card,.profile-card){padding:clamp(16px,2vw,26px)}
+body.personalise-content-full :where(.page,.page-content,.workspace-content,.content-area){width:100%;max-width:none}
+body.personalise-content-wide :where(.page,.page-content,.workspace-content,.content-area){width:min(100%,1360px);max-width:1360px;margin-inline:auto}
+body.personalise-content-standard :where(.page,.page-content,.workspace-content,.content-area){width:min(100%,1120px);max-width:1120px;margin-inline:auto}
+#ie-personalise-trigger{position:fixed;right:max(18px,env(safe-area-inset-right));bottom:max(18px,env(safe-area-inset-bottom));z-index:9998;width:50px;height:50px;border:1px solid color-mix(in srgb,var(--ie-ui-accent) 48%,var(--ie-ui-border));border-radius:16px;background:var(--ie-ui-raised);color:var(--ie-ui-accent);font-size:22px;box-shadow:0 8px 26px rgb(0 0 0 / .28);cursor:pointer}
+#ie-personalise-trigger:hover{transform:translateY(-2px);border-color:var(--ie-ui-accent)}
+#ie-personalise-panel{position:fixed;right:max(18px,env(safe-area-inset-right));bottom:calc(max(18px,env(safe-area-inset-bottom)) + 60px);z-index:9999;width:min(410px,calc(100vw - 32px));max-height:min(78dvh,760px);overflow:auto;overscroll-behavior:contain;padding:18px;border:1px solid var(--ie-ui-border);border-radius:20px;background:var(--ie-ui-surface);color:var(--ie-ui-text);box-shadow:0 24px 80px rgb(0 0 0 / .4)}
+#ie-personalise-panel[hidden]{display:none!important}
+#ie-personalise-panel .ie-p-top{position:sticky;top:-18px;z-index:2;padding:12px 0 8px;background:var(--ie-ui-surface)}
+#ie-personalise-panel .ie-p-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+#ie-personalise-panel .ie-p-head h2{margin:0;font-size:19px;letter-spacing:-.03em}
+#ie-personalise-panel .ie-p-head button{width:36px;height:36px;border:1px solid var(--ie-ui-border);border-radius:10px;background:var(--ie-ui-raised);color:inherit;font-size:20px}
+#ie-personalise-panel .ie-p-sub{margin:8px 0;color:var(--ie-ui-muted);font-size:12px;line-height:1.55}
+#ie-personalise-panel .ie-p-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;position:sticky;top:65px;z-index:2;padding:8px 0;background:var(--ie-ui-surface)}
+#ie-personalise-panel .ie-p-tab{min-width:0;min-height:40px;padding:7px 4px;border:1px solid var(--ie-ui-border);border-radius:10px;background:var(--ie-ui-raised);color:inherit;font-size:12px}
+#ie-personalise-panel .ie-p-tab[aria-selected=true]{border-color:var(--ie-ui-accent);background:color-mix(in srgb,var(--ie-ui-accent) 16%,var(--ie-ui-surface));color:var(--ie-ui-text)}
+#ie-personalise-panel fieldset{min-width:0;margin:0 0 12px;padding:12px;border:1px solid var(--ie-ui-border);border-radius:14px}
+#ie-personalise-panel legend{padding:0 5px;font-size:13px;font-weight:750;color:var(--ie-ui-text)}
+#ie-personalise-panel .ie-p-help{font-size:12px;line-height:1.5;color:var(--ie-ui-muted)}
+#ie-personalise-panel .ie-p-control{display:grid;grid-template-columns:minmax(0,1fr);gap:7px;margin:10px 0;font-size:12px;color:var(--ie-ui-text)}
+#ie-personalise-panel .ie-p-control select{width:100%;min-height:42px;padding:8px 10px;border:1px solid var(--ie-ui-border);border-radius:10px;background:var(--ie-ui-raised);color:inherit}
+#ie-personalise-panel input[type=range]{width:100%;accent-color:var(--ie-ui-accent)}
+#ie-personalise-panel .ie-p-colours{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+#ie-personalise-panel .ie-p-swatch{width:100%;min-width:0;aspect-ratio:1;border:2px solid transparent;border-radius:50%;box-shadow:inset 0 0 0 1px #fff4}
+#ie-personalise-panel .ie-p-swatch[aria-pressed=true]{outline:2px solid var(--ie-ui-accent);outline-offset:2px}
+#ie-personalise-panel .ie-p-toggle{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:42px;font-size:12px}
+#ie-personalise-panel .ie-p-toggle input{width:20px;height:20px;accent-color:var(--ie-ui-accent)}
+#ie-personalise-panel .ie-p-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;position:sticky;bottom:-18px;padding:12px 0 2px;background:var(--ie-ui-surface)}
+#ie-personalise-panel .ie-p-actions button{min-height:42px;border:1px solid var(--ie-ui-border);border-radius:11px;background:var(--ie-ui-raised);color:inherit;font-weight:700}
+#ie-personalise-panel .ie-p-actions .ie-p-save{background:var(--ie-ui-accent);border-color:var(--ie-ui-accent);color:#101114}
+@media(max-width:760px){
+  html{scroll-padding-top:76px}
+  body{background-attachment:scroll}
+  body :where(.nav-inner,.main,.workspace-topbar){min-width:0}
+  body :where(.main,.main-content,.page-content,.workspace-content,.content-area){padding-left:max(14px,env(safe-area-inset-left));padding-right:max(14px,env(safe-area-inset-right))}
+  body :where(.grid,.card-grid,.artist-grid,.release-grid,.metrics-grid,.dashboard-grid){grid-template-columns:repeat(2,minmax(0,1fr))}
+  body :where(.page-heading){gap:10px;margin-bottom:20px}
+  body :where(.page-heading h1,.dashboard-hero h1,.public-artist-id h1){font-size:clamp(27px,7vw,38px);line-height:1.08}
+  body :where(button,.primary,.secondary,.new-btn,.danger-btn){min-height:40px}
+  #ie-personalise-trigger{right:max(12px,env(safe-area-inset-right));bottom:max(12px,env(safe-area-inset-bottom));width:46px;height:46px;border-radius:14px}
+  #ie-personalise-panel{right:max(8px,env(safe-area-inset-right));bottom:calc(max(8px,env(safe-area-inset-bottom)) + 54px);width:min(410px,calc(100vw - 16px));max-height:min(76dvh,680px);padding:14px}
+  #ie-personalise-panel .ie-p-top{top:-14px}
+  #ie-personalise-panel .ie-p-tabs{top:61px}
+}
+@media(max-width:420px){
+ body :where(.grid,.card-grid,.artist-grid,.release-grid,.metrics-grid,.dashboard-grid){grid-template-columns:minmax(0,1fr)}
+ #ie-personalise-panel .ie-p-colours{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media(hover:hover) and (pointer:fine){
+ body :where(.artist-card,.release-card,.collection-card,.listener-card):hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--ie-ui-accent) 42%,var(--ie-ui-border))}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
