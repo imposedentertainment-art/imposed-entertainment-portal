@@ -1,5 +1,5 @@
 /* Imposed Entertainment v2.8.9: versioned static assets; never cache query-bearing navigations/auth callbacks. */
-const CACHE_NAME = 'imposed-v3.3.16';
+const CACHE_NAME = 'imposed-v3.3.17';
 const STATIC_ASSETS = [
   '/ui-overlay-accessibility.css', '/ui-stability-fixes.css', '/ui-ux-repair.css', '/index.html',
   '/themes/light-skies.jpg', '/themes/midnight-studio.jpg', '/themes/graphite-minimal.jpg', '/themes/plum-dusk.jpg', '/themes/forest-room.jpg', '/shop.css', '/mobile-navigation.css', '/ui-personalisation-fixes.css', '/ui-theme-overhaul.css', '/ui-mobile-contrast-fixes.css', '/ui-design-tokens.css', '/ui-major-refresh.css', '/ui-refinement.css', '/ui-dashboard-resize.css', '/ui-theme-finish.css', '/ui-liquid-glass.css', '/ui-liquid-glass-overrides.css', '/ui-dashboard-finish.css', '/ui-performance-polish.css', '/ui-liquid-glass-system.css', '/ui-liquid-glass-refinement.css', '/ui-design-tokens.css', '/ui-mobile-contrast-fixes.css', '/ui-unified-system.css', '/js/shop.js', '/styles.css', '/ui-polish.css', '/ui-next.css', '/ui-research.css', '/ui-overhaul.css', '/ui-system-v2.css', '/quality.css', '/theme-system.css', '/auth-overhaul.css', '/v2-design-system.css', '/manifest.webmanifest', '/privacy/index.html', '/terms/index.html',
@@ -54,7 +54,7 @@ self.addEventListener('fetch', event => {
   const isStaticAsset = STATIC_PATHS.has(url.pathname);
   // Only accept the known release query on allow-listed public assets. All other query-bearing
   // requests (auth codes, invites, search state, user-specific data) bypass Cache Storage.
-  const isVersionedStaticAsset = isStaticAsset && url.searchParams.size === 1 && ['3.3.16'].includes(url.searchParams.get('v'));
+  const isVersionedStaticAsset = isStaticAsset && url.searchParams.size === 1 && ['3.3.17'].includes(url.searchParams.get('v'));
   if ((url.search && !isVersionedStaticAsset) || url.hash || /\/(auth|callback|invite)(\/|$)/i.test(url.pathname)) return;
   if (!isNavigation && !isStaticAsset) return;
 
