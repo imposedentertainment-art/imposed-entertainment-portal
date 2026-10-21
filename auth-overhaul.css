@@ -86,3 +86,20 @@ body.personalise-theme-amoled .auth-story{background:#030303!important}
 @media(max-width:760px){.auth-shell.auth-layout{display:flex;flex-direction:column;min-height:100dvh;overflow:visible}.auth-story{min-height:auto;padding:24px 22px 20px;border-right:0;border-bottom:1px solid var(--ui-border);background:linear-gradient(145deg,#12151b,#0b0d11)!important}.auth-story-content{min-height:0;max-width:600px}.auth-logo-large>span{width:42px;height:42px;flex-basis:42px;border-radius:13px}.auth-logo b{font-size:10px}.auth-kicker{margin:30px 0 11px!important;font-size:9px!important}.auth-story h2{font-size:clamp(31px,8vw,46px)!important;line-height:1.02!important}.auth-story-copy{margin:12px 0 0!important;font-size:12px!important;line-height:1.65!important;max-width:440px}.auth-story-foot{padding-top:18px;margin-top:18px;font-size:10px}.auth-story::before{width:330px;right:-180px;top:-100px}.auth-story::after{width:220px;right:-80px;bottom:-140px}.auth-panel{min-height:0;flex:1;justify-content:flex-start;padding:26px 20px 28px}.auth-card{max-width:480px}.auth-portal-switch{margin-bottom:26px!important}.auth-panel-footer{margin-top:22px}}
 @media(max-width:430px){.auth-story{padding:20px 17px 16px}.auth-story-copy{max-width:330px}.auth-story-foot{gap:7px}.auth-panel{padding:22px 16px 24px}.auth-portal-switch{grid-template-columns:minmax(0,1fr);gap:7px;margin-bottom:24px!important}.auth-portal-choice{min-height:61px;padding:10px 12px!important}.auth-portal-icon{width:31px;height:31px;flex-basis:31px}.auth-card h1{font-size:31px!important}.auth-card .account-policy-note{font-size:10px!important}.auth-card #auth-form{gap:13px}.auth-card #auth-form .field input{min-height:47px}.auth-card .oauth-icon-btn{min-height:45px}}
 @media(prefers-reduced-motion:reduce){.auth-portal-choice,.auth-card .oauth-icon-btn,.auth-card .auth-submit{transition:none}.auth-portal-choice:hover,.auth-card .oauth-icon-btn:hover,.auth-card .auth-submit:hover{transform:none}}
+
+/* Listener account library — personal features should feel like a destination, not a sign-in receipt. */
+.listener-account-shell .auth-card{max-width:760px;width:min(760px,100%)}
+.listener-account-library{margin:24px 0 18px;padding:20px;border:1px solid var(--line,rgba(255,255,255,.12));border-radius:18px;background:var(--surface-2,rgba(255,255,255,.035));text-align:left}
+.listener-account-library .section-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:12px}
+.listener-account-library .section-head h2{margin:2px 0 5px;font-size:1.35rem}
+.listener-account-library .section-head .sub{margin:0;max-width:460px;font-size:.88rem}
+.listener-account-library .eyebrow{margin:0;font-size:.7rem;letter-spacing:.13em}
+.listener-library-items{display:grid;gap:9px;margin-top:12px}
+.listener-library-item{display:flex;align-items:center;gap:12px;min-width:0;padding:12px;border:1px solid var(--line,rgba(255,255,255,.1));border-radius:13px;background:var(--surface,rgba(0,0,0,.14))}
+.listener-library-icon{display:grid;place-items:center;flex:0 0 38px;width:38px;height:38px;border-radius:11px;background:rgba(215,189,114,.13);color:var(--accent,#d7bd72);font-size:1.15rem}
+.listener-library-copy{display:grid;gap:3px;flex:1;min-width:0}
+.listener-library-copy strong{overflow-wrap:anywhere;font-size:.92rem}
+.listener-library-copy small{color:var(--muted,#aaa);font-size:.78rem}
+.listener-library-item a,.listener-library-item button{flex:0 0 auto;padding:8px 10px;font-size:.78rem}
+@media(max-width:560px){.listener-account-library{padding:14px;margin:18px 0}.listener-account-library .section-head{display:grid}.listener-library-item{flex-wrap:wrap;gap:9px}.listener-library-copy{min-width:calc(100% - 55px)}.listener-library-item a{margin-left:47px}.listener-library-item a,.listener-library-item button{font-size:.75rem;padding:7px 9px}}
+@media(prefers-reduced-motion:reduce){.listener-account-library *{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
