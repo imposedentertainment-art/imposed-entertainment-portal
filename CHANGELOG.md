@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.1] - 2026-10-21 — Mobile layout hotfix
+
+### Fixed
+- Fixed phones rendering the desktop workspace sidebar and desktop-sized dashboard instead of a proper mobile layout, including browsers requesting desktop sites.
+- Added early touch-device detection and a final responsive override to prevent legacy desktop CSS from winning the cascade.
+- Restored a compact full-width mobile header, menu toggle, full-width main canvas, compact dashboard grids and safe-area-aware bottom spacing.
+
+### Verification
+- Static checks will run on this commit. Visual browser/device verification remains necessary after deployment.
+
+
 ## [2.0.0] - 2026-10-21 — Major listener platform release
 
 ### Added
