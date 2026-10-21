@@ -1,0 +1,103 @@
+/* Imposed Entertainment 2.9.0 — photographic workspace + cohesive UI refresh.
+   Original theme photographs are used as real UI surfaces, not just picker swatches. */
+html[data-ie-workspace-theme="light-skies"] { --ie-theme-art:url('/themes/light-skies.jpg'); --ie-theme-wash:rgba(234,244,252,.48); }
+html[data-ie-workspace-theme="midnight-studio"] { --ie-theme-art:url('/themes/midnight-studio.jpg'); --ie-theme-wash:rgba(5,7,14,.46); }
+html[data-ie-workspace-theme="graphite-minimal"] { --ie-theme-art:url('/themes/graphite-minimal.jpg'); --ie-theme-wash:rgba(8,10,13,.55); }
+html[data-ie-workspace-theme="plum-dusk"] { --ie-theme-art:url('/themes/plum-dusk.jpg'); --ie-theme-wash:rgba(12,6,19,.48); }
+html[data-ie-workspace-theme="forest-room"] { --ie-theme-art:url('/themes/forest-room.jpg'); --ie-theme-wash:rgba(3,15,9,.48); }
+
+/* Keep the selected photograph visible through the workspace instead of hiding it
+   behind legacy opaque wrappers. Cards remain independently tinted for legibility. */
+html[data-ie-workspace-theme] body {
+  background-image:linear-gradient(180deg,var(--ie-theme-wash),var(--ie-theme-wash)),var(--ie-theme-art)!important;
+  background-position:center,center 35%!important;
+  background-size:cover,cover!important;
+  background-repeat:no-repeat!important;
+  background-attachment:fixed,fixed!important;
+}
+html[data-ie-workspace-theme] body :where(#app,.shell,.shell>.main,.shell>.main-content,.main,.main-content,.page,.page-content,.workspace,.workspace-content,.content-area,.dashboard-page) {
+  background-color:transparent!important;
+  background-image:none!important;
+}
+html[data-ie-workspace-theme] body :where(.card,.panel,.metric,.settings-card,.detail-card,.form-card,.builder-card,.release-card,.artist-card,.profile-card,.approval-card,.collection-card,.listener-card,.modal-card) {
+  backdrop-filter:blur(16px) saturate(125%);
+  -webkit-backdrop-filter:blur(16px) saturate(125%);
+  box-shadow:0 14px 38px rgba(0,0,0,.12);
+  transition:border-color .18s ease,box-shadow .18s ease,transform .18s ease;
+}
+html[data-ie-workspace-theme] body :where(.card,.panel,.settings-card,.detail-card,.release-card,.artist-card,.profile-card):hover {
+  border-color:color-mix(in srgb,var(--user-accent,var(--accent,#d8bd73)) 42%,var(--ui-border,#2b3541));
+}
+
+/* The page's first heading becomes an editorial banner using the selected original photo. */
+html[data-ie-workspace-theme] body .shell>.main .page > :is(.page-heading,.page-head,.page-header):first-child {
+  position:relative;
+  isolation:isolate;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  gap:8px;
+  min-height:clamp(150px,20vw,230px);
+  margin:0 0 clamp(18px,2.5vw,28px);
+  padding:clamp(22px,4vw,38px);
+  overflow:hidden;
+  border:1px solid color-mix(in srgb,var(--ui-border,#2b3541) 78%,transparent);
+  border-radius:22px;
+  background-color:var(--ui-surface,rgba(15,18,24,.9))!important;
+  background-image:linear-gradient(90deg,rgba(4,6,10,.82) 0%,rgba(4,6,10,.55) 52%,rgba(4,6,10,.16) 100%),var(--ie-theme-art)!important;
+  background-size:cover!important;
+  background-position:center 42%!important;
+  box-shadow:0 18px 46px rgba(0,0,0,.15);
+}
+html[data-ie-workspace-theme="light-skies"] body .shell>.main .page > :is(.page-heading,.page-head,.page-header):first-child {
+  background-image:linear-gradient(90deg,rgba(239,247,253,.96) 0%,rgba(239,247,253,.80) 48%,rgba(239,247,253,.20) 100%),var(--ie-theme-art)!important;
+}
+html[data-ie-workspace-theme] body .shell>.main .page > :is(.page-heading,.page-head,.page-header):first-child :where(h1,h2,h3,.eyebrow,.sub,p) {
+  position:relative;
+  z-index:1;
+  max-width:760px;
+  margin-block:0;
+  text-shadow:0 1px 12px rgba(0,0,0,.12);
+}
+html[data-ie-workspace-theme]:not([data-ie-workspace-theme="light-skies"]) body .shell>.main .page > :is(.page-heading,.page-head,.page-header):first-child :where(h1,h2,h3,.eyebrow,.sub,p) { color:#fff!important; }
+html[data-ie-workspace-theme="light-skies"] body .shell>.main .page > :is(.page-heading,.page-head,.page-header):first-child :where(h1,h2,h3,.eyebrow,.sub,p) { color:#18344d!important; }
+html[data-ie-workspace-theme] body .shell>.main .page > :is(.page-heading,.page-head,.page-header):first-child .eyebrow {
+  letter-spacing:.16em;
+  font-size:11px;
+  font-weight:850;
+  opacity:.88;
+}
+html[data-ie-workspace-theme] body :where(.workspace-topbar,.topbar,.app-header,.sidebar,.side-nav,.mobile-nav,.bottom-nav) {
+  backdrop-filter:blur(20px) saturate(135%);
+  -webkit-backdrop-filter:blur(20px) saturate(135%);
+}
+
+/* Stronger hierarchy and clearer interaction states across the portal. */
+body :where(.page,.page-content,.workspace-content) { min-width:0; }
+body :where(.page-heading,.page-head,.page-header) h1 { font-size:clamp(27px,3.2vw,40px); letter-spacing:-.045em; line-height:1.08; }
+body :where(.card,.panel,.settings-card,.detail-card,.release-card,.artist-card,.profile-card) { border-radius:18px; }
+body :where(button,a,[role="button"],input,select,textarea):focus-visible { outline:2px solid var(--user-accent,var(--accent,#d8bd73)); outline-offset:3px; }
+body :where(button,.primary,.secondary,.new-btn,.danger-btn):not(:disabled):hover { filter:brightness(1.06); }
+body :where(.primary,.new-btn) { box-shadow:0 7px 18px color-mix(in srgb,var(--user-accent,var(--accent,#d8bd73)) 16%,transparent); }
+body :where(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]),select,textarea) { max-width:100%; }
+.workspace-theme-option { min-height:90px; padding:12px; border-radius:16px!important; }
+.workspace-theme-preview { flex-basis:92px!important; width:92px!important; height:62px!important; min-width:92px!important; border-radius:11px!important; box-shadow:0 5px 14px rgba(0,0,0,.12); }
+.workspace-theme-copy { display:flex; flex-direction:column; gap:5px; min-width:0; }
+.workspace-theme-copy b { font-size:14px; letter-spacing:-.015em; }
+.workspace-theme-copy small { line-height:1.4; }
+.workspace-theme-option:hover { transform:translateY(-2px); }
+.workspace-theme-option.selected { box-shadow:inset 0 0 0 1px var(--user-accent,#d8bd73),0 8px 22px rgba(0,0,0,.10)!important; }
+@media(max-width:760px) {
+  html[data-ie-workspace-theme] body { background-attachment:scroll,scroll!important; background-position:center,center top!important; }
+  html[data-ie-workspace-theme] body .shell>.main .page > :is(.page-heading,.page-head,.page-header):first-child { min-height:160px; padding:22px 18px; border-radius:17px; background-position:center!important; }
+  .workspace-theme-preview { flex-basis:76px!important; width:76px!important; height:56px!important; min-width:76px!important; }
+}
+@media(max-width:420px) {
+  html[data-ie-workspace-theme] body .shell>.main .page > :is(.page-heading,.page-head,.page-header):first-child { min-height:145px; padding:18px 15px; }
+  .workspace-theme-option { gap:10px; padding:9px; }
+  .workspace-theme-preview { flex-basis:62px!important; width:62px!important; height:50px!important; min-width:62px!important; }
+}
+@media(prefers-reduced-motion:reduce) {
+  html[data-ie-workspace-theme] body { background-attachment:scroll,scroll!important; }
+  body *,body *::before,body *::after { transition-duration:.01ms!important; animation-duration:.01ms!important; animation-iteration-count:1!important; }
+}
