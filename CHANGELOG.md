@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.9.1] - 2026-10-21 — Theme imagery on the dashboard hero
+
+- Fixed the Overview dashboard hero so the selected original theme photograph appears directly behind the welcome message and actions, not only on the page background/theme picker.
+- Added theme-aware contrast overlays for dark themes and Light Skies, while keeping existing featured-release artwork usable.
+- Improved the mobile hero image crop and kept the text/actions above decorative art.
+- Bumped asset URLs and service-worker cache to 2.9.1.
+
 ## [2.9.0] - 2026-10-21 — Photographic workspace and UI major refresh
 
 ### Visual overhaul
