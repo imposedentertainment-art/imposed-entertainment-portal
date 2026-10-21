@@ -118,6 +118,29 @@ if (!criticalAssetsBlock || !criticalAssetsBlock[1].includes("'/ui-theme-overhau
   fail('Theme overhaul CSS and personalisation script must be included in critical service-worker assets.');
 }
 
+
+if (!core.includes("workspaceTheme:'midnight-studio'") ||
+    !core.includes("root.dataset.ieWorkspaceTheme") ||
+    !events.includes("workspaceTheme:['light-skies','midnight-studio','graphite-minimal','plum-dusk','forest-room']")) {
+  fail('Named workspace themes must be stored, validated and applied through shared account preferences.');
+}
+if (!views.includes('Workspace themes') ||
+    !views.includes('data-workspace-theme') ||
+    !views.includes('Light Skies') ||
+    !views.includes('Midnight Studio') ||
+    !views.includes('Graphite Minimal') ||
+    !views.includes('Plum Dusk') ||
+    !views.includes('Forest Room')) {
+  fail('All five named themes must be selectable from Settings > Appearance.');
+}
+if (!themeOverhaul.includes('html[data-ie-mode="light"] body') ||
+    !themeOverhaul.includes('html[data-ie-mode="light"][data-ie-theme] body .nav') ||
+    !themeOverhaul.includes('html[data-ie-mode="light"][data-ie-workspace-theme="light-skies"] body') ||
+    !core.includes("root.style.setProperty('--user-accent',accent)")) {
+  fail('Light mode must override legacy dark navigation and surfaces, Light Skies must keep its cloud palette, and account accents must be global.');
+}
+if (html.includes('2.8.3') || worker.includes('2.8.3')) fail('HTML and service worker must not retain stale 2.8.3 asset versions.');
+
 const localRef = (value) => {
   if (!value || /^(?:[a-z][a-z0-9+.-]*:|\/\/|#)/i.test(value)) return null;
   const pathname = value.split(/[?#]/, 1)[0];
