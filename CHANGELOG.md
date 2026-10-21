@@ -1,5 +1,20 @@
 # Changelog
 
+## [2.9.0] - 2026-10-21 — Photographic workspace and UI major refresh
+
+### Visual overhaul
+- Made the five supplied theme photographs a visible part of the workspace: full-page atmosphere, image-backed page headers and real-photo theme-picker cards.
+- Kept content readable with theme-aware dark/light overlays, translucent panels, contrast-safe controls and mobile-friendly scrolling.
+- Refined page rhythm, card hierarchy, buttons, focus rings, navigation surfaces and responsive layouts.
+- Added restrained hover/focus feedback and reduced-motion support.
+
+### Update delivery
+- Bumped static asset URLs and service-worker cache namespace to 2.9.0.
+- Added the new visual layer to the service worker's public asset allow-list.
+
+### Verification
+- Source-level review only; live Cloudflare Pages rendering and authenticated browser interaction still need confirmation.
+
 ## [2.8.11] - 2026-10-21 — Correct photo asset cache list
 
 ### Fixed
