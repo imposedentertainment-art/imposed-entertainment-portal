@@ -1,3 +1,10 @@
+## 3.3.2 — Real navigation DOM integration
+
+- Corrected overlay selectors to target the actual `.shell > header.nav > .mobile-nav` markup.
+- Applied the explicit header/drawer stacking hierarchy to the real mobile navigation structure.
+- Improved drawer contrast and navigation item spacing, standardised header utility controls, and hid mobile keyboard hints.
+- Increased bottom scroll space and refreshed the asset cache/version metadata.
+
 ## 3.3.1 — Navigation overlays and accessibility fixes
 
 - Added a versioned overlay/accessibility stylesheet after the existing UI layers.
