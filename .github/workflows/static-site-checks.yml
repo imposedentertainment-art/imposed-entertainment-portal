@@ -26,6 +26,8 @@ jobs:
             test -f "$file"
             node --check "$file"
           done
+      - name: Audit repository assets, versioning, styles and configuration
+        run: node scripts/audit-static-site.mjs
       - name: Validate Cloudflare Pages assets and security basics
         shell: bash
         run: |
