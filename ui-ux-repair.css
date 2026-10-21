@@ -233,3 +233,60 @@ html[data-ie-workspace-theme="light-skies"] body #app :is(.sidebar,.mobile-nav,.
   html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-hit{display:block!important;pointer-events:auto!important}
   html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card]{grid-column:var(--dashboard-grid-column,span var(--dashboard-span,12))!important;min-height:var(--dashboard-custom-height,180px)!important}
 }
+
+/* 3.3.21 — functional widget sizing: the outer card owns the dimensions. */
+html[data-ie-workspace-theme] body #app .dashboard-page .dashboard-widget-layout>[data-dashboard-widget-card]{
+  box-sizing:border-box!important;
+  height:var(--dashboard-custom-height,auto)!important;
+  min-height:180px!important;
+  align-self:start!important;
+  overflow:auto!important;
+  overscroll-behavior:contain;
+}
+html[data-ie-workspace-theme] body #app .dashboard-page .dashboard-widget-layout>[data-dashboard-widget-card]>.dashboard-panel,
+html[data-ie-workspace-theme] body #app .dashboard-page .dashboard-widget-layout>[data-dashboard-widget-card]>.quick-links-panel{
+  display:contents!important;
+  background:transparent!important;border:0!important;outline:0!important;box-shadow:none!important;
+  -webkit-backdrop-filter:none!important;backdrop-filter:none!important;
+}
+html[data-ie-workspace-theme] body #app .dashboard-page .dashboard-widget-layout>[data-dashboard-widget-card]>.dashboard-more{
+  background:transparent!important;border:0!important;outline:0!important;box-shadow:none!important;
+  -webkit-backdrop-filter:none!important;backdrop-filter:none!important;
+}
+html[data-ie-workspace-theme] body #app .dashboard-page .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-widget-tools{
+  position:absolute!important;top:8px!important;right:8px!important;margin:0!important;z-index:70!important;
+}
+html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card]{
+  outline:1px dashed color-mix(in srgb,var(--user-accent,#79bd91) 52%,transparent)!important;
+  outline-offset:2px!important;overflow:auto!important;
+}
+html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-hit{
+  display:block!important;pointer-events:auto!important;position:absolute!important;z-index:100!important;
+  opacity:0!important;background:transparent!important;border:0!important;padding:0!important;margin:0!important;
+  touch-action:none!important;user-select:none!important;
+}
+html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-n,
+html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-s{
+  left:12px!important;right:12px!important;height:16px!important;
+}
+html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-n{top:-8px!important;cursor:ns-resize!important}
+html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-s{bottom:-8px!important;cursor:ns-resize!important}
+html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-e,
+html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-w{
+  top:12px!important;bottom:12px!important;width:16px!important;
+}
+html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-e{right:-8px!important;cursor:ew-resize!important}
+html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-w{left:-8px!important;cursor:ew-resize!important}
+html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-ne,
+html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-nw,
+html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-se,
+html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-sw{width:24px!important;height:24px!important}
+html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-ne{top:-10px!important;right:-10px!important;cursor:nesw-resize!important}
+html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-nw{top:-10px!important;left:-10px!important;cursor:nwse-resize!important}
+html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-se{bottom:-10px!important;right:-10px!important;cursor:nwse-resize!important}
+html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-sw{bottom:-10px!important;left:-10px!important;cursor:nesw-resize!important}
+@media(max-width:800px){
+ html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout{grid-template-columns:repeat(12,minmax(0,1fr))!important}
+ html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card]{grid-column:var(--dashboard-grid-column,span var(--dashboard-span,12))!important}
+ html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-hit{display:block!important;pointer-events:auto!important}
+}
