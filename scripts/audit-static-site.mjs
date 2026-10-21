@@ -18,6 +18,15 @@ for (const [label, source] of [['index.html', html], ['sw.js', worker]]) {
 if (!html.includes(`content="${version}"`) || !html.includes(`data-portal-build="${version}"`)) {
   fail('index.html build metadata does not match VERSION.');
 }
+if (!worker.includes(`'${version}'`)) fail('sw.js versioned-static-asset allow-list does not match VERSION.');
+try {
+  const manifest = JSON.parse(read('manifest.webmanifest'));
+  if (manifest.start_url && new URL(manifest.start_url, 'https://audit.invalid').search) {
+    fail('manifest.webmanifest start_url must not contain a query string because query-bearing navigations bypass the service-worker cache.');
+  }
+} catch (error) {
+  fail(`manifest.webmanifest is not valid JSON: ${error.message}`);
+}
 if (html.includes('\\\\n  <link')) fail('index.html contains a literal escaped newline before a stylesheet link.');
 if (!read('_redirects').includes('/* /index.html 200')) fail('_redirects is missing the SPA fallback.');
 if (!read('_headers').includes('Content-Security-Policy:')) fail('_headers is missing Content-Security-Policy.');
