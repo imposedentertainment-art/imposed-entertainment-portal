@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.8.2] - 2026-10-21 — Full theme and navigation icon overhaul
+
+### Improved
+- Reworked the theme picker into named, complete visual themes instead of generic colour palettes.
+- Added Light Skies: a light blue-grey interface with cloud-like gradients, airy panels, legible dark typography, and compatible custom accents.
+- Rebuilt the dark theme tokens for Midnight Studio, Graphite Minimal, Plum Dusk, and Forest Room.
+- Added missing SVG icons used by navigation and common workspace controls, plus a visible fallback icon for unknown icon names.
+- Standardised icon sizing, alignment, spacing, focus states, and mobile/desktop menu presentation.
+- Kept custom accent colour independent from theme choice and retained import/export/reset preferences.
+
+### Verification
+- JavaScript syntax, CSS structure, icon mapping, theme controls, and asset/cache consistency checked by GitHub Actions.
+- Real-device visual verification and authenticated end-to-end feature checks remain required after deployment.
+
 ## [2.8.1] - 2026-10-21 — Personalisation fixes and palette controls
 
 ### Fixed
