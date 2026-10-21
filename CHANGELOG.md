@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.8.5] - 2026-10-21 — Personalisation sync and AMOLED mode
+
+### Fixed
+- The floating customiser now includes its selected workspace theme in the account-sync event payload.
+- Added AMOLED as a validated account-level colour mode and exposed it in Settings → Appearance.
+- Added full black page, navigation, card, text and form surfaces for AMOLED mode.
+
+### Verification
+- Static checks cover workspace theme propagation and AMOLED mode validation.
+- Live authenticated browser testing remains part of the wider audit.
+
 ## [2.8.4] - 2026-10-21 — Unified themes and light mode
 
 ### Fixed
