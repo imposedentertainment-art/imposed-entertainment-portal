@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.4.85] - 2026-10-21
+
+### Fixed
+- Restricted authenticated profile search results to public profiles, the signed-in user's own permitted profile, administrators, and shared-band profiles.
+- Restricted profile discography RPC results to profiles visible to the caller, respecting the discography preference while retaining owner, administrator, and permitted shared-band access.
+- Cleaned up account-scoped polling and realtime subscriptions on sign-out and account switching to reduce stale subscriptions and cross-session state risk.
+- Expanded the static-site audit to validate every stylesheet linked from the HTML shell rather than a fixed subset.
+
+### Verification
+- Applied and re-read both Supabase function migrations; confirmed row-level security remains enabled on all 45 public tables.
+- Repository asset and service-worker references bumped to v1.4.85. Browser end-to-end testing and the new commit's CI run remain outstanding.
+
+
 ## [1.4.84] - 2026-10-21
 
 ### Added
