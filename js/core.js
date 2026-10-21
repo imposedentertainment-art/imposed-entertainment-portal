@@ -4,7 +4,7 @@
   const ready = Boolean(window.supabase && C.SUPABASE_URL && !C.SUPABASE_URL.includes('PASTE_') && C.SUPABASE_ANON_KEY && !C.SUPABASE_ANON_KEY.includes('PASTE_'));
   const sb = ready ? window.supabase.createClient(C.SUPABASE_URL, C.SUPABASE_ANON_KEY) : null;
 
-  const IE_APPEARANCE_DEFAULTS = {theme:'blood', accent:'#b3122a', mode:'dark', surfaceTint:'graphite', shadowIntensity:2, fontScale:100, density:'comfortable', style:'classic', font:'poster', cards:'slab', grain:35, radius:2, banner:'', bannerColor:'', bannerEnabled:false, dashboard:{metrics:true,tasks:true,announcements:true,upcoming:true,activity:true,catalogue:true}, dashboardLayout:{order:['metrics','actions','upcoming','shortcuts','details'],sizes:{metrics:'full',actions:'full',upcoming:'half',shortcuts:'half',details:'full'},shapes:{metrics:'soft',actions:'soft',upcoming:'soft',shortcuts:'soft',details:'soft'}}};
+  const IE_APPEARANCE_DEFAULTS = {theme:'blood', accent:'#b3122a', mode:'dark', surfaceTint:'graphite', shadowIntensity:2, fontScale:100, contrast:'standard', motion:'system', lineHeight:100, borderWidth:1, saturation:100, density:'comfortable', style:'classic', font:'poster', cards:'slab', grain:35, radius:2, banner:'', bannerColor:'', bannerEnabled:false, dashboard:{metrics:true,tasks:true,announcements:true,upcoming:true,activity:true,catalogue:true}, dashboardLayout:{order:['metrics','actions','upcoming','shortcuts','details'],sizes:{metrics:'full',actions:'full',upcoming:'half',shortcuts:'half',details:'full'},shapes:{metrics:'soft',actions:'soft',upcoming:'soft',shortcuts:'soft',details:'soft'}}};
   const IE_APPEARANCE_THEMES = {
     violet:{accent:'#7868f4',hover:'#6655e7',ink:'#ffffff',soft:'rgba(120,104,244,.14)'},
     ocean:{accent:'#168bd2',hover:'#0875b7',ink:'#ffffff',soft:'rgba(22,139,210,.14)'},
@@ -36,6 +36,11 @@
     if(!['graphite','warm','cool'].includes(out.surfaceTint))out.surfaceTint='graphite';
     out.shadowIntensity=Math.min(3,Math.max(0,Math.round(Number(out.shadowIntensity)||0)));
     out.fontScale=Math.min(125,Math.max(85,Math.round(Number(out.fontScale)||100)));
+    if(!['soft','standard','high'].includes(out.contrast))out.contrast='standard';
+    if(!['system','reduced','full'].includes(out.motion))out.motion='system';
+    out.lineHeight=Math.min(130,Math.max(90,Math.round(Number(out.lineHeight)||100)));
+    out.borderWidth=Math.min(3,Math.max(0,Math.round(Number(out.borderWidth)||0)));
+    out.saturation=Math.min(150,Math.max(50,Math.round(Number(out.saturation)||100)));
     if(!['vivid','classic','minimal'].includes(out.style))out.style='classic';
     if(!['poster','blackletter','typewriter','occult','clean'].includes(out.font))out.font='poster';
     if(!['slab','glass','scar','ash'].includes(out.cards))out.cards='slab';
@@ -54,7 +59,7 @@
     const theme=IE_APPEARANCE_THEMES[a.theme]||IE_APPEARANCE_THEMES.slate;
     const accent=/^#[0-9a-f]{6}$/i.test(String(a.accent||''))?a.accent:theme.accent;
     const root=document.documentElement;
-    root.dataset.ieTheme=a.theme||'slate';root.dataset.ieMode=['dark','light','system'].includes(a.mode)?a.mode:'dark';root.dataset.ieSurface=['graphite','warm','cool'].includes(a.surfaceTint)?a.surfaceTint:'graphite';root.dataset.ieShadow=String(Math.min(3,Math.max(0,Number(a.shadowIntensity)||0)));root.dataset.ieFont=a.font||'poster';root.dataset.ieCards=a.cards||'slab';root.style.setProperty('--ie-font-scale',String(Math.min(125,Math.max(85,Number(a.fontScale)||100))/100));root.style.setProperty('--ie-grain',String(Math.min(100,Math.max(0,Number(a.grain)||0))/100));root.style.setProperty('--ie-radius',(Math.min(24,Math.max(0,Number(a.radius)||0)))+'px');root.style.setProperty('--ie-banner',/^data:image\/jpeg;base64,/.test(String(a.banner||''))?'url('+a.banner+')':'none');root.style.setProperty('--ie-banner-color',/^#[0-9a-f]{6}$/i.test(String(a.bannerColor||''))?a.bannerColor:'transparent');root.dataset.ieBannerEnabled=a.bannerEnabled===true?'true':'false';root.dataset.ieDensity=a.density||'comfortable';root.dataset.ieStyle=a.style||'classic';
+    root.dataset.ieTheme=a.theme||'slate';root.dataset.ieMode=['dark','light','system'].includes(a.mode)?a.mode:'dark';root.dataset.ieSurface=['graphite','warm','cool'].includes(a.surfaceTint)?a.surfaceTint:'graphite';root.dataset.ieShadow=String(Math.min(3,Math.max(0,Number(a.shadowIntensity)||0)));root.dataset.ieFont=a.font||'poster';root.dataset.ieCards=a.cards||'slab';root.style.setProperty('--ie-font-scale',String(Math.min(125,Math.max(85,Number(a.fontScale)||100))/100));root.dataset.ieContrast=['soft','standard','high'].includes(a.contrast)?a.contrast:'standard';root.dataset.ieMotion=['system','reduced','full'].includes(a.motion)?a.motion:'system';root.dataset.ieBorderWidth=String(Math.min(3,Math.max(0,Number(a.borderWidth)||0)));root.style.setProperty('--ie-line-height',String(Math.min(130,Math.max(90,Number(a.lineHeight)||100))/100));root.style.setProperty('--ie-saturation',String(Math.min(150,Math.max(50,Number(a.saturation)||100))+'%'));root.style.setProperty('--ie-grain',String(Math.min(100,Math.max(0,Number(a.grain)||0))/100));root.style.setProperty('--ie-radius',(Math.min(24,Math.max(0,Number(a.radius)||0)))+'px');root.style.setProperty('--ie-banner',/^data:image\/jpeg;base64,/.test(String(a.banner||''))?'url('+a.banner+')':'none');root.style.setProperty('--ie-banner-color',/^#[0-9a-f]{6}$/i.test(String(a.bannerColor||''))?a.bannerColor:'transparent');root.dataset.ieBannerEnabled=a.bannerEnabled===true?'true':'false';root.dataset.ieDensity=a.density||'comfortable';root.dataset.ieStyle=a.style||'classic';
     const dashboard=a.dashboard&&typeof a.dashboard==='object'?a.dashboard:IE_APPEARANCE_DEFAULTS.dashboard;
     ['metrics','tasks','announcements','upcoming','activity','catalogue'].forEach(k=>{root.dataset['ieDashboard'+k[0].toUpperCase()+k.slice(1)]=dashboard[k]===false?'false':'true';});
     const dashboardLayout=normaliseDashboardLayout(a.dashboardLayout);
@@ -68,7 +73,7 @@
     document.querySelectorAll('[data-appearance-accent]').forEach(i=>{if(i.value!==accent)i.value=accent;});
     document.querySelectorAll('[data-appearance-density]').forEach(i=>{if(i.value!==a.density)i.value=a.density;});
     document.querySelectorAll('[data-appearance-style]').forEach(i=>{if(i.value!==a.style)i.value=a.style;});
-    window.dispatchEvent(new CustomEvent('ie-appearance-change',{detail:{accent,density:a.density,font:a.font,theme:a.theme,style:a.style,cards:a.cards,grain:a.grain,radius:a.radius,mode:root.dataset.ieMode,surfaceTint:root.dataset.ieSurface,shadowIntensity:root.dataset.ieShadow,fontScale:a.fontScale}}));
+    window.dispatchEvent(new CustomEvent('ie-appearance-change',{detail:{accent,density:a.density,font:a.font,theme:a.theme,style:a.style,cards:a.cards,grain:a.grain,radius:a.radius,mode:root.dataset.ieMode,surfaceTint:root.dataset.ieSurface,shadowIntensity:root.dataset.ieShadow,fontScale:a.fontScale,contrast:root.dataset.ieContrast,motion:root.dataset.ieMotion,lineHeight:a.lineHeight,borderWidth:root.dataset.ieBorderWidth,saturation:a.saturation}}));
   }
   const STORES = ['Spotify','Apple Music','iTunes','YouTube Music','Amazon Music','Deezer','TIDAL','Pandora','Napster','iHeartRadio','Claro Musica','JioSaavn','Anghami','KKBox','NetEase','Tencent','TikTok','Facebook','Instagram','Snapchat','CapCut','Pinterest','Nuuday','ROXi','Kuack Media','Qobuz','Joox','Boomplay','Trebel','Melon','Flo','Bugs','Genie','Vibe'];
   const GENRES = ['Electronic','Rock','Metal','Metalcore','Hip Hop','Pop','Alternative','Ambient','Other'];
