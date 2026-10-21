@@ -40,6 +40,19 @@
 };</pre></div><ol><li>Use the existing Supabase project and its applied migrations; do not run an old schema file over a live database.</li><li>Confirm the Project URL and publishable/anon key in <code>config.js</code>.</li><li>Upload this folder to your existing Cloudflare Pages project.</li><li>Have the existing label administrator invite artists and label members from Roster &amp; invites.</li></ol>`}<p class="setup-note">The portal contains no seeded catalogue data. Everything shown after sign-in comes from your Supabase project.</p></div></main>`;
   }
 
+  // Release account-scoped timers and realtime subscriptions when identity changes.
+  // Otherwise a signed-out or switched account can leave old channels alive.
+  function cleanupWorkspaceSubscriptions(){
+    if(window.__poll){clearInterval(window.__poll);window.__poll=null;}
+    for(const key of ['__rt','__profilesRt']){
+      const channel=window[key];
+      if(channel&&sb){try{sb.removeChannel(channel);}catch(error){console.warn('Could not remove workspace realtime channel',error);}}
+      window[key]=null;
+    }
+    window.__rtUid=null;
+    window.__profilesRtUid=null;
+  }
+
   // Start the portal explicitly. Without this entry point, events.js calls boot()
   // before any auth state is rendered, leaving the initial skeleton on screen.
   async function boot(){
@@ -58,6 +71,9 @@
       setTimeout(async()=>{
         if(bootFailed)return;
         if(!bootSessionResolved){pendingAuthEvent=true;pendingAuthSession=nextSession||null;return;}
+        const currentUserId=session?.user?.id||null;
+        const nextUserId=nextSession?.user?.id||null;
+        if(!nextSession||(currentUserId&&currentUserId!==nextUserId))cleanupWorkspaceSubscriptions();
         if(nextSession?.user?.user_metadata?.account_type==='listener'){session=nextSession; if(!isListenerRoute())history.replaceState(null,'','/listen/account'); renderListenerRoute(); hidePortalLoading(); return;}
         if(isListenerRoute()){ session=nextSession||null; renderListenerRoute(); hidePortalLoading(); return; }
         const previousUserId=session?.user?.id||null;
@@ -70,6 +86,8 @@
         } else {
           profile=null;
           releases=[]; users=[]; invites=[]; inbox=[]; bands=[]; myBandInvites=[];
+          window.__workspaceDataUid=null;
+          workspaceDataWarnings={};
           if(isListenerRoute()) renderListenerRoute(); else renderAuth();
           hidePortalLoading();
         }
