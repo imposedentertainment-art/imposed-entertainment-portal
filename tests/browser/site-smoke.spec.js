@@ -10,7 +10,7 @@ test('homepage loads and local assets resolve', async ({ page }) => {
   await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
   await expect(page.locator('body')).toBeVisible();
   await expect(page.locator('#app')).toBeAttached();
-  await expect(page.locator('.boot-skeleton, main, #app')).toBeAttached();
+  await expect(page.locator('.boot-skeleton, main, #app').first()).toBeAttached();
   await page.waitForTimeout(1200);
   expect(failedLocalResponses, JSON.stringify(failedLocalResponses)).toEqual([]);
 });
