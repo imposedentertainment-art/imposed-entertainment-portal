@@ -1,5 +1,23 @@
 # Changelog
 
+## [2.4.0] - 2026-10-21 — Listener discovery experience overhaul
+
+### Improved
+- Reworked the listener listening-room hierarchy with stronger hero typography, clear collection stats, polished artist rows and more intentional spacing.
+- Redesigned directory search, sorting controls, saved-music panels, alphabet filtering and artist cards.
+- Added sticky translucent navigation and search controls for quicker access while browsing long rosters.
+- Improved mobile directory controls, collection toolbar layout, single-column artist cards and compact listening-room stats.
+- Added hover/focus affordances and reduced-motion-safe transitions for discovery cards and artist rows.
+
+### Compatibility
+- Kept existing routes, public-profile visibility rules, listener collections, saved-release flows, account sync and Turnstile verification logic unchanged.
+- The new stylesheet remains part of the service-worker static asset list and critical precache set.
+
+### Verification
+- Automated JavaScript syntax, asset/version, stylesheet structure and Cloudflare Pages static checks passed on the release workflow. Real-browser checks at multiple viewport sizes remain outstanding.
+
+# Changelog
+
 ## [2.3.0] - 2026-10-21 — Portable personalisation profiles
 
 ### Added
