@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.7.8] - 2026-10-21 — Mobile navigation drawer recovery
+
+### Fixed
+- Corrected the mobile drawer height calculation to measure the compact navigation header instead of the full header containing the open drawer. This prevents the menu from collapsing to zero height.
+- Overrode legacy two-column mobile navigation rules that conflicted with the grouped, searchable accordion menu.
+- Recalculates drawer height on viewport resize and device orientation changes.
+
+
 ## [2.7.7] - 2026-10-21 — Auth and upload recovery
 
 ### Fixed
