@@ -1,4 +1,4 @@
-/* Imposed Entertainment UI repair layer — 3.3.13
+/* Imposed Entertainment UI repair layer — 3.3.12
    Keep this layer small and semantic; user-selected theme tokens remain authoritative. */
 :root {
   --ie-ui-content-max: 1480px;
