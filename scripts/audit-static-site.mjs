@@ -55,7 +55,7 @@ if (!boot.includes("path==='/shop'") || !boot.includes("path==='/shop/manage'") 
 if (!navigationCss.includes('.nav-inner>.mobile-menu') || !navigationCss.includes('.mobile-nav')) {
   fail('Mobile navigation styles must target the actual nested menu trigger and drawer.');
 }
-if (!personalisation.includes("palette:'midnight'") ||
+if (!personalisation.includes("palette:'midnight-studio'") ||
     !personalisation.includes("'palette','density'")) {
   fail('Workspace theme preference must be validated and included in settings import/export.');
 }
