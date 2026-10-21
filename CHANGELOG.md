@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.6.0] - 2026-10-21 — Unified shop foundation
+
+### Added
+- Added a public `/shop` catalogue route with responsive product cards, search, and category filters for vinyl, CDs, clothing and accessories.
+- Added a secure Supabase shop catalogue schema with owner-scoped write access, public reads for published/available items, validated price/currency/product types, and provider reference fields for future Printful/Printify fulfilment.
+- Added explicit checkout-not-ready messaging so visitors cannot mistake catalogue browsing for a live payment flow.
+
+### Safety
+- No payment or fulfilment credentials are stored in the browser or catalogue. Checkout and order creation remain disabled until a server-side payment flow, signed webhooks and provider fulfilment have been configured and tested.
+- Supabase leaked password protection settings were not changed.
+
+### Verification
+- The shop catalogue migration was applied to the connected Supabase project. Automated repository checks and real-browser checkout testing remain outstanding.
+
 ## [2.5.0] - 2026-10-21 — Listener merch marketplace
 
 ### Added
