@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.9.5] - 2026-10-21 — Liquid Glass interface
+
+- Introduced a cohesive Liquid Glass material across dashboard panels, cards, menus, modals, form controls and secondary actions.
+- Added theme-aware translucent fills, backdrop blur, fine specular edges, layered highlights and ambient shadows.
+- Kept the Light Skies theme bright and legible while giving dark themes distinct tinted glass.
+- Improved focus rings and hover feedback; included reduced-transparency, reduced-motion and unsupported-blur fallbacks.
+- Versioned the stylesheet and service-worker cache to refresh deployed clients.
+
 ## [2.9.4] - 2026-10-21 — Theme background and layout polish
 
 - Removed the stray custom-banner strip from the top of the workspace so the selected theme photograph defines the visual backdrop.
