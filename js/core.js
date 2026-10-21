@@ -68,7 +68,7 @@
     document.querySelectorAll('[data-dashboard-size]').forEach(el=>{if(el.value!==dashboardLayout.sizes[el.dataset.dashboardSize])el.value=dashboardLayout.sizes[el.dataset.dashboardSize];});
     document.querySelectorAll('[data-dashboard-shape]').forEach(el=>{if(el.value!==dashboardLayout.shapes[el.dataset.dashboardShape])el.value=dashboardLayout.shapes[el.dataset.dashboardShape];});
     document.querySelectorAll('[data-dashboard-widget]').forEach(i=>{i.checked=dashboard[i.dataset.dashboardWidget]!==false;});
-    root.style.setProperty('--accent-user',accent);root.style.setProperty('--accent-user-hover',accent.toLowerCase()===String(theme.accent).toLowerCase()?theme.hover:accent);root.style.setProperty('--accent-user-ink',theme.ink);root.style.setProperty('--accent-user-soft',theme.soft);
+    root.style.setProperty('--user-accent',accent);root.style.setProperty('--accent-user',accent);root.style.setProperty('--accent-user-hover',accent.toLowerCase()===String(theme.accent).toLowerCase()?theme.hover:accent);root.style.setProperty('--accent-user-ink',theme.ink);root.style.setProperty('--accent-user-soft',theme.soft);
     root.style.setProperty('--accent',accent);root.style.setProperty('--accent-hover',theme.hover);root.style.setProperty('--accent-ink',theme.ink);root.style.setProperty('--teal',accent);
     document.querySelectorAll('[data-theme-preset]').forEach(b=>{const selected=b.dataset.themePreset===a.theme;b.setAttribute('aria-pressed',String(selected));b.classList.toggle('selected',selected);});
     document.querySelectorAll('[data-appearance-accent]').forEach(i=>{if(i.value!==accent)i.value=accent;});
