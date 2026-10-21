@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.9.9] - 2026-10-21 — Dashboard detail controls and scroll performance
+
+- Added working per-user controls inside “More dashboard details” for tasks, label insights, announcements, recent activity and release catalogue.
+- Added an Insights preference and kept dashboard visibility choices in the existing appearance preference save flow.
+- Reduced costly backdrop-filter stacking on mobile, limited off-screen dashboard rendering work and removed smooth scrolling as a default on touch devices.
+- Preserved theme photography and glass appearance while improving mobile readability and panel spacing.
+- Bumped static asset and service-worker cache versions.
+
+# Changelog
+
 ## [2.9.8] - 2026-10-21 — Dashboard composition and Liquid Glass refinement
 
 - Reworked mobile dashboard sizing to remove oversized hero whitespace and force saved desktop widget sizes into a usable single-column mobile presentation without overwriting preferences.
