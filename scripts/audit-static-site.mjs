@@ -1,4 +1,4 @@
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { resolve, normalize } from 'node:path';
 
 const root = process.cwd();
@@ -10,6 +10,20 @@ const version = read('VERSION').trim();
 const html = read('index.html');
 const worker = read('sw.js');
 const config = read('config.js');
+
+
+const migrationDir = resolve(root, 'supabase/migrations');
+if (existsSync(migrationDir)) {
+  const migrations = readdirSync(migrationDir).filter(name => /^\\d{14}_.+\\.sql$/.test(name));
+  const byVersion = new Map();
+  for (const name of migrations) {
+    const migrationVersion = name.slice(0, 14);
+    byVersion.set(migrationVersion, [...(byVersion.get(migrationVersion) || []), name]);
+  }
+  for (const [migrationVersion, names] of byVersion) {
+    if (names.length > 1) warnings.push(`Duplicate Supabase migration version prefix ${migrationVersion}: ${names.join(', ')}. Reconcile before using the Supabase CLI to push or reset schema.`);
+  }
+}
 
 if (!version) fail('VERSION is empty.');
 for (const [label, source] of [['index.html', html], ['sw.js', worker]]) {
