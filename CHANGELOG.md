@@ -1,5 +1,22 @@
 # Changelog
 
+## [2.8.3] - 2026-10-21 — Functional personalisation and reliable refresh
+
+### Fixed
+- Removed the duplicate mobile Account settings entry; Settings & preferences is the single settings destination.
+- Implemented real light-mode surface, text, form, card, menu and border tokens rather than only toggling a class.
+- Connected typography, text scale, content width, card treatment, surface, navigation, button, motion, shadow, contrast, glow, decorative visibility, density and radius preferences to rendered UI styles.
+- Made selected navigation and focus states derive from the user's accent colour instead of a fixed purple.
+
+### Update delivery
+- Bumped all HTML asset query strings and service-worker cache keys to 2.8.3.
+- Added the theme layer to the service worker's critical cache assets and kept HTML/service-worker update checks network-first.
+
+### Verification
+- Added regression checks for light mode, live preference mappings, duplicate account navigation and release asset version consistency.
+- Static CI checks do not replace a real authenticated mobile-browser test.
+
+
 ## [2.8.2] - 2026-10-21 — Full theme and navigation icon overhaul
 
 ### Improved
