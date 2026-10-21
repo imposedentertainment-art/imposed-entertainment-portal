@@ -249,3 +249,19 @@ body.personalise-theme-light #ie-personalise-panel {background:#fff!important;co
  body.personalise-theme-system :where(h1,h2,h3,h4,h5,h6,strong,b,label,legend,.nav-link,.nav-accordion-title) {color:var(--ui-text)!important}
  body.personalise-theme-system :where(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]),select,textarea,[contenteditable="true"]) {background:var(--ui-input)!important;color:var(--ui-text)!important;border-color:var(--ui-border-strong)!important}
 }
+
+/* Highest-priority selected states: always use the chosen accent, including legacy mobile drawer rules. */
+html body .shell>header.nav>.mobile-nav .nav-accordion>button.active,
+html body .shell>header.nav>.mobile-nav .nav-accordion>button[aria-current="page"],
+html body .shell>header.nav>.mobile-nav .nav-shop-link[aria-current="page"],
+html body .shell>header.nav>.mobile-nav>button[aria-current="page"] {
+ background:color-mix(in srgb,var(--user-accent,#d8bd73) 21%,var(--ui-surface,#11161d))!important;
+ color:var(--ui-text,#f5f4ef)!important;
+ border-color:color-mix(in srgb,var(--user-accent,#d8bd73) 72%,var(--ui-border,#2b3541))!important;
+ box-shadow:inset 4px 0 var(--user-accent,#d8bd73)!important;
+}
+html body .shell>header.nav>.mobile-nav .nav-accordion>button.active svg,
+html body .shell>header.nav>.mobile-nav .nav-accordion>button[aria-current="page"] svg,
+html body .shell>header.nav>.mobile-nav .nav-shop-link[aria-current="page"] svg {color:var(--user-accent,#d8bd73)!important}
+body.personalise-theme-light html body .shell>header.nav>.mobile-nav .nav-accordion>button.active,
+body.personalise-theme-light html body .shell>header.nav>.mobile-nav .nav-accordion>button[aria-current="page"] {color:var(--ui-text,#172536)!important}
