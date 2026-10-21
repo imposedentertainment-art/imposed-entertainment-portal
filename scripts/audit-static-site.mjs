@@ -113,8 +113,9 @@ if ((views.match(/data-action="settings"[^>]*>\$\{icon\('settings',17\)\} Accoun
   fail('Mobile navigation must not show a duplicate Account settings action alongside Settings & preferences.');
 }
 if (html.includes('2.8.2') || worker.includes('2.8.2')) fail('HTML and service worker must not retain stale 2.8.2 asset versions.');
-if (!worker.includes("'/ui-theme-overhaul.css', '/js/personalise.js'")) {
-  fail('Theme overhaul CSS must be included in critical service-worker assets.');
+const criticalAssetsBlock = worker.match(/const criticalAssets = \[([\\s\\S]*?)\];/);
+if (!criticalAssetsBlock || !criticalAssetsBlock[1].includes("'/ui-theme-overhaul.css'") || !criticalAssetsBlock[1].includes("'/js/personalise.js'")) {
+  fail('Theme overhaul CSS and personalisation script must be included in critical service-worker assets.');
 }
 
 const localRef = (value) => {
