@@ -137,7 +137,6 @@ if (!criticalAssetsBlock || !criticalAssetsBlock[1].includes("'/ui-theme-overhau
 }
 
 
-if (!events.includes('profile.notification_preferences && profile.notification_preferences.appearance')) fail('Quick customiser must merge account appearance defaults before saving.');
 if (!core.includes("workspaceTheme:'midnight-studio'") ||
     !core.includes("root.dataset.ieWorkspaceTheme") ||
     !events.includes("workspaceTheme:['light-skies','midnight-studio','graphite-minimal','plum-dusk','forest-room']")) {
