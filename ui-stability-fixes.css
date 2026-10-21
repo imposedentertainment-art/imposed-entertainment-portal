@@ -1,5 +1,5 @@
 
-/* Imposed Entertainment UI stability layer — 3.3.11
+/* Imposed Entertainment UI stability layer — 3.3.12
    Loaded last to reconcile legacy styles without changing application behaviour. */
 
 /* The shell must not trap the fixed sidebar and its overlay in a low stacking context. */
@@ -201,12 +201,12 @@ html body #app :is(button,a,[role=button]):focus-visible{outline:2px solid #fff;
   }
 }
 
-/* v3.3.11: the app wrapper also used to trap the fixed header in a z-index:0 stacking context. */
+/* v3.3.12: the app wrapper also used to trap the fixed header in a z-index:0 stacking context. */
 html body #app{position:relative!important;z-index:auto!important;isolation:auto!important;}
 /* Disable the older generic .nav drawer backdrop too; the header-local backdrop above is the only mobile-nav overlay. */
 html body:has(.nav>.mobile-nav:not([hidden]))::before{content:none!important;display:none!important;}
 
-/* v3.3.11: keep the compact mobile header to one row so the drawer never covers its toggle. */
+/* v3.3.12: keep the compact mobile header to one row so the drawer never covers its toggle. */
 @media(max-width:800px){
   html body .shell>header.nav>.nav-inner{
     display:flex!important;flex-direction:row!important;flex-wrap:nowrap!important;
@@ -226,7 +226,7 @@ html body:has(.nav>.mobile-nav:not([hidden]))::before{content:none!important;dis
   html body .shell>header.nav>.nav-inner>.sidebar-collapse-toggle{display:none!important}
 }
 
-/* v3.3.11: the header row is a higher stacking layer than the drawer, so the menu
+/* v3.3.12: the header row is a higher stacking layer than the drawer, so the menu
    toggle stays clickable even if legacy styles expand the drawer upwards. */
 @media(max-width:800px){
   html body .shell>header.nav>.nav-inner{
@@ -238,4 +238,20 @@ html body:has(.nav>.mobile-nav:not([hidden]))::before{content:none!important;dis
     position:relative!important;z-index:10061!important;flex-shrink:0!important;
   }
   html body .shell>header.nav>.mobile-nav:not([hidden]){z-index:10050!important}
+}
+
+/* v3.3.12: override the legacy open-drawer selector that reset .nav-inner to z-index:0. */
+@media(max-width:800px){
+  html body:has(.shell>header.nav>.mobile-nav:not([hidden])) .shell>header.nav{
+    z-index:40!important;
+  }
+  html body:has(.shell>header.nav>.mobile-nav:not([hidden])) .shell>header.nav>.nav-inner{
+    z-index:10060!important;
+  }
+  html body:has(.shell>header.nav>.mobile-nav:not([hidden])) .shell>header.nav>.nav-inner>.mobile-menu{
+    position:relative!important;z-index:10061!important;
+  }
+  html body:has(.shell>header.nav>.mobile-nav:not([hidden])) .shell>header.nav>.mobile-nav{
+    z-index:10050!important;
+  }
 }
