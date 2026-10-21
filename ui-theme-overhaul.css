@@ -99,3 +99,76 @@ body.personalise-palette-forest-room {background-color:var(--bg)!important;color
 #ie-personalise-trigger {font-size:0!important}
 #ie-personalise-trigger::before {content:"☼";font-size:25px;line-height:1}
 @media(prefers-reduced-motion:reduce){body *{scroll-behavior:auto!important;transition-duration:.01ms!important}}
+
+
+/* Workspace-wide visual language: consistent rhythm, readable controls and restrained surfaces. */
+:root {
+  --ie-space-1:4px; --ie-space-2:8px; --ie-space-3:12px; --ie-space-4:16px;
+  --ie-space-5:20px; --ie-space-6:24px; --ie-space-8:32px;
+  --ie-control-height:42px;
+}
+body {
+  font-family:var(--user-font,var(--ui,"DM Sans",system-ui,sans-serif));
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+body :where(.main h1,.page h1,.page-content h1,.workspace-content h1) {
+  font-size:clamp(25px,2.4vw,34px);line-height:1.16;letter-spacing:-.035em;
+  font-weight:760;margin-top:0;margin-bottom:10px;
+}
+body :where(.main h2,.page h2,.page-content h2,.workspace-content h2) {
+  font-size:clamp(19px,1.65vw,24px);line-height:1.25;letter-spacing:-.02em;font-weight:720;
+}
+body :where(.main p,.page p,.page-content p,.workspace-content p) {line-height:var(--user-line-height,1.55)}
+body :where(.section-head,.page-head,.page-header,.section-heading,.workspace-heading) {
+  display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:22px;
+}
+body :where(.section-head,.page-head,.page-header,.section-heading,.workspace-heading) :where(h1,h2,h3,p) {margin-top:0}
+body :where(.card,.panel,.metric,.release-card,.artist-card,.profile-card,.settings-card,.detail-card,.form-card,.builder-card,.approval-card,.up-card,.collection-card,.listener-card,.modal-card) {
+  border-radius:var(--user-radius,16px);border-color:var(--ui-border,var(--line,#2b3541));
+  box-shadow:var(--ui-shadow,0 8px 24px rgba(0,0,0,.08));
+}
+body :where(button,.primary,.secondary,.new-btn,.danger-btn,.link-button) {
+  min-height:var(--ie-control-height);font:inherit;font-weight:650;letter-spacing:-.005em;
+  transition:background-color .16s ease,border-color .16s ease,color .16s ease,transform .16s ease,box-shadow .16s ease;
+}
+body :where(button,.primary,.secondary,.new-btn,.danger-btn):not(:disabled):active {transform:translateY(1px)}
+body :where(button,.primary,.secondary,.new-btn,.danger-btn):disabled {cursor:not-allowed;opacity:.58}
+body :where(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]),select,textarea) {
+  border-radius:10px;min-height:42px;padding:10px 12px;border:1px solid var(--ui-border,var(--line,#2b3541));
+  background:var(--ui-input,var(--s1,#11161d));color:var(--ui-text,var(--text,#f5f4ef));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.025);
+}
+body textarea {min-height:110px;resize:vertical}
+body :where(input,select,textarea):focus-visible {outline:2px solid var(--user-accent,#d8bd73);outline-offset:2px}
+body :where(.metric,.stat-card,.dashboard-stat) {padding:clamp(16px,2vw,24px)}
+body :where(.metric strong,.stat-card strong,.dashboard-stat strong) {letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+body :where(.table-wrap,.table-scroll,.data-table-wrap) {max-width:100%;overflow-x:auto;border:1px solid var(--ui-border,var(--line,#2b3541));border-radius:14px}
+body table {width:100%;border-collapse:separate;border-spacing:0}
+body :where(th,td) {padding:12px 14px;text-align:left;border-bottom:1px solid var(--ui-border,var(--line,#2b3541));vertical-align:middle}
+body th {font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:750;color:var(--ui-text-muted,var(--muted,#9ba8b8));background:var(--ui-surface-raised,var(--s2,#171e27))}
+body tr:last-child td {border-bottom:0}
+body tbody tr:hover td {background:color-mix(in srgb,var(--user-accent,#d8bd73) 4%,transparent)}
+body :where(.empty-state,.empty,.no-results,.empty-panel) {border:1px dashed var(--ui-border,var(--line,#2b3541));border-radius:16px;padding:clamp(24px,4vw,44px);text-align:center}
+body :where(.eyebrow,.section-kicker) {font-size:11px;letter-spacing:.12em;font-weight:800}
+body :where(.badge,.status,.pill,.chip) {border-radius:999px}
+body .desktop-nav .nav-link {min-height:42px;border-radius:11px}
+body .desktop-nav .nav-link.active {background:color-mix(in srgb,var(--user-accent,#d8bd73) 15%,transparent);color:var(--ui-text,var(--text,#f5f4ef))}
+body .mobile-nav {gap:5px}
+body .mobile-nav :where(button,a) {min-height:46px;border-radius:11px;padding:12px 13px}
+body .mobile-nav .nav-accordion-title {font-weight:800;letter-spacing:.07em}
+body #ie-personalise-panel {border:1px solid var(--ui-border,var(--line,#2b3541));border-radius:18px;box-shadow:0 24px 70px rgba(0,0,0,.28);backdrop-filter:blur(20px)}
+body #ie-personalise-panel .ie-p-tab {border-radius:10px}
+body #ie-personalise-panel .ie-p-control select {min-height:42px}
+body .boot-skeleton {max-width:680px;margin:10vh auto;padding:24px}
+body .boot-skeleton-line,body .boot-skeleton-grid i {border-radius:12px}
+@media(max-width:760px) {
+  body :where(.main,.main-content,.page-content,.workspace-content) {padding-left:16px;padding-right:16px}
+  body :where(.section-head,.page-head,.page-header,.section-heading,.workspace-heading) {gap:12px;margin-bottom:18px}
+  body :where(.section-head,.page-head,.page-header,.section-heading,.workspace-heading) > :last-child {max-width:100%}
+  body :where(.card,.panel,.metric,.release-card,.artist-card,.profile-card,.settings-card,.detail-card,.form-card,.builder-card,.approval-card,.up-card,.collection-card,.listener-card) {border-radius:14px}
+  body :where(th,td) {padding:10px 11px}
+}
+@media(prefers-reduced-motion:reduce) {
+  body :where(button,a,.card,.panel,.metric) {transition:none!important;scroll-behavior:auto!important}
+}
