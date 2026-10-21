@@ -88,3 +88,5 @@
 @container (max-width:300px) { .dashboard-widget-layout > [data-dashboard-widget-card] :is(h1,h2,h3,h4) { font-size:clamp(.82rem,5cqi,1rem)!important; } .dashboard-widget-layout > [data-dashboard-widget-card] :is(p,li,small,label,.description,.muted) { font-size:clamp(.68rem,3.8cqi,.8rem); } .dashboard-widget-layout > [data-dashboard-widget-card] :is(button,a,[role=button]) { max-width:100%; white-space:normal; overflow-wrap:anywhere; } }
 
 @media(max-width:760px){.dashboard-page.is-customising .dashboard-widget-layout{grid-template-columns:repeat(12,minmax(0,1fr))!important}.dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card]{grid-column:span var(--dashboard-span,12)!important;}}
+
+@media(max-width:800px){html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout{grid-template-columns:repeat(12,minmax(0,1fr))!important}html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card]{grid-column:span var(--dashboard-span,12)!important;width:auto!important;min-height:var(--dashboard-custom-height,0px)!important}}
