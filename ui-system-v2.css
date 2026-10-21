@@ -1,4 +1,4 @@
-/* Imposed Entertainment v2.1.0 — unified UI and personalisation layer.
+/* Imposed Entertainment v2.2.0 — unified UI and personalisation layer.
    Deliberately loaded last: normalises legacy component generations without changing app logic. */
 :root{
   color-scheme:dark;
@@ -105,3 +105,24 @@ body.personalise-content-standard :where(.page,.page-content,.workspace-content,
 @media(prefers-reduced-motion:reduce){
  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
+
+/* v2.2.0: wire every advertised preference to visible interface behavior. */
+html{font-size:calc(16px * var(--user-font-scale,1));}
+body{line-height:var(--user-line-height,1.5);--user-radius:16px}
+body.personalise-theme-system{color-scheme:dark;background:var(--ie-ui-bg);color:var(--ie-ui-text)}
+@media(prefers-color-scheme:light){
+ body.personalise-theme-system{color-scheme:light;--ie-ui-bg:#f3f5f8;--ie-ui-surface:#fff;--ie-ui-raised:#e9edf2;--ie-ui-text:#171b22;--ie-ui-muted:#566170;--ie-ui-border:#d4dbe4;background:#f3f5f8;color:#202630}
+ body.personalise-theme-system :where(.nav,.workspace-topbar,.mobile-nav,.sidebar,.side-nav,.panel,.card,.metric,.modal-card,.settings-card,.detail-card,.form-card,.builder-card,.release-card,.artist-card,.profile-card,.collection-card,.listener-card){background-color:var(--ie-ui-surface);color:var(--ie-ui-text);border-color:var(--ie-ui-border)}
+ body.personalise-theme-system :where(input,select,textarea){background:#fff;color:#171b22;border-color:#c7d0db}
+}
+body.personalise-high-contrast{--ie-ui-text:#fff;--ie-ui-muted:#e0e5eb;--ie-ui-border:#697887}
+body.personalise-theme-light.personalise-high-contrast{--ie-ui-text:#000;--ie-ui-muted:#303943;--ie-ui-border:#657180}
+body.personalise-glow :where(button.primary,.primary,.new-btn,.nav-link.active,.sidebar a.active,.side-nav a.active){box-shadow:0 0 0 1px color-mix(in srgb,var(--ie-ui-accent) 65%,transparent),0 0 20px color-mix(in srgb,var(--ie-ui-accent) 20%,transparent)}
+body.personalise-hide-decorative :where(.ambient-glow,.background-orb,.decorative,.decorative-art,.hero-decoration,.visual-flourish){display:none!important}
+body.personalise-nav-minimal :where(.nav,.workspace-topbar,.sidebar,.side-nav,.mobile-nav){box-shadow:none!important;border-color:transparent!important;background:transparent}
+body.personalise-buttons-solid :where(button,.primary,.secondary,.new-btn,.danger-btn){font-weight:750}
+body.personalise-motion-reduced *,body.personalise-motion-reduced *::before,body.personalise-motion-reduced *::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+body.personalise-motion-none *,body.personalise-motion-none *::before,body.personalise-motion-none *::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}
+body.personalise-round-all :where(button,input,select,textarea,.card,.panel,.modal-card){border-radius:14px}
+body.personalise-square-all :where(button,input,select,textarea,.card,.panel,.modal-card){border-radius:3px}
+body.personalise-theme-light :where(.muted,.sub,.description,.helper-text,small){color:var(--ie-ui-muted)}
