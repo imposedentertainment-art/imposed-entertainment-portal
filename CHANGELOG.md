@@ -1,3 +1,9 @@
+## 3.3.10 — Keep mobile menu controls clear of the drawer
+
+- Forced the compact mobile header into a single row and constrained the brand wordmark so the drawer cannot overlap the menu toggle.
+- Preserved the drawer's measured top offset and full-height contained scrolling.
+- Updated cache/version references to invalidate the earlier layout.
+
 ## 3.3.9 — Fix application stacking context and overlay regression
 
 - Removed the app wrapper's low stacking context so fixed navigation can layer correctly.
