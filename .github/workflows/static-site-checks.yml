@@ -28,6 +28,19 @@ jobs:
           done
       - name: Audit repository assets, versioning, styles and configuration
         run: node scripts/audit-static-site.mjs
+      - name: Install browser-test dependencies
+        run: npm install --no-save @playwright/test http-server
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Run browser smoke tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx http-server . -p 4173 -c-1 > /tmp/ie-http-server.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 30); do curl -fsS http://127.0.0.1:4173/ >/dev/null && break || sleep 1; done
+          npx playwright test --config=playwright.config.js
       - name: Validate Cloudflare Pages assets and security basics
         shell: bash
         run: |
