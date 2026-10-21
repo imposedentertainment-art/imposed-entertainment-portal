@@ -1,3 +1,11 @@
+## 3.3.7 — UI stability and regression fixes
+
+- Removed conflicting emergency overrides that forced the desktop sidebar into a sticky top bar.
+- Replaced the page-level backdrop with a header-local overlay so the mobile menu remains above its backdrop and the page is properly obscured.
+- Restored the floating appearance launcher icon without relying on a CSS mask.
+- Added safe-area spacing, mobile drawer sizing, high-contrast navigation text, workspace title alignment, and consistent utility button sizing.
+- Added browser regression coverage for the appearance launcher and mobile navigation stacking.
+
 ## 3.3.6 — Restore navigation and appearance controls
 
 - Made the mobile drawer visibility follow the real menu button's `aria-expanded` state.
