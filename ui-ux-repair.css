@@ -227,3 +227,9 @@ html[data-ie-workspace-theme="light-skies"] body #app :is(.sidebar,.mobile-nav,.
   box-shadow:inset 0 1px 0 rgba(255,255,255,.86),0 12px 32px rgba(40,70,100,.08)!important;
 }
 @media(prefers-reduced-transparency:reduce){html body #app :is(.sidebar,.mobile-nav,.mobile-nav-panel,.topbar,.dropdown-menu,.account-menu,.popover,.notification-panel,.modal-panel,.modal-card,.dialog,.toast,.card,.panel,.surface,.settings-panel,.content-card,.workspace-card,.widget-card,.widget-panel){backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+
+/* Specificity guard: keep resize edges active on touch layouts too. */
+@media(max-width:800px){
+  html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card] .dashboard-edge-hit{display:block!important;pointer-events:auto!important}
+  html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-layout>[data-dashboard-widget-card]{grid-column:var(--dashboard-grid-column,span var(--dashboard-span,12))!important;min-height:var(--dashboard-custom-height,180px)!important}
+}
