@@ -1,0 +1,101 @@
+/* Imposed Entertainment v2.8.2 — cohesive theme tokens, cloud surfaces and icon consistency. */
+:root {
+  --accent:var(--user-accent,#d8bd73);
+  --ui-page:var(--bg,#080a0d);
+  --ui-surface:var(--s1,#11161d);
+  --ui-surface-raised:var(--s2,#171e27);
+  --ui-border:var(--line,#2b3541);
+}
+body[class*="personalise-palette-"] {
+  background-color:var(--ui-page,var(--bg)) !important;
+  color:var(--ui-text,var(--text,#f5f4ef));
+  --accent:var(--user-accent,#d8bd73);
+}
+body[class*="personalise-palette-"] :where(.nav,.workspace-topbar,.sidebar,.side-nav,.main,.page,.page-content,.workspace,.workspace-content,.content-area) {
+  background-color:var(--ui-page,var(--bg));
+}
+body[class*="personalise-palette-"] :where(.card,.panel,.metric,.release-card,.artist-card,.profile-card,.settings-card,.detail-card,.form-card,.builder-card,.approval-card,.up-card,.collection-card,.listener-card,.modal-card) {
+  background-color:var(--ui-surface,var(--s1));
+  border-color:var(--ui-border,var(--line));
+}
+/* Light Skies: airy blue-grey canvas, soft cloud forms, white-blue cards and readable ink. */
+body.personalise-palette-light-skies {
+  color-scheme:light;
+  --ui-page:#eaf3fb; --ui-surface:#f8fbff; --ui-surface-raised:#dceaf7; --ui-surface-hover:#d1e3f4;
+  --ui-border:#c3d7e8; --ui-border-strong:#9dbbd3;
+  --ui-text:#1c344b; --ui-text-soft:#334e67; --ui-text-muted:#5f7890; --ui-input:#fff;
+  --bg:#eaf3fb; --s1:#f8fbff; --s2:#dceaf7; --s3:#d1e3f4;
+  --line:#c3d7e8; --line2:#9dbbd3; --text:#1c344b; --soft:#334e67; --muted:#5f7890;
+  --accent-ink:#fff; --ui-shadow:0 12px 34px rgba(68,111,150,.12);
+  background-color:#eaf3fb!important;color:#1c344b!important;
+  background-image:
+    radial-gradient(ellipse 190px 70px at 9% 9%,rgba(255,255,255,.82) 0 48%,transparent 70%),
+    radial-gradient(ellipse 250px 95px at 92% 21%,rgba(255,255,255,.62) 0 46%,transparent 72%),
+    radial-gradient(ellipse 220px 82px at 18% 56%,rgba(255,255,255,.55) 0 45%,transparent 72%),
+    radial-gradient(ellipse 300px 105px at 84% 82%,rgba(255,255,255,.7) 0 43%,transparent 72%),
+    linear-gradient(155deg,#edf6ff 0%,#e4eff9 52%,#eef5fb 100%)!important;
+}
+body.personalise-palette-light-skies :where(.nav,.workspace-topbar,.sidebar,.side-nav) {
+  background:linear-gradient(145deg,rgba(249,252,255,.97),rgba(225,239,250,.96))!important;
+  color:#1c344b!important;border-color:#c3d7e8!important;
+}
+body.personalise-palette-light-skies .nav-link,
+body.personalise-palette-light-skies .mobile-nav button,
+body.personalise-palette-light-skies .mobile-nav a,
+body.personalise-palette-light-skies .sidebar button,
+body.personalise-palette-light-skies .sidebar a {color:#36536d!important}
+body.personalise-palette-light-skies .nav-link.active,
+body.personalise-palette-light-skies .mobile-nav .nav-accordion > button.active,
+body.personalise-palette-light-skies .mobile-nav .nav-accordion > button[aria-current="page"] {
+  background:linear-gradient(120deg,color-mix(in srgb,var(--user-accent,#478ec4) 16%,#fff),rgba(222,239,253,.96))!important;
+  color:#173a59!important;border-color:#a8cbe5!important;
+}
+body.personalise-palette-light-skies :where(.card,.panel,.metric,.release-card,.artist-card,.profile-card,.settings-card,.detail-card,.form-card,.builder-card,.approval-card,.up-card,.collection-card,.listener-card,.modal-card) {
+  background:
+    radial-gradient(ellipse 100px 42px at 92% 0%,rgba(255,255,255,.92),transparent 74%),
+    linear-gradient(145deg,rgba(255,255,255,.97),rgba(240,248,255,.94))!important;
+  border-color:#c5dced!important;
+  box-shadow:0 10px 26px rgba(71,113,150,.09);
+}
+body.personalise-palette-light-skies input,
+body.personalise-palette-light-skies select,
+body.personalise-palette-light-skies textarea {
+  color:#1c344b!important;background:#fff!important;border-color:#bfd4e6!important;
+}
+body.personalise-palette-light-skies :where(h1,h2,h3,h4,strong,label,.eyebrow) {color:#203e59}
+body.personalise-palette-light-skies :where(.muted,.sub,small,.help-text) {color:#5c748a}
+body.personalise-palette-light-skies .primary,
+body.personalise-palette-light-skies .new-btn {color:#fff!important}
+body.personalise-palette-light-skies #ie-personalise-panel {
+  background:linear-gradient(150deg,#f8fbff,#e3effa)!important;color:#1c344b!important;border-color:#bfd4e6!important;
+}
+/* Named dark moods keep their own complete surface/ink system. */
+body.personalise-palette-midnight-studio {
+  --ui-page:#080a0d;--ui-surface:#11161d;--ui-surface-raised:#171e27;--ui-surface-hover:#222b36;--ui-border:#2b3541;--ui-border-strong:#435061;
+  --bg:#080a0d;--s1:#11161d;--s2:#171e27;--s3:#222b36;--line:#2b3541;--line2:#435061;--text:#f5f4ef;--soft:#d2d7df;--muted:#9ba8b8;color-scheme:dark;
+}
+body.personalise-palette-graphite-minimal {
+  --ui-page:#101114;--ui-surface:#191b20;--ui-surface-raised:#23262d;--ui-surface-hover:#30343d;--ui-border:#383c45;--ui-border-strong:#555b67;
+  --bg:#101114;--s1:#191b20;--s2:#23262d;--s3:#30343d;--line:#383c45;--line2:#555b67;--text:#f3f4f6;--soft:#d0d4da;--muted:#a0a6b0;color-scheme:dark;
+}
+body.personalise-palette-plum-dusk {
+  --ui-page:#140e18;--ui-surface:#201625;--ui-surface-raised:#2c1e34;--ui-surface-hover:#3a2943;--ui-border:#49344f;--ui-border-strong:#6b4b73;
+  --bg:#140e18;--s1:#201625;--s2:#2c1e34;--s3:#3a2943;--line:#49344f;--line2:#6b4b73;--text:#f7f0fa;--soft:#dfd1e6;--muted:#b6a3c0;color-scheme:dark;
+}
+body.personalise-palette-forest-room {
+  --ui-page:#09140f;--ui-surface:#112019;--ui-surface-raised:#1a2c22;--ui-surface-hover:#243a2d;--ui-border:#2c4938;--ui-border-strong:#456b53;
+  --bg:#09140f;--s1:#112019;--s2:#1a2c22;--s3:#243a2d;--line:#2c4938;--line2:#456b53;--text:#f0f8f1;--soft:#cfdfd2;--muted:#9bb8a3;color-scheme:dark;
+}
+body.personalise-palette-midnight-studio,
+body.personalise-palette-graphite-minimal,
+body.personalise-palette-plum-dusk,
+body.personalise-palette-forest-room {background-color:var(--bg)!important;color:var(--text)}
+/* Consistent icon dimensions and visible hit targets in every navigation variant. */
+:where(.desktop-nav,.mobile-nav,.sidebar-bottom,.utility-row) :where(button,a) > svg {
+  display:inline-block;flex:0 0 18px;width:18px;height:18px;min-width:18px;stroke:currentColor;vertical-align:middle;
+}
+:where(.desktop-nav,.mobile-nav,.sidebar-bottom,.utility-row) :where(button,a) {gap:10px}
+:where(.desktop-nav,.mobile-nav,.sidebar-bottom,.utility-row) :where(button,a):focus-visible {outline:2px solid var(--user-accent,#d8bd73);outline-offset:2px}
+#ie-personalise-trigger {font-size:0!important}
+#ie-personalise-trigger::before {content:"☼";font-size:25px;line-height:1}
+@media(prefers-reduced-motion:reduce){body *{scroll-behavior:auto!important;transition-duration:.01ms!important}}
