@@ -17,6 +17,14 @@ This is not a claim that every authenticated UI flow has been browser-tested. Li
 - **AUD-002 — RLS requires behavioural verification.** All 46 public tables report RLS enabled, but that metadata does not prove ownership and role boundaries are correct. Add authenticated role-matrix tests for label admins, artists, listeners and anonymous users, covering read/insert/update/delete and RPC access. Preserve invite-only workspace rules.
 - **AUD-003 — CI is static-only.** Existing CI checks JavaScript syntax, assets, versions, and source-text invariants. It does not exercise browser routes, auth transitions, storage uploads, realtime recovery or database permission boundaries.
 
+### Additional live Supabase advisor findings
+
+- Supabase security advisor flags the anonymous `SECURITY DEFINER` RPC `public.get_invite(p_code text)`. Anonymous execution appears intentional for invite-code validation during signup, and the function returns invite email/name/role only for pending, unexpired codes. Do not revoke it blindly; verify code entropy, abuse controls and the exact fields required by the signup UI.
+- The advisor also flags 12 `SECURITY DEFINER` functions callable by authenticated users. Several have explicit role/ownership checks, but each must be reviewed for the least-privilege contract rather than revoked wholesale.
+- The advisor reports leaked-password protection disabled. This is intentionally unchanged because the project is on Supabase Free and the owner has specified not to enable that feature.
+- Performance advisor reports 60 unused indexes. The database has very little live data and low traffic, so this is not enough evidence to drop them. Revisit after collecting representative workload/query plans.
+- Recent Auth logs contain two HTTP 500 refresh-token requests with `context canceled`. They may be aborted/slow client refreshes; correlate with client telemetry before changing auth semantics.
+
 ### Major
 
 - **AUD-004 — Competing UI appearance layers.** The entry document loads approximately 15 CSS files and theme behaviour is split between account preferences, a local-storage customiser, root data attributes and body classes. Legacy hard-coded selectors can conflict with semantic tokens.
@@ -34,6 +42,7 @@ This is not a claim that every authenticated UI flow has been browser-tested. Li
 - **AUD-013 — Query/performance review.** Compare indexes and query plans against real query patterns before adding indexes.
 - **AUD-014 — Storage lifecycle.** Test retries, abandoned draft recovery and orphan cleanup.
 - **AUD-015 — Update delivery.** Test cache invalidation and service-worker upgrades on mobile and desktop with direct route refreshes.
+- **AUD-016 — Migration filename guard.** Static CI now emits a warning when multiple migration files share the same 14-digit version prefix; the current duplicate remains a deliberate remediation item until migration history is reconciled.
 
 ## Phase 2 — Priority order
 
