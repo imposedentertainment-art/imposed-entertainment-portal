@@ -338,3 +338,18 @@ body.personalise-theme-amoled :is(.auth-card,.auth-panel,.guest-card,.guest-acco
   body :is(.auth-shell,.guest-shell,.guest-welcome,.guest-directory,.listener-account-shell){min-height:100dvh}
   body :is(.card,.panel,.settings-card,.appearance-card,.appearance-section,.modal-card){max-width:100%;min-width:0}
 }
+
+@media(prefers-color-scheme:light){
+  body.personalise-theme-system{
+    color-scheme:light;--ui-page:#eef0f4;--ui-surface:#f7f8fa;--ui-surface-raised:#e9edf2;--ui-surface-soft:#e1e6ed;
+    --ui-border:#d0d6df;--ui-text:#202630;--ui-muted:#596575;--ui-input:#fbfcfd;
+    --bg:#eef0f4;--s1:#f7f8fa;--s2:#e9edf2;--s3:#e1e6ed;--line:#d0d6df;--line2:#b8c1cd;--text:#202630;--soft:#384252;--muted:#596575;
+    background:#eef0f4!important;color:#202630!important;
+  }
+  body.personalise-theme-system :is(.shell,.main,.workspace,.page,.auth-shell,.auth-panel,.auth-card,.guest-shell,.guest-welcome,.guest-directory,.listener-account-shell,#main-content){background-color:var(--ui-page)!important;color:var(--ui-text)!important}
+  body.personalise-theme-system :is(.nav,.workspace-topbar,.topbar,.sidebar,.mobile-nav,.settings-quicknav,.dropdown-menu,.context-menu,.notification-panel,.search-panel,.auth-card,.auth-panel,.guest-card,.guest-account-card,.guest-artist-card,.guest-release-card,.guest-feature-card,.profile-card,.release-card,.auth-form-card,.form-card,.settings-card,.appearance-card,.appearance-section,.card,.panel,.modal-card,.detail-card,.builder-card,.approval-card,.metric,.up-card,.popover,.search-results,.empty-state,.table-wrap,.data-table-wrap){
+    background-color:var(--ui-surface)!important;color:var(--ui-text)!important;border-color:var(--ui-border)!important;box-shadow:var(--ui-shadow);
+  }
+  body.personalise-theme-system :is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]),select,textarea){background-color:var(--ui-input)!important;color:var(--ui-text)!important;border-color:var(--ui-border)!important}
+  body.personalise-theme-system :is(.muted,.subtle,.description,.hint,.help-text,.form-hint,.field-help,.empty-description,.guest-directory-intro,.auth-subtitle,.auth-legal){color:var(--ui-muted)!important}
+}
