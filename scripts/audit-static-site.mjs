@@ -14,7 +14,7 @@ const config = read('config.js');
 
 const migrationDir = resolve(root, 'supabase/migrations');
 if (existsSync(migrationDir)) {
-  const migrations = readdirSync(migrationDir).filter(name => /^\\d{14}_.+\\.sql$/.test(name));
+  const migrations = readdirSync(migrationDir).filter(name => /^\d{14}_.+\.sql$/.test(name));
   const byVersion = new Map();
   for (const name of migrations) {
     const migrationVersion = name.slice(0, 14);
