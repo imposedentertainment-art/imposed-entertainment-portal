@@ -345,3 +345,18 @@ body{font-size:calc(1rem * var(--ie-font-scale,1))}
 .appearance-control output{font-size:12px;color:var(--accent);font-weight:700}
 .appearance-control input[type=range]{width:100%;accent-color:var(--accent)}
 @media(max-width:620px){.appearance-control-grid{grid-template-columns:minmax(0,1fr)}}
+
+/* v1.4.83: deeper personal controls, accessibility and visual intensity. */
+:root{--ie-line-height:1;--ie-saturation:100%}
+html{filter:saturate(var(--ie-saturation,100%))}
+body{line-height:calc(1.5 * var(--ie-line-height,1))}
+html[data-ie-border-width="0"] body :where(.card,.panel,.settings-card,.detail-card,.modal-card,.form-card,.appearance-control,input,select,textarea,.table-wrap,.release-card,.artist-card){border-width:0!important}
+html[data-ie-border-width="1"] body :where(.card,.panel,.settings-card,.detail-card,.modal-card,.form-card,.appearance-control,input,select,textarea,.table-wrap,.release-card,.artist-card){border-width:1px}
+html[data-ie-border-width="2"] body :where(.card,.panel,.settings-card,.detail-card,.modal-card,.form-card,.appearance-control,input,select,textarea,.table-wrap,.release-card,.artist-card){border-width:2px}
+html[data-ie-border-width="3"] body :where(.card,.panel,.settings-card,.detail-card,.modal-card,.form-card,.appearance-control,input,select,textarea,.table-wrap,.release-card,.artist-card){border-width:3px}
+html[data-ie-contrast="soft"]{--ui-text-muted:#a1a8b5;--muted:#a1a8b5}
+html[data-ie-contrast="high"]{--ui-text:#fff;--ui-text-soft:#f3f5f8;--ui-text-muted:#d5dbe5;--ui-border:#8994a5;--ui-border-strong:#b9c4d4;--muted:#d5dbe5;--line:#8994a5;--line2:#b9c4d4}
+html[data-ie-mode="light"][data-ie-contrast="high"],html[data-ie-mode="system"][data-ie-contrast="high"]{--ui-text:#080d15;--ui-text-soft:#101722;--ui-text-muted:#344054;--ui-border:#5b6879;--ui-border-strong:#344054;--text:#080d15;--soft:#101722;--muted:#344054;--line:#5b6879;--line2:#344054}
+html[data-ie-motion="reduced"] *,html[data-ie-motion="reduced"] *::before,html[data-ie-motion="reduced"] *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}
+html[data-ie-motion="full"]{scroll-behavior:smooth}
+@media(prefers-reduced-motion:reduce){html[data-ie-motion="system"] *,html[data-ie-motion="system"] *::before,html[data-ie-motion="system"] *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
