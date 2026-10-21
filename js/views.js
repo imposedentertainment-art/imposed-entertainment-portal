@@ -116,9 +116,23 @@
         document.body.style.overflow='';
         document.body.style.overflowY='auto';
         document.documentElement.style.overflowY='auto';
-        const navHeader=document.querySelector('.shell > .nav');
-        const navBottom=navHeader?.getBoundingClientRect().bottom||120;
-        container.style.setProperty('--mobile-nav-top',Math.max(80,Math.round(navBottom))+'px');
+        // Measure the compact header, not the whole <header.nav>. The latter contains the
+        // drawer itself while open, so measuring it makes the available drawer height collapse to 0.
+        if(typeof window.__ieSyncMobileNavViewport!=='function'){
+          window.__ieSyncMobileNavViewport=function(){
+            const drawer=document.getElementById('mobile-navigation-menu');
+            const navInner=document.querySelector('.shell > .nav > .nav-inner');
+            if(!drawer||!navInner)return;
+            const bottom=navInner.getBoundingClientRect().bottom;
+            drawer.style.setProperty('--mobile-nav-top',Math.max(56,Math.round(bottom||66))+'px');
+          };
+        }
+        window.__ieSyncMobileNavViewport();
+        if(document.documentElement.dataset.ieMobileNavViewportBound!=='1'){
+          document.documentElement.dataset.ieMobileNavViewportBound='1';
+          window.addEventListener('resize',()=>window.__ieSyncMobileNavViewport?.());
+          window.addEventListener('orientationchange',()=>window.__ieSyncMobileNavViewport?.());
+        }
         container.addEventListener('click',event=>{
           const summary=event.target.closest?.('.nav-accordion-title');
           if(!summary)return;
