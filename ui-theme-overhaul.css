@@ -265,3 +265,19 @@ html body .shell>header.nav>.mobile-nav .nav-accordion>button[aria-current="page
 html body .shell>header.nav>.mobile-nav .nav-shop-link[aria-current="page"] svg {color:var(--user-accent,#d8bd73)!important}
 body.personalise-theme-light html body .shell>header.nav>.mobile-nav .nav-accordion>button.active,
 body.personalise-theme-light html body .shell>header.nav>.mobile-nav .nav-accordion>button[aria-current="page"] {color:var(--ui-text,#172536)!important}
+
+
+/* Complete the defaults too: selecting any option should have a defined visual result. */
+body.personalise-nav-solid :where(.desktop-nav,.mobile-nav,.sidebar,.side-nav) {background:var(--ui-surface)!important;border:1px solid var(--ui-border);box-shadow:none}
+body.personalise-buttons-soft :where(button:not(.danger-btn):not(.primary):not(.new-btn),.secondary,.icon-btn) {background:color-mix(in srgb,var(--ui-surface-raised) 70%,transparent);border:1px solid var(--ui-border);color:var(--ui-text-soft)}
+body.personalise-surface-default {--ui-shadow:0 10px 28px rgba(0,0,0,.12)}
+body.personalise-cards-elevated :where(.card,.panel,.metric,.release-card,.artist-card,.profile-card,.settings-card,.detail-card,.form-card,.builder-card,.approval-card,.up-card,.collection-card,.listener-card,.modal-card) {box-shadow:var(--ui-shadow)!important;border:1px solid var(--ui-border)}
+body.personalise-artwork-rounded :where(.artwork img,.release-artwork img,.cover-art img,.artist-avatar img,.avatar img,.release-cover img,.track-art img,.profile-avatar img,.artwork,.release-artwork,.cover-art,.release-cover,.track-art) {border-radius:12px}
+body.personalise-artwork-square :where(.artwork img,.release-artwork img,.cover-art img,.artist-avatar img,.avatar img,.release-cover img,.track-art img,.profile-avatar img,.artwork,.release-artwork,.cover-art,.release-cover,.track-art) {border-radius:0!important}
+body.personalise-artwork-circle :where(.artwork img,.release-artwork img,.cover-art img,.artist-avatar img,.avatar img,.release-cover img,.track-art img,.profile-avatar img,.artwork,.release-artwork,.cover-art,.release-cover,.track-art) {border-radius:50%!important;overflow:hidden}
+body.personalise-high-contrast :where(p,span,small,.muted,.sub,.help-text,.description,.setting-description,.secondary-text,.form-hint,.field-help) {color:var(--ui-text-muted)!important}
+body.personalise-high-contrast :where(.card,.panel,.settings-card,.detail-card,.form-card,.release-card,.artist-card,.profile-card,input,select,textarea,button) {border-color:var(--ui-border-strong)!important}
+body.personalise-theme-light.personalise-high-contrast {--ui-text:#07111c;--ui-text-soft:#111f2e;--ui-text-muted:#293e53;--line:#8da0b4;--ui-border:#8da0b4;--ui-border-strong:#526a82}
+@media(prefers-color-scheme:light) {
+ body.personalise-theme-system.personalise-high-contrast {--ui-text:#07111c;--ui-text-soft:#111f2e;--ui-text-muted:#293e53;--ui-border:#8da0b4;--ui-border-strong:#526a82}
+}
