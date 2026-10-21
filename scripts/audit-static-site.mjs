@@ -38,7 +38,7 @@ const views = read('js/views.js');
 const boot = read('js/boot.js');
 const personalisation = read('js/personalise.js');
 const navigationCss = read('mobile-navigation.css');
-if (!views.includes('class="mobile-menu"') || !views.includes('id="mobile-navigation-menu"')) {
+if (!views.includes('mobile-menu icon-btn') || !views.includes('id="mobile-navigation-menu"')) {
   fail('Workspace navigation trigger and mobile menu container must both exist.');
 }
 if (!views.includes('class="nav-link nav-shop-link" href="/shop"') || !views.includes('class="nav-shop-link" href="/shop"')) {
