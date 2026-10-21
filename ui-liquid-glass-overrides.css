@@ -1,0 +1,119 @@
+/* v2.9.7 — specificity-correct Liquid Glass pass.
+   Previous generic selectors lost to existing component CSS. These selectors intentionally
+   outrank the old solid fills, including the hero-secondary controls visible in the mobile screenshot. */
+html[data-ie-workspace-theme] body #app {
+  --ie-glass-fill:rgba(12,19,28,.28);
+  --ie-glass-fill-strong:rgba(9,15,23,.54);
+  --ie-glass-edge:rgba(255,255,255,.24);
+}
+html[data-ie-workspace-theme="light-skies"] body #app {
+  --ie-glass-fill:rgba(245,250,255,.34);
+  --ie-glass-fill-strong:rgba(242,249,255,.62);
+  --ie-glass-edge:rgba(255,255,255,.62);
+}
+html[data-ie-workspace-theme] body #app :is(
+  .dashboard-panel,.metric,.action-centre,.quick-links-panel,.upcoming-panel,.next-step-panel,
+  .dashboard-widget,.card,.panel,.settings-card,.detail-card,.form-card,.builder-card,
+  .release-card,.artist-card,.profile-card,.approval-card,.collection-card,.listener-card,
+  .modal-card,.modal-content,.dialog,.popover,.dropdown-menu,.context-menu,
+  .settings-section,.settings-group,.stat-card,.empty-state,.submission-card,.catalogue-card,
+  .shop-product-card,.product-card,.profile-section,.artist-profile-card,.release-detail-card,
+  .surface,.surface-card,.content-card,.content-panel,.section-card,.section-panel,.form-section,
+  .form-panel,.detail-panel,.profile-panel,.artist-panel,.release-panel,.track-card,.album-card,
+  .playlist-card,.catalog-card,.moderation-card,.review-card,.fan-card,.product-detail,
+  .cart-panel,.checkout-panel,.order-card,.metric-card,.notification-card,.activity-item,
+  .feed-item,.workspace-card,.workspace-panel,.preview-card,.auth-card,.auth-panel,.login-card,
+  .signup-card,.welcome-card,.hero-card
+) {
+  background:
+    linear-gradient(135deg,rgba(255,255,255,.10),rgba(255,255,255,.015) 45%,rgba(255,255,255,.035)),
+    var(--ie-glass-fill)!important;
+  border:1px solid var(--ie-glass-edge)!important;
+  box-shadow:0 18px 48px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.19)!important;
+  -webkit-backdrop-filter:blur(24px) saturate(155%)!important;
+  backdrop-filter:blur(24px) saturate(155%)!important;
+}
+/* Explicitly fix the screenshot's two opaque secondary hero buttons. */
+html[data-ie-workspace-theme] body #app .dashboard-page .dashboard-hero .dashboard-hero-actions button.hero-secondary,
+html[data-ie-workspace-theme] body #app .dashboard-page .dashboard-hero .dashboard-hero-actions .hero-secondary {
+  color:var(--ui-text,#f1f4f7)!important;
+  background:
+    linear-gradient(135deg,rgba(255,255,255,.13),rgba(255,255,255,.025) 52%,rgba(255,255,255,.06)),
+    rgba(10,17,26,.22)!important;
+  border:1px solid rgba(255,255,255,.27)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 12px 30px rgba(0,0,0,.12)!important;
+  -webkit-backdrop-filter:blur(26px) saturate(160%)!important;
+  backdrop-filter:blur(26px) saturate(160%)!important;
+}
+html[data-ie-workspace-theme] body #app .dashboard-page .dashboard-hero .dashboard-hero-actions button.hero-secondary:hover,
+html[data-ie-workspace-theme] body #app .dashboard-page .dashboard-hero .dashboard-hero-actions .hero-secondary:hover {
+  background:
+    linear-gradient(135deg,rgba(255,255,255,.18),rgba(255,255,255,.04)),
+    rgba(10,17,26,.28)!important;
+  border-color:color-mix(in srgb,var(--user-accent,#79bd91) 60%,white)!important;
+  transform:translateY(-1px);
+}
+/* Other secondary/quiet buttons use the same transparent material; primary actions stay vivid. */
+html[data-ie-workspace-theme] body #app button:not(.primary):not(.btn-primary):not(.button-primary):not([data-primary-action="true"]):not(.oauth-icon-btn),
+html[data-ie-workspace-theme] body #app .btn:not(.primary):not(.btn-primary),
+html[data-ie-workspace-theme] body #app a.button:not(.primary),
+html[data-ie-workspace-theme] body #app [role="button"]:not(.primary) {
+  background-color:rgba(255,255,255,.075)!important;
+  border-color:rgba(255,255,255,.22);
+  -webkit-backdrop-filter:blur(18px) saturate(150%);
+  backdrop-filter:blur(18px) saturate(150%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 8px 24px rgba(0,0,0,.09);
+}
+html[data-ie-workspace-theme] body #app button.primary,
+html[data-ie-workspace-theme] body #app button.btn-primary,
+html[data-ie-workspace-theme] body #app .button-primary,
+html[data-ie-workspace-theme] body #app [data-primary-action="true"] {
+  -webkit-backdrop-filter:blur(16px) saturate(145%);
+  backdrop-filter:blur(16px) saturate(145%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 10px 28px color-mix(in srgb,var(--user-accent,#79bd91) 20%,transparent)!important;
+}
+/* Top-level navigation and page heading bars need glass too, without turning the whole page opaque. */
+html[data-ie-workspace-theme] body #app .workspace-topbar,
+html[data-ie-workspace-theme] body .shell > .nav,
+html[data-ie-workspace-theme] body .shell > .nav .nav-inner,
+html[data-ie-workspace-theme] body #app .page-header,
+html[data-ie-workspace-theme] body #app .toolbar,
+html[data-ie-workspace-theme] body #app .topbar,
+html[data-ie-workspace-theme] body #app .top-bar {
+  background:linear-gradient(135deg,rgba(255,255,255,.10),rgba(255,255,255,.015)),rgba(8,15,22,.42)!important;
+  border-color:rgba(255,255,255,.2)!important;
+  box-shadow:0 14px 34px rgba(0,0,0,.1),inset 0 1px 0 rgba(255,255,255,.12)!important;
+  -webkit-backdrop-filter:blur(28px) saturate(155%)!important;
+  backdrop-filter:blur(28px) saturate(155%)!important;
+}
+html[data-ie-workspace-theme="light-skies"] body #app :is(button:not(.primary):not(.btn-primary),.btn:not(.primary):not(.btn-primary),a.button:not(.primary),.hero-secondary) {
+  color:#173248!important;
+  background:
+    linear-gradient(135deg,rgba(255,255,255,.42),rgba(255,255,255,.12)),
+    rgba(235,246,255,.22)!important;
+  border-color:rgba(255,255,255,.58)!important;
+}
+html[data-ie-workspace-theme] body #app :is(input:not([type=checkbox]):not([type=radio]):not([type=range]),select,textarea,[role=combobox],.input,.select,.textarea) {
+  background:linear-gradient(135deg,rgba(255,255,255,.08),transparent),rgba(10,17,26,.24)!important;
+  border:1px solid rgba(255,255,255,.23)!important;
+  -webkit-backdrop-filter:blur(18px) saturate(150%)!important;
+  backdrop-filter:blur(18px) saturate(150%)!important;
+}
+html[data-ie-workspace-theme] body #app :is(.dashboard-hero,.auth-story,.hero-card) {
+  -webkit-backdrop-filter:blur(22px) saturate(145%);
+  backdrop-filter:blur(22px) saturate(145%);
+}
+@media(max-width:760px) {
+  html[data-ie-workspace-theme] body #app .dashboard-page .dashboard-hero .dashboard-hero-actions button.hero-secondary {
+    min-height:64px;
+    border-radius:22px!important;
+    background:
+      linear-gradient(135deg,rgba(255,255,255,.14),rgba(255,255,255,.025)),
+      rgba(10,17,26,.19)!important;
+  }
+}
+@media(prefers-reduced-transparency:reduce) {
+  html[data-ie-workspace-theme] body #app .dashboard-page .dashboard-hero .dashboard-hero-actions button.hero-secondary {
+    background:rgba(10,17,26,.82)!important;
+  }
+}
