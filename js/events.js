@@ -63,6 +63,18 @@ function ieStartEmailCodeCooldown(){
     const persist=next=>{const current=getAppearancePreferences();current.dashboardLayout=normaliseDashboardLayout(next);applyAppearancePreferences(current);saveAppearancePreferences(current);const status=document.querySelector('#appearance-save-status');if(status)status.textContent='Dashboard layout saved to your account.';};
     const moveCard=(source,target,after)=>{if(!layoutRoot||!source||!target||source===target)return false;layoutRoot.insertBefore(source,after?target.nextSibling:target);return true;};
     root.querySelector('[data-dashboard-edit-toggle]')?.addEventListener('click',e=>{const on=root.classList.toggle('is-customising');e.currentTarget.setAttribute('aria-pressed',String(on));e.currentTarget.textContent=on?'Done customising':'Customise layout';const status=document.querySelector('#appearance-save-status');if(status)status.textContent=on?'Customisation mode is on. Drag a handle or use the move buttons.':'Dashboard customisation finished.';});
+    root.querySelectorAll('[data-dashboard-detail-toggle]').forEach(control=>control.addEventListener('change',()=>{
+      const key=control.dataset.dashboardDetailToggle;
+      if(!['tasks','insights','announcements','activity','catalogue'].includes(key))return;
+      const current=getAppearancePreferences();
+      current.dashboard={...current.dashboard,[key]:control.checked};
+      root.querySelectorAll('[data-dashboard-detail="'+key+'"]').forEach(panel=>{panel.dataset.dashboardEnabled=String(control.checked);});
+      applyAppearancePreferences(current);
+      saveAppearancePreferences(current);
+      const status=document.querySelector('#appearance-save-status');
+      if(status)status.textContent='Dashboard details updated and saved.';
+      toast(control.checked?'Dashboard panel enabled':'Dashboard panel hidden','success');
+    }));
     root.querySelector('[data-dashboard-reset]')?.addEventListener('click',()=>{const defaults=normaliseDashboardLayout(IE_APPEARANCE_DEFAULTS.dashboardLayout);defaults.order.forEach(key=>{const card=layoutRoot?.querySelector('[data-dashboard-widget-card="'+key+'"]');if(card)layoutRoot.appendChild(card);});persist(defaults);toast('Dashboard layout reset to defaults','success');});
     root.querySelectorAll('[data-dashboard-size]').forEach(el=>el.addEventListener('change',()=>{const next=layout();next.sizes[el.dataset.dashboardSize]=el.value;persist(next);}));
     let resizing=null,resizeStartX=0,resizeStartY=0,resizeStartWidth=0,resizeStartHeight=0,resizeChanged=false;
