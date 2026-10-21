@@ -346,3 +346,19 @@ html body #ie-personalise-trigger,#ie-personalise-trigger{
 html body :is([role=dialog],.search-modal,.modal,.drawer,.slide-over)[hidden]{
   display:none!important;visibility:hidden!important;pointer-events:none!important;
 }
+
+/* v3.3.4 override: overlays follow the menu trigger state, not drawer DOM presence. */
+html body:before{content:none!important;display:none!important}
+html body:has(.shell>header.nav>.nav-inner>.mobile-menu[aria-expanded="true"])::before{
+ content:""!important;display:block!important;position:fixed!important;inset:0!important;z-index:10039!important;
+ background:rgba(15,23,42,.8)!important;-webkit-backdrop-filter:blur(12px)!important;backdrop-filter:blur(12px)!important;pointer-events:auto!important;
+}
+html body:has(.shell>header.nav>.nav-inner>.mobile-menu[aria-expanded="true"]) .shell>header.nav{z-index:10040!important}
+html body:has(.shell>header.nav>.nav-inner>.mobile-menu[aria-expanded="true"]) #ie-personalise-trigger{z-index:30!important;pointer-events:none!important}
+@media(max-width:760px){
+ html body .shell>header.nav>.mobile-nav[hidden],
+ html body .shell>header.nav>.mobile-nav[aria-hidden="true"]{display:none!important;visibility:hidden!important;pointer-events:none!important}
+ html body .shell>header.nav:has(>.nav-inner>.mobile-menu[aria-expanded="true"])>.mobile-nav{display:block!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;z-index:10050!important}
+ html body .shell>header.nav:has(>.nav-inner>.mobile-menu[aria-expanded="false"])>.mobile-nav,
+ html body .shell>header.nav:not(:has(>.nav-inner>.mobile-menu[aria-expanded="true"]))>.mobile-nav{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}
+}
