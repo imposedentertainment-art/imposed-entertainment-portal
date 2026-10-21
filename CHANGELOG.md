@@ -1,3 +1,12 @@
+## 3.2.9 — Dashboard overlap and contrast follow-up
+
+- Pinned the personalisation/accessibility control to the bottom-right safe area with a high stacking order.
+- Increased dashboard bottom scroll padding to keep the stat row clear of floating controls and the viewport edge.
+- Unified the four main action button typography, padding, border, radius and secondary-action contrast.
+- Improved workspace sub-bar top inset, branding/title spacing and metadata contrast.
+- Standardised workspace search/account/menu control dimensions.
+- Updated asset and service-worker cache version.
+
 ## 3.2.8 — Dashboard contrast and layout refinement
 
 - Increased dashboard hero and supporting copy contrast against dark glass backgrounds.
