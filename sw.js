@@ -1,8 +1,8 @@
 /* Imposed Entertainment v2.8.9: versioned static assets; never cache query-bearing navigations/auth callbacks. */
-const CACHE_NAME = 'imposed-v2.9.2';
+const CACHE_NAME = 'imposed-v2.9.3';
 const STATIC_ASSETS = [
   '/index.html',
-  '/themes/light-skies.jpg', '/themes/midnight-studio.jpg', '/themes/graphite-minimal.jpg', '/themes/plum-dusk.jpg', '/themes/forest-room.jpg', '/shop.css', '/mobile-navigation.css', '/ui-personalisation-fixes.css', '/ui-theme-overhaul.css', '/ui-major-refresh.css', '/ui-refinement.css', '/js/shop.js', '/styles.css', '/ui-polish.css', '/ui-next.css', '/ui-research.css', '/ui-overhaul.css', '/ui-system-v2.css', '/quality.css', '/theme-system.css', '/auth-overhaul.css', '/v2-design-system.css', '/manifest.webmanifest', '/privacy/index.html', '/terms/index.html',
+  '/themes/light-skies.jpg', '/themes/midnight-studio.jpg', '/themes/graphite-minimal.jpg', '/themes/plum-dusk.jpg', '/themes/forest-room.jpg', '/shop.css', '/mobile-navigation.css', '/ui-personalisation-fixes.css', '/ui-theme-overhaul.css', '/ui-major-refresh.css', '/ui-refinement.css', '/ui-dashboard-resize.css', '/js/shop.js', '/styles.css', '/ui-polish.css', '/ui-next.css', '/ui-research.css', '/ui-overhaul.css', '/ui-system-v2.css', '/quality.css', '/theme-system.css', '/auth-overhaul.css', '/v2-design-system.css', '/manifest.webmanifest', '/privacy/index.html', '/terms/index.html',
   '/img/logo-64.png', '/img/logo-128.png', '/img/logo-192.png', '/img/logo-512.png',
   '/js/i18n.js', '/js/core.js', '/js/boot.js', '/js/data.js', '/js/audio.js',
   '/js/extras.js', '/js/podcasts.js', '/js/business.js', '/js/views.js', '/js/release.js', '/js/profiles.js',
@@ -54,7 +54,7 @@ self.addEventListener('fetch', event => {
   const isStaticAsset = STATIC_PATHS.has(url.pathname);
   // Only accept the known release query on allow-listed public assets. All other query-bearing
   // requests (auth codes, invites, search state, user-specific data) bypass Cache Storage.
-  const isVersionedStaticAsset = isStaticAsset && url.searchParams.size === 1 && ['2.9.2'].includes(url.searchParams.get('v'));
+  const isVersionedStaticAsset = isStaticAsset && url.searchParams.size === 1 && ['2.9.3'].includes(url.searchParams.get('v'));
   if ((url.search && !isVersionedStaticAsset) || url.hash || /\/(auth|callback|invite)(\/|$)/i.test(url.pathname)) return;
   if (!isNavigation && !isStaticAsset) return;
 
