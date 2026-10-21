@@ -71,7 +71,15 @@ else {
   }
 }
 
-for (const path of ['styles.css', 'ui-polish.css', 'personalise.css', 'quality.css', 'theme-system.css', 'auth-overhaul.css', 'v2-design-system.css']) {
+// Audit every stylesheet linked by the actual HTML shell so newly added design layers
+// cannot silently escape the CSS integrity checks.
+const stylesheetPaths = [...new Set(
+  [...html.matchAll(/<link\b[^>]*\bhref=["']([^"']+\.css(?:\?[^"']*)?)["'][^>]*>/gi)]
+    .map((match) => localRef(match[1]))
+    .filter(Boolean)
+)];
+for (const path of stylesheetPaths) {
+  if (!existsSync(resolve(root, path))) continue; // Missing references are reported above.
   const css = read(path).replace(/\/\*[\s\S]*?\*\//g, '');
   const opens = (css.match(/{/g) || []).length;
   const closes = (css.match(/}/g) || []).length;
