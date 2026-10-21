@@ -1,4 +1,4 @@
-/* Imposed Entertainment v2.2.0 — unified UI and personalisation layer.
+/* Imposed Entertainment v2.3.0 — unified UI and personalisation layer.
    Deliberately loaded last: normalises legacy component generations without changing app logic. */
 :root{
   color-scheme:dark;
