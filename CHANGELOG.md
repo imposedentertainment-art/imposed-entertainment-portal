@@ -1,3 +1,10 @@
+## 3.2.7 — Fix colour mode switching
+
+- Made the selected Dark, Light, AMOLED and System modes explicitly set colour-scheme and semantic surface/text tokens.
+- Added mode-scoped styling for app backgrounds, cards, navigation, form controls and text so workspace palette rules cannot leave the interface in a mixed mode.
+- Corrected the browser theme-colour meta tag so Light mode no longer gets overridden by the selected workspace palette.
+- Updated cache-busting and service-worker cache version.
+
 ## 3.2.6 — Major UI personalisation and responsive polish
 
 - Connected selected typeface and line-spacing controls to live global interface tokens.
