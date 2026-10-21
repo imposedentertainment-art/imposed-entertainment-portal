@@ -95,6 +95,34 @@ function ieStartEmailCodeCooldown(){
     bindPodcastControls();
     document.querySelectorAll('[data-pref]').forEach(el=>el.onchange=()=>ieSaveNotificationPreference(el));
     const previewAppearance=(patch)=>{const next={...getAppearancePreferences(),...patch};applyAppearancePreferences(next);const label=document.querySelector('#appearance-save-status');if(label)label.textContent='Previewing changes…';saveAppearancePreferences(next);};
+    const exportAppearance=document.querySelector('[data-appearance-export]');
+    exportAppearance?.addEventListener('click',()=>{
+      try{
+        const payload={format:'imposed-entertainment-appearance',version:1,exportedAt:new Date().toISOString(),appearance:getAppearancePreferences()};
+        const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+        const url=URL.createObjectURL(blob);const link=document.createElement('a');link.href=url;link.download='imposed-entertainment-appearance.json';document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+        toast('Appearance preset exported.','success');
+      }catch(error){console.warn('Appearance export failed',error);toast('Could not export appearance settings.','error');}
+    });
+    const importInput=document.querySelector('[data-appearance-import-file]');
+    document.querySelector('[data-appearance-import]')?.addEventListener('click',()=>importInput?.click());
+    importInput?.addEventListener('change',async()=>{
+      const file=importInput.files?.[0];if(!file)return;
+      try{
+        if(file.size>350000)throw new Error('That preset is too large. Choose an export under 350 KB.');
+        const parsed=JSON.parse(await file.text());
+        if(parsed?.format!=='imposed-entertainment-appearance'||parsed?.version!==1||!parsed.appearance||typeof parsed.appearance!=='object'||Array.isArray(parsed.appearance))throw new Error('This is not a supported Imposed Entertainment appearance preset.');
+        const allowed=['theme','accent','mode','surfaceTint','shadowIntensity','fontScale','contrast','motion','lineHeight','borderWidth','saturation','density','style','font','cards','grain','radius','banner','bannerColor','bannerEnabled','dashboard','dashboardLayout'];
+        const imported=Object.fromEntries(allowed.filter(key=>Object.prototype.hasOwnProperty.call(parsed.appearance,key)).map(key=>[key,parsed.appearance[key]]));
+        const next={...getAppearancePreferences(),...imported};
+        next.dashboardLayout=normaliseDashboardLayout(next.dashboardLayout);
+        applyAppearancePreferences(next);saveAppearancePreferences(next);
+        const status=document.querySelector('#appearance-save-status');if(status)status.textContent='Preset imported. Saving your appearance to your account…';
+        toast('Appearance preset imported.','success');
+        if(view==='settings')render();
+      }catch(error){toast(error?.message||'Could not import that preset.','error');}
+      finally{importInput.value='';}
+    });
     document.querySelectorAll('[data-theme-preset]').forEach(el=>el.onclick=()=>{const key=el.dataset.themePreset;const palette=IE_APPEARANCE_THEMES[key];if(!palette)return;const names={blood:'Crimson',bone:'Sand',venom:'Moss',violet:'Violet',ocean:'Ocean',emerald:'Emerald',rose:'Rose',amber:'Amber',midnight:'Lavender',slate:'Slate'};const current=document.querySelector('#appearance-current');if(current)current.textContent=names[key]||key;previewAppearance({theme:key,accent:palette.accent});});
     document.querySelectorAll('[data-appearance-accent]').forEach(el=>el.onchange=()=>previewAppearance({accent:el.value}));
     document.querySelectorAll('[data-appearance-density]').forEach(el=>el.onchange=()=>previewAppearance({density:el.value}));
