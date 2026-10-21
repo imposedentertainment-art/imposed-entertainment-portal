@@ -156,3 +156,137 @@ html[data-ie-workspace-theme="light-skies"] body :where(input:not([type=checkbox
 @media(prefers-reduced-motion:reduce) {
   html[data-ie-workspace-theme] body :where(button.primary,.btn-primary,.button-primary,[data-primary-action="true"],.dashboard-panel,.card,.panel) { transition:none!important; }
 }
+
+/* v2.9.6 — complete-app Liquid Glass coverage, not just dashboard cards. */
+:root {
+  --ie-glass-blur:22px;
+  --ie-glass-saturation:150%;
+  --ie-glass-fill:rgba(15,22,31,.50);
+  --ie-glass-fill-strong:rgba(8,14,22,.78);
+  --ie-glass-edge:rgba(255,255,255,.18);
+  --ie-glass-highlight:rgba(255,255,255,.24);
+  --ie-glass-shadow:0 18px 46px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.13);
+}
+html[data-ie-workspace-theme="light-skies"] {
+  --ie-glass-fill:rgba(242,248,255,.48);
+  --ie-glass-fill-strong:rgba(237,246,253,.82);
+  --ie-glass-edge:rgba(255,255,255,.58);
+  --ie-glass-highlight:rgba(255,255,255,.76);
+  --ie-glass-shadow:0 18px 46px rgba(31,59,82,.13),inset 0 1px 0 rgba(255,255,255,.76);
+}
+/* Global chrome: headers, nav bars, sidebars, toolbars and mobile navigation. */
+body :where(header,.site-header,.app-header,.topbar,.top-bar,.toolbar,.page-header,.workspace-topbar,.shell>.nav,.nav-inner,.sidebar,.side-nav,.mobile-nav,.mobile-menu,.mobile-nav-panel,.bottom-nav,.tab-bar,.tabs,.settings-nav,.profile-nav,.breadcrumb,.command-palette,.search-overlay) {
+  background:linear-gradient(135deg,rgba(255,255,255,.075),transparent 55%),var(--ie-glass-fill-strong)!important;
+  border-color:var(--ie-glass-edge)!important;
+  -webkit-backdrop-filter:blur(28px) saturate(155%);
+  backdrop-filter:blur(28px) saturate(155%);
+  box-shadow:0 10px 32px rgba(0,0,0,.12),inset 0 1px 0 rgba(255,255,255,.1);
+}
+/* Catch content surfaces across every route: artist pages, release pages, shop, forms,
+   profile areas, admin workspaces, moderation queues and settings. */
+body :where(
+  .card,.panel,.surface,.surface-card,.content-card,.content-panel,.section-card,.section-panel,
+  .settings-card,.settings-section,.settings-group,.form-card,.form-section,.form-panel,
+  .detail-card,.detail-panel,.profile-card,.profile-section,.profile-panel,.artist-card,
+  .artist-profile-card,.artist-panel,.release-card,.release-panel,.release-detail-card,
+  .track-card,.album-card,.playlist-card,.catalogue-card,.catalog-card,.submission-card,
+  .approval-card,.moderation-card,.review-card,.collection-card,.listener-card,.fan-card,
+  .shop-product-card,.product-card,.product-detail,.cart-panel,.checkout-panel,.order-card,
+  .stat-card,.metric-card,.metric,.dashboard-widget,.dashboard-panel,.action-centre,
+  .quick-links-panel,.upcoming-panel,.next-step-panel,.empty-state,.notice,.callout,
+  .notification-card,.activity-item,.feed-item,.list-item-card,.artist-row,.release-row,
+  .settings-row,.preference-row,.workspace-card,.workspace-panel,.builder-card,.preview-card,
+  .modal-card,.modal-content,.dialog,.popover,.dropdown-menu,.context-menu,.tooltip-panel,
+  .auth-card,.auth-panel,.login-card,.signup-card,.welcome-card,.hero-card
+) {
+  background:linear-gradient(145deg,rgba(255,255,255,.075),transparent 46%),var(--ie-glass-fill)!important;
+  border-color:var(--ie-glass-edge)!important;
+  box-shadow:var(--ie-glass-shadow);
+  -webkit-backdrop-filter:blur(var(--ie-glass-blur)) saturate(var(--ie-glass-saturation));
+  backdrop-filter:blur(var(--ie-glass-blur)) saturate(var(--ie-glass-saturation));
+  background-clip:padding-box;
+}
+html[data-ie-workspace-theme="light-skies"] body :where(.card,.panel,.surface,.surface-card,.content-card,.content-panel,.section-card,.section-panel,.settings-card,.settings-section,.settings-group,.form-card,.form-section,.form-panel,.detail-card,.detail-panel,.profile-card,.profile-section,.profile-panel,.artist-card,.artist-profile-card,.artist-panel,.release-card,.release-panel,.release-detail-card,.track-card,.album-card,.playlist-card,.catalogue-card,.catalog-card,.submission-card,.approval-card,.moderation-card,.review-card,.collection-card,.listener-card,.fan-card,.shop-product-card,.product-card,.product-detail,.cart-panel,.checkout-panel,.order-card,.stat-card,.metric-card,.metric,.dashboard-widget,.dashboard-panel,.action-centre,.quick-links-panel,.upcoming-panel,.next-step-panel,.empty-state,.notice,.callout,.notification-card,.activity-item,.feed-item,.list-item-card,.artist-row,.release-row,.settings-row,.preference-row,.workspace-card,.workspace-panel,.builder-card,.preview-card,.modal-card,.modal-content,.dialog,.popover,.dropdown-menu,.context-menu,.tooltip-panel,.auth-card,.auth-panel,.login-card,.signup-card,.welcome-card,.hero-card) {
+  color:#172b3b;
+}
+/* All controls should read as glass, including controls outside the dashboard. */
+body :where(
+  button,.btn,a.button,[role=button],input:not([type=checkbox]):not([type=radio]):not([type=range]),
+  select,textarea,[role=combobox],.input,.select,.textarea,.icon-button,.nav-link,.tab,.tab-button,
+  .filter-button,.filter-chip,.chip,.badge,.tag,.status-pill,.pagination button,.segmented-control button,
+  .toggle-track,.switch-track,.upload-zone,.dropzone,.file-picker,.search-field
+) {
+  -webkit-backdrop-filter:blur(14px) saturate(145%);
+  backdrop-filter:blur(14px) saturate(145%);
+}
+body :where(button,.btn,a.button,[role=button],input:not([type=checkbox]):not([type=radio]):not([type=range]),select,textarea,[role=combobox],.input,.select,.textarea,.icon-button,.nav-link,.tab,.tab-button,.filter-button,.filter-chip,.chip,.badge,.tag,.status-pill,.upload-zone,.dropzone,.file-picker,.search-field) {
+  border-color:color-mix(in srgb,var(--ie-glass-edge) 88%,transparent);
+}
+body :where(button:not(.primary):not(.btn-primary):not([data-primary-action="true"]),.btn:not(.primary):not(.btn-primary),.icon-button,.nav-link,.tab,.tab-button,.filter-button,.filter-chip,.chip,.badge,.tag,.status-pill) {
+  background-color:var(--ie-glass-fill)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 5px 16px rgba(0,0,0,.07);
+}
+body :where(button,a.button,[role=button],.btn,.icon-button,.nav-link,.tab,.tab-button,.filter-button,.filter-chip) {
+  transition:background-color .18s ease,border-color .18s ease,box-shadow .18s ease,transform .18s ease;
+}
+body :where(button,a.button,[role=button],.btn,.icon-button,.nav-link,.tab,.tab-button,.filter-button,.filter-chip):hover {
+  border-color:color-mix(in srgb,var(--user-accent,#79bd91) 42%,var(--ie-glass-edge));
+  box-shadow:0 8px 24px rgba(0,0,0,.12),inset 0 1px 0 rgba(255,255,255,.15);
+}
+body :where(input:not([type=checkbox]):not([type=radio]):not([type=range]),select,textarea,[role=combobox],.input,.select,.textarea,.search-field) {
+  background-color:var(--ie-glass-fill)!important;
+  border:1px solid var(--ie-glass-edge)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 4px 16px rgba(0,0,0,.06);
+}
+body :where(input,select,textarea,button,[role=button],a):focus-visible {
+  outline:2px solid color-mix(in srgb,var(--user-accent,#79bd91) 82%,white)!important;
+  outline-offset:3px;
+}
+/* Tables and data grids get a continuous glass plane rather than opaque rows. */
+body :where(table,thead,tbody,tfoot,tr,th,td,.table-wrap,.table-container,.data-table,.data-grid,.list-table) {
+  border-color:color-mix(in srgb,var(--ie-glass-edge) 70%,transparent);
+}
+body :where(table,.table-wrap,.table-container,.data-table,.data-grid,.list-table) {
+  background:rgba(10,16,24,.24);
+  border-radius:18px;
+  overflow:hidden;
+}
+body :where(th,thead) {
+  background:rgba(255,255,255,.075)!important;
+  -webkit-backdrop-filter:blur(16px);
+  backdrop-filter:blur(16px);
+}
+body :where(td,tr):hover { background-color:rgba(255,255,255,.035); }
+/* Menus, popovers, dialogs and overlays need denser glass for contrast and hierarchy. */
+body :where(.dropdown-menu,.context-menu,.popover,.tooltip-panel,.command-palette,.search-overlay,.modal-card,.modal-content,.dialog,.auth-card,.auth-panel) {
+  background:linear-gradient(145deg,rgba(255,255,255,.10),transparent 48%),var(--ie-glass-fill-strong)!important;
+  box-shadow:0 28px 80px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.15);
+  border:1px solid var(--ie-glass-edge)!important;
+  border-radius:20px;
+}
+/* Theme images remain visible through the complete application canvas. */
+html[data-ie-workspace-theme] body #app,
+html[data-ie-workspace-theme] body .shell,
+html[data-ie-workspace-theme] body .main,
+html[data-ie-workspace-theme] body .main-content,
+html[data-ie-workspace-theme] body .page,
+html[data-ie-workspace-theme] body main {
+  background-color:transparent!important;
+}
+@supports not ((backdrop-filter:blur(1px))) {
+  body :where(.card,.panel,.surface,.surface-card,.content-card,.content-panel,.section-card,.section-panel,.settings-card,.settings-section,.settings-group,.form-card,.form-section,.form-panel,.detail-card,.detail-panel,.profile-card,.profile-section,.profile-panel,.artist-card,.artist-profile-card,.release-card,.release-panel,.track-card,.album-card,.playlist-card,.catalogue-card,.submission-card,.approval-card,.collection-card,.listener-card,.shop-product-card,.product-card,.cart-panel,.checkout-panel,.stat-card,.metric-card,.metric,.dashboard-widget,.dashboard-panel,.action-centre,.quick-links-panel,.upcoming-panel,.next-step-panel,.modal-card,.modal-content,.dialog,.auth-card,.auth-panel,.login-card,.signup-card,.welcome-card,.hero-card) {
+    background:var(--ie-glass-fill-strong)!important;
+  }
+}
+@media(max-width:760px) {
+  :root { --ie-glass-blur:18px; --ie-glass-radius:19px; }
+  body :where(.card,.panel,.surface,.surface-card,.content-card,.content-panel,.settings-card,.form-card,.detail-card,.profile-card,.artist-card,.release-card,.submission-card,.collection-card,.shop-product-card,.product-card,.dashboard-widget,.dashboard-panel,.modal-card,.modal-content,.dialog,.auth-card,.auth-panel) {
+    box-shadow:0 12px 30px rgba(0,0,0,.16),inset 0 1px 0 rgba(255,255,255,.1);
+  }
+}
+@media(prefers-reduced-transparency:reduce) {
+  :root { --ie-glass-blur:0px; }
+  body :where(.card,.panel,.surface,.surface-card,.content-card,.content-panel,.section-card,.settings-card,.settings-section,.form-card,.detail-card,.profile-card,.artist-card,.release-card,.submission-card,.collection-card,.shop-product-card,.product-card,.dashboard-widget,.dashboard-panel,.modal-card,.modal-content,.dialog,.auth-card,.auth-panel) {
+    background:var(--ie-glass-fill-strong)!important;
+  }
+}
