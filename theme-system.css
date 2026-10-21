@@ -11,8 +11,8 @@ body :where(#app,.app-shell,.workspace,.workspace-shell,.main,.main-content,.pag
 body :where(.nav,.topbar,.app-header,.sidebar,.side-nav,.mobile-nav,.bottom-nav,.settings-quicknav){background-color:var(--ui-surface)!important;color:var(--ui-text)!important;border-color:var(--ui-border)!important}
 body :where(.card,.panel,.modal-card,.modal-content,.dialog,.dialog-content,.settings-card,.detail-card,.builder-card,.approval-card,.metric,.up-card,.release-card,.artist-card,.profile-card,.form-card,.auth-card,.dropdown-menu,.context-menu,.popover,.tooltip-panel,.menu-panel,.command-palette,.notification-panel,.drawer,.sheet,.settings-section,.setting-section,.list-row,.table-wrap,.table-container){background-color:var(--ui-surface)!important;color:var(--ui-text-soft);border-color:var(--ui-border)}
 body :where(.card,.panel,.settings-card,.detail-card,.builder-card,.approval-card,.metric,.up-card,.release-card,.artist-card,.profile-card,.form-card,.settings-section,.setting-section){box-shadow:var(--ui-shadow)}
-body :where(.card,.panel,.modal-card,.modal-content,.dialog,.dialog-content,.settings-card,.detail-card,.builder-card,.approval-card,.metric,.up-card,.release-card,.artist-card,.profile-card,.form-card,.dropdown-menu,.context-menu,.popover,.menu-panel,.drawer,.sheet,.settings-section,.setting-section){color:var(--ui-text-soft)}
-body :where(h1,h2,h3,h4,h5,h6,.page-title,.section-title,.card-title,.modal-title,.setting-title,.nav-title,strong,b,legend){color:var(--ui-text)}
+body :where(.card,.panel,.modal-card,.modal-content,.dialog,.dialog-content,.settings-card,.detail-card,.builder-card,.approval-card,.metric,.up-card,.release-card,.artist-card,.profile-card,.form-card,.dropdown-menu,.context-menu,.popover,.menu-panel,.drawer,.sheet,.settings-section,.setting-section,.auth-shell,.auth-layout,.auth-story,.auth-form,.auth-panel,.workspace-header,.hero,.dashboard-hero,.content-card,.settings-shell,.profile-hero,.artist-hero,.release-hero,.search-panel,.filter-panel,.table-card,.section-card){color:var(--ui-text-soft)!important}
+body :where(h1,h2,h3,h4,h5,h6,.page-title,.section-title,.card-title,.modal-title,.setting-title,.nav-title,strong,b,legend){color:var(--ui-text)!important}
 body :where(p,small,.sub,.muted,.help-text,.setting-description,.description,.secondary-text,.form-hint,.field-help,.empty-state p,.page-heading>p){color:var(--ui-text-muted)}
 body :where(a,.link){color:var(--ui-link)}
 body :where(button,input,select,textarea,[contenteditable="true"]){font-family:inherit}
@@ -76,3 +76,11 @@ body.personalise-glow :where(button.primary,.btn-primary,.button-primary,[data-p
 body.personalise-theme-light.personalise-high-contrast,body.personalise-theme-light{scrollbar-color:var(--ui-border-strong) var(--ui-page)}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 @media(max-width:700px){body :where(.card,.panel,.modal-card,.settings-card,.detail-card,.builder-card,.approval-card,.metric,.up-card,.release-card,.artist-card,.profile-card,.form-card){max-width:100%;overflow-wrap:anywhere}body :where(input,select,textarea,button){max-width:100%}}
+
+/* Width is an opt-in layout preference; default layouts keep their original responsive bounds. */
+body.personalise-content-standard :where(.main,.main-content,.page-content,.content-area,.workspace-content){max-width:min(1100px,100%);margin-inline:auto}
+body.personalise-content-wide :where(.main,.main-content,.page-content,.content-area,.workspace-content){max-width:min(1320px,100%);margin-inline:auto}
+body.personalise-content-full :where(.main,.main-content,.page-content,.content-area,.workspace-content){max-width:none;width:100%}
+body.personalise-theme-light :where(.boot-skeleton,.app-loading,.loading-card,.image-load-fallback){background-color:var(--ui-surface)!important;color:var(--ui-text)!important;border-color:var(--ui-border)!important}
+body.personalise-theme-light :where(.nav,.topbar,.app-header,.sidebar,.side-nav,.mobile-nav,.bottom-nav,.settings-quicknav){border-color:var(--ui-border)!important}
+body.personalise-theme-light :where(.nav a,.nav button,.sidebar a,.sidebar button,.side-nav a,.side-nav button,.mobile-nav a,.bottom-nav a){color:var(--ui-text-soft)!important}
