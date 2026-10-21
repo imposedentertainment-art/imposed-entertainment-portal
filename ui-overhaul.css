@@ -360,3 +360,12 @@ html[data-ie-mode="light"][data-ie-contrast="high"],html[data-ie-mode="system"][
 html[data-ie-motion="reduced"] *,html[data-ie-motion="reduced"] *::before,html[data-ie-motion="reduced"] *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}
 html[data-ie-motion="full"]{scroll-behavior:smooth}
 @media(prefers-reduced-motion:reduce){html[data-ie-motion="system"] *,html[data-ie-motion="system"] *::before,html[data-ie-motion="system"] *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+
+/* v1.4.84: portable, validated appearance presets. */
+.appearance-presets-tools{display:flex;align-items:center;justify-content:space-between;gap:18px;margin:18px 0;padding:16px;border:1px solid var(--line);border-radius:var(--ie-radius,8px);background:var(--ui-surface-raised,var(--s2))}
+.appearance-presets-tools>div:first-child{min-width:0}
+.appearance-presets-tools b{display:block;color:var(--text);font-size:14px}
+.appearance-presets-tools p{margin:5px 0 0;color:var(--muted);font-size:12px;line-height:1.5}
+.appearance-presets-actions{display:flex;flex-wrap:wrap;gap:8px;flex-shrink:0}
+.appearance-presets-actions button{min-height:40px}
+@media(max-width:620px){.appearance-presets-tools{align-items:stretch;flex-direction:column}.appearance-presets-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.appearance-presets-actions button{width:100%;padding-inline:8px}}
