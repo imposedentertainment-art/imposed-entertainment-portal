@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.9.8] - 2026-10-21 — Dashboard composition and Liquid Glass refinement
+
+- Reworked mobile dashboard sizing to remove oversized hero whitespace and force saved desktop widget sizes into a usable single-column mobile presentation without overwriting preferences.
+- Improved Liquid Glass opacity, blur, highlights, borders and text contrast across dashboard widgets, metrics, shortcuts and expandable details.
+- Refined hero hierarchy, action buttons, shortcut rows, metric cards and dashboard detail disclosure.
+- Added mobile overflow protection and narrow-screen typography refinements.
+- Updated stylesheet versioning and service-worker precache.
+
+# Changelog
+
 ## [2.9.7] - 2026-10-21 — Liquid Glass specificity and transparency fix
 
 - Fixed CSS specificity conflicts that left existing component styles opaque despite the original Liquid Glass rules.
