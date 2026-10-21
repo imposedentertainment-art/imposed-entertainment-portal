@@ -126,3 +126,119 @@ body.personalise-motion-none *,body.personalise-motion-none *::before,body.perso
 body.personalise-round-all :where(button,input,select,textarea,.card,.panel,.modal-card){border-radius:14px}
 body.personalise-square-all :where(button,input,select,textarea,.card,.panel,.modal-card){border-radius:3px}
 body.personalise-theme-light :where(.muted,.sub,.description,.helper-text,small){color:var(--ie-ui-muted)}
+
+/* v2.4.0 — listener-first discovery and collection experience */
+.guest-discover{--listener-accent:var(--ie-ui-accent);max-width:1440px;margin-inline:auto;padding-inline:clamp(14px,3vw,42px)}
+.guest-discover .public-artist-nav{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:clamp(12px,2vw,28px);min-height:70px;padding:12px clamp(12px,2vw,24px);margin:0 calc(clamp(14px,3vw,42px) * -1) 28px;background:color-mix(in srgb,var(--ie-ui-bg) 88%,transparent);border-bottom:1px solid var(--ie-ui-border);backdrop-filter:blur(18px)}
+.guest-discover .public-artist-nav .brand{display:flex;align-items:center;gap:10px;margin-right:auto;min-width:0;text-decoration:none;color:var(--ie-ui-text);font-weight:800;letter-spacing:.04em}
+.guest-discover .public-artist-nav .brand img{width:34px;height:34px;object-fit:contain}
+.guest-discover .public-artist-nav>a:not(.brand){font-size:13px;font-weight:650;text-decoration:none;color:var(--ie-ui-muted);white-space:nowrap}
+.guest-discover .public-artist-nav>a:not(.brand):hover{color:var(--ie-ui-accent)}
+.listener-room{position:relative;margin:0 0 clamp(38px,6vw,76px);padding:clamp(20px,4vw,48px);overflow:hidden;border:1px solid var(--ie-ui-border);border-radius:clamp(20px,3vw,32px);background:radial-gradient(ellipse at 88% 0%,color-mix(in srgb,var(--ie-ui-accent) 15%,transparent),transparent 38%),linear-gradient(135deg,var(--ie-ui-surface),color-mix(in srgb,var(--ie-ui-bg) 80%,var(--ie-ui-raised)))}
+.listener-room-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:clamp(24px,3vw,38px)}
+.listener-room-heading>div:first-child{max-width:720px}
+.listener-room-heading h1{max-width:12ch;margin:8px 0 12px;font-size:clamp(34px,5.5vw,66px);line-height:.98;letter-spacing:-.065em;text-wrap:balance}
+.listener-room-heading p:not(.eyebrow){max-width:56ch;color:var(--ie-ui-muted);font-size:clamp(14px,1.5vw,17px);line-height:1.65}
+.listener-room-actions{display:flex;flex-wrap:wrap;gap:10px;flex-shrink:0}
+.listener-room-actions button{min-height:44px;padding:0 17px}
+.listener-room-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0 0 16px}
+.listener-room-stats>article{display:grid;gap:6px;min-width:0;padding:18px;border:1px solid var(--ie-ui-border);border-radius:16px;background:color-mix(in srgb,var(--ie-ui-surface) 76%,transparent)}
+.listener-room-stats>article>span{font-size:12px;color:var(--ie-ui-muted)}
+.listener-room-stats>article>strong{font-size:clamp(25px,3vw,36px);letter-spacing:-.05em;line-height:1}
+.listener-room-stats>article>small{font-size:11px;color:var(--ie-ui-muted)}
+.listener-room-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-bottom:16px}
+.listener-room-panel{min-width:0;padding:clamp(16px,2vw,24px);border:1px solid var(--ie-ui-border);border-radius:18px;background:color-mix(in srgb,var(--ie-ui-surface) 86%,transparent)}
+.listener-room-panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+.listener-room-panel-head h2,.listener-room-discover h2{margin:4px 0;font-size:clamp(19px,2vw,25px);letter-spacing:-.04em}
+.listener-room-panel-head .eyebrow,.listener-room-discover .eyebrow{margin:0;font-size:10px;letter-spacing:.14em}
+.listener-room-text-action{flex-shrink:0;border:0;background:transparent;color:var(--ie-ui-accent);font-size:12px;font-weight:750;cursor:pointer}
+.listener-room-list{display:grid;gap:8px}
+.listener-room-artist{display:flex;align-items:center;gap:12px;min-width:0;padding:10px;border:1px solid transparent;border-radius:13px;color:var(--ie-ui-text);text-decoration:none;transition:background .16s,border-color .16s,transform .16s}
+.listener-room-artist:hover{background:var(--ie-ui-raised);border-color:var(--ie-ui-border);transform:translateY(-1px)}
+.listener-room-art{display:grid;place-items:center;flex:0 0 52px;width:52px;height:52px;overflow:hidden;border-radius:12px;background:var(--ie-ui-raised);color:var(--ie-ui-accent);font-size:20px;font-weight:800}
+.listener-room-art img{width:100%;height:100%;object-fit:cover}
+.listener-room-artist-copy{display:grid;gap:4px;min-width:0;flex:1}
+.listener-room-artist-copy strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:14px}
+.listener-room-artist-copy small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ie-ui-muted);font-size:12px}
+.listener-room-arrow{color:var(--ie-ui-muted)}
+.listener-room-empty{display:grid;justify-items:start;gap:8px;min-height:140px;align-content:center;padding:16px;border:1px dashed var(--ie-ui-border);border-radius:14px}
+.listener-room-empty>span{font-size:24px;color:var(--ie-ui-accent)}
+.listener-room-empty strong{font-size:14px}
+.listener-room-empty p{max-width:42ch;margin:0;color:var(--ie-ui-muted);font-size:12px;line-height:1.6}
+.listener-room-discover{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);align-items:center;gap:22px;margin:16px 0;padding:clamp(18px,3vw,28px);border:1px solid color-mix(in srgb,var(--ie-ui-accent) 32%,var(--ie-ui-border));border-radius:18px;background:color-mix(in srgb,var(--ie-ui-accent) 6%,var(--ie-ui-surface))}
+.listener-room-discover>div:first-child>p:last-child{margin:7px 0 0;color:var(--ie-ui-muted);font-size:13px;line-height:1.6}
+.listener-room-discover-actions{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:8px}
+.listener-vibe-chip{min-height:38px;padding:0 13px;border:1px solid var(--ie-ui-border);border-radius:999px;background:var(--ie-ui-surface);color:var(--ie-ui-text);font-size:12px;font-weight:650;cursor:pointer}
+.listener-vibe-chip:hover,.listener-vibe-chip:focus-visible{border-color:var(--ie-ui-accent);background:color-mix(in srgb,var(--ie-ui-accent) 12%,var(--ie-ui-surface))}
+.listener-vibe-featured{border-color:var(--ie-ui-accent);color:var(--ie-ui-accent)}
+.guest-directory{scroll-margin-top:88px}
+.guest-directory>h1{margin:8px 0;font-size:clamp(30px,4vw,46px);letter-spacing:-.055em}
+.guest-directory-intro{color:var(--ie-ui-muted);max-width:60ch;line-height:1.6}
+.guest-search-wrap{position:sticky;top:70px;z-index:20;display:flex;gap:8px;padding:12px 0;background:color-mix(in srgb,var(--ie-ui-bg) 94%,transparent);backdrop-filter:blur(12px)}
+.guest-search-wrap input{flex:1;width:100%;min-height:48px;padding:0 16px;border:1px solid var(--ie-ui-border);border-radius:14px;background:var(--ie-ui-surface);color:var(--ie-ui-text);font-size:14px}
+.guest-search-wrap input:focus{border-color:var(--ie-ui-accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--ie-ui-accent) 15%,transparent);outline:none}
+.listener-discovery-tools{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin:8px 0 14px}
+.listener-discovery-tools .collection-toolbar{display:flex;flex-wrap:wrap;gap:8px}
+.listener-discovery-tools .collection-toolbar button,.listener-sort-label select{min-height:38px;border-radius:11px}
+.listener-sort-label{display:flex;align-items:center;gap:8px;color:var(--ie-ui-muted);font-size:12px}
+.listener-sort-label select{padding:0 10px;border:1px solid var(--ie-ui-border);background:var(--ie-ui-surface);color:var(--ie-ui-text)}
+.guest-result-count{min-width:100%;margin:0;color:var(--ie-ui-muted);font-size:12px}
+.listener-letter-filter{display:flex;gap:5px;overflow-x:auto;padding:10px 0 14px;scrollbar-width:thin}
+.listener-letter-filter .listener-letter{flex:0 0 auto;min-width:34px;min-height:34px;border:1px solid var(--ie-ui-border);border-radius:10px;background:var(--ie-ui-surface);color:var(--ie-ui-muted);font-size:12px}
+.listener-letter-filter .listener-letter.is-active{border-color:var(--ie-ui-accent);background:color-mix(in srgb,var(--ie-ui-accent) 14%,var(--ie-ui-surface));color:var(--ie-ui-text)}
+.guest-artist-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.guest-artist-card-enhanced{min-width:0;border:1px solid var(--ie-ui-border);border-radius:18px;background:var(--ie-ui-surface);overflow:hidden;transition:transform .18s,border-color .18s,box-shadow .18s}
+.guest-artist-card-enhanced:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--ie-ui-accent) 50%,var(--ie-ui-border));box-shadow:0 14px 32px #0002}
+.guest-artist-card-enhanced .guest-artist-open{display:flex;align-items:center;gap:13px;min-height:100%;padding:16px;text-decoration:none;color:var(--ie-ui-text)}
+.guest-artist-card-enhanced .guest-artist-open>img,.guest-artist-card-enhanced .guest-artist-open .public-artist-avatar{flex:0 0 56px;width:56px;height:56px;border-radius:14px;object-fit:cover}
+.guest-artist-card-enhanced .guest-artist-open>span:last-child{min-width:0}
+.guest-artist-card-enhanced .guest-artist-open strong{display:block;overflow-wrap:anywhere;font-size:14px}
+.guest-artist-card-enhanced .guest-artist-open small,.guest-artist-card-enhanced .guest-artist-open .muted{display:block;margin-top:5px;color:var(--ie-ui-muted);font-size:12px;line-height:1.4}
+.listener-saved-music,.listener-recent-panel{margin:16px 0;padding:18px;border:1px solid var(--ie-ui-border);border-radius:18px;background:var(--ie-ui-surface)}
+.listener-saved-music-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:16px}
+.listener-saved-music-head h2{margin:4px 0;font-size:24px;letter-spacing:-.04em}
+.guest-verify-card{width:min(100%,460px);padding:clamp(20px,3vw,30px);border:1px solid var(--ie-ui-border);border-radius:22px;background:var(--ie-ui-surface);box-shadow:0 20px 65px #0003}
+.guest-welcome{padding:clamp(26px,6vw,80px) 0}
+.guest-welcome>h1{max-width:13ch;font-size:clamp(38px,7vw,78px);line-height:.98;letter-spacing:-.065em;text-wrap:balance}
+.guest-welcome>p:not(.eyebrow){max-width:58ch;color:var(--ie-ui-muted);font-size:clamp(15px,1.6vw,18px);line-height:1.75}
+.listener-value-points{display:flex;flex-wrap:wrap;gap:10px 18px;margin:26px 0;color:var(--ie-ui-muted);font-size:12px}
+.listener-value-points span{display:flex;gap:8px;align-items:center}
+.listener-value-points b{color:var(--ie-ui-accent);font-size:10px;letter-spacing:.08em}
+@media(max-width:900px){
+ .listener-room-heading{align-items:flex-start;flex-direction:column}
+ .listener-room-actions{justify-content:flex-start}
+ .listener-room-discover{grid-template-columns:1fr}
+ .listener-room-discover-actions{justify-content:flex-start}
+ .guest-artist-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:620px){
+ .guest-discover .public-artist-nav{gap:10px;min-height:60px;margin-bottom:12px}
+ .guest-discover .public-artist-nav .brand{font-size:11px;letter-spacing:.01em}
+ .guest-discover .public-artist-nav .brand img{width:28px;height:28px}
+ .guest-discover .public-artist-nav>a:not(.brand){font-size:11px}
+ .listener-room{padding:18px;border-radius:20px}
+ .listener-room-heading h1{font-size:clamp(34px,10vw,48px)}
+ .listener-room-stats{gap:7px}
+ .listener-room-stats>article{padding:12px 10px;border-radius:12px}
+ .listener-room-stats>article>span{font-size:10px}
+ .listener-room-stats>article>small{font-size:10px;line-height:1.4}
+ .listener-room-grid{grid-template-columns:1fr;gap:10px}
+ .listener-room-panel{padding:15px}
+ .listener-room-artist{padding:8px}
+ .listener-room-art{flex-basis:44px;width:44px;height:44px;border-radius:10px}
+ .guest-search-wrap{top:60px}
+ .listener-discovery-tools{align-items:stretch}
+ .listener-discovery-tools .collection-toolbar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%}
+ .listener-discovery-tools .collection-toolbar button{min-width:0;padding-inline:8px;font-size:11px}
+ .listener-sort-label{justify-content:space-between}
+ .listener-sort-label select{flex:1;max-width:220px}
+ .guest-artist-grid{grid-template-columns:1fr;gap:9px}
+ .guest-artist-card-enhanced .guest-artist-open{padding:12px}
+ .guest-artist-card-enhanced .guest-artist-open>img,.guest-artist-card-enhanced .guest-artist-open .public-artist-avatar{flex-basis:48px;width:48px;height:48px}
+ .listener-saved-music-head{flex-direction:column}
+ .listener-value-points{display:grid;gap:9px}
+}
+@media(prefers-reduced-motion:reduce){
+ .listener-room-artist,.guest-artist-card-enhanced{transition:none!important}
+ .listener-room-artist:hover,.guest-artist-card-enhanced:hover{transform:none}
+}
