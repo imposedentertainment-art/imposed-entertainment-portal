@@ -5,6 +5,21 @@ function setListenerSession(value){listenerSessionFallback=String(value||'');try
 function clearListenerSession(){listenerSessionFallback='';try{sessionStorage.removeItem('ie_listener_session');}catch(_){}}
 const slugifyArtist = v => String(v||'artist').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,48) || 'artist';
 
+function getArtistMerchLinks(artist){
+  const links=Array.isArray(artist?.links)?artist.links:[];
+  return links.slice(0,12).map(link=>{
+    const label=String(link?.label||'').trim().slice(0,60);
+    const url=safeUrl(String(link?.url||''));
+    return {label:label||'Artist shop',url};
+  }).filter(link=>link.url&&(/merch|shop|store|vinyl|physical|buy\s*(?:music|cd|record)|bandcamp|elasticstage|bigcartel|shopify|etsy/i.test(link.label+' '+link.url))).slice(0,4);
+}
+function renderArtistMerchPanel(artist){
+  const items=getArtistMerchLinks(artist);
+  if(!items.length)return '';
+  return '<section class="listener-merch-section card" id="artist-merch"><div class="listener-merch-heading"><div><p class="eyebrow">SUPPORT THE ARTIST</p><h2>Merch &amp; physical releases</h2><p>Official shop links provided by the artist. Purchases and delivery are handled by their shop.</p></div><span class="listener-merch-mark" aria-hidden="true">↗</span></div><div class="listener-merch-links">'+items.map(item=>'<a class="listener-merch-link" href="'+esc(item.url)+'" target="_blank" rel="noopener noreferrer nofollow"><span class="listener-merch-icon" aria-hidden="true">✳</span><span><strong>'+esc(item.label)+'</strong><small>Open artist shop</small></span><span aria-hidden="true">↗</span></a>').join('')+'</div></section>';
+}
+
+
 // Recover gracefully when stored profile media is deleted or temporarily unavailable.
 function bindProfileImageFallbacks(root = document) {
   root.querySelectorAll('.pf-avatar img, img.public-artist-avatar, .sidebar-profile .avatar img, .band-art img, .public-release-art img').forEach(img => {
