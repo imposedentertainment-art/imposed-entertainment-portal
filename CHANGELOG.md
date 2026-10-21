@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.8.8] - 2026-10-21 — Theme artwork bundled
+
+### Changed
+- Added five repository-hosted theme background assets: Light Skies, Midnight Studio, Graphite Minimal, Plum Dusk and Forest Room.
+- Updated theme backgrounds and picker previews to use the bundled SVG assets.
+- Added all five files to the service-worker static allow-list and bumped the cache namespace to v2.8.8.
+
+### Verification
+- Confirmed each SVG is present in the Git tree and referenced by the theme stylesheet/service worker. Live browser rendering still requires verification after Pages deploys.
+
 ## [2.8.7] - 2026-10-21 — Photographic workspace themes
 
 ### Changed
