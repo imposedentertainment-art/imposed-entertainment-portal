@@ -154,7 +154,7 @@
   }
   improveMedia(document);
   function syncMobileCurrent() {
-    var active = document.querySelector('.desktop-nav .nav-link.active, .desktop-nav button[data-pf].active');
+    var active = document.querySelector('.desktop-nav .nav-link.active, .desktop-nav button[data-pf].active, .sidebar-bottom .icon-btn.active');
     if (!active) return;
     var action = active.getAttribute('data-action');
     var profileAction = active.getAttribute('data-pf');
