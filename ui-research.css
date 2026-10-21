@@ -112,7 +112,7 @@
 /* Keep dense tables, forms and overlays usable on smaller screens. */
 @media(max-width:760px){
   .mobile-nav button[data-ie-quicknav-open]{position:sticky;top:0;z-index:1}
-  :where(input,select,textarea){min-height:44px}
+  :where(input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]):not([type="range"]):not([type="submit"]):not([type="button"]),select,textarea){min-height:44px}
   :where(.primary,.secondary,.new-btn,.success,.danger-btn,.icon-btn,.copy-btn){max-width:100%;white-space:normal}
   .ie-quickjump-trigger{display:none!important}
 }
