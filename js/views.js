@@ -106,7 +106,7 @@
           group.appendChild(node);
           const action=node.dataset?.action;
           const pf=node.dataset?.pf;
-          const active=action===view||((view==='discover'||view==='profile')&&pf==='discover')||(view==='editprofile'&&pf==='my-page');
+          const href=node instanceof HTMLAnchorElement?node.getAttribute('href'):'';const active=action===view||((view==='discover'||view==='profile')&&pf==='discover')||(view==='editprofile'&&pf==='my-page')||(href&&new URL(href,location.origin).pathname===location.pathname);
           if(active){node.classList.add('active');node.setAttribute('aria-current','page');group.open=true;}
         }
       });
