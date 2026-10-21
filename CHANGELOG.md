@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.9.4] - 2026-10-21 — Theme background and layout polish
+
+- Removed the stray custom-banner strip from the top of the workspace so the selected theme photograph defines the visual backdrop.
+- Applied the original selected theme photograph consistently behind the workspace with a controlled contrast wash.
+- Refined the mobile welcome hero, spacing, button hierarchy, glass surfaces and navigation separation.
+- Corrected a malformed stylesheet line in the document head so all stylesheets load in the intended place.
+- Updated cache namespace and stylesheet versioning.
+
+# Changelog
+
 ## [2.9.3] - 2026-10-21 — Working dashboard panel resizing
 
 - Fixed dashboard width controls so full, half and one-third sizes map to real grid column spans.
