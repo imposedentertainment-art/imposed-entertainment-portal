@@ -440,3 +440,18 @@ html[data-ie-mode="light"][data-ie-theme] body .nav .active,html[data-ie-mode="l
  html[data-ie-mode="system"][data-ie-workspace-theme="light-skies"] body {--ui-page:#eaf3fb;--ui-surface:#f8fbff;--ui-surface-raised:#dceaf7;--ui-border:#c3d7e8;--ui-border-strong:#9dbbd3;--ui-text:#1c344b;--ui-text-soft:#334e67;--ui-text-muted:#5f7890;--ui-input:#fff;--bg:#eaf3fb;--s1:#f8fbff;--s2:#dceaf7;--line:#c3d7e8;--line2:#9dbbd3;--text:#1c344b;--soft:#334e67;--muted:#5f7890;background:#eaf3fb!important;background-image:radial-gradient(ellipse 190px 70px at 9% 9%,rgba(255,255,255,.88) 0 48%,transparent 70%),radial-gradient(ellipse 250px 95px at 92% 21%,rgba(255,255,255,.7) 0 46%,transparent 72%),linear-gradient(155deg,#edf6ff,#e4eff9 52%,#eef5fb)!important}
  html[data-ie-mode="system"] body :where(.card,.panel,.settings-card,.metric,.release-card,.artist-card,.profile-card,.detail-card,.form-card,.builder-card,.approval-card,.up-card) {background-color:var(--ui-surface)!important;color:var(--ui-text-soft)!important;border-color:var(--ui-border)!important}
 }
+
+
+/* AMOLED is an actual surface mode, not just a browser colour-scheme hint. */
+html[data-ie-mode="amoled"] {
+ color-scheme:dark;
+ --ui-page:#000;--ui-surface:#050505;--ui-surface-raised:#0b0b0b;--ui-surface-hover:#151515;
+ --ui-border:#292929;--ui-border-strong:#454545;--ui-text:#fafafa;--ui-text-soft:#e0e0e0;--ui-text-muted:#a7a7a7;--ui-input:#050505;
+ --bg:#000;--s1:#050505;--s2:#0b0b0b;--s3:#151515;--line:#292929;--line2:#454545;--text:#fafafa;--soft:#e0e0e0;--muted:#a7a7a7;
+}
+html[data-ie-mode="amoled"] body {background:#000!important;background-image:none!important;color:#e0e0e0!important;color-scheme:dark}
+html[data-ie-mode="amoled"] body :where(.nav,.topbar,.app-header,.sidebar,.side-nav,.mobile-nav,.bottom-nav,.workspace-topbar,.settings-quicknav,.dropdown-menu,.popover,.menu-panel,.settings-section,.setting-section) {background:#050505!important;background-image:none!important;color:#e0e0e0!important;border-color:#292929!important}
+html[data-ie-mode="amoled"] body :where(.card,.panel,.metric,.release-card,.artist-card,.profile-card,.settings-card,.detail-card,.form-card,.builder-card,.approval-card,.up-card,.collection-card,.listener-card,.modal-card,.modal-content,.dialog,.dialog-content,.table-wrap,.table-container) {background:#050505!important;background-image:none!important;color:#e0e0e0!important;border-color:#292929!important;box-shadow:none!important}
+html[data-ie-mode="amoled"] body :where(h1,h2,h3,h4,h5,h6,strong,b,label,legend) {color:#fafafa!important}
+html[data-ie-mode="amoled"] body :where(p,small,.muted,.sub,.help-text,.description,.setting-description) {color:#a7a7a7!important}
+html[data-ie-mode="amoled"] body :where(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]),select,textarea,[contenteditable="true"]) {background:#050505!important;color:#fafafa!important;border-color:#454545!important}
