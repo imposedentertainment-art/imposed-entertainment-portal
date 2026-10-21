@@ -109,3 +109,36 @@ body { text-rendering: optimizeLegibility; }
     transition-duration: .01ms !important;
   }
 }
+
+
+/* Dashboard resize regression: later mobile-theme rules hid the very controls
+   required for customisation, even while edit mode was active. Keep them usable. */
+html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-tools {
+  display:flex!important;
+  visibility:visible!important;
+  opacity:1!important;
+  pointer-events:auto!important;
+}
+html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-resize-handle {
+  display:flex!important;
+  visibility:visible!important;
+  opacity:1!important;
+  pointer-events:auto!important;
+  touch-action:none!important;
+}
+html[data-ie-workspace-theme] body #app .dashboard-page.is-customising [data-dashboard-widget-card] {
+  min-height:var(--dashboard-custom-height, 0px)!important;
+}
+html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-resize-handle:focus-visible {
+  outline:3px solid var(--user-accent, #d8bd73)!important;
+  outline-offset:3px!important;
+}
+@media (max-width:800px) {
+  html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-widget-tools {
+    display:flex!important;
+    flex-wrap:wrap!important;
+  }
+  html[data-ie-workspace-theme] body #app .dashboard-page.is-customising .dashboard-resize-handle {
+    display:flex!important;
+  }
+}
