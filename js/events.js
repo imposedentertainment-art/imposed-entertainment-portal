@@ -80,50 +80,83 @@ function ieStartEmailCodeCooldown(){
     if(!root)return;
     const layout=()=>normaliseDashboardLayout(getAppearancePreferences().dashboardLayout);
     const layoutRoot=root.querySelector('.dashboard-widget-layout');
-    root.querySelectorAll('[data-dashboard-widget-card]').forEach(card=>{if(!card.querySelector('[data-dashboard-resize]')){['n','s','e','w','ne','nw','se','sw'].forEach(side=>{const handle=document.createElement('button');handle.type='button';handle.className='dashboard-resize-handle dashboard-resize-'+side;handle.dataset.dashboardResize=card.dataset.dashboardWidgetCard;handle.dataset.resizeSide=side;handle.setAttribute('aria-label','Resize '+card.dataset.dashboardWidgetCard+' panel from '+({n:'top',s:'bottom',e:'right',w:'left',ne:'top right',nw:'top left',se:'bottom right',sw:'bottom left'}[side])+' edge');handle.title='Drag this border to resize';card.appendChild(handle);});}});
-    const readOrder=()=>Array.from(root.querySelectorAll('[data-dashboard-widget-card]')).map(el=>el.dataset.dashboardWidgetCard);
+    const cards=()=>Array.from(root.querySelectorAll('[data-dashboard-widget-card]'));
+    const readOrder=()=>cards().map(el=>el.dataset.dashboardWidgetCard);
     const persist=next=>{const current=getAppearancePreferences();current.dashboardLayout=normaliseDashboardLayout(next);applyAppearancePreferences(current);saveAppearancePreferences(current);const status=document.querySelector('#appearance-save-status');if(status)status.textContent='Dashboard layout saved to your account.';};
     const moveCard=(source,target,after)=>{if(!layoutRoot||!source||!target||source===target)return false;layoutRoot.insertBefore(source,after?target.nextSibling:target);return true;};
-    root.querySelector('[data-dashboard-edit-toggle]')?.addEventListener('click',e=>{const on=root.classList.toggle('is-customising');e.currentTarget.setAttribute('aria-pressed',String(on));e.currentTarget.textContent=on?'Done customising':'Customise layout';const status=document.querySelector('#appearance-save-status');if(status)status.textContent=on?'Customisation mode is on. Drag a handle or use the move buttons.':'Dashboard customisation finished.';});
+    root.querySelector('[data-dashboard-edit-toggle]')?.addEventListener('click',e=>{const on=root.classList.toggle('is-customising');e.currentTarget.setAttribute('aria-pressed',String(on));e.currentTarget.textContent=on?'Done customising':'Customise layout';const status=document.querySelector('#appearance-save-status');if(status)status.textContent=on?'Customisation mode is on. Drag a widget edge to resize; use move buttons to reorder.':'Dashboard customisation finished.';});
     root.querySelectorAll('[data-dashboard-detail-toggle]').forEach(control=>control.addEventListener('change',()=>{
       const key=control.dataset.dashboardDetailToggle;
       if(!['tasks','insights','announcements','activity','catalogue'].includes(key))return;
-      const current=getAppearancePreferences();
-      current.dashboard={...current.dashboard,[key]:control.checked};
+      const current=getAppearancePreferences();current.dashboard={...current.dashboard,[key]:control.checked};
       root.querySelectorAll('[data-dashboard-detail="'+key+'"]').forEach(panel=>{panel.dataset.dashboardEnabled=String(control.checked);});
-      applyAppearancePreferences(current);
-      saveAppearancePreferences(current);
-      const status=document.querySelector('#appearance-save-status');
-      if(status)status.textContent='Dashboard details updated and saved.';
-      toast(control.checked?'Dashboard panel enabled':'Dashboard panel hidden','success');
+      applyAppearancePreferences(current);saveAppearancePreferences(current);
+      const status=document.querySelector('#appearance-save-status');if(status)status.textContent='Dashboard details updated and saved.';
     }));
-    root.querySelector('[data-dashboard-reset]')?.addEventListener('click',()=>{const defaults=normaliseDashboardLayout(IE_APPEARANCE_DEFAULTS.dashboardLayout);defaults.order.forEach(key=>{const card=layoutRoot?.querySelector('[data-dashboard-widget-card="'+key+'"]');if(card)layoutRoot.appendChild(card);});persist(defaults);toast('Dashboard layout reset to defaults','success');});
-    let resizing=null,resizeSide='se',resizeStartX=0,resizeStartY=0,resizeStartWidth=0,resizeStartHeight=0,resizeStartSpan=12,resizeStartColumn=1,resizeChanged=false;
-    root.querySelectorAll('[data-dashboard-resize]').forEach(handle=>{
-      handle.addEventListener('pointerdown',e=>{if(!root.classList.contains('is-customising')||e.button!==0)return;const card=handle.closest('[data-dashboard-widget-card]');if(!card||!layoutRoot)return;e.preventDefault();resizing=card;resizeSide=handle.dataset.resizeSide||'se';resizeStartX=e.clientX;resizeStartY=e.clientY;const rect=card.getBoundingClientRect();resizeStartWidth=rect.width;resizeStartHeight=rect.height;const prefs=layout();resizeStartSpan=Number(prefs.sizes[card.dataset.dashboardWidgetCard])||12;const cs=getComputedStyle(card),explicitStart=parseInt(cs.gridColumnStart,10),colWidth=Math.max(1,layoutRoot.getBoundingClientRect().width/12);resizeStartColumn=Math.max(1,Math.min(13-resizeStartSpan,Number.isFinite(explicitStart)?explicitStart:Math.floor((rect.left-layoutRoot.getBoundingClientRect().left)/colWidth)+1));resizeChanged=false;handle.classList.add('is-resizing');try{handle.setPointerCapture(e.pointerId);}catch(_){};});
-      handle.addEventListener('keydown',e=>{if(!root.classList.contains('is-customising')||!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key))return;e.preventDefault();const card=handle.closest('[data-dashboard-widget-card]');if(!card)return;const next=layout(),key=card.dataset.dashboardWidgetCard;let span=Number(next.sizes[key])||12;if(e.key==='ArrowLeft')span=Math.max(3,span-1);if(e.key==='ArrowRight')span=Math.min(12,span+1);if(e.key==='ArrowUp'||e.key==='ArrowDown'){next.heights[key]=Math.min(900,Math.max(180,(next.heights[key]||card.getBoundingClientRect().height)+(e.key==='ArrowDown'?24:-24)));}else next.sizes[key]=span;persist(next);});
+    root.querySelector('[data-dashboard-reset]')?.addEventListener('click',()=>{const defaults=normaliseDashboardLayout(IE_APPEARANCE_DEFAULTS.dashboardLayout);defaults.order.forEach(key=>{const card=layoutRoot?.querySelector('[data-dashboard-widget-card="'+key+'"]');if(card)layoutRoot.appendChild(card);});persist(defaults);});
+    let resizing=null,resizeSide='',resizeStartX=0,resizeStartY=0,resizeStartHeight=0,resizeStartSpan=12,resizeStartColumn=1,resizeChanged=false,resizePointerId=null,resizeRaf=0,pendingPointer=null;
+    const getGridMetrics=()=>{const rect=layoutRoot.getBoundingClientRect();const style=getComputedStyle(layoutRoot);const gap=parseFloat(style.columnGap)||0;return {left:rect.left,width:rect.width,colWidth:(rect.width-gap*11)/12};};
+    const beginResize=(card,side,e)=>{
+      if(!root.classList.contains('is-customising')||e.button!==0||!layoutRoot)return;
+      e.preventDefault();resizing=card;resizeSide=side;resizePointerId=e.pointerId;resizeStartX=e.clientX;resizeStartY=e.clientY;
+      const rect=card.getBoundingClientRect(),prefs=layout(),key=card.dataset.dashboardWidgetCard,metrics=getGridMetrics();
+      resizeStartHeight=rect.height;resizeStartSpan=Number(prefs.sizes[key])||Math.max(3,Math.min(12,Math.round((rect.width+parseFloat(getComputedStyle(layoutRoot).columnGap||0))/Math.max(1,metrics.colWidth+(parseFloat(getComputedStyle(layoutRoot).columnGap)||0)))));
+      const explicitStart=parseInt(getComputedStyle(card).gridColumnStart,10);
+      resizeStartColumn=Math.max(1,Math.min(13-resizeStartSpan,Number(prefs.starts?.[key])|| (Number.isFinite(explicitStart)?explicitStart:Math.floor((rect.left-metrics.left)/Math.max(1,metrics.colWidth))+1)));
+      resizeChanged=false;card.classList.add('is-edge-resizing');root.classList.add('is-resizing-dashboard');
+      try{e.currentTarget.setPointerCapture(e.pointerId);}catch(_){}
+    };
+    // One set of transparent hit zones per card. The zones sit on the actual border,
+    // rather than showing floating tabs or handles inside the widget.
+    cards().forEach(card=>{
+      if(card.querySelector('[data-dashboard-resize]'))card.querySelectorAll('[data-dashboard-resize]').forEach(h=>h.remove());
+      ['n','s','e','w','ne','nw','se','sw'].forEach(side=>{
+        const handle=document.createElement('span');handle.className='dashboard-edge-hit dashboard-edge-'+side;
+        handle.dataset.dashboardResize=card.dataset.dashboardWidgetCard;handle.dataset.resizeSide=side;
+        handle.setAttribute('role','separator');handle.setAttribute('aria-orientation',side==='e'||side==='w'?'vertical':'horizontal');
+        handle.setAttribute('aria-label','Resize '+card.dataset.dashboardWidgetCard+' from '+({n:'top',s:'bottom',e:'right',w:'left',ne:'top right corner',nw:'top left corner',se:'bottom right corner',sw:'bottom left corner'}[side])+' edge');
+        handle.tabIndex=0;handle.addEventListener('pointerdown',e=>beginResize(card,side,e));
+        handle.addEventListener('keydown',e=>{if(!root.classList.contains('is-customising')||!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key))return;e.preventDefault();const next=layout(),key=card.dataset.dashboardWidgetCard;let span=Number(next.sizes[key])||12;if(e.key==='ArrowLeft')span=Math.max(3,span-1);if(e.key==='ArrowRight')span=Math.min(12,span+1);if(e.key==='ArrowUp'||e.key==='ArrowDown')next.heights[key]=Math.min(900,Math.max(180,(next.heights[key]||card.getBoundingClientRect().height)+(e.key==='ArrowDown'?24:-24)));else next.sizes[key]=span;persist(next);});
+        card.appendChild(handle);
+      });
     });
-    const finishResize=()=>{if(!resizing)return;const card=resizing,key=card.dataset.dashboardWidgetCard;resizing=null;root.querySelectorAll('[data-dashboard-resize]').forEach(h=>h.classList.remove('is-resizing'));if(!resizeChanged)return;const next=layout();next.sizes[key]=Math.max(3,Math.min(12,Number(card.dataset.widgetSize)||resizeStartSpan));next.starts=next.starts||{};next.starts[key]=Math.max(1,Math.min(13-next.sizes[key],Number(card.dataset.widgetStart)||resizeStartColumn));next.heights[key]=Math.min(900,Math.max(180,Math.round(card.getBoundingClientRect().height)));persist(next);};
-    root.addEventListener('pointermove',e=>{if(!resizing||!root.classList.contains('is-customising'))return;e.preventDefault();const dx=e.clientX-resizeStartX,dy=e.clientY-resizeStartY,colWidth=Math.max(1,layoutRoot.getBoundingClientRect().width/12),side=resizeSide;const changesWidth=/[ew]/.test(side),changesHeight=/[ns]/.test(side);let span=resizeStartSpan,start=resizeStartColumn;if(changesWidth){const delta=Math.round(dx/colWidth);if(side.includes('w')){span=Math.max(3,Math.min(12,resizeStartSpan-delta));start=Math.max(1,Math.min(13-span,resizeStartColumn+resizeStartSpan-span));}else span=Math.max(3,Math.min(13-resizeStartColumn,resizeStartSpan+delta));}const height=Math.min(900,Math.max(180,resizeStartHeight+(side.includes('n')?-dy:dy)*(changesHeight?1:0)));cardResizeApply(resizing,span,start,height);resizeChanged=Math.abs(dx)>2||Math.abs(dy)>2;},{passive:false});
-    function cardResizeApply(card,span,start,height){card.dataset.widgetSize=String(span);card.dataset.widgetStart=String(start);card.style.setProperty('grid-column',start+' / span '+span,'important');card.style.setProperty('--dashboard-span',String(span));card.style.setProperty('--dashboard-custom-height',height+'px');card.style.minHeight='var(--dashboard-custom-height)';card.style.transition='none';}
-    root.addEventListener('pointerup',finishResize);root.addEventListener('pointercancel',finishResize);
-    root.querySelectorAll('[data-dashboard-move]').forEach(el=>el.addEventListener('click',()=>{const card=el.closest('[data-dashboard-widget-card]');if(!card||!layoutRoot)return;const siblings=Array.from(layoutRoot.querySelectorAll('[data-dashboard-widget-card]'));const i=siblings.indexOf(card),j=i+(el.dataset.dashboardMove==='up'?-1:1);if(j<0||j>=siblings.length)return;moveCard(card,siblings[j],j<i);const next=layout();next.order=readOrder();persist(next);}));
-    let dragged=null,startX=0,startY=0,pointerMoved=false;
+    const applyResizeFrame=()=>{
+      resizeRaf=0;if(!resizing||!pendingPointer)return;
+      const e=pendingPointer;pendingPointer=null;
+      const dx=e.clientX-resizeStartX,dy=e.clientY-resizeStartY,metrics=getGridMetrics(),side=resizeSide;
+      const changesWidth=/[ew]/.test(side),changesHeight=/[ns]/.test(side);let span=resizeStartSpan,start=resizeStartColumn;
+      if(changesWidth){const delta=Math.round(dx/Math.max(1,metrics.colWidth));if(side.includes('w')){span=Math.max(3,Math.min(12,resizeStartSpan-delta));start=Math.max(1,Math.min(13-span,resizeStartColumn+resizeStartSpan-span));}else span=Math.max(3,Math.min(13-resizeStartColumn,resizeStartSpan+delta));}
+      const height=Math.min(900,Math.max(180,resizeStartHeight+(side.includes('n')?-dy:dy)*(changesHeight?1:0)));
+      resizing.dataset.widgetSize=String(span);resizing.dataset.widgetStart=String(start);
+      resizing.style.setProperty('grid-column',start+' / span '+span,'important');resizing.style.setProperty('--dashboard-span',String(span));
+      if(changesHeight)resizing.style.setProperty('--dashboard-custom-height',height+'px');
+      resizeChanged=Math.abs(dx)>3||Math.abs(dy)>3;
+    };
+    const onPointerMove=e=>{if(!resizing||e.pointerId!==resizePointerId)return;e.preventDefault();pendingPointer={clientX:e.clientX,clientY:e.clientY};if(!resizeRaf)resizeRaf=requestAnimationFrame(applyResizeFrame);};
+    const finishResize=e=>{
+      if(!resizing||(e?.pointerId!=null&&e.pointerId!==resizePointerId))return;
+      if(resizeRaf){cancelAnimationFrame(resizeRaf);resizeRaf=0;applyResizeFrame();}
+      const card=resizing,key=card.dataset.dashboardWidgetCard;resizing=null;resizePointerId=null;pendingPointer=null;
+      card.classList.remove('is-edge-resizing');root.classList.remove('is-resizing-dashboard');
+      if(!resizeChanged){card.style.transition='';return;}
+      const next=layout();next.sizes[key]=Math.max(3,Math.min(12,Number(card.dataset.widgetSize)||resizeStartSpan));next.starts=next.starts||{};next.starts[key]=Math.max(1,Math.min(13-next.sizes[key],Number(card.dataset.widgetStart)||resizeStartColumn));
+      if(card.style.getPropertyValue('--dashboard-custom-height'))next.heights[key]=Math.min(900,Math.max(180,Math.round(card.getBoundingClientRect().height)));
+      card.style.transition='';persist(next);
+    };
+    root.addEventListener('pointermove',onPointerMove,{passive:false});root.addEventListener('pointerup',finishResize);root.addEventListener('pointercancel',finishResize);
+    root.querySelectorAll('[data-dashboard-move]').forEach(el=>el.addEventListener('click',()=>{const card=el.closest('[data-dashboard-widget-card]');if(!card||!layoutRoot)return;const siblings=cards(),i=siblings.indexOf(card),j=i+(el.dataset.dashboardMove==='up'?-1:1);if(j<0||j>=siblings.length)return;moveCard(card,siblings[j],j<i);const next=layout();next.order=readOrder();persist(next);}));
+    let dragged=null,startX=0,startY=0,pointerMoved=false,dragRaf=0,lastDragPoint=null;
     root.querySelectorAll('[data-dashboard-drag]').forEach(handle=>{
       handle.addEventListener('dragstart',e=>{if(!root.classList.contains('is-customising')){e.preventDefault();return;}dragged=handle.closest('[data-dashboard-widget-card]');if(!dragged)return;e.dataTransfer?.setData('text/plain',dragged.dataset.dashboardWidgetCard);if(e.dataTransfer)e.dataTransfer.effectAllowed='move';dragged.classList.add('is-dragging');});
       handle.addEventListener('dragend',()=>{dragged?.classList.remove('is-dragging');dragged=null;});
       handle.addEventListener('pointerdown',e=>{if(!root.classList.contains('is-customising')||e.button!==0)return;dragged=handle.closest('[data-dashboard-widget-card]');if(!dragged)return;startX=e.clientX;startY=e.clientY;pointerMoved=false;try{handle.setPointerCapture(e.pointerId);}catch(_){}});
     });
-    root.addEventListener('pointermove',e=>{if(!dragged||!root.classList.contains('is-customising'))return;if(!pointerMoved&&Math.hypot(e.clientX-startX,e.clientY-startY)<7)return;pointerMoved=true;e.preventDefault();dragged.classList.add('is-dragging');const target=document.elementFromPoint(e.clientX,e.clientY)?.closest('[data-dashboard-widget-card]');if(!target||!layoutRoot?.contains(target)||target===dragged)return;const r=target.getBoundingClientRect();moveCard(dragged,target,e.clientY>r.top+r.height/2);},{passive:false});
-    const finishPointer=()=>{if(!dragged)return;const changed=pointerMoved;dragged.classList.remove('is-dragging');dragged=null;pointerMoved=false;if(changed){const next=layout();next.order=readOrder();persist(next);}};
-    root.addEventListener('pointerup',finishPointer);
-    root.addEventListener('pointercancel',finishPointer);
-    root.querySelectorAll('[data-dashboard-widget-card]').forEach(card=>{
-      card.addEventListener('dragover',e=>{if(root.classList.contains('is-customising'))e.preventDefault();});
-      card.addEventListener('drop',e=>{if(!root.classList.contains('is-customising'))return;e.preventDefault();const source=dragged;if(!source||source===card)return;moveCard(source,card, e.clientY>card.getBoundingClientRect().top+card.getBoundingClientRect().height/2);const next=layout();next.order=readOrder();persist(next);});
-    });
-    const pref=layout();
-    if(layoutRoot)pref.order.forEach(key=>{const card=layoutRoot.querySelector('[data-dashboard-widget-card="'+key+'"]');if(card)layoutRoot.appendChild(card);});
+    const processDrag=()=>{dragRaf=0;if(!dragged||!lastDragPoint||!pointerMoved)return;const {x,y}=lastDragPoint;dragged.classList.add('is-dragging');const target=document.elementFromPoint(x,y)?.closest('[data-dashboard-widget-card]');if(!target||!layoutRoot?.contains(target)||target===dragged)return;const r=target.getBoundingClientRect();moveCard(dragged,target,y>r.top+r.height/2);};
+    root.addEventListener('pointermove',e=>{if(!dragged||resizing||!root.classList.contains('is-customising'))return;if(!pointerMoved&&Math.hypot(e.clientX-startX,e.clientY-startY)<7)return;pointerMoved=true;e.preventDefault();lastDragPoint={x:e.clientX,y:e.clientY};if(!dragRaf)dragRaf=requestAnimationFrame(processDrag);},{passive:false});
+    const finishPointer=()=>{if(!dragged)return;const changed=pointerMoved;dragged.classList.remove('is-dragging');dragged=null;pointerMoved=false;lastDragPoint=null;if(changed){const next=layout();next.order=readOrder();persist(next);}};
+    root.addEventListener('pointerup',finishPointer);root.addEventListener('pointercancel',finishPointer);
+    cards().forEach(card=>{card.addEventListener('dragover',e=>{if(root.classList.contains('is-customising'))e.preventDefault();});card.addEventListener('drop',e=>{if(!root.classList.contains('is-customising'))return;e.preventDefault();const source=dragged;if(!source||source===card)return;moveCard(source,card,e.clientY>card.getBoundingClientRect().top+card.getBoundingClientRect().height/2);const next=layout();next.order=readOrder();persist(next);});});
+    const pref=layout();if(layoutRoot)pref.order.forEach(key=>{const card=layoutRoot.querySelector('[data-dashboard-widget-card="'+key+'"]');if(card)layoutRoot.appendChild(card);});
     applyAppearancePreferences(getAppearancePreferences());
   }
   function bind(){
