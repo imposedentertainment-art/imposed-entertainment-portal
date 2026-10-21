@@ -1,3 +1,10 @@
+## 3.3.6 — Restore navigation and appearance controls
+
+- Made the mobile drawer visibility follow the real menu button's `aria-expanded` state.
+- Restored the menu toggle above the backdrop and kept the backdrop active only while the drawer is open.
+- Restored the floating appearance control with a visible text glyph fallback instead of relying on a CSS mask.
+- Kept the appearance panel hidden only when its own `hidden` state is set, and refreshed asset/cache versions.
+
 ## 3.3.5 — Mobile drawer stacking and dashboard polish
 
 - Reworked the drawer overlay to use the actual conditional `.mobile-nav` markup and a stable header-local stacking context.
