@@ -4,7 +4,7 @@
   const ready = Boolean(window.supabase && C.SUPABASE_URL && !C.SUPABASE_URL.includes('PASTE_') && C.SUPABASE_ANON_KEY && !C.SUPABASE_ANON_KEY.includes('PASTE_'));
   const sb = ready ? window.supabase.createClient(C.SUPABASE_URL, C.SUPABASE_ANON_KEY) : null;
 
-  const IE_APPEARANCE_DEFAULTS = {theme:'blood', workspaceTheme:'midnight-studio', accent:'#b3122a', mode:'dark', surfaceTint:'graphite', shadowIntensity:2, fontScale:100, contrast:'standard', motion:'system', lineHeight:100, borderWidth:1, saturation:100, density:'comfortable', style:'classic', font:'poster', cards:'slab', grain:35, radius:2, banner:'', bannerColor:'', bannerEnabled:false, dashboard:{metrics:true,tasks:true,announcements:true,upcoming:true,activity:true,catalogue:true}, dashboardLayout:{order:['metrics','actions','upcoming','shortcuts','details'],sizes:{metrics:'full',actions:'full',upcoming:'half',shortcuts:'half',details:'full'},shapes:{metrics:'soft',actions:'soft',upcoming:'soft',shortcuts:'soft',details:'soft'}}};
+  const IE_APPEARANCE_DEFAULTS = {theme:'blood', workspaceTheme:'midnight-studio', accent:'#b3122a', mode:'dark', surfaceTint:'graphite', shadowIntensity:2, fontScale:100, contrast:'standard', motion:'system', lineHeight:100, borderWidth:1, saturation:100, density:'comfortable', style:'classic', font:'poster', cards:'slab', grain:35, radius:2, banner:'', bannerColor:'', bannerEnabled:false, dashboard:{metrics:true,tasks:true,insights:true,announcements:true,upcoming:true,activity:true,catalogue:true}, dashboardLayout:{order:['metrics','actions','upcoming','shortcuts','details'],sizes:{metrics:'full',actions:'full',upcoming:'half',shortcuts:'half',details:'full'},shapes:{metrics:'soft',actions:'soft',upcoming:'soft',shortcuts:'soft',details:'soft'}}};
   const IE_APPEARANCE_THEMES = {
     violet:{accent:'#7868f4',hover:'#6655e7',ink:'#ffffff',soft:'rgba(120,104,244,.14)'},
     ocean:{accent:'#168bd2',hover:'#0875b7',ink:'#ffffff',soft:'rgba(22,139,210,.14)'},
@@ -51,7 +51,7 @@
     out.bannerColor=/^#[0-9a-f]{6}$/i.test(String(out.bannerColor||''))?out.bannerColor:'';
     out.bannerEnabled=out.bannerEnabled===true;
     const dashboard=out.dashboard&&typeof out.dashboard==='object'?out.dashboard:{};
-    out.dashboard=Object.fromEntries(['metrics','tasks','announcements','upcoming','activity','catalogue'].map(k=>[k,dashboard[k]!==false]));
+    out.dashboard=Object.fromEntries(['metrics','tasks','insights','announcements','upcoming','activity','catalogue'].map(k=>[k,dashboard[k]!==false]));
     out.dashboardLayout=normaliseDashboardLayout(out.dashboardLayout);
     return out;
   }
