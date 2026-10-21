@@ -1,5 +1,20 @@
 # Changelog
 
+## [2.7.7] - 2026-10-21 — Auth and upload recovery
+
+### Fixed
+- Retry one transient Supabase Auth session-read failure (including server-side 5xx and context-cancelled/network errors) before aborting startup, reducing false startup failures during token rotation.
+- Never continue a storage upload with a stale access token when explicit session refresh fails. Refresh errors now enter the existing retry/error path instead of being hidden.
+- Added regression assertions for transient auth recovery and upload refresh failure handling.
+
+### Security and operations
+- Reviewed live Supabase RLS policies for releases, profiles, listener data, and shop products; owner/admin restrictions and listener workspace blocks are present.
+- Reviewed Supabase security/performance advisor output. Public invite-code lookup and authenticated SECURITY DEFINER RPC warnings require per-function intent review; no broad privilege revocation was applied because it could break sign-up and workspace flows.
+- Leaked-password protection remains unchanged, per the project's Supabase Free plan constraint.
+
+### Verification
+- Static checks validate syntax and cross-file invariants; full browser/device testing remains separate.
+
 ## [2.7.6] - 2026-10-21 — Site-wide regression hardening
 
 ### Fixed
