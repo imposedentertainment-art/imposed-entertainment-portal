@@ -1,6 +1,8 @@
 /* Setup screen, boot(), loadProfile, loadApp */
   let appLoadPromise = null;
   let appLoadUserId = null;
+  // Ignore async auth/profile work that belongs to an older identity transition.
+  let authTransitionVersion = 0;
   function showPortalLoading(message='Preparing your workspace…', detail='Connecting securely'){
     const overlay=document.getElementById('app-loading');
     if(!overlay)return;
@@ -70,6 +72,7 @@
     const authSubscription=sb.auth.onAuthStateChange((event,nextSession)=>{
       // Defer work so Supabase's auth callback lock is released before data calls.
       setTimeout(async()=>{
+        const transitionVersion = ++authTransitionVersion;
         if(bootFailed)return;
         if(!bootSessionResolved){pendingAuthEvent=true;pendingAuthSession=nextSession||null;return;}
         const currentUserId=session?.user?.id||null;
@@ -106,6 +109,8 @@
         let trustedRole=null;
         try{trustedRole=await resolveCurrentAccountRole(session.user.id);}
         catch(roleError){console.warn('Could not resolve the signed-in profile role yet; workspace loading will verify it again.',roleError);}
+        // A later sign-in/sign-out may have happened while role lookup was pending.
+        if(transitionVersion!==authTransitionVersion || session?.user?.id!==nextUserId)return;
         if(trustedRole==='listener'){
           if(!isListenerRoute())history.replaceState(null,'','/listen/account');
           renderListenerRoute();hidePortalLoading();return;
@@ -163,34 +168,53 @@
   }
 
   async function loadProfile(){
-    const {data,error}=await sb.from('profiles').select('*').eq('id',session.user.id).maybeSingle();
+    const activeSession=session;
+    const userId=activeSession?.user?.id;
+    if(!userId)throw new Error('Sign in again to load your profile.');
+    const isCurrentAccount=()=>!!session&&session.user.id===userId;
+    const {data,error}=await sb.from('profiles').select('*').eq('id',userId).maybeSingle();
+    if(!isCurrentAccount())return;
     if(error) throw error;
-    if(!data){ const {data:p,error:e}=await sb.from('profiles').insert({id:session.user.id,email:session.user.email,display_name:session.user.user_metadata?.full_name||session.user.email?.split('@')[0]||'Artist'}).select().single(); if(e) throw e; profile=p; }
-    else profile=data;
-    profile.role=String(profile.role||'artist').trim().toLowerCase();
-    cacheCurrentAccountRole(session.user.id,profile.role);
+    let loadedProfile=data;
+    if(!loadedProfile){
+      const {data:created,error:createError}=await sb.from('profiles').insert({
+        id:userId,
+        email:activeSession.user.email,
+        display_name:activeSession.user.user_metadata?.full_name||activeSession.user.email?.split('@')[0]||'Artist'
+      }).select().single();
+      if(!isCurrentAccount())return;
+      if(createError)throw createError;
+      loadedProfile=created;
+    }
+    if(!isCurrentAccount()||!loadedProfile)return;
+    loadedProfile.role=String(loadedProfile.role||'artist').trim().toLowerCase();
+    profile=loadedProfile;
+    cacheCurrentAccountRole(userId,loadedProfile.role);
     // Device customisation storage is shared by browser profiles, not by accounts.
     // Clear it when the authenticated identity changes so a previous user's local
     // overrides cannot take precedence over this account's saved appearance.
     try {
       const accountKey = 'ie-personalisation-account-v1';
       const previousAccountId = localStorage.getItem(accountKey);
-      if (previousAccountId && previousAccountId !== session.user.id) {
+      if (previousAccountId && previousAccountId !== userId) {
         ['ie-workspace-personalisation-v2','ie-workspace-personalisation-v1','ie-workspace-personalisation-touched-v1'].forEach(key => localStorage.removeItem(key));
-        // Reset the customiser's in-memory snapshot too; clearing storage alone is insufficient.
-        window.dispatchEvent(new CustomEvent('ie-personalise-account-change', { detail: { userId: session.user.id } }));
+        window.dispatchEvent(new CustomEvent('ie-personalise-account-change', { detail: { userId } }));
       }
-      localStorage.setItem(accountKey, session.user.id);
+      localStorage.setItem(accountKey, userId);
     } catch (storageError) {
       console.warn('Could not scope local appearance preferences to the signed-in account.', storageError);
     }
+    if(!isCurrentAccount())return;
     if(typeof applyAppearancePreferences==='function')applyAppearancePreferences(getAppearancePreferences());
     if(window.IE_I18N){
-      if(profile.preferred_language && window.IE_I18N.languages[profile.preferred_language]) window.IE_I18N.setLanguage(profile.preferred_language,{notify:false});
-      else {
+      if(loadedProfile.preferred_language && window.IE_I18N.languages[loadedProfile.preferred_language]) {
+        window.IE_I18N.setLanguage(loadedProfile.preferred_language,{notify:false});
+      } else {
         const language=window.IE_I18N.language||'en';
-        const {error:languageError}=await sb.from('profiles').update({preferred_language:language}).eq('id',session.user.id);
-        if(!languageError) profile.preferred_language=language; else console.warn('Could not sync language preference to profile',languageError);
+        const {error:languageError}=await sb.from('profiles').update({preferred_language:language}).eq('id',userId);
+        if(!isCurrentAccount()||!profile||profile.id!==userId)return;
+        if(!languageError)profile.preferred_language=language;
+        else console.warn('Could not sync language preference to profile',languageError);
       }
     }
   }
@@ -276,4 +300,4 @@
     if(view==='podcasts')await loadPodcastSubmissions();
     if(view==='statements')await loadStatementData();
     if(window.__draftRestored&&(['','/','/index.html','/dashboard'].includes(location.pathname.replace(/\/+$/,''))))view='builder';
-    if(!session || session.user.id!==expectedUserId) return; render(); } catch(e){ console.error('Workspace load failed for active session',e); toast('You are signed in, but your workspace could not finish loading. Retry below.','error'); if(session && session.user.id===expectedUserId){if(!profile)renderSignedInWorkspaceRecovery(expectedUserId);else render();} } finally { if(!session || session.user.id===expectedUserId) hidePortalLoading(); } }
+    if(!session || session.user.id!==expectedUserId) return; render(); } catch(e){ if(session && session.user.id===expectedUserId){console.error('Workspace load failed for active session',e);toast('You are signed in, but your workspace could not finish loading. Retry below.','error');if(!profile)renderSignedInWorkspaceRecovery(expectedUserId);else render();} } finally { if(!session || session.user.id===expectedUserId) hidePortalLoading(); } }
