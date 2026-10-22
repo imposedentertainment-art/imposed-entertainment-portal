@@ -42,7 +42,8 @@ try {
   fail(`manifest.webmanifest is not valid JSON: ${error.message}`);
 }
 const views = read('js/views.js');
-if (views.includes('Overview banner') || views.includes('data-banner-enabled') || /function workspaceBannerMarkup\(\)\{[^}]*ie-banner/.test(views)) fail('Unwanted workspace banner UI or rendering has returned.');
+const events = read('js/events.js');
+if (views.includes('Overview banner') || views.includes('data-banner-enabled') || /function workspaceBannerMarkup\(\)\{[^}]*ie-banner/.test(views) || events.includes('data-banner-enabled') || events.includes('data-banner-file')) fail('Unwanted workspace banner UI, rendering or upload handlers have returned.');
 // Guard the stylesheet stack and worker allow-list against silent drift.
 const stylesheetLinks = [...html.matchAll(/<link\b(?=[^>]*\brel=["']stylesheet["'])[^>]*\bhref=["']([^"']+)["'][^>]*>/gi)].map(match => match[1].split(/[?#]/, 1)[0]);
 const stylesheetCounts = new Map();
