@@ -249,8 +249,9 @@ if (!html.includes('ui-ux-repair.css?v=' + version) || !worker.includes("'/ui-ux
 
 
 if (!core.includes("localStorage.getItem('ie-workspace-personalisation-v2')") ||
-    !core.includes("!Object.prototype.hasOwnProperty.call(saved,'workspaceTheme')") ||
-    !core.includes("!Object.prototype.hasOwnProperty.call(saved,'mode')")) {
+    !core.includes("ie-workspace-personalisation-touched-v1") ||
+    !core.includes("locallyChosen('palette'") ||
+    !core.includes("locallyChosen('theme'")) {
   fail('Device themes and colour mode must remain available when an account has no saved appearance preference.');
 }
 for (const palette of ['light-skies','midnight-studio','graphite-minimal','plum-dusk','forest-room']) {
