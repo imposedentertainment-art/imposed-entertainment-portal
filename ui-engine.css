@@ -97,3 +97,9 @@ body{position:relative;background-color:transparent!important;background-image:n
 body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse at 78% -10%,color-mix(in srgb,var(--accent,#d8bd73) 10%,transparent),transparent 44rem),radial-gradient(ellipse at 8% 40%,color-mix(in srgb,var(--ie-background-glow,#8eb6d8) 7%,transparent),transparent 42rem),linear-gradient(180deg,color-mix(in srgb,var(--bg,var(--ie-bg,#f4f5f8)) 92%,transparent),var(--bg,var(--ie-bg,#f4f5f8)))}
 #app{position:relative;z-index:1;min-height:100vh}
 @media(prefers-reduced-motion:reduce){body::after{background-attachment:scroll}}
+
+/* Light-mode workspace roots stay transparent so the same backdrop remains visible. */
+html[data-ie-mode="light"] body,body.personalise-theme-light,body.personalise-palette-light-skies{background-color:transparent!important;background-image:none!important}
+html[data-ie-mode="light"] body .shell,html[data-ie-mode="light"] body .main,body.personalise-theme-light .shell,body.personalise-theme-light .main,body.personalise-palette-light-skies .shell,body.personalise-palette-light-skies .main{background:transparent!important}
+html[data-ie-mode="system"] body .shell,html[data-ie-mode="system"] body .main,body.personalise-theme-system .shell,body.personalise-theme-system .main{background:transparent!important}
+@media(prefers-color-scheme:light){html[data-ie-mode="system"] body,html[data-ie-mode="system"] body .shell,html[data-ie-mode="system"] body .main{background:transparent!important;background-image:none!important}}
