@@ -1,0 +1,37 @@
+/* Targeted fixes: theme contrast, accent swatches, and resilient mobile portal navigation. */
+:root{--ie-light-page:#f4f6f9;--ie-light-surface:#fff;--ie-light-raised:#edf1f5;--ie-light-text:#18202b;--ie-light-muted:#536071}
+body.personalise-theme-light{
+ color-scheme:light;
+ --ui-page:var(--ie-light-page);--ui-surface:var(--ie-light-surface);--ui-surface-raised:var(--ie-light-raised);--ui-surface-hover:#e3e9f0;
+ --ui-border:#d2d9e2;--ui-border-strong:#aeb9c7;--ui-text:var(--ie-light-text);--ui-text-soft:#303b49;--ui-text-muted:var(--ie-light-muted);--ui-input:#fff;--ui-overlay:rgba(15,23,42,.42);--ui-shadow:0 16px 42px rgba(20,32,48,.12);
+ --bg:var(--ui-page);--s1:var(--ui-surface);--s2:var(--ui-surface-raised);--s3:#e3e9f0;--line:var(--ui-border);--line2:var(--ui-border-strong);--text:var(--ui-text);--soft:var(--ui-text-soft);--muted:var(--ui-text-muted);
+ background:var(--ui-page)!important;color:var(--ui-text-soft)!important;
+}
+body.personalise-theme-light :is(#app,.app-shell,.workspace,.workspace-shell,.main,.main-content,.page-content,.content-area,#ie-personalise-panel){color:var(--ui-text-soft)!important}
+body.personalise-theme-light :is(.modal-backdrop,.modal,.modal-card,.modal-content,.dialog,.dialog-content,.auth-card,.auth-panel,.settings-shell,.settings-card,.settings-section,.setting-section,.dropdown-menu,.context-menu,.popover,.menu-panel,.command-palette,.notification-panel,.drawer,.sheet,.ie-p-content,#ie-personalise-panel){
+ background-color:var(--ui-surface)!important;color:var(--ui-text-soft)!important;border-color:var(--ui-border)!important
+}
+body.personalise-theme-light :is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]),select,textarea,[contenteditable=true]){
+ background-color:#fff!important;color:var(--ui-text)!important;border-color:var(--ui-border-strong)!important
+}
+body.personalise-theme-light option{background:#fff!important;color:#18202b!important}
+body.personalise-theme-light :is(.ie-p-control,.ie-p-toggle,.ie-p-tabs,.ie-p-content,.ie-p-head,.ie-p-top) {color:var(--ui-text-soft)!important}
+body.personalise-theme-light #ie-personalise-panel select{background:#fff!important;color:#18202b!important;border-color:#b7c1ce!important}
+#ie-personalise-panel .ie-p-colours{display:grid!important;grid-template-columns:repeat(auto-fill,minmax(36px,1fr));gap:10px;max-width:420px}
+#ie-personalise-panel .ie-p-swatch{display:block!important;width:36px!important;height:36px!important;min-width:36px;min-height:36px;padding:0!important;flex:none!important;border:2px solid rgba(127,139,153,.8)!important;border-radius:50%!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.28),0 1px 3px rgba(0,0,0,.16)!important;opacity:1!important}
+#ie-personalise-panel .ie-p-swatch[aria-pressed=true]{outline:2px solid var(--user-accent,#d7bd72)!important;outline-offset:3px}
+#ie-personalise-panel .ie-p-swatch[aria-pressed=true]:after{content:"✓";color:#fff!important;text-shadow:0 1px 3px #000,0 0 2px #000}
+.auth-portal-switch{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;min-width:0}
+.auth-portal-choice{display:flex!important;align-items:center;gap:10px;min-width:0;width:100%;box-sizing:border-box;padding:12px!important;white-space:normal;text-decoration:none}
+.auth-portal-choice>*{min-width:0}
+.auth-portal-copy{flex:1 1 auto;overflow-wrap:normal;word-break:normal}
+.auth-portal-copy strong,.auth-portal-copy small{display:block;white-space:normal;overflow-wrap:normal;word-break:normal}
+.auth-portal-copy strong{font-size:clamp(12px,2.5vw,14px);line-height:1.25}
+.auth-portal-copy small{font-size:11px;line-height:1.4}
+.auth-portal-icon,.auth-portal-arrow{flex:0 0 auto}
+@media(max-width:520px){
+ .auth-portal-switch{grid-template-columns:minmax(0,1fr);gap:8px}
+ .auth-portal-choice{min-height:58px;padding:12px 14px!important}
+ .auth-portal-copy strong{white-space:nowrap}
+}
+@media(min-width:521px) and (max-width:760px){.auth-portal-switch{grid-template-columns:minmax(0,1fr)}}
