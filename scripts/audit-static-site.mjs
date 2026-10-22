@@ -41,13 +41,24 @@ try {
 } catch (error) {
   fail(`manifest.webmanifest is not valid JSON: ${error.message}`);
 }
-// Prevent recurring malformed stylesheet edits and duplicate cascade layers from shipping.
-const stylesheetLinks = [...html.matchAll(/<link\\b(?=[^>]*\\brel=["']stylesheet["'])[^>]*\\bhref=["']([^"']+)["'][^>]*>/gi)].map(match => match[1].split(/[?#]/, 1)[0]);
+const bannerViews = read('js/views.js');
+const bannerEvents = read('js/events.js');
+if (bannerViews.includes('Overview banner') || bannerViews.includes('data-banner-enabled') || /function workspaceBannerMarkup\(\)\{[^}]*ie-banner/.test(bannerViews) || bannerEvents.includes('data-banner-enabled') || bannerEvents.includes('data-banner-file')) fail('Unwanted workspace banner UI, rendering or upload handlers have returned.');
+// Guard the stylesheet stack and worker allow-list against silent drift.
+const stylesheetLinks = [...html.matchAll(/<link\b(?=[^>]*\brel=["']stylesheet["'])[^>]*\bhref=["']([^"']+)["'][^>]*>/gi)].map(match => match[1].split(/[?#]/, 1)[0]);
 const stylesheetCounts = new Map();
-for (const path of stylesheetLinks) stylesheetCounts.set(path, (stylesheetCounts.get(path) || 0) + 1);
-for (const [path, count] of stylesheetCounts) if (count > 1) fail(`index.html loads duplicate stylesheet ${path} (${count} times).`);
-if (/\\\\n\\s*<link\\b/i.test(html)) fail('index.html contains a literal escaped newline before a link element; use a real line break.');
-if (/\\\\n\\s*<img\\b/i.test(html)) fail('index.html contains a literal escaped newline before an image element.');
+for (const path of stylesheetLinks) {
+  stylesheetCounts.set(path, (stylesheetCounts.get(path) || 0) + 1);
+  if (path.startsWith('/') && !existsSync(resolve(root, '.' + path))) fail('index.html references missing stylesheet ' + path + '.');
+}
+for (const [path, count] of stylesheetCounts) if (count > 1) fail('index.html loads duplicate stylesheet ' + path + ' (' + count + ' times).');
+if (/\\n\s*<(?:link|img)\b/i.test(html)) fail('index.html contains a literal escaped newline before a link/image element; use a real line break.');
+const workerAllowList = worker.split('const STATIC_PATHS', 1)[0];
+const workerAssets = [...workerAllowList.matchAll(/['"]((?:\/)[^'"]+)['"]/g)].map(match => match[1]).filter(path => /\.(?:css|js|webmanifest|html|png|jpg|jpeg|webp|svg)$/i.test(path));
+const workerAssetCounts = new Map();
+for (const path of workerAssets) workerAssetCounts.set(path, (workerAssetCounts.get(path) || 0) + 1);
+for (const [path, count] of workerAssetCounts) if (count > 1) warnings.push('Service worker lists ' + path + ' ' + count + ' times; remove duplicate entries to keep the asset allow-list maintainable.');
+if (!stylesheetLinks.length) fail('index.html stylesheet audit found no stylesheet links; check the audit matcher.');
 if (!read('_redirects').includes('/* /index.html 200')) fail('_redirects is missing the SPA fallback.');
 if (!read('_headers').includes('Content-Security-Policy:')) fail('_headers is missing Content-Security-Policy.');
 if (!read('_headers').includes('Cache-Control: no-store')) fail('_headers is missing no-store protection for configuration/private responses.');
