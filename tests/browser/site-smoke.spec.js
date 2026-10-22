@@ -122,3 +122,22 @@ test('artist workspace preserves theme artwork, glass panels and saved widget si
   expect(result.bodyTheme).toBeTruthy();
 });
 
+
+test('all workspace themes keep their background artwork in light mode and on non-label routes', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
+  const results = await page.evaluate(() => {
+    document.documentElement.dataset.ieMode = 'light';
+    document.documentElement.dataset.ieTheme = 'blood';
+    const themes = ['light-skies', 'midnight-studio', 'graphite-minimal', 'plum-dusk', 'forest-room'];
+    return themes.map(theme => {
+      document.documentElement.dataset.ieWorkspaceTheme = theme;
+      const image = getComputedStyle(document.body).backgroundImage;
+      return { theme, image };
+    });
+  });
+  for (const result of results) {
+    expect(result.image, result.theme + ' background image was overridden').toContain(result.theme + '.jpg');
+  }
+});
+
