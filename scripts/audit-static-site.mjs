@@ -69,14 +69,14 @@ const views = read('js/views.js');
 const events = read('js/events.js');
 const boot = read('js/boot.js');
 const personalisation = read('js/personalise.js');
-const navigationCss = read('mobile-navigation.css');
+const navigationCss = read('ui-engine.css');
 const core = read('js/core.js');
-const personalisationFixes = read('ui-personalisation-fixes.css');
-const glassNavigationFix = read('ui-glass-navigation-fix.css');
-const themeOverhaul = read('ui-theme-overhaul.css');
+const personalisationFixes = read('ui-engine.css');
+const glassNavigationFix = read('ui-engine.css');
+const themeOverhaul = read('ui-engine.css');
 const coreIcons = read('js/core.js');
 
-if (!html.includes('/ui-glass-navigation-fix.css?v=' + version) || !worker.includes("'/ui-glass-navigation-fix.css'")) fail('Glass navigation fix must be versioned and included in service-worker assets.');
+if (!html.includes('/ui-engine.css?v=' + version) || !worker.includes("'/ui-engine.css'")) fail('Glass navigation fix must be versioned and included in service-worker assets.');
 if (!glassNavigationFix.includes('z-index:2147483000') || !glassNavigationFix.includes('backdrop-filter:blur(36px)') || !glassNavigationFix.includes('min-width:761px')) fail('Glass navigation must use an elevated overlay layer and preserve desktop navigation.');
 if (!views.includes('mobile-menu icon-btn') || !views.includes('id="mobile-navigation-menu"')) {
   fail('Workspace navigation trigger and mobile menu container must both exist.');
@@ -94,8 +94,8 @@ if (!personalisation.includes("palette:'midnight-studio'") ||
     !personalisation.includes("'palette','density'")) {
   fail('Workspace theme preference must be validated and included in settings import/export.');
 }
-if (!html.includes('/ui-theme-overhaul.css?v=' + version) ||
-    !worker.includes("'/ui-theme-overhaul.css'")) {
+if (!html.includes('/ui-engine.css?v=' + version) ||
+    !worker.includes("'/ui-engine.css'")) {
   fail('Full theme stylesheet must be versioned and included in the service-worker asset allow-list.');
 }
 if (!themeOverhaul.includes('personalise-palette-light-skies') ||
@@ -119,8 +119,8 @@ if (!personalisationFixes.includes('.nav-accordion > button.active') ||
     !personalisationFixes.includes('personalise-palette-forest')) {
   fail('Personalisation CSS must map active navigation to the chosen accent and include workspace palettes.');
 }
-if (!worker.includes("'/ui-personalisation-fixes.css'") ||
-    !html.includes('/ui-personalisation-fixes.css?v=' + version)) {
+if (!worker.includes("'/ui-engine.css'") ||
+    !html.includes('/ui-engine.css?v=' + version)) {
   fail('Personalisation fixes stylesheet must be versioned and included in the service-worker asset allow-list.');
 }
 if (!personalisation.includes("s.addEventListener('change',function(){state[key]=s.value;pendingTouchedKey=key;save()})") ||
@@ -152,7 +152,7 @@ if ((views.match(/data-action="settings"[^>]*>\$\{icon\('settings',17\)\} Accoun
 }
 if (html.includes('2.8.2') || worker.includes('2.8.2')) fail('HTML and service worker must not retain stale 2.8.2 asset versions.');
 const criticalAssetsBlock = worker.match(/const criticalAssets = \[([\s\S]*?)\];/);
-if (!criticalAssetsBlock || !criticalAssetsBlock[1].includes("'/ui-theme-overhaul.css'") || !criticalAssetsBlock[1].includes("'/js/personalise.js'")) {
+if (!criticalAssetsBlock || !criticalAssetsBlock[1].includes("'/ui-engine.css'") || !criticalAssetsBlock[1].includes("'/js/personalise.js'")) {
   fail('Theme overhaul CSS and personalisation script must be included in critical service-worker assets.');
 }
 
@@ -245,9 +245,9 @@ for (const path of stylesheetPaths) {
 
 
 /* Regression guards for the artist workspace visual system. */
-const repairCss = read('ui-ux-repair.css');
-const dashboardCss = read('ui-dashboard-finish.css');
-const resizeCss = read('ui-dashboard-resize.css');
+const repairCss = read('ui-engine.css');
+const dashboardCss = read('ui-engine.css');
+const resizeCss = read('ui-engine.css');
 for (const palette of ['light-skies','midnight-studio','graphite-minimal','plum-dusk','forest-room']) {
   if (!repairCss.includes(`/themes/${palette}.jpg`)) fail(`Artist workspace must map the ${palette} palette to its background artwork.`);
 }
@@ -263,7 +263,7 @@ if (!resizeCss.includes('[data-widget-size="half"]') || !resizeCss.includes('[da
 if (!dashboardCss.includes('var(--ie-theme-art)')) {
   fail('Dashboard hero must use the active workspace theme artwork.');
 }
-if (!html.includes('ui-ux-repair.css?v=' + version) || !worker.includes("'/ui-ux-repair.css'")) {
+if (!html.includes('/ui-engine.css?v=' + version) || !worker.includes("'/ui-engine.css'")) {
   fail('Final UI repair layer must be versioned and available to the service worker.');
 }
 
