@@ -1,0 +1,27 @@
+/* 3.3.33: restrained glass, cheaper compositing and desktop layout guardrails. */
+:root { --ie-glass-blur: 12px; }
+html { text-size-adjust: 100%; -webkit-text-size-adjust: 100%; }
+body { overflow-x: clip; }
+#app { min-width: 0; }
+#app .shell, #app .main, #app .main-content, #app .page, #app .page-content, #app .dashboard-page, #app .settings-page { min-width: 0; max-width: 100%; }
+#app .main, #app .main-content, #app .page-content { overflow-wrap: anywhere; }
+#app :is(.dashboard-widget-layout,.dashboard-shortcut-grid,.settings-grid,.settings-layout,.content-grid,.card-grid,.artist-grid,.release-grid,.catalogue-grid,.shop-grid,.form-grid) { min-width: 0; grid-template-columns: repeat(auto-fit,minmax(min(100%,280px),1fr)); }
+#app :is(.card,.panel,.dashboard-panel,.dashboard-widget,.settings-card,.settings-section,.metric-card,.stat-card,.artist-card,.release-card,.profile-card,.form-card,.modal-card,.modal-content,.dialog,.workspace-card,.workspace-panel) { min-width: 0; max-width: 100%; -webkit-backdrop-filter: blur(10px) saturate(118%) !important; backdrop-filter: blur(10px) saturate(118%) !important; box-shadow: 0 10px 28px rgba(0,0,0,.14), inset 0 1px 0 rgba(255,255,255,.10) !important; }
+#app :is(button,.btn,a.button,[role="button"],input,select,textarea) { max-width: 100%; min-width: 0; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+#app :is(table,.table-wrap,.table-container,.data-table) { max-width:100%; }
+#app :is(.table-wrap,.table-container) { overflow-x:auto; }
+#app img, #app video, #app canvas, #app svg { max-width:100%; }
+@media (min-width: 1100px) {
+ #app .shell { width:100%; }
+ #app .main, #app .main-content { min-width:0; }
+ #app .page { width:min(100%, 1500px); margin-inline:auto; }
+ #app .dashboard-widget-layout { grid-template-columns:repeat(12,minmax(0,1fr)); }
+ #app .dashboard-widget-layout > [data-dashboard-widget-card] { min-width:0; }
+ #app :is(.nav,.sidebar,.mobile-nav) { backdrop-filter:none !important; -webkit-backdrop-filter:none !important; }
+}
+@media (max-width: 900px) { #app .dashboard-widget-layout { grid-template-columns:repeat(2,minmax(0,1fr)); } #app .dashboard-widget-layout > [data-widget-size="full"] { grid-column:1/-1; } }
+@media (max-width: 600px) { #app .dashboard-widget-layout, #app :is(.settings-grid,.settings-layout,.content-grid,.card-grid,.artist-grid,.release-grid,.catalogue-grid,.shop-grid,.form-grid) { grid-template-columns:minmax(0,1fr); } }
+@media (prefers-reduced-transparency: reduce) {
+ #app :is(.card,.panel,.dashboard-panel,.dashboard-widget,.settings-card,.settings-section,.metric-card,.stat-card,.artist-card,.release-card,.profile-card,.form-card,.modal-card,.modal-content,.dialog,.workspace-card,.workspace-panel) { -webkit-backdrop-filter:none !important; backdrop-filter:none !important; background:var(--ie-glass-fill-strong,rgba(18,24,32,.94)) !important; }
+}
+@media (prefers-reduced-motion: reduce) { #app *, #app *::before, #app *::after { scroll-behavior:auto !important; animation-duration:.001ms !important; transition-duration:.001ms !important; } }
