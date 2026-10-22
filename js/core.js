@@ -4,7 +4,7 @@
   const ready = Boolean(window.supabase && C.SUPABASE_URL && !C.SUPABASE_URL.includes('PASTE_') && C.SUPABASE_ANON_KEY && !C.SUPABASE_ANON_KEY.includes('PASTE_'));
   const sb = ready ? window.supabase.createClient(C.SUPABASE_URL, C.SUPABASE_ANON_KEY) : null;
 
-  const IE_APPEARANCE_DEFAULTS = {theme:'blood', workspaceTheme:'midnight-studio', accent:'#b3122a', mode:'dark', surfaceTint:'graphite', shadowIntensity:2, fontScale:100, contrast:'standard', motion:'system', lineHeight:100, borderWidth:1, saturation:100, density:'comfortable', style:'classic', font:'poster', cards:'slab', grain:35, radius:2, banner:'', bannerColor:'', bannerEnabled:false, dashboard:{metrics:true,tasks:true,insights:true,announcements:true,upcoming:true,activity:true,catalogue:true}, dashboardLayout:{order:['metrics','actions','upcoming','shortcuts','details'],sizes:{metrics:'full',actions:'full',upcoming:'half',shortcuts:'half',details:'full'},shapes:{metrics:'soft',actions:'soft',upcoming:'soft',shortcuts:'soft',details:'soft'}}};
+  const IE_APPEARANCE_DEFAULTS = {theme:'blood', workspaceTheme:'midnight-studio', accent:'#b3122a', mode:'dark', surfaceTint:'graphite', shadowIntensity:2, fontScale:100, contrast:'standard', motion:'system', lineHeight:100, borderWidth:1, saturation:100, density:'comfortable', style:'classic', font:'poster', cards:'slab', grain:35, radius:2, banner:'', bannerColor:'', bannerEnabled:false, dashboard:{metrics:true,tasks:true,insights:true,announcements:true,upcoming:true,activity:true,catalogue:true}, dashboardLayout:{order:['metrics','actions','upcoming','shortcuts','details'],sizes:{metrics:'full',actions:'full',upcoming:'half',shortcuts:'half',details:'full'},shapes:{metrics:'soft',actions:'soft',upcoming:'soft',shortcuts:'soft',details:'soft'}},quickCustomiser:{contentWidth:'standard',surface:'default',navStyle:'solid',buttonStyle:'soft',cardStyle:'elevated',artworkShape:'rounded',radius:'rounded',motion:'standard',glow:false,contrast:false,shadows:true,decorative:true}};
   const IE_APPEARANCE_THEMES = {
     violet:{accent:'#7868f4',hover:'#6655e7',ink:'#ffffff',soft:'rgba(120,104,244,.14)'},
     ocean:{accent:'#168bd2',hover:'#0875b7',ink:'#ffffff',soft:'rgba(22,139,210,.14)'},
@@ -26,9 +26,24 @@
     IE_DASHBOARD_WIDGETS.forEach(k=>{sizes[k]=Number.isFinite(Number(v.sizes?.[k]))&&Number(v.sizes[k])>=3&&Number(v.sizes[k])<=12?Math.round(Number(v.sizes[k])):({'third':4,'half':6,'full':12}[v.sizes?.[k]]||({'third':4,'half':6,'full':12}[IE_APPEARANCE_DEFAULTS.dashboardLayout.sizes[k]]||12));shapes[k]=['soft','square','pill'].includes(v.shapes?.[k])?v.shapes[k]:IE_APPEARANCE_DEFAULTS.dashboardLayout.shapes[k];const h=Number(v.heights?.[k]);heights[k]=Number.isFinite(h)&&h>0?Math.min(900,Math.max(180,Math.round(h))):0;const st=Number(v.starts?.[k]);starts[k]=Number.isFinite(st)&&st>=1&&st<=12?Math.round(st):0;});
     return {order,sizes,shapes,heights,starts};
   }
+function normaliseQuickCustomiser(value){
+    const q=value&&typeof value==='object'?value:{};
+    return {
+      contentWidth:['standard','wide','full'].includes(q.contentWidth)?q.contentWidth:'standard',
+      surface:['default','flat','glass'].includes(q.surface)?q.surface:'default',
+      navStyle:['solid','floating','minimal'].includes(q.navStyle)?q.navStyle:'solid',
+      buttonStyle:['soft','solid','outline','pill'].includes(q.buttonStyle)?q.buttonStyle:'soft',
+      cardStyle:['elevated','outlined','minimal'].includes(q.cardStyle)?q.cardStyle:'elevated',
+      artworkShape:['rounded','square','circle'].includes(q.artworkShape)?q.artworkShape:'rounded',
+      radius:['sharp','rounded'].includes(q.radius)?q.radius:'rounded',
+      motion:['standard','reduced','none'].includes(q.motion)?q.motion:'standard',
+      glow:q.glow===true,contrast:q.contrast===true,shadows:q.shadows!==false,decorative:q.decorative!==false
+    };
+  }
   function getAppearancePreferences(){
     const saved=(profile&&profile.notification_preferences&&profile.notification_preferences.appearance)||{};
     const out={...IE_APPEARANCE_DEFAULTS,...saved};
+    out.quickCustomiser=normaliseQuickCustomiser({...IE_APPEARANCE_DEFAULTS.quickCustomiser,...(saved.quickCustomiser||{})});
     /* A local selection is meaningful even when account preferences have already
        been populated with defaults by a different page or device. Remember explicit
        customiser edits; infer non-default legacy choices for pre-marker browsers. */
@@ -44,6 +59,16 @@
     if(/^#[0-9a-f]{6}$/i.test(String(device.accent||''))&&locallyChosen('accent',device.accent!=='#d8bd73'))out.accent=device.accent;
     if(Number.isFinite(Number(device.fontScale))&&locallyChosen('fontScale',Number(device.fontScale)!==1))out.fontScale=Math.round(Number(device.fontScale)*100);
     if(['compact','standard','comfortable'].includes(device.density)&&locallyChosen('density',device.density!=='standard'))out.density=({compact:'compact',standard:'comfortable',comfortable:'spacious'})[device.density];
+    const quick=out.quickCustomiser;
+    if(['standard','wide','full'].includes(device.contentWidth)&&locallyChosen('contentWidth',device.contentWidth!=='standard'))quick.contentWidth=device.contentWidth;
+    if(['default','flat','glass'].includes(device.surface)&&locallyChosen('surface',device.surface!=='default'))quick.surface=device.surface;
+    if(['solid','floating','minimal'].includes(device.navStyle)&&locallyChosen('navStyle',device.navStyle!=='solid'))quick.navStyle=device.navStyle;
+    if(['soft','solid','outline','pill'].includes(device.buttonStyle)&&locallyChosen('buttonStyle',device.buttonStyle!=='soft'))quick.buttonStyle=device.buttonStyle;
+    if(['elevated','outlined','minimal'].includes(device.cardStyle)&&locallyChosen('cardStyle',device.cardStyle!=='elevated'))quick.cardStyle=device.cardStyle;
+    if(['rounded','square','circle'].includes(device.artworkShape)&&locallyChosen('artworkShape',device.artworkShape!=='rounded'))quick.artworkShape=device.artworkShape;
+    if(['sharp','rounded'].includes(device.radius)&&locallyChosen('radius',device.radius!=='rounded'))quick.radius=device.radius;
+    if(['standard','reduced','none'].includes(device.motion)&&locallyChosen('motion',device.motion!=='standard'))quick.motion=device.motion;
+    ['glow','contrast','shadows','decorative'].forEach(k=>{if(typeof device[k]==='boolean'&&locallyChosen(k,device[k]!==({glow:false,contrast:false,shadows:true,decorative:true})[k]))quick[k]=device[k];});
     if(!IE_APPEARANCE_THEMES[out.theme])out.theme='slate';
     if(!['light-skies','midnight-studio','graphite-minimal','plum-dusk','forest-room'].includes(out.workspaceTheme))out.workspaceTheme='midnight-studio';
     if(!/^#[0-9a-f]{6}$/i.test(String(out.accent)))out.accent=IE_APPEARANCE_THEMES[out.theme].accent;
@@ -68,10 +93,12 @@
     const dashboard=out.dashboard&&typeof out.dashboard==='object'?out.dashboard:{};
     out.dashboard=Object.fromEntries(['metrics','tasks','insights','announcements','upcoming','activity','catalogue'].map(k=>[k,dashboard[k]!==false]));
     out.dashboardLayout=normaliseDashboardLayout(out.dashboardLayout);
+    out.quickCustomiser=normaliseQuickCustomiser(out.quickCustomiser);
     return out;
   }
   function applyAppearancePreferences(value){
     const a={...IE_APPEARANCE_DEFAULTS,...(value||getAppearancePreferences())};
+    a.quickCustomiser=normaliseQuickCustomiser(a.quickCustomiser);
     const theme=IE_APPEARANCE_THEMES[a.theme]||IE_APPEARANCE_THEMES.slate;
     const accent=/^#[0-9a-f]{6}$/i.test(String(a.accent||''))?a.accent:theme.accent;
     const root=document.documentElement;
@@ -87,7 +114,7 @@
     document.querySelectorAll('[data-appearance-accent]').forEach(i=>{if(i.value!==accent)i.value=accent;});
     document.querySelectorAll('[data-appearance-density]').forEach(i=>{if(i.value!==a.density)i.value=a.density;});
     document.querySelectorAll('[data-appearance-style]').forEach(i=>{if(i.value!==a.style)i.value=a.style;});
-    window.dispatchEvent(new CustomEvent('ie-appearance-change',{detail:{accent,density:a.density,font:a.font,theme:a.theme,workspaceTheme:root.dataset.ieWorkspaceTheme,style:a.style,cards:a.cards,grain:a.grain,radius:a.radius,mode:root.dataset.ieMode,surfaceTint:root.dataset.ieSurface,shadowIntensity:root.dataset.ieShadow,fontScale:a.fontScale,contrast:root.dataset.ieContrast,motion:root.dataset.ieMotion,lineHeight:a.lineHeight,borderWidth:root.dataset.ieBorderWidth,saturation:a.saturation}}));
+    window.dispatchEvent(new CustomEvent('ie-appearance-change',{detail:{accent,density:a.density,font:a.font,theme:a.theme,workspaceTheme:root.dataset.ieWorkspaceTheme,style:a.style,cards:a.cards,grain:a.grain,radius:a.radius,mode:root.dataset.ieMode,surfaceTint:root.dataset.ieSurface,shadowIntensity:root.dataset.ieShadow,fontScale:a.fontScale,contrast:root.dataset.ieContrast,motion:root.dataset.ieMotion,lineHeight:a.lineHeight,borderWidth:root.dataset.ieBorderWidth,saturation:a.saturation,quickCustomiser:a.quickCustomiser}}));
   }
   const STORES = ['Spotify','Apple Music','iTunes','YouTube Music','Amazon Music','Deezer','TIDAL','Pandora','Napster','iHeartRadio','Claro Musica','JioSaavn','Anghami','KKBox','NetEase','Tencent','TikTok','Facebook','Instagram','Snapchat','CapCut','Pinterest','Nuuday','ROXi','Kuack Media','Qobuz','Joox','Boomplay','Trebel','Melon','Flo','Bugs','Genie','Vibe'];
   const GENRES = ['Electronic','Rock','Metal','Metalcore','Hip Hop','Pop','Alternative','Ambient','Other'];
