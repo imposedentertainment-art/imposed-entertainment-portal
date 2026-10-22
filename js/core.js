@@ -101,6 +101,43 @@
   const firstName = () => String((profile&&(profile.display_name||profile.full_name))||'').split(' ')[0];
   let session = null;
   let profile = null;
+
+  // Auth user_metadata is user-editable and must not decide application roles.
+  let currentAccountRoleUserId = null;
+  let currentAccountRole = null;
+  let currentAccountRolePromise = null;
+  function clearCurrentAccountRole() {
+    currentAccountRoleUserId = null;
+    currentAccountRole = null;
+    currentAccountRolePromise = null;
+  }
+  function cacheCurrentAccountRole(userId, role) {
+    if (!userId || (session?.user?.id && session.user.id !== userId)) return;
+    currentAccountRoleUserId = userId;
+    currentAccountRole = String(role || '').trim().toLowerCase() || null;
+    if (currentAccountRolePromise?.userId === userId) currentAccountRolePromise = null;
+  }
+  async function resolveCurrentAccountRole(userId = session?.user?.id) {
+    if (!ready || !sb || !userId) return null;
+    if (currentAccountRoleUserId === userId && currentAccountRole) return currentAccountRole;
+    if (currentAccountRolePromise?.userId === userId) return currentAccountRolePromise.promise;
+    const promise = (async () => {
+      const { data, error } = await sb.from('profiles').select('role').eq('id', userId).maybeSingle();
+      if (error) throw error;
+      const role = String(data?.role || '').trim().toLowerCase() || null;
+      if (role) cacheCurrentAccountRole(userId, role);
+      return role;
+    })();
+    currentAccountRolePromise = { userId, promise };
+    try { return await promise; }
+    finally { if (currentAccountRolePromise?.promise === promise) currentAccountRolePromise = null; }
+  }
+  function isCurrentUserListener() {
+    const userId = session?.user?.id;
+    if (!userId) return false;
+    if (profile?.id === userId && profile.role) return String(profile.role).trim().toLowerCase() === 'listener';
+    return currentAccountRoleUserId === userId && currentAccountRole === 'listener';
+  }
   let releases = [];
   let users = [];
   let invites = [];
