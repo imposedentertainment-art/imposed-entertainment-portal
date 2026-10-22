@@ -1,0 +1,12 @@
+create index if not exists announcements_created_by_idx on public.announcements(created_by);
+create index if not exists band_invites_band_id_idx on public.band_invites(band_id);
+create index if not exists band_invites_invited_by_idx on public.band_invites(invited_by);
+create index if not exists band_members_user_id_idx on public.band_members(user_id);
+create index if not exists bands_created_by_idx on public.bands(created_by);
+create index if not exists earnings_created_by_idx on public.earnings(created_by);
+create index if not exists invites_created_by_idx on public.invites(created_by);
+create index if not exists release_comments_author_id_idx on public.release_comments(author_id);
+create index if not exists release_events_actor_id_idx on public.release_events(actor_id);
+create index if not exists release_internal_notes_author_id_idx on public.release_internal_notes(author_id);
+create index if not exists release_internal_notes_release_id_idx on public.release_internal_notes(release_id);
+create index if not exists releases_band_id_idx on public.releases(band_id);

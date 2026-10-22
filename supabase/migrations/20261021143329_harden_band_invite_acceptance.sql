@@ -1,5 +1,3 @@
--- Harden invite response against unauthenticated calls and concurrent
--- accept/decline requests for the same pending invitation.
 CREATE OR REPLACE FUNCTION public.accept_band_invite(p_id uuid, p_accept boolean DEFAULT true)
 RETURNS void
 LANGUAGE plpgsql
@@ -14,6 +12,8 @@ BEGIN
       USING ERRCODE = '42501';
   END IF;
 
+  -- Lock the pending invitation so concurrent accept/decline requests cannot
+  -- both act on the same invite state.
   SELECT *
     INTO r
     FROM public.band_invites

@@ -1,5 +1,3 @@
--- Harden remaining SECURITY DEFINER routines against search_path shadowing.
--- Application objects are referenced via public-qualified names; pg_catalog remains first.
 ALTER FUNCTION public.accept_invite_on_signup() SET search_path = pg_catalog, public;
 ALTER FUNCTION public.consume_public_rate_limit(text, integer, integer) SET search_path = pg_catalog, public;
 ALTER FUNCTION public.enforce_invite_only() SET search_path = pg_catalog, public;

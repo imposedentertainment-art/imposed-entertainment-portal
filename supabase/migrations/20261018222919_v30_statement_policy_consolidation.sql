@@ -1,0 +1,12 @@
+begin;
+drop policy if exists "artist statements admin all" on public.artist_statements;
+drop policy if exists "artists read published own statements" on public.artist_statements;
+drop policy if exists "artist statements readable by admin or owner" on public.artist_statements;
+create policy "artist statements readable by admin or owner" on public.artist_statements for select to authenticated using (public.is_admin() or (artist_id = (select auth.uid()) and status in ('published','paid')));
+drop policy if exists "artist statements admin insert" on public.artist_statements;
+create policy "artist statements admin insert" on public.artist_statements for insert to authenticated with check (public.is_admin());
+drop policy if exists "artist statements admin update" on public.artist_statements;
+create policy "artist statements admin update" on public.artist_statements for update to authenticated using (public.is_admin()) with check (public.is_admin());
+drop policy if exists "artist statements admin delete" on public.artist_statements;
+create policy "artist statements admin delete" on public.artist_statements for delete to authenticated using (public.is_admin());
+commit;

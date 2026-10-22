@@ -1,0 +1,45 @@
+create or replace function public.get_profile(p_id uuid)
+returns table(
+  id uuid,
+  display_name text,
+  tagline text,
+  bio text,
+  location text,
+  accent text,
+  avatar_path text,
+  banner_path text,
+  links jsonb,
+  contact_email text,
+  role text
+)
+language sql
+stable
+security definer
+set search_path to 'pg_catalog', 'public'
+as $function$
+  select
+    p.id,
+    p.display_name,
+    p.tagline,
+    p.bio,
+    p.location,
+    p.accent,
+    p.avatar_path,
+    p.banner_path,
+    p.links,
+    case
+      when p.id = auth.uid()
+        or public.is_admin()
+        or (
+          p.show_email is true
+          and (p.public_profile_preferences->>'email') is distinct from 'false'
+        )
+      then p.email
+      else null
+    end as contact_email,
+    p.role::text
+  from public.profiles p
+  where p.id = p_id
+    and auth.uid() is not null
+    and (p.role::text <> 'label_admin' or public.is_admin() or p.id = auth.uid());
+$function$;

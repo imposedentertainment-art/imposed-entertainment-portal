@@ -1,0 +1,1 @@
+ALTER TABLE public.profiles ADD COLUMN preferred_language text NULL; ALTER TABLE public.profiles ADD CONSTRAINT profiles_preferred_language_check CHECK (preferred_language IS NULL OR preferred_language IN ('en','es','fr','de','pt','pl')); COMMENT ON COLUMN public.profiles.preferred_language IS 'Optional portal interface language preference; does not affect release metadata.';

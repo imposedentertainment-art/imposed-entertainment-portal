@@ -1,4 +1,5 @@
--- Restrict release write policies to signed-in users while preserving owner/admin checks.
+-- Keep release write policies limited to signed-in users.
+-- The ownership/admin predicates remain the actual authorization boundary.
 DROP POLICY IF EXISTS "release owner insert" ON public.releases;
 CREATE POLICY "release owner insert"
   ON public.releases

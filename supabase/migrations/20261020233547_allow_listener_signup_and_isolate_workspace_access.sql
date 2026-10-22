@@ -21,6 +21,7 @@ SECURITY DEFINER
 SET search_path TO 'pg_catalog', 'public'
 AS $function$
 BEGIN
+  -- Listener registration is open, but it always receives the restricted listener role.
   IF new.raw_user_meta_data->>'account_type' = 'listener' THEN
     RETURN new;
   END IF;
@@ -77,6 +78,7 @@ SECURITY DEFINER
 SET search_path TO 'pg_catalog', 'public'
 AS $function$
 BEGIN
+  -- A listener signing up with an invited email must not consume an artist invite.
   IF new.raw_user_meta_data->>'account_type' = 'listener' THEN
     RETURN new;
   END IF;
@@ -86,12 +88,15 @@ BEGIN
 END;
 $function$;
 
+-- Existing listener accounts (if any) must remain listeners even after metadata changes.
 UPDATE public.profiles p
 SET role = 'listener'::public.user_role
 FROM auth.users u
 WHERE u.id = p.id AND u.raw_user_meta_data->>'account_type' = 'listener'
   AND p.role::text <> 'listener';
 
+-- Restrictive policies intersect with existing policies, preventing listeners from using
+-- the authenticated client as a back door into artist/label workspace data.
 DO $policy$
 DECLARE t record;
 BEGIN
@@ -113,6 +118,8 @@ BEGIN
 END;
 $policy$;
 
+-- Keep listeners able to read their own account row so the client can enforce routing,
+-- but prevent direct profile writes and any role/profile escalation.
 DROP POLICY IF EXISTS listener_profile_read_scope ON public.profiles;
 CREATE POLICY listener_profile_read_scope ON public.profiles AS RESTRICTIVE
 FOR SELECT TO authenticated
@@ -134,6 +141,8 @@ CREATE POLICY listener_profile_delete_block ON public.profiles AS RESTRICTIVE
 FOR DELETE TO authenticated
 USING (NOT public.is_listener_account());
 
+-- Publicly published smart links remain discoverable to listeners; listener accounts
+-- cannot create, edit, or delete smart links through the authenticated API.
 DROP POLICY IF EXISTS listener_smart_links_read_scope ON public.smart_links;
 CREATE POLICY listener_smart_links_read_scope ON public.smart_links AS RESTRICTIVE
 FOR SELECT TO authenticated

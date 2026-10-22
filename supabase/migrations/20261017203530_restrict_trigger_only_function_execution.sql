@@ -1,0 +1,10 @@
+REVOKE EXECUTE ON FUNCTION public.notify_announcement() FROM PUBLIC, anon, authenticated;
+REVOKE EXECUTE ON FUNCTION public.notify_comment() FROM PUBLIC, anon, authenticated;
+REVOKE EXECUTE ON FUNCTION public.notify_earnings() FROM PUBLIC, anon, authenticated;
+REVOKE EXECUTE ON FUNCTION public.notify_release_link() FROM PUBLIC, anon, authenticated;
+REVOKE EXECUTE ON FUNCTION public.notify_release_stats() FROM PUBLIC, anon, authenticated;
+REVOKE EXECUTE ON FUNCTION public.notify_vault_file() FROM PUBLIC, anon, authenticated;
+REVOKE EXECUTE ON FUNCTION public.protect_profile_email() FROM PUBLIC, anon, authenticated;
+REVOKE EXECUTE ON FUNCTION public.protect_profile_name() FROM PUBLIC, anon, authenticated;
+REVOKE EXECUTE ON FUNCTION public.seed_release_tasks() FROM PUBLIC, anon, authenticated;
+REVOKE EXECUTE ON FUNCTION public.shift_release_tasks() FROM PUBLIC, anon, authenticated;

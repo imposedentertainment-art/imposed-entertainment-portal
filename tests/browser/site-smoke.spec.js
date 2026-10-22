@@ -141,3 +141,21 @@ test('all workspace themes keep their background artwork in light mode and on no
   }
 });
 
+
+test('guest customiser persists an explicit workspace theme choice', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
+  const trigger = page.locator('#ie-personalise-trigger');
+  await expect(trigger).toBeVisible({ timeout: 8000 });
+  await trigger.click();
+  await page.locator('#ie-personalise-panel select[aria-label="Workspace theme"]').selectOption('plum-dusk');
+  const result = await page.evaluate(() => ({
+    theme: document.documentElement.dataset.ieWorkspaceTheme,
+    touched: JSON.parse(localStorage.getItem('ie-workspace-personalisation-touched-v1') || '[]'),
+    background: getComputedStyle(document.body).backgroundImage
+  }));
+  expect(result.theme).toBe('plum-dusk');
+  expect(result.touched).toContain('palette');
+  expect(result.background).toContain('plum-dusk.jpg');
+});
+

@@ -266,6 +266,34 @@ if (!themeOverhaul.includes('.page:not(.dashboard-page) > .page-heading') ||
   fail('Non-label pages need shared responsive page hierarchy and artist/public profile styling.');
 }
 
+
+/* Supabase source parity: applied migrations and active Edge Functions remain reproducible. */
+const supabaseFunctionConfig = read('supabase/config.toml');
+const expectedEdgeFunctions = [
+  ['send-portal-email', true],
+  ['verify-turnstile', false],
+  ['portal-health', true],
+  ['printful-catalog', true],
+];
+for (const [name, verifyJwt] of expectedEdgeFunctions) {
+  const sourcePath = `supabase/functions/${name}/index.ts`;
+  if (!existsSync(resolve(root, sourcePath))) fail(`Supabase Edge Function source is missing: ${sourcePath}`);
+  const expectedConfig = `[functions.${name}]\\nverify_jwt = ${verifyJwt}`;
+  if (!supabaseFunctionConfig.includes(expectedConfig)) fail(`Supabase JWT gateway configuration is missing or incorrect for ${name}.`);
+  if (existsSync(resolve(root, sourcePath)) && /\\b(?:sb_secret_[A-Za-z0-9_-]{20,}|sk_(?:live|test)_[A-Za-z0-9]{16,}|whsec_[A-Za-z0-9]{16,})\\b/i.test(read(sourcePath))) fail(`Possible hard-coded provider secret found in ${sourcePath}.`);
+}
+for (const palette of ['light-skies','midnight-studio','graphite-minimal','plum-dusk','forest-room']) {
+  if (!repairCss.includes(`html[data-ie-workspace-theme="${palette}"][data-ie-mode] body`)) {
+    fail(`Final CSS cascade can override the ${palette} theme background in light mode.`);
+  }
+}
+if (!personalisation.includes("TOUCH_KEY='ie-workspace-personalisation-touched-v1'") ||
+    !personalisation.includes('pendingTouchedKey=key;save()') ||
+    !core.includes("locallyChosen('palette'") ||
+    !core.includes("locallyChosen('theme'")) {
+  fail('Explicit local appearance choices must survive account-level default preference loading.');
+}
+
 if (errors.length) {
   console.error('Static-site audit failed:');
   for (const error of errors) console.error(` - ${error}`);

@@ -1,6 +1,3 @@
--- Do not let authenticated users enumerate/read private profiles through get_profile().
--- Owners and label admins retain access; other artists can see profiles only when public
--- or when they share a band with the profile owner.
 CREATE OR REPLACE FUNCTION public.get_profile(p_id uuid)
 RETURNS TABLE(
   id uuid,
