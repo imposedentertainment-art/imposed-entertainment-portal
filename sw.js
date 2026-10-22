@@ -1,5 +1,5 @@
-/* Imposed Entertainment v3.3.61: versioned static assets; never cache query-bearing navigations/auth callbacks. */
-const CACHE_NAME = 'imposed-v3.3.61';
+/* Imposed Entertainment v3.3.62: versioned static assets; never cache query-bearing navigations/auth callbacks. */
+const CACHE_NAME = 'imposed-v3.3.62';
 const STATIC_ASSETS = [
   '/ui-glass-navigation-fix.css', '/ui-overlay-accessibility.css', '/ui-stability-fixes.css', '/ui-ux-repair.css', '/index.html',
   '/themes/light-skies.jpg', '/themes/midnight-studio.jpg', '/themes/graphite-minimal.jpg', '/themes/plum-dusk.jpg', '/themes/forest-room.jpg', '/shop.css', '/mobile-navigation.css', '/ui-personalisation-fixes.css', '/ui-accessibility-performance-pass.css', '/ui-theme-overhaul.css', '/ui-mobile-contrast-fixes.css', '/ui-design-tokens.css', '/ui-major-refresh.css', '/ui-refinement.css', '/ui-dashboard-resize.css', '/ui-theme-finish.css', '/ui-liquid-glass.css', '/ui-liquid-glass-overrides.css', '/ui-dashboard-finish.css', '/ui-performance-polish.css', '/ui-liquid-glass-system.css', '/ui-liquid-glass-refinement.css', '/ui-unified-system.css', '/js/shop.js', '/styles.css', '/ui-polish.css', '/ui-next.css', '/ui-research.css', '/ui-overhaul.css', '/ui-system-v2.css', '/quality.css', '/theme-system.css', '/auth-overhaul.css', '/v2-design-system.css', '/manifest.webmanifest', '/privacy/index.html', '/terms/index.html',
