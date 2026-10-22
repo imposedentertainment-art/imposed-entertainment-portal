@@ -79,7 +79,7 @@ function normaliseQuickCustomiser(value){
     out.fontScale=Math.min(125,Math.max(85,Math.round(Number(out.fontScale)||100)));
     if(!['soft','standard','high'].includes(out.contrast))out.contrast='standard';
     if(!['system','reduced','full'].includes(out.motion))out.motion='system';
-    out.lineHeight=Math.min(130,Math.max(90,Math.round(Number(out.lineHeight)||100)));
+    out.lineHeight=Math.min(130,Math.max(83,Math.round(Number(out.lineHeight)||100)));
     out.borderWidth=Math.min(3,Math.max(0,Math.round(Number(out.borderWidth)||0)));
     out.saturation=Math.min(150,Math.max(50,Math.round(Number(out.saturation)||100)));
     if(!['vivid','classic','minimal'].includes(out.style))out.style='classic';
@@ -102,7 +102,7 @@ function normaliseQuickCustomiser(value){
     const theme=IE_APPEARANCE_THEMES[a.theme]||IE_APPEARANCE_THEMES.slate;
     const accent=/^#[0-9a-f]{6}$/i.test(String(a.accent||''))?a.accent:theme.accent;
     const root=document.documentElement;
-    root.dataset.ieTheme=a.theme||'slate';root.dataset.ieWorkspaceTheme=['light-skies','midnight-studio','graphite-minimal','plum-dusk','forest-room'].includes(a.workspaceTheme)?a.workspaceTheme:'midnight-studio';root.dataset.ieMode=['dark','light','system','amoled'].includes(a.mode)?a.mode:'dark';root.dataset.ieSurface=['graphite','warm','cool'].includes(a.surfaceTint)?a.surfaceTint:'graphite';root.dataset.ieShadow=String(Math.min(3,Math.max(0,Number(a.shadowIntensity)||0)));root.dataset.ieFont=a.font||'poster';root.dataset.ieCards=a.cards||'slab';root.style.setProperty('--ie-font-scale',String(Math.min(125,Math.max(85,Number(a.fontScale)||100))/100));root.dataset.ieContrast=['soft','standard','high'].includes(a.contrast)?a.contrast:'standard';root.dataset.ieMotion=['system','reduced','full'].includes(a.motion)?a.motion:'system';root.dataset.ieBorderWidth=String(Math.min(3,Math.max(0,Number(a.borderWidth)||0)));root.style.setProperty('--ie-line-height',String(Math.min(130,Math.max(90,Number(a.lineHeight)||100))/100));root.style.setProperty('--ie-saturation',String(Math.min(150,Math.max(50,Number(a.saturation)||100))+'%'));root.style.setProperty('--ie-grain',String(Math.min(100,Math.max(0,Number(a.grain)||0))/100));root.style.setProperty('--ie-radius',(Math.min(24,Math.max(0,Number(a.radius)||0)))+'px');root.style.setProperty('--ie-banner',/^data:image\/jpeg;base64,/.test(String(a.banner||''))?'url('+a.banner+')':'none');root.style.setProperty('--ie-banner-color',/^#[0-9a-f]{6}$/i.test(String(a.bannerColor||''))?a.bannerColor:'transparent');root.dataset.ieBannerEnabled=a.bannerEnabled===true?'true':'false';root.dataset.ieDensity=a.density||'comfortable';root.dataset.ieStyle=a.style||'classic';
+    root.dataset.ieTheme=a.theme||'slate';root.dataset.ieWorkspaceTheme=['light-skies','midnight-studio','graphite-minimal','plum-dusk','forest-room'].includes(a.workspaceTheme)?a.workspaceTheme:'midnight-studio';root.dataset.ieMode=['dark','light','system','amoled'].includes(a.mode)?a.mode:'dark';root.dataset.ieSurface=['graphite','warm','cool'].includes(a.surfaceTint)?a.surfaceTint:'graphite';root.dataset.ieShadow=String(Math.min(3,Math.max(0,Number(a.shadowIntensity)||0)));root.dataset.ieFont=a.font||'poster';root.dataset.ieCards=a.cards||'slab';root.style.setProperty('--ie-font-scale',String(Math.min(125,Math.max(85,Number(a.fontScale)||100))/100));root.dataset.ieContrast=['soft','standard','high'].includes(a.contrast)?a.contrast:'standard';root.dataset.ieMotion=['system','reduced','full'].includes(a.motion)?a.motion:'system';root.dataset.ieBorderWidth=String(Math.min(3,Math.max(0,Number(a.borderWidth)||0)));root.style.setProperty('--ie-line-height',String(Math.min(130,Math.max(83,Number(a.lineHeight)||100))/100));root.style.setProperty('--ie-saturation',String(Math.min(150,Math.max(50,Number(a.saturation)||100))+'%'));root.style.setProperty('--ie-grain',String(Math.min(100,Math.max(0,Number(a.grain)||0))/100));root.style.setProperty('--ie-radius',(Math.min(24,Math.max(0,Number(a.radius)||0)))+'px');root.style.setProperty('--ie-banner',/^data:image\/jpeg;base64,/.test(String(a.banner||''))?'url('+a.banner+')':'none');root.style.setProperty('--ie-banner-color',/^#[0-9a-f]{6}$/i.test(String(a.bannerColor||''))?a.bannerColor:'transparent');root.dataset.ieBannerEnabled=a.bannerEnabled===true?'true':'false';root.dataset.ieDensity=a.density||'comfortable';root.dataset.ieStyle=a.style||'classic';
     const dashboard=a.dashboard&&typeof a.dashboard==='object'?a.dashboard:IE_APPEARANCE_DEFAULTS.dashboard;
     ['metrics','tasks','announcements','upcoming','activity','catalogue'].forEach(k=>{root.dataset['ieDashboard'+k[0].toUpperCase()+k.slice(1)]=dashboard[k]===false?'false':'true';});
     const dashboardLayout=normaliseDashboardLayout(a.dashboardLayout);
@@ -116,6 +116,48 @@ function normaliseQuickCustomiser(value){
     document.querySelectorAll('[data-appearance-style]').forEach(i=>{if(i.value!==a.style)i.value=a.style;});
     window.dispatchEvent(new CustomEvent('ie-appearance-change',{detail:{accent,density:a.density,font:a.font,theme:a.theme,workspaceTheme:root.dataset.ieWorkspaceTheme,style:a.style,cards:a.cards,grain:a.grain,radius:a.radius,mode:root.dataset.ieMode,surfaceTint:root.dataset.ieSurface,shadowIntensity:root.dataset.ieShadow,fontScale:a.fontScale,contrast:root.dataset.ieContrast,motion:root.dataset.ieMotion,lineHeight:a.lineHeight,borderWidth:root.dataset.ieBorderWidth,saturation:a.saturation,quickCustomiser:a.quickCustomiser}}));
   }
+  // Persist quick-customiser edits to the signed-in account as well as local storage.
+  // Keep this bridge separate from ie-appearance-change to avoid an account-sync feedback loop.
+  let personaliseSyncTimer = null;
+  let pendingPersonaliseSnapshot = null;
+  window.addEventListener('ie-personalise-change', event => {
+    const detail = event?.detail;
+    if (!detail || !session?.user?.id || !sb) return;
+    pendingPersonaliseSnapshot = { ...detail, userId: session.user.id };
+    clearTimeout(personaliseSyncTimer);
+    personaliseSyncTimer = setTimeout(async () => {
+      const snapshot = pendingPersonaliseSnapshot;
+      pendingPersonaliseSnapshot = null;
+      if (!snapshot || !session?.user?.id || session.user.id !== snapshot.userId || !profile || profile.id !== snapshot.userId) return;
+      const previous = profile.notification_preferences && typeof profile.notification_preferences === 'object'
+        ? profile.notification_preferences : {};
+      const appearance = { ...(previous.appearance && typeof previous.appearance === 'object' ? previous.appearance : {}) };
+      const validAccent = /^#[0-9a-f]{6}$/i.test(String(snapshot.accent || ''));
+      if (validAccent) appearance.accent = snapshot.accent;
+      if (['light-skies','midnight-studio','graphite-minimal','plum-dusk','forest-room'].includes(snapshot.workspaceTheme)) appearance.workspaceTheme = snapshot.workspaceTheme;
+      if (['dark','light','system','amoled'].includes(snapshot.mode || snapshot.theme)) appearance.mode = snapshot.mode || snapshot.theme;
+      if (['compact','standard','comfortable'].includes(snapshot.density)) appearance.density = ({ compact:'compact', standard:'comfortable', comfortable:'spacious' })[snapshot.density];
+      const fontMap = { modern:'clean', display:'poster', serif:'occult', mono:'typewriter' };
+      if (fontMap[snapshot.font]) appearance.font = fontMap[snapshot.font];
+      if (Number.isFinite(Number(snapshot.fontScale))) appearance.fontScale = Math.min(125, Math.max(85, Math.round(Number(snapshot.fontScale) * 100)));
+      if (Number.isFinite(Number(snapshot.lineHeight))) appearance.lineHeight = Math.min(127, Math.max(83, Math.round((Number(snapshot.lineHeight) / 1.5) * 100)));
+      const quickKeys = ['contentWidth','surface','navStyle','buttonStyle','cardStyle','artworkShape','radius','motion','glow','contrast','shadows','decorative'];
+      const quick = { ...(appearance.quickCustomiser && typeof appearance.quickCustomiser === 'object' ? appearance.quickCustomiser : {}) };
+      quickKeys.forEach(key => { if (Object.prototype.hasOwnProperty.call(snapshot, key)) quick[key] = snapshot[key]; });
+      appearance.quickCustomiser = normaliseQuickCustomiser(quick);
+      const nextPreferences = { ...previous, appearance };
+      try {
+        const { error } = await sb.from('profiles').update({ notification_preferences: nextPreferences }).eq('id', snapshot.userId);
+        if (error) throw error;
+        if (session?.user?.id !== snapshot.userId || !profile || profile.id !== snapshot.userId) return;
+        profile.notification_preferences = nextPreferences;
+        window.dispatchEvent(new CustomEvent('ie-personalise-sync-status', { detail: { synced: true } }));
+      } catch (error) {
+        console.warn('Could not sync interface preferences to the account.', error);
+        window.dispatchEvent(new CustomEvent('ie-personalise-sync-status', { detail: { synced: false } }));
+      }
+    }, 350);
+  });
   const STORES = ['Spotify','Apple Music','iTunes','YouTube Music','Amazon Music','Deezer','TIDAL','Pandora','Napster','iHeartRadio','Claro Musica','JioSaavn','Anghami','KKBox','NetEase','Tencent','TikTok','Facebook','Instagram','Snapchat','CapCut','Pinterest','Nuuday','ROXi','Kuack Media','Qobuz','Joox','Boomplay','Trebel','Melon','Flo','Bugs','Genie','Vibe'];
   const GENRES = ['Electronic','Rock','Metal','Metalcore','Hip Hop','Pop','Alternative','Ambient','Other'];
   const TYPES = ['Single','EP','Album','Mixtape'];
