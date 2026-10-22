@@ -1,0 +1,47 @@
+/* Imposed Entertainment UI Engine — single stylesheet entrypoint. Imports retain the existing cascade during migration; theme/background ownership is centralized below. */
+@import url("/styles.css?v=3.3.68");
+@import url("/ui-polish.css?v=3.3.68");
+@import url("/personalise.css?v=3.3.68");
+@import url("/quality.css?v=3.3.68");
+@import url("/theme-system.css?v=3.3.68");
+@import url("/auth-overhaul.css?v=3.3.68");
+@import url("/v2-design-system.css?v=3.3.68");
+@import url("/ui-next.css?v=3.3.68");
+@import url("/ui-research.css?v=3.3.68");
+@import url("/ui-overhaul.css?v=3.3.68");
+@import url("/ui-system-v2.css?v=3.3.68");
+@import url("/shop.css?v=3.3.68");
+@import url("/mobile-navigation.css?v=3.3.68");
+@import url("/ui-personalisation-fixes.css?v=3.3.68");
+@import url("/ui-theme-overhaul.css?v=3.3.68");
+@import url("/ui-major-refresh.css?v=3.3.68");
+@import url("/ui-refinement.css?v=3.3.68");
+@import url("/ui-dashboard-resize.css?v=3.3.68");
+@import url("/ui-theme-finish.css?v=3.3.68");
+@import url("/ui-liquid-glass.css?v=3.3.68");
+@import url("/ui-liquid-glass-overrides.css?v=3.3.68");
+@import url("/ui-dashboard-finish.css?v=3.3.68");
+@import url("/ui-performance-polish.css?v=3.3.68");
+@import url("/ui-liquid-glass-system.css?v=3.3.68");
+@import url("/ui-liquid-glass-refinement.css?v=3.3.68");
+@import url("/ui-design-tokens.css?v=3.3.68");
+@import url("/ui-mobile-contrast-fixes.css?v=3.3.68");
+@import url("/ui-unified-system.css?v=3.3.68");
+@import url("/ui-overlay-accessibility.css?v=3.3.68");
+@import url("/ui-stability-fixes.css?v=3.3.68");
+@import url("/ui-ux-repair.css?v=3.3.68");
+@import url("/ui-performance-desktop-public.css?v=3.3.68");
+@import url("/ui-glass-navigation-fix.css?v=3.3.68");
+@import url("/ui-settings-mobile-repair.css?v=3.3.68");
+@import url("/ui-theme-navigation-targeted-fixes.css?v=3.3.68");
+@import url("/responsive-layout-system.css?v=3.3.68");
+@import url("/ui-accessibility-performance-pass.css?v=3.3.68");
+@import url("/ui-theme-background-layer.css?v=3.3.68");
+
+/* UI ENGINE: one persistent background layer shared by light and dark themes. */
+html{background-color:var(--bg,var(--ie-bg,#f4f5f8))!important;min-height:100%}
+body{position:relative;background-color:transparent!important;background-image:none!important;isolation:isolate;min-height:100vh}
+body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse at 78% -10%,color-mix(in srgb,var(--accent,#d8bd73) 10%,transparent),transparent 44rem),radial-gradient(ellipse at 8% 40%,color-mix(in srgb,var(--ie-background-glow,#8eb6d8) 7%,transparent),transparent 42rem),linear-gradient(180deg,color-mix(in srgb,var(--bg,var(--ie-bg,#f4f5f8)) 92%,transparent),var(--bg,var(--ie-bg,#f4f5f8)));opacity:1}
+#app{position:relative;z-index:1;min-height:100vh}
+#app :where(.guest-discover,.public-artist,.smart-public-shell){position:relative;z-index:1}
+@media(prefers-reduced-motion:reduce){body::after{background-attachment:scroll}}
