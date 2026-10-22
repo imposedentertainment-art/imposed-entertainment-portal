@@ -21,7 +21,7 @@ html body .shell>header.nav{
 html body #ie-personalise-trigger{
   position:fixed!important;
   inset:auto 1rem calc(1rem + env(safe-area-inset-bottom,0px)) auto!important;
-  z-index:30!important;
+  z-index:10000!important;
   display:grid!important;
   place-items:center!important;
   width:48px!important;height:48px!important;
