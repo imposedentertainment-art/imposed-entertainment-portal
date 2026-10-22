@@ -1,12 +1,12 @@
-/* Imposed Entertainment v2.8.9: versioned static assets; never cache query-bearing navigations/auth callbacks. */
-const CACHE_NAME = 'imposed-v3.3.43';
+/* Imposed Entertainment v3.3.44: versioned static assets; never cache query-bearing navigations/auth callbacks. */
+const CACHE_NAME = 'imposed-v3.3.44';
 const STATIC_ASSETS = [
   '/ui-glass-navigation-fix.css', '/ui-overlay-accessibility.css', '/ui-stability-fixes.css', '/ui-ux-repair.css', '/index.html',
-  '/themes/light-skies.jpg', '/themes/midnight-studio.jpg', '/themes/graphite-minimal.jpg', '/themes/plum-dusk.jpg', '/themes/forest-room.jpg', '/shop.css', '/mobile-navigation.css', '/ui-personalisation-fixes.css', '/ui-theme-overhaul.css', '/ui-mobile-contrast-fixes.css', '/ui-design-tokens.css', '/ui-major-refresh.css', '/ui-refinement.css', '/ui-dashboard-resize.css', '/ui-theme-finish.css', '/ui-liquid-glass.css', '/ui-liquid-glass-overrides.css', '/ui-dashboard-finish.css', '/ui-performance-polish.css', '/ui-liquid-glass-system.css', '/ui-liquid-glass-refinement.css', '/ui-unified-system.css', '/js/shop.js', '/styles.css', '/ui-polish.css', '/ui-next.css', '/ui-research.css', '/ui-overhaul.css', '/ui-system-v2.css', '/quality.css', '/theme-system.css', '/auth-overhaul.css', '/v2-design-system.css', '/manifest.webmanifest', '/privacy/index.html', '/terms/index.html',
+  '/themes/light-skies.jpg', '/themes/midnight-studio.jpg', '/themes/graphite-minimal.jpg', '/themes/plum-dusk.jpg', '/themes/forest-room.jpg', '/shop.css', '/mobile-navigation.css', '/ui-personalisation-fixes.css', '/ui-accessibility-performance-pass.css', '/ui-theme-overhaul.css', '/ui-mobile-contrast-fixes.css', '/ui-design-tokens.css', '/ui-major-refresh.css', '/ui-refinement.css', '/ui-dashboard-resize.css', '/ui-theme-finish.css', '/ui-liquid-glass.css', '/ui-liquid-glass-overrides.css', '/ui-dashboard-finish.css', '/ui-performance-polish.css', '/ui-liquid-glass-system.css', '/ui-liquid-glass-refinement.css', '/ui-unified-system.css', '/js/shop.js', '/styles.css', '/ui-polish.css', '/ui-next.css', '/ui-research.css', '/ui-overhaul.css', '/ui-system-v2.css', '/quality.css', '/theme-system.css', '/auth-overhaul.css', '/v2-design-system.css', '/manifest.webmanifest', '/privacy/index.html', '/terms/index.html',
   '/img/logo-64.png', '/img/logo-128.png', '/img/logo-192.png', '/img/logo-512.png',
   '/js/i18n.js', '/js/core.js', '/js/boot.js', '/js/data.js', '/js/audio.js',
   '/js/extras.js', '/js/podcasts.js', '/js/business.js', '/js/views.js', '/js/release.js', '/js/profiles.js', '/js/support-assistant.js', '/help/index.html', '/knowledge/index.html', '/ui-performance-desktop-public.css',
-  '/ui-settings-mobile-repair.css', '/ui-theme-navigation-targeted-fixes.css', '/responsive-layout-system.css', '/js/ui-targeted-fixes.js', '/js/discography.js', '/js/studio.js', '/js/vault.js', '/js/captcha.js', '/js/events.js', '/js/personalise.js', '/js/quality.js', '/personalise.css'
+  '/ui-settings-mobile-repair.css', '/ui-theme-navigation-targeted-fixes.css', '/responsive-layout-system.css', '/js/ui-targeted-fixes.js', '/ui-accessibility-performance-pass.css', '/js/discography.js', '/js/studio.js', '/js/vault.js', '/js/captcha.js', '/js/events.js', '/js/personalise.js', '/js/quality.js', '/personalise.css'
 ];
 const STATIC_PATHS = new Set(STATIC_ASSETS.map(path => new URL(path, self.location.origin).pathname));
 const NETWORK_TIMEOUT_MS = 7000;
@@ -54,7 +54,8 @@ self.addEventListener('fetch', event => {
   const isStaticAsset = STATIC_PATHS.has(url.pathname);
   // Only accept the known release query on allow-listed public assets. All other query-bearing
   // requests (auth codes, invites, search state, user-specific data) bypass Cache Storage.
-  const isVersionedStaticAsset = isStaticAsset && url.searchParams.size === 1 && ['3.3.35','3.3.41','3.3.42','3.3.43'].includes(url.searchParams.get('v'));
+  const releaseVersion = CACHE_NAME.slice('imposed-v'.length);
+  const isVersionedStaticAsset = isStaticAsset && url.searchParams.size === 1 && url.searchParams.get('v') === releaseVersion;
   if ((url.search && !isVersionedStaticAsset) || url.hash || /\/(auth|callback|invite)(\/|$)/i.test(url.pathname)) return;
   if (!isNavigation && !isStaticAsset) return;
 
