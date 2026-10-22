@@ -336,6 +336,16 @@ if (!core.includes('async function resolveCurrentAccountRole') ||
   fail('Listener routing must resolve the trusted profile role before showing role-specific account features.');
 }
 
+
+const listenerProfileTriggerMigration = read('supabase/migrations/20261022005658_allow_listener_alert_preference_only.sql');
+if (!listenerProfileTriggerMigration.includes('TG_TABLE_NAME = \'profiles\'') ||
+    !listenerProfileTriggerMigration.includes("NEW.notification_preferences - 'new_followed_releases'") ||
+    !listenerProfileTriggerMigration.includes("pg_catalog.jsonb_typeof(NEW.notification_preferences->'new_followed_releases') = 'boolean'") ||
+    !listenerProfileTriggerMigration.includes("pg_catalog.to_jsonb(NEW) - 'notification_preferences'") ||
+    !events.includes('document.querySelector(\'meta[name="portal-build"]\')?.content')) {
+  fail('Listener notification preferences must be the only allowed listener profile mutation, and diagnostics must report the real build.');
+}
+
 if (errors.length) {
   console.error('Static-site audit failed:');
   for (const error of errors) console.error(` - ${error}`);
