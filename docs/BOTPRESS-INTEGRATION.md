@@ -9,8 +9,8 @@ The public, crawlable support knowledge source is `/help/`. Use this URL as the 
 ## Configure the widget
 
 1. Publish the Botpress bot and open its Webchat integration.
-2. Copy the generated **configuration script URL** from the embed snippet (normally a `files.bpcontent.cloud` URL). Do not copy an admin/dashboard URL or a private API token.
-3. Set `BOTPRESS_WEBCHAT_SCRIPT_URL` in `config.js` to that HTTPS URL. The website validates the hostname before loading it.
+2. Use the public Webchat shareable URL supplied for this bot. The site embeds it in a frame only after validating both the `cdn.botpress.cloud` shareable-page host/path and the nested `files.bpcontent.cloud` config URL.
+3. Set `BOTPRESS_WEBCHAT_SHAREABLE_URL` in `config.js` to that HTTPS URL. The website validates the exact shareable-page hostname/path and nested config hostname before embedding it.
 4. In Botpress, restrict the webchat's allowed origins to the production website hostname and any explicit staging hostname. Do not expose private actions in the bot just because the widget is hidden on other pages.
 5. Test with an authenticated artist account, an authenticated label account, a listener account and a signed-out browser. The widget should load only on the workspace Support route.
 
