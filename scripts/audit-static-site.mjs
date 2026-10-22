@@ -247,6 +247,24 @@ if (!html.includes('ui-ux-repair.css?v=' + version) || !worker.includes("'/ui-ux
   fail('Final UI repair layer must be versioned and available to the service worker.');
 }
 
+
+if (!core.includes("localStorage.getItem('ie-workspace-personalisation-v2')") ||
+    !core.includes("!Object.prototype.hasOwnProperty.call(saved,'workspaceTheme')") ||
+    !core.includes("!Object.prototype.hasOwnProperty.call(saved,'mode')")) {
+  fail('Device themes and colour mode must remain available when an account has no saved appearance preference.');
+}
+for (const palette of ['light-skies','midnight-studio','graphite-minimal','plum-dusk','forest-room']) {
+  if (!themeOverhaul.includes(`html[data-ie-workspace-theme="${palette}"] body`) ||
+      !themeOverhaul.includes(`/themes/${palette}.jpg`)) {
+    fail(`The ${palette} theme must apply its real background artwork to every route, not only the label dashboard.`);
+  }
+}
+if (!themeOverhaul.includes('.page:not(.dashboard-page) > .page-heading') ||
+    !themeOverhaul.includes('.artist-profile-page') ||
+    !themeOverhaul.includes('@media(max-width:700px)')) {
+  fail('Non-label pages need shared responsive page hierarchy and artist/public profile styling.');
+}
+
 if (errors.length) {
   console.error('Static-site audit failed:');
   for (const error of errors) console.error(` - ${error}`);
