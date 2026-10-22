@@ -6,7 +6,7 @@ const STATIC_ASSETS = [
   '/img/logo-64.png', '/img/logo-128.png', '/img/logo-192.png', '/img/logo-512.png',
   '/js/i18n.js', '/js/core.js', '/js/boot.js', '/js/data.js', '/js/audio.js',
   '/js/extras.js', '/js/podcasts.js', '/js/business.js', '/js/views.js', '/js/release.js', '/js/profiles.js', '/js/support-assistant.js', '/help/index.html', '/knowledge/index.html', '/ui-performance-desktop-public.css',
-  '/js/discography.js', '/js/studio.js', '/js/vault.js', '/js/captcha.js', '/js/events.js', '/js/personalise.js', '/js/quality.js', '/personalise.css'
+  '/ui-settings-mobile-repair.css', '/ui-theme-navigation-targeted-fixes.css', '/responsive-layout-system.css', '/js/ui-targeted-fixes.js', '/js/discography.js', '/js/studio.js', '/js/vault.js', '/js/captcha.js', '/js/events.js', '/js/personalise.js', '/js/quality.js', '/personalise.css'
 ];
 const STATIC_PATHS = new Set(STATIC_ASSETS.map(path => new URL(path, self.location.origin).pathname));
 const NETWORK_TIMEOUT_MS = 7000;
