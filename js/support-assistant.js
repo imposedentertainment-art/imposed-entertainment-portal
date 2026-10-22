@@ -8,7 +8,8 @@
   const LOADED_ATTR = 'data-ie-botpress-loaded';
 
   function onWorkspaceSupportRoute() {
-    return (location.pathname.replace(/\/+$/, '') || '/') === '/support';
+    const path = location.pathname.replace(/\/+$/, '') || '/';
+    return path === '/support' || path === '/listen/account';
   }
 
   function getTrustedScriptUrl() {
@@ -25,7 +26,7 @@
 
   function ensureSupportCard() {
     if (document.getElementById('ie-ai-support-card')) return;
-    const listenerAccount = (location.pathname.replace(/\\/+$/, '') || '/') === '/listen/account';
+    const listenerAccount = (location.pathname.replace(/\/+$/, '') || '/') === '/listen/account';
     const heading = document.querySelector('#app .page-heading');
     const listenerLibrary = document.querySelector('#app .listener-account-library');
     if (listenerAccount && !listenerLibrary) return;
