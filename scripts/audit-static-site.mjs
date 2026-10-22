@@ -50,7 +50,8 @@ for (const path of stylesheetLinks) {
 }
 for (const [path, count] of stylesheetCounts) if (count > 1) fail('index.html loads duplicate stylesheet ' + path + ' (' + count + ' times).');
 if (/\\n\s*<(?:link|img)\b/i.test(html)) fail('index.html contains a literal escaped newline before a link/image element; use a real line break.');
-const workerAssets = [...worker.matchAll(/['"]((?:\/)[^'"]+)['"]/g)].map(match => match[1]).filter(path => /\.(?:css|js|webmanifest|html|png|jpg|jpeg|webp|svg)$/i.test(path));
+const workerAllowList = worker.split('const STATIC_PATHS', 1)[0];
+const workerAssets = [...workerAllowList.matchAll(/['"]((?:\/)[^'"]+)['"]/g)].map(match => match[1]).filter(path => /\.(?:css|js|webmanifest|html|png|jpg|jpeg|webp|svg)$/i.test(path));
 const workerAssetCounts = new Map();
 for (const path of workerAssets) workerAssetCounts.set(path, (workerAssetCounts.get(path) || 0) + 1);
 for (const [path, count] of workerAssetCounts) if (count > 1) warnings.push('Service worker lists ' + path + ' ' + count + ' times; remove duplicate entries to keep the asset allow-list maintainable.');
