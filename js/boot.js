@@ -78,6 +78,15 @@
           cleanupWorkspaceSubscriptions();
           profile=null;
           clearCurrentAccountRole();
+          // Do not leave a signed-out browser showing the last account's private visual choices.
+          if(!nextSession && currentUserId){
+            try {
+              ['ie-workspace-personalisation-v2','ie-workspace-personalisation-v1','ie-workspace-personalisation-touched-v1','ie-personalisation-account-v1'].forEach(key=>localStorage.removeItem(key));
+            } catch(storageError) {
+              console.warn('Could not clear account-specific appearance state on sign-out.', storageError);
+            }
+            window.dispatchEvent(new CustomEvent('ie-personalise-account-change', { detail: { userId: null } }));
+          }
         }
         const previousUserId=currentUserId;
         session=nextSession||null;
