@@ -354,8 +354,8 @@ const headers = read('_headers');
 if (!html.includes(`/js/support-assistant.js?v=${version}`)) fail('index.html must load the support assistant module using the current version.');
 if (!redirects.includes('/help /help/index.html 200') || !redirects.includes('/help/ /help/index.html 200')) fail('The public Help Centre must resolve at both /help and /help/.');
 if (!supportHelp.includes('name="robots" content="index,follow"') || !supportHelp.includes('Listener accounts are intentionally separated')) fail('The public Help Centre must be crawlable and document listener/workspace role separation.');
-if (!supportAssistant.includes("url.hostname !== 'files.bpcontent.cloud'") || !supportAssistant.includes('sb.auth.getSession()')) fail('Botpress must be hostname-validated and loaded only after checking an authenticated session.');
-if (!config.includes('BOTPRESS_WEBCHAT_SCRIPT_URL')) fail('config.js must declare the optional Botpress webchat configuration.');
+if (!supportAssistant.includes("url.hostname !== 'cdn.botpress.cloud'") || !supportAssistant.includes('sb.auth.getSession()')) fail('Botpress must be hostname-validated and loaded only after checking an authenticated session.');
+if (!config.includes('BOTPRESS_WEBCHAT_SCRIPT_URL')) fail('config.js must declare the optional Botpress shareable URL configuration.');
 if (!headers.includes('https://files.bpcontent.cloud') || !headers.includes('https://*.botpress.cloud')) fail('CSP must allow only the configured Botpress webchat origins needed by the integration.');
 if (errors.length) {
   console.error('Static-site audit failed:');
