@@ -227,5 +227,5 @@ test('liquid-glass chrome remains transparent and desktop navigation stays avail
 test('welcome hero does not duplicate the page wallpaper with artwork', async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
-  await expect(page.locator('.dashboard-hero img, .welcome-card img, .welcome-widget img')).toHaveCount(0);
+  await expect(page.locator('.dashboard-hero .hero-art, .dashboard-hero .hero-index, .welcome-card img, .welcome-widget img')).toHaveCount(0);
 });
