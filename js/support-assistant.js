@@ -51,7 +51,7 @@
       if (window[LOADED_ATTR]) { if (status) status.textContent = 'The assistant is ready. Open the chat control in the corner to start.'; return; }
       const url = getTrustedScriptUrl();
       if (!url) {
-        if (status) status.textContent = (location.pathname.replace(/\\/+$/, '') || '/') === '/listen/account'
+        if (status) status.textContent = (location.pathname.replace(/\/+$/, '') || '/') === '/listen/account'
           ? 'The AI assistant is not connected yet. Use the Help Centre for listener questions.'
           : 'The AI assistant is not connected yet. Use the support form below or the Help Centre.';
         return;
