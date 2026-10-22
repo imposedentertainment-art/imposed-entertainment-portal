@@ -1,4 +1,4 @@
-/* v3.3.46 — final, route-independent workspace artwork layer.
+/* v3.3.48 — route-independent workspace artwork layer with system-mode support.
    Loaded after all legacy CSS so later opaque body rules cannot hide the backdrop. */
 html { min-height:100%; background:#080a0d; }
 html::before {
@@ -24,3 +24,29 @@ body {background-color:transparent!important;background-image:none!important}
 body #app {background-color:transparent}
 body #app :where(.main,.main-content,.page,.page-content,.workspace,.workspace-content,.content-area,.auth-page,.auth-layout,.auth-shell,.public-page,.public-profile,.artist-profile,.profile-page,.catalogue-page,.shop-page) {background-color:transparent!important}
 @media(max-width:700px),(prefers-reduced-motion:reduce) {html::before{background-attachment:scroll,scroll}}
+
+
+/* System mode must honour the OS preference without requiring a manual theme pick.
+   Keep each selected artwork, but lift the dark overlay so light mode is genuinely usable. */
+@media (prefers-color-scheme: light) {
+  html[data-ie-mode="system"] { --ie-theme-fallback:#f4f6f9; }
+  html[data-ie-mode="system"][data-ie-workspace-theme="light-skies"] {
+    --ie-theme-fallback:#eaf3fb;
+    --ie-theme-overlay:linear-gradient(145deg,rgba(234,243,251,.12),rgba(238,245,251,.18));
+  }
+  html[data-ie-mode="system"][data-ie-workspace-theme="midnight-studio"] {
+    --ie-theme-overlay:linear-gradient(145deg,rgba(244,246,249,.72),rgba(244,246,249,.80));
+  }
+  html[data-ie-mode="system"][data-ie-workspace-theme="graphite-minimal"] {
+    --ie-theme-overlay:linear-gradient(145deg,rgba(244,246,249,.76),rgba(244,246,249,.84));
+  }
+  html[data-ie-mode="system"][data-ie-workspace-theme="plum-dusk"] {
+    --ie-theme-overlay:linear-gradient(145deg,rgba(250,244,250,.72),rgba(250,244,250,.82));
+  }
+  html[data-ie-mode="system"][data-ie-workspace-theme="forest-room"] {
+    --ie-theme-overlay:linear-gradient(145deg,rgba(241,248,243,.72),rgba(241,248,243,.82));
+  }
+}
+@media (prefers-reduced-transparency: reduce) {
+  html::before { background-image:var(--ie-theme-fallback,#080a0d); }
+}
