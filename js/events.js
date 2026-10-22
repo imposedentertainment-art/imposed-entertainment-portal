@@ -17,6 +17,7 @@ function ieSaveNotificationPreference(el){
     if(!session || session.user.id!==userId || !profile) return;
     const snapshot={...(profile.notification_preferences||{})};
     const {error}=await sb.from('profiles').update({notification_preferences:snapshot}).eq('id',userId);
+    if(!session || session.user.id!==userId || !profile || profile.id!==userId)return;
     if(error){
       const current={...(profile.notification_preferences||{})};
       if(current[key]===desired){
@@ -48,6 +49,7 @@ function ieStartEmailCodeCooldown(){
       if(!session||session.user.id!==userId||!profile)return;
       const prefs={...(profile.notification_preferences||{}),appearance:safe};
       const {error}=await sb.from('profiles').update({notification_preferences:prefs}).eq('id',userId);
+      if(!session||session.user.id!==userId||!profile||profile.id!==userId)return;
       const status=document.querySelector('#appearance-save-status');
       if(error){if(status)status.textContent='Preview applied, but account sync failed. Changes may not follow you to another device.';console.warn('Appearance preference save failed',error);toast('Appearance preview applied; could not sync to your account.','error');return;}
       profile.notification_preferences=prefs;if(status)status.textContent='Appearance saved to your account.';
@@ -352,7 +354,7 @@ function ieStartEmailCodeCooldown(){
        }
       else if(a==='oauth-x'||a==='oauth-discord'){if(authMode!=='login')throw new Error('Social sign-in is only available for existing invited accounts.');const provider=a==='oauth-x'?'x':'discord';sessionStorage.removeItem('ie_google_signup_invite');const {error}=await sb.auth.signInWithOAuth({provider,options:{redirectTo:location.origin+location.pathname}});if(error){throw new Error(/provider.*(disabled|not enabled|not configured)/i.test(error.message)?`Enable ${provider==='x'?'X / Twitter (OAuth 2.0)':'Discord'} and add its OAuth credentials in Supabase Authentication → Sign In / Providers.`:error.message);}}
       else if(a==='notifications'){view='notifications';mobile=false;render();}
-      else if(a==='save-notification-prefs'){const prefs={...((profile.notification_preferences)||{})};document.querySelectorAll('[data-pref]').forEach(i=>prefs[i.dataset.pref]=i.checked);const {error}=await sb.from('profiles').update({notification_preferences:prefs}).eq('id',session.user.id);if(error)throw error;profile.notification_preferences=prefs;toast('Notification preferences saved','success');render();}
+      else if(a==='save-notification-prefs'){const userId=session.user.id;const prefs={...((profile.notification_preferences)||{})};document.querySelectorAll('[data-pref]').forEach(i=>prefs[i.dataset.pref]=i.checked);const {error}=await sb.from('profiles').update({notification_preferences:prefs}).eq('id',userId);if(!session||session.user.id!==userId||!profile||profile.id!==userId)return;if(error)throw error;profile.notification_preferences=prefs;toast('Notification preferences saved','success');render();}
       else if(a==='notes-read-all'){const {error}=await sb.from('notifications').update({read:true}).eq('user_id',session.user.id).eq('read',false);if(error)throw error;await loadNotes();render();toast('All notifications marked seen','success');}
       else if(a==='note-read'){const {error}=await sb.from('notifications').update({read:true}).eq('id',el.dataset.id);if(error)throw error;await loadNotes();render();}
       else if(a==='note-del'){const {error}=await sb.from('notifications').delete().eq('id',el.dataset.id);if(error)throw error;await loadNotes();render();}
