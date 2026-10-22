@@ -359,3 +359,28 @@ body.personalise-theme-amoled #app :is(.card,.panel,.settings-card,.detail-card,
   body.personalise-theme-system #app :is(.main,.main-content,.page-content,.workspace-content,.content-area,.dashboard-content,.page-container) { background-color: #f4f6f9; color: #171b23; }
   body.personalise-theme-system #app :is(.card,.panel,.settings-card,.detail-card,.builder-card,.approval-card,.metric,.up-card,.profile-card,.artist-card,.release-card,.collection-card,.modal-card,.settings-panel,.widget-card,.workspace-card) { background-color: #fff; color: #171b23; border-color: #dbe1e9; }
 }
+
+/* v3.3.52: complete width presets and honour OS-level reduced-motion preferences. */
+body.personalise-content-wide #app :is(.main,.main-content,.page-content,.workspace-content,.content-area,.dashboard-content,.page-container),
+body.personalise-content-wide :is(.main,.main-content,.page-content,.workspace-content,.content-area,.dashboard-content,.page-container) {
+  max-width: 1320px;
+  width: min(100%, 1320px);
+  margin-inline: auto;
+}
+body.personalise-content-full #app :is(.main,.main-content,.page-content,.workspace-content,.content-area,.dashboard-content,.page-container),
+body.personalise-content-full :is(.main,.main-content,.page-content,.workspace-content,.content-area,.dashboard-content,.page-container) {
+  max-width: none;
+  width: 100%;
+  margin-inline: 0;
+}
+body.personalise-motion-reduced *, body.personalise-motion-reduced *::before, body.personalise-motion-reduced *::after {
+  scroll-behavior: auto !important;
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  body:not(.personalise-motion-standard) *, body:not(.personalise-motion-standard) *::before, body:not(.personalise-motion-standard) *::after {
+    scroll-behavior: auto !important;
+  }
+}
