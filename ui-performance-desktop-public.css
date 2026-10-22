@@ -25,3 +25,99 @@ body { overflow-x: clip; }
  #app :is(.card,.panel,.dashboard-panel,.dashboard-widget,.settings-card,.settings-section,.metric-card,.stat-card,.artist-card,.release-card,.profile-card,.form-card,.modal-card,.modal-content,.dialog,.workspace-card,.workspace-panel) { -webkit-backdrop-filter:none !important; backdrop-filter:none !important; background:var(--ie-glass-fill-strong,rgba(18,24,32,.94)) !important; }
 }
 @media (prefers-reduced-motion: reduce) { #app *, #app *::before, #app *::after { scroll-behavior:auto !important; animation-duration:.001ms !important; transition-duration:.001ms !important; } }
+
+
+/* 3.3.34 — mobile widget usability and lighter, cleaner glass. */
+/* Let tall widget contents scroll inside their own surface on touch devices. */
+#app .dashboard-widget-layout > [data-dashboard-widget-card],
+#app .dashboard-widget-layout > [data-dashboard-widget-card] > .dashboard-panel,
+#app .dashboard-widget-layout > [data-dashboard-widget-card] .dashboard-panel,
+#app .dashboard-widget-layout > [data-dashboard-widget-card] .dashboard-more,
+#app .dashboard-widget-layout > [data-dashboard-widget-card] .dashboard-more-content {
+  min-height: 0;
+  min-width: 0;
+}
+@media (max-width: 760px), (pointer: coarse) {
+  #app .dashboard-widget-layout > [data-dashboard-widget-card] {
+    max-height: min(68dvh, 620px);
+    overflow: hidden;
+  }
+  #app .dashboard-widget-layout > [data-dashboard-widget-card] > .dashboard-panel,
+  #app .dashboard-widget-layout > [data-dashboard-widget-card] .dashboard-panel,
+  #app .dashboard-widget-layout > [data-dashboard-widget-card] .dashboard-more-content,
+  #app .dashboard-widget-layout > [data-dashboard-widget-card] .dashboard-widget-content,
+  #app .dashboard-widget-layout > [data-dashboard-widget-card] .widget-content {
+    max-height: min(62dvh, 560px);
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y pinch-zoom;
+    scrollbar-width: thin;
+  }
+  #app .dashboard-widget-layout > [data-dashboard-widget-card] .dashboard-panel *,
+  #app .dashboard-widget-layout > [data-dashboard-widget-card] .dashboard-more-content * {
+    touch-action: pan-y pinch-zoom;
+  }
+}
+/* Avoid trapping scroll on desktop: the document remains the primary scroll area. */
+@media (min-width: 761px) and (pointer: fine) {
+  #app .dashboard-widget-layout > [data-dashboard-widget-card],
+  #app .dashboard-widget-layout > [data-dashboard-widget-card] .dashboard-panel,
+  #app .dashboard-widget-layout > [data-dashboard-widget-card] .dashboard-more-content {
+    max-height: none;
+    overflow: visible;
+  }
+}
+/* The old layered pseudo-highlight and deep blur created a smoky, boxed-in look.
+   Keep a crisp edge and let the user's background/theme show through. */
+html[data-ie-workspace-theme] body #app :is(
+  .dashboard-widget-layout > [data-dashboard-widget-card],
+  .dashboard-panel,.dashboard-widget,.dashboard-more,.quick-links-panel,
+  .action-centre,.upcoming-panel,.next-step-panel,.metric,.metric-card,.stat-card
+) {
+  background-color: rgba(15,22,31,.20) !important;
+  background-image: none !important;
+  border-color: rgba(255,255,255,.16) !important;
+  box-shadow: 0 6px 18px rgba(0,0,0,.09) !important;
+  -webkit-backdrop-filter: blur(7px) saturate(115%) !important;
+  backdrop-filter: blur(7px) saturate(115%) !important;
+}
+html[data-ie-workspace-theme] body #app :is(
+  .dashboard-widget-layout > [data-dashboard-widget-card],
+  .dashboard-panel,.dashboard-widget,.dashboard-more,.quick-links-panel,
+  .action-centre,.upcoming-panel,.next-step-panel,.metric,.metric-card,.stat-card
+)::before,
+html[data-ie-workspace-theme] body #app .dashboard-widget-layout > [data-dashboard-widget-card]::before,
+html[data-ie-workspace-theme] body #app .dashboard-widget-layout > [data-dashboard-widget-card]::after {
+  content: none !important;
+  display: none !important;
+  box-shadow: none !important;
+  background: none !important;
+}
+/* Remove the visible "connector/base" beneath widget groups without affecting content. */
+html[data-ie-workspace-theme] body #app .dashboard-widget-layout {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+html[data-ie-workspace-theme] body #app .dashboard-widget-layout::before,
+html[data-ie-workspace-theme] body #app .dashboard-widget-layout::after {
+  content: none !important;
+  display: none !important;
+}
+html[data-ie-workspace-theme="light-skies"] body #app :is(
+  .dashboard-widget-layout > [data-dashboard-widget-card],
+  .dashboard-panel,.dashboard-widget,.dashboard-more,.quick-links-panel,
+  .action-centre,.upcoming-panel,.next-step-panel,.metric,.metric-card,.stat-card
+) {
+  background-color: rgba(239,248,255,.16) !important;
+  border-color: rgba(255,255,255,.42) !important;
+  box-shadow: 0 6px 18px rgba(32,67,94,.07) !important;
+}
+@media (prefers-reduced-transparency: reduce) {
+  html[data-ie-workspace-theme] body #app :is(.dashboard-panel,.dashboard-widget,.dashboard-more,.quick-links-panel,.action-centre,.upcoming-panel,.next-step-panel,.metric,.metric-card,.stat-card) {
+    background-color: rgba(18,24,32,.92) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+}
