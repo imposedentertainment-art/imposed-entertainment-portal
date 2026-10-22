@@ -323,6 +323,19 @@ if (!listenerPreferenceSource.includes('public.set_listener_release_notification
   fail('Listener notification settings must use the role-scoped RPC rather than blocked direct profile writes.');
 }
 
+
+/* Account routing and listener features must use the owner-scoped profiles.role, not mutable Auth metadata. */
+const listenerRoleSources = [boot, events, views, read('js/profiles.js')];
+if (listenerRoleSources.some(source => source.includes('user_metadata?.account_type') || source.includes("user_metadata.account_type"))) {
+  fail('Frontend role decisions must not trust user-editable auth user_metadata.account_type.');
+}
+if (!core.includes('async function resolveCurrentAccountRole') ||
+    !core.includes('function isCurrentUserListener()') ||
+    !boot.includes('resolveCurrentAccountRole(session.user.id)') ||
+    !events.includes('resolveCurrentAccountRole(loginData.user.id)')) {
+  fail('Listener routing must resolve the trusted profile role before showing role-specific account features.');
+}
+
 if (errors.length) {
   console.error('Static-site audit failed:');
   for (const error of errors) console.error(` - ${error}`);
