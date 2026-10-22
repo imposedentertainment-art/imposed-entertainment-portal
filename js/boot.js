@@ -74,23 +74,34 @@
         if(!bootSessionResolved){pendingAuthEvent=true;pendingAuthSession=nextSession||null;return;}
         const currentUserId=session?.user?.id||null;
         const nextUserId=nextSession?.user?.id||null;
-        if(!nextSession||(currentUserId&&currentUserId!==nextUserId))cleanupWorkspaceSubscriptions();
-        if(nextSession?.user?.user_metadata?.account_type==='listener'){session=nextSession; if(!isListenerRoute())history.replaceState(null,'','/listen/account'); renderListenerRoute(); hidePortalLoading(); return;}
-        if(isListenerRoute()){ session=nextSession||null; renderListenerRoute(); hidePortalLoading(); return; }
-        const previousUserId=session?.user?.id||null;
-        session=nextSession||null;
-        if(session){
-          if(previousUserId!==session.user.id || !profile) {
-            try { await loadApp(); }
-            catch(e){ console.error('Workspace refresh failed',e); }
-          }
-        } else {
+        if(!nextSession||currentUserId!==nextUserId){
+          cleanupWorkspaceSubscriptions();
           profile=null;
+          clearCurrentAccountRole();
+        }
+        const previousUserId=currentUserId;
+        session=nextSession||null;
+        if(!session){
+          profile=null;
+          clearCurrentAccountRole();
           releases=[]; users=[]; invites=[]; inbox=[]; bands=[]; myBandInvites=[];
           window.__workspaceDataUid=null;
           workspaceDataWarnings={};
-          if(isListenerRoute()) renderListenerRoute(); else renderAuth();
+          if(isListenerRoute())renderListenerRoute();else renderAuth();
           hidePortalLoading();
+          return;
+        }
+        let trustedRole=null;
+        try{trustedRole=await resolveCurrentAccountRole(session.user.id);}
+        catch(roleError){console.warn('Could not resolve the signed-in profile role yet; workspace loading will verify it again.',roleError);}
+        if(trustedRole==='listener'){
+          if(!isListenerRoute())history.replaceState(null,'','/listen/account');
+          renderListenerRoute();hidePortalLoading();return;
+        }
+        if(isListenerRoute()){renderListenerRoute();hidePortalLoading();return;}
+        if(previousUserId!==session.user.id||!profile){
+          try{await loadApp();}
+          catch(e){console.error('Workspace refresh failed',e);}
         }
       },0);
     });
@@ -125,14 +136,18 @@
     if(error){bootFailed=true;bootSessionResolved=true;authSubscription?.data?.subscription?.unsubscribe();throw error;}
     session=pendingAuthEvent?pendingAuthSession:(data?.session||null);
     bootSessionResolved=true;
-    // Listener accounts stay in the public listener portal and must never initialise an artist workspace profile.
-    if(session?.user?.user_metadata?.account_type==='listener'&&!isListenerRoute())history.replaceState(null,'','/listen/account');
-    // Do not force public listener links through the artist/label sign-in screen.
-    if(isListenerRoute()){ renderListenerRoute(); hidePortalLoading(); }
-
-    if(isListenerRoute()) return;
-    if(session) await loadApp();
-    else { renderAuth(); hidePortalLoading(); }
+    if(!session)clearCurrentAccountRole();
+    else{
+      try{await resolveCurrentAccountRole(session.user.id);}
+      catch(roleError){console.warn('Could not resolve the signed-in profile role at startup; verifying during profile load.',roleError);}
+    }
+    if(isListenerRoute()){renderListenerRoute();hidePortalLoading();return;}
+    if(isCurrentUserListener()){
+      history.replaceState(null,'','/listen/account');
+      renderListenerRoute();hidePortalLoading();return;
+    }
+    if(session)await loadApp();
+    else{renderAuth();hidePortalLoading();}
   }
 
   async function loadProfile(){
@@ -141,6 +156,7 @@
     if(!data){ const {data:p,error:e}=await sb.from('profiles').insert({id:session.user.id,email:session.user.email,display_name:session.user.user_metadata?.full_name||session.user.email?.split('@')[0]||'Artist'}).select().single(); if(e) throw e; profile=p; }
     else profile=data;
     profile.role=String(profile.role||'artist').trim().toLowerCase();
+    cacheCurrentAccountRole(session.user.id,profile.role);
     if(typeof applyAppearancePreferences==='function')applyAppearancePreferences(getAppearancePreferences());
     if(window.IE_I18N){
       if(profile.preferred_language && window.IE_I18N.languages[profile.preferred_language]) window.IE_I18N.setLanguage(profile.preferred_language,{notify:false});
