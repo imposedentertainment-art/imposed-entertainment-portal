@@ -1,5 +1,5 @@
-/* Imposed Entertainment v3.3.69: versioned static assets; never cache query-bearing navigations/auth callbacks. */
-const CACHE_NAME = 'imposed-v3.3.69';
+/* Imposed Entertainment v4.0.0: versioned static assets; never cache query-bearing navigations/auth callbacks. */
+const CACHE_NAME = 'imposed-v4.0.0';
 const STATIC_ASSETS = [
   '/ui-engine.css',
   '/index.html',
