@@ -35,3 +35,130 @@ body.personalise-theme-light #ie-personalise-panel select{background:#fff!import
  .auth-portal-copy strong{white-space:nowrap}
 }
 @media(min-width:521px) and (max-width:760px){.auth-portal-switch{grid-template-columns:minmax(0,1fr)}}
+
+
+/* v2: unify the legacy light-mode class and named Light Skies palette. */
+:where(body.personalise-theme-light,body.personalise-palette-light-skies,html[data-ie-workspace-theme="light-skies"] body){
+  color-scheme:light;
+  --ui-page:#f4f6f9;
+  --ui-surface:#ffffff;
+  --ui-surface-raised:#edf1f5;
+  --ui-surface-hover:#e3e9f0;
+  --ui-border:#d2d9e2;
+  --ui-border-strong:#aeb9c7;
+  --ui-text:#18202b;
+  --ui-text-soft:#303b49;
+  --ui-text-muted:#536071;
+  --ui-input:#ffffff;
+  --ui-overlay:rgba(15,23,42,.42);
+  --ui-shadow:0 16px 42px rgba(20,32,48,.12);
+  --bg:var(--ui-page);
+  --s1:var(--ui-surface);
+  --s2:var(--ui-surface-raised);
+  --s3:var(--ui-surface-hover);
+  --line:var(--ui-border);
+  --line2:var(--ui-border-strong);
+  --text:var(--ui-text);
+  --soft:var(--ui-text-soft);
+  --muted:var(--ui-text-muted);
+}
+:where(body.personalise-theme-light,body.personalise-palette-light-skies,html[data-ie-workspace-theme="light-skies"] body){
+  background-color:var(--ui-page)!important;
+  color:var(--ui-text-soft)!important;
+  background-image:none;
+}
+:where(body.personalise-theme-light,body.personalise-palette-light-skies,html[data-ie-workspace-theme="light-skies"] body)
+:where(.nav,.topbar,.app-header,.workspace-topbar,.sidebar,.side-nav,.mobile-nav,.bottom-nav,.settings-quicknav){
+  background-color:var(--ui-surface)!important;
+  color:var(--ui-text)!important;
+  border-color:var(--ui-border)!important;
+}
+:where(body.personalise-theme-light,body.personalise-palette-light-skies,html[data-ie-workspace-theme="light-skies"] body)
+:where(#app,.app-shell,.workspace,.workspace-shell,.main,.main-content,.page,.page-content,.content-area,.settings-page,.settings-content){
+  color:var(--ui-text-soft)!important;
+}
+:where(body.personalise-theme-light,body.personalise-palette-light-skies,html[data-ie-workspace-theme="light-skies"] body)
+:where(.card,.panel,.surface,.modal,.modal-backdrop .modal,.modal-card,.modal-content,.dialog,.dialog-content,.auth-card,.auth-panel,.settings-shell,.settings-card,.settings-panel,.settings-section,.setting-section,.dropdown-menu,.context-menu,.popover,.menu-panel,.command-palette,.notification-panel,.drawer,.sheet,.ie-p-content,#ie-personalise-panel){
+  background-color:var(--ui-surface)!important;
+  color:var(--ui-text-soft)!important;
+  border-color:var(--ui-border)!important;
+}
+:where(body.personalise-theme-light,body.personalise-palette-light-skies,html[data-ie-workspace-theme="light-skies"] body)
+:where(h1,h2,h3,h4,h5,h6,label,legend,strong,b,.page-title,.section-title,.card-title,.modal-title,.setting-title,.nav-link,.nav-accordion-title){
+  color:var(--ui-text)!important;
+}
+:where(body.personalise-theme-light,body.personalise-palette-light-skies,html[data-ie-workspace-theme="light-skies"] body)
+:where(p,small,.muted,.sub,.help-text,.description,.setting-description,.field-help,.empty-state,.text-muted){
+  color:var(--ui-text-muted);
+}
+:where(body.personalise-theme-light,body.personalise-palette-light-skies,html[data-ie-workspace-theme="light-skies"] body)
+:where(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]),select,textarea,[contenteditable=true]){
+  background-color:var(--ui-input)!important;
+  color:var(--ui-text)!important;
+  border-color:var(--ui-border-strong)!important;
+}
+:where(body.personalise-theme-light,body.personalise-palette-light-skies,html[data-ie-workspace-theme="light-skies"] body) option{
+  background:#fff!important;color:#18202b!important;
+}
+#ie-personalise-panel .ie-p-colours{
+  display:grid!important;
+  grid-template-columns:repeat(auto-fill,minmax(40px,1fr))!important;
+  align-items:center;
+  gap:12px!important;
+  max-width:440px;
+}
+#ie-personalise-panel .ie-p-swatch{
+  appearance:none!important;
+  -webkit-appearance:none!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:40px!important;height:40px!important;
+  min-width:40px!important;min-height:40px!important;
+  padding:0!important;flex:none!important;
+  background-image:none!important;
+  border:2px solid #7b8795!important;
+  border-radius:50%!important;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.42),0 2px 5px rgba(15,23,42,.22)!important;
+  opacity:1!important;visibility:visible!important;
+  transition:transform .15s ease,outline-color .15s ease,box-shadow .15s ease;
+}
+#ie-personalise-panel .ie-p-swatch:hover{transform:scale(1.07)}
+#ie-personalise-panel .ie-p-swatch:focus-visible{outline:3px solid var(--user-accent,#536579)!important;outline-offset:3px}
+#ie-personalise-panel .ie-p-swatch[aria-pressed="true"]{
+  outline:3px solid var(--user-accent,#536579)!important;outline-offset:3px;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.88),0 2px 7px rgba(15,23,42,.28)!important;
+}
+#ie-personalise-panel .ie-p-swatch[aria-pressed="true"]::after{
+  content:"✓";font-size:18px;font-weight:800;line-height:1;color:#fff!important;
+  -webkit-text-stroke:.5px rgba(0,0,0,.6);text-shadow:0 1px 3px rgba(0,0,0,.9);
+}
+@media(max-width:760px){
+  html body .shell>header.nav{max-width:100%;overflow:visible}
+  html body .shell>header.nav>.nav-inner{
+    display:flex!important;align-items:center!important;gap:12px!important;
+    min-width:0!important;padding-inline:clamp(12px,4vw,20px)!important;
+  }
+  html body .shell>header.nav>.nav-inner>.brand{
+    flex:1 1 auto!important;min-width:0!important;max-width:calc(100% - 56px);
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;gap:8px!important;
+    font-size:clamp(13px,3.8vw,16px)!important;
+  }
+  html body .shell>header.nav>.nav-inner>.brand .brand-mark{flex:0 0 32px!important;width:32px!important;height:32px!important}
+  html body .shell>header.nav>.nav-inner>.mobile-menu{
+    flex:0 0 44px!important;width:44px!important;min-width:44px!important;
+    min-height:44px!important;margin-left:auto!important;
+  }
+  html body .shell>header.nav>.nav-inner .desktop-nav{display:none!important}
+  html body .shell>header.nav>.mobile-nav{box-sizing:border-box!important}
+  html body .shell>header.nav>.mobile-nav :where(a,button,[role="button"]){
+    max-width:100%;min-width:0;overflow-wrap:anywhere;touch-action:manipulation;
+  }
+  html body .shell>header.nav>.mobile-nav :where(.nav-accordion-title,.nav-shop-link){
+    display:flex;align-items:center;gap:10px;min-height:46px;
+  }
+  html body .shell>header.nav>.mobile-nav :where(.nav-accordion-title span,.nav-shop-link span){min-width:0}
+}
+@media(prefers-reduced-motion:reduce){
+  #ie-personalise-panel .ie-p-swatch{transition:none}
+}
