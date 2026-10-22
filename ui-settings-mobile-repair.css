@@ -48,3 +48,25 @@ body{overflow-x:clip}
  #app .appearance-section-head{align-items:flex-start}
  #app .appearance-section-head :where(b,span){overflow-wrap:anywhere}
 }
+
+
+/* Build 3.3.62 — settings navigation and rows stay usable across small screens. */
+#app .settings-quicknav{position:relative;z-index:1;display:flex;gap:8px;max-width:100%;padding:5px 2px 12px;overflow-x:auto;overscroll-behavior-inline:contain;scrollbar-width:thin;-webkit-overflow-scrolling:touch}
+#app .settings-quicknav button{flex:0 0 auto;min-height:42px;padding:10px 15px;border:1px solid var(--border,rgba(255,255,255,.12));border-radius:999px;background:var(--surface-2,rgba(255,255,255,.045));color:var(--text-secondary,inherit);white-space:nowrap;scroll-snap-align:start}
+#app .settings-quicknav button.is-active,#app .settings-quicknav button[aria-current="location"]{border-color:var(--user-accent,var(--accent));background:color-mix(in srgb,var(--user-accent,var(--accent)) 14%,transparent);color:var(--text-primary,inherit)}
+#app [id^="settings-"]{scroll-margin-top:24px}
+#app .settings-card{min-width:0;overflow-wrap:anywhere}
+#app .settings-card .setting-section{display:flex;align-items:flex-start;gap:12px;min-width:0}
+#app .settings-card .setting-section>div:last-child{min-width:0}
+#app .settings-card .setting-row{gap:14px;min-width:0}
+#app .settings-card .setting-row>div:first-child{min-width:0;overflow-wrap:anywhere}
+#app .settings-card .setting-row input[type="checkbox"]{flex:0 0 auto;width:20px;height:20px;accent-color:var(--user-accent,var(--accent));cursor:pointer}
+#app .settings-card :where(button,a,input,select,textarea):focus-visible,#app .settings-quicknav button:focus-visible{outline:3px solid var(--user-accent,var(--accent));outline-offset:3px}
+@media(max-width:600px){
+  #app .settings-quicknav{margin-inline:calc(-1 * var(--ie-settings-gutter));padding-inline:var(--ie-settings-gutter);scroll-snap-type:x proximity}
+  #app .settings-card .setting-row{align-items:flex-start;flex-wrap:wrap}
+  #app .settings-card .setting-row>input[type="checkbox"]{margin-left:auto}
+  #app .settings-card .setting-row .row-actions{width:100%;display:flex;flex-wrap:wrap}
+  #app .settings-card .setting-row .row-actions>*{flex:1 1 auto}
+}
+@media(prefers-reduced-motion:reduce){#app .settings-quicknav{scroll-behavior:auto}}
