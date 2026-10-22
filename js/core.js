@@ -122,13 +122,21 @@ function normaliseQuickCustomiser(value){
   let pendingPersonaliseSnapshot = null;
   window.addEventListener('ie-personalise-change', event => {
     const detail = event?.detail;
-    if (!detail || !session?.user?.id || !sb) return;
+    if (!detail) return;
+    if (!session?.user?.id || !sb) {
+      window.dispatchEvent(new CustomEvent('ie-personalise-sync-status', { detail: { synced: false, reason: 'local-only' } }));
+      return;
+    }
     pendingPersonaliseSnapshot = { ...detail, userId: session.user.id };
     clearTimeout(personaliseSyncTimer);
     personaliseSyncTimer = setTimeout(async () => {
       const snapshot = pendingPersonaliseSnapshot;
       pendingPersonaliseSnapshot = null;
-      if (!snapshot || !session?.user?.id || session.user.id !== snapshot.userId || !profile || profile.id !== snapshot.userId) return;
+      if (!snapshot || !session?.user?.id || session.user.id !== snapshot.userId) return;
+      if (!profile || profile.id !== snapshot.userId) {
+        window.dispatchEvent(new CustomEvent('ie-personalise-sync-status', { detail: { synced: false, reason: 'profile-not-ready' } }));
+        return;
+      }
       const previous = profile.notification_preferences && typeof profile.notification_preferences === 'object'
         ? profile.notification_preferences : {};
       const appearance = { ...(previous.appearance && typeof previous.appearance === 'object' ? previous.appearance : {}) };
