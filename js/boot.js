@@ -165,6 +165,8 @@
       const previousAccountId = localStorage.getItem(accountKey);
       if (previousAccountId && previousAccountId !== session.user.id) {
         ['ie-workspace-personalisation-v2','ie-workspace-personalisation-v1','ie-workspace-personalisation-touched-v1'].forEach(key => localStorage.removeItem(key));
+        // Reset the customiser's in-memory snapshot too; clearing storage alone is insufficient.
+        window.dispatchEvent(new CustomEvent('ie-personalise-account-change', { detail: { userId: session.user.id } }));
       }
       localStorage.setItem(accountKey, session.user.id);
     } catch (storageError) {
