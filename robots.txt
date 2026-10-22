@@ -13,4 +13,3 @@ Disallow: /vault
 Disallow: /business
 Disallow: /listen/account
 
-Sitemap: /sitemap.xml
