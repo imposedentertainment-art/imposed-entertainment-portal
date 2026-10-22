@@ -103,3 +103,6 @@ html[data-ie-mode="light"] body,body.personalise-theme-light,body.personalise-pa
 html[data-ie-mode="light"] body .shell,html[data-ie-mode="light"] body .main,body.personalise-theme-light .shell,body.personalise-theme-light .main,body.personalise-palette-light-skies .shell,body.personalise-palette-light-skies .main{background:transparent!important}
 html[data-ie-mode="system"] body .shell,html[data-ie-mode="system"] body .main,body.personalise-theme-system .shell,body.personalise-theme-system .main{background:transparent!important}
 @media(prefers-color-scheme:light){html[data-ie-mode="system"] body,html[data-ie-mode="system"] body .shell,html[data-ie-mode="system"] body .main{background:transparent!important;background-image:none!important}}
+
+/* The app root must not paint an opaque sheet over the engine's fixed backdrop. */
+#app{background-color:transparent!important;background-image:none!important}
