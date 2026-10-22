@@ -236,7 +236,7 @@ function ieStartEmailCodeCooldown(){
       }
       if(a==='podcasts'||a.startsWith('podcast-')){await podcastAction(a,el);return;}
       if(isDiscAction(a)){await discAction(a,el);return;}
-      else if(a==='reset-appearance'){const defaults={...IE_APPEARANCE_DEFAULTS};window.dispatchEvent(new CustomEvent('ie-personalise-reset'));applyAppearancePreferences(defaults);const current=document.querySelector('#appearance-current');if(current)current.textContent='Blood';saveAppearancePreferences(defaults);toast('Appearance reset','success');}
+      else if(a==='reset-appearance'){const defaults={...IE_APPEARANCE_DEFAULTS};window.dispatchEvent(new CustomEvent('ie-personalise-reset'));applyAppearancePreferences(defaults);const current=document.querySelector('#appearance-current');if(current)current.textContent='Blood';saveAppearancePreferences(defaults);toast('Appearance reset','success');if(view==='settings')render();}
       if(a==='dashboard'){view='dashboard';mobile=false;render();}
       else if(a==='calendar'){view='calendar';mobile=false;render();}
       else if(a==='insights'){view='insights';mobile=false;render();}
