@@ -528,3 +528,64 @@ html[data-ie-workspace-theme] body :where(p,small,.muted,.sub,.help-text,.descri
 .workspace-theme-preview i,.workspace-theme-preview b{display:none!important}
 .workspace-theme-option{align-items:center}
 @media(max-width:480px){.workspace-theme-preview{flex-basis:64px;width:64px;height:52px;min-width:64px}}
+
+
+/* v3.3.27 — apply the selected photographic workspace theme on every route,
+   not only inside the label dashboard hero. This includes auth, artist, public
+   profile, catalogue, shop and other non-label surfaces. */
+html[data-ie-workspace-theme="light-skies"] body {
+  background-color:#eaf3fb!important;
+  background-image:linear-gradient(145deg,rgba(234,243,251,.48),rgba(238,245,251,.32)),url('/themes/light-skies.jpg')!important;
+  background-size:cover,cover!important;background-position:center,center!important;background-attachment:fixed!important;
+}
+html[data-ie-workspace-theme="midnight-studio"] body {
+  background-color:#080a0d!important;
+  background-image:linear-gradient(145deg,rgba(8,10,13,.78),rgba(8,10,13,.62)),url('/themes/midnight-studio.jpg')!important;
+  background-size:cover,cover!important;background-position:center,center!important;background-attachment:fixed!important;
+}
+html[data-ie-workspace-theme="graphite-minimal"] body {
+  background-color:#101114!important;
+  background-image:linear-gradient(145deg,rgba(16,17,20,.84),rgba(16,17,20,.70)),url('/themes/graphite-minimal.jpg')!important;
+  background-size:cover,cover!important;background-position:center,center!important;background-attachment:fixed!important;
+}
+html[data-ie-workspace-theme="plum-dusk"] body {
+  background-color:#140e18!important;
+  background-image:linear-gradient(145deg,rgba(20,14,24,.78),rgba(20,14,24,.64)),url('/themes/plum-dusk.jpg')!important;
+  background-size:cover,cover!important;background-position:center,center!important;background-attachment:fixed!important;
+}
+html[data-ie-workspace-theme="forest-room"] body {
+  background-color:#09140f!important;
+  background-image:linear-gradient(145deg,rgba(9,20,15,.80),rgba(9,20,15,.64)),url('/themes/forest-room.jpg')!important;
+  background-size:cover,cover!important;background-position:center,center!important;background-attachment:fixed!important;
+}
+/* Route wrappers stay translucent so the chosen backdrop can be seen outside cards. */
+html[data-ie-workspace-theme] body #app :where(.main,.main-content,.page,.page-content,.workspace,.workspace-content,.content-area,.auth-page,.auth-layout,.auth-shell,.public-page,.public-profile,.artist-profile,.profile-page,.catalogue-page,.shop-page) {
+  background-color:transparent;
+}
+/* Shared non-label page hierarchy: consistent page headings, readable glass
+   surfaces, sensible mobile spacing and usable forms outside the label shell. */
+html[data-ie-workspace-theme] body #app .page:not(.dashboard-page) > .page-heading {
+  max-width:1180px;margin:0 auto clamp(20px,3vw,32px);padding:clamp(20px,3vw,32px);
+  border:1px solid color-mix(in srgb,var(--ui-border) 70%,transparent);
+  border-radius:24px;
+  background:linear-gradient(135deg,color-mix(in srgb,var(--ui-surface) 76%,transparent),color-mix(in srgb,var(--ui-surface-raised) 58%,transparent));
+  box-shadow:0 18px 44px rgba(0,0,0,.10);
+  -webkit-backdrop-filter:blur(18px) saturate(140%);backdrop-filter:blur(18px) saturate(140%);
+}
+html[data-ie-workspace-theme] body #app .page:not(.dashboard-page) > .page-heading h1 {
+  max-width:18ch;font-size:clamp(30px,4vw,48px);line-height:1.05;letter-spacing:-.035em;text-wrap:balance;
+}
+html[data-ie-workspace-theme] body #app :where(.public-profile,.artist-profile,.profile-page,.catalogue-page,.shop-page,.auth-page,.auth-layout) :where(.card,.panel,.profile-card,.artist-card,.release-card,.auth-card,.auth-panel,.form-card,.settings-card) {
+  border:1px solid color-mix(in srgb,var(--ui-border) 78%,transparent);
+  border-radius:20px;box-shadow:0 16px 40px rgba(0,0,0,.12);
+  -webkit-backdrop-filter:blur(18px) saturate(140%);backdrop-filter:blur(18px) saturate(140%);
+}
+html[data-ie-workspace-theme] body #app :where(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]),select,textarea) {
+  max-width:100%;min-width:0;border-radius:12px;
+}
+html[data-ie-workspace-theme] body #app :where(button,.button,a.button,.btn) {touch-action:manipulation}
+@media(max-width:700px){
+  html[data-ie-workspace-theme] body #app .page:not(.dashboard-page) > .page-heading {padding:20px;border-radius:18px;margin-bottom:20px}
+  html[data-ie-workspace-theme] body #app .page:not(.dashboard-page) > .page-heading h1 {font-size:clamp(28px,8vw,38px)}
+  html[data-ie-workspace-theme] body #app :where(.public-profile,.artist-profile,.profile-page,.catalogue-page,.shop-page,.auth-page,.auth-layout) :where(.card,.panel,.profile-card,.artist-card,.release-card,.auth-card,.auth-panel,.form-card,.settings-card) {border-radius:16px}
+}
