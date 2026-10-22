@@ -36,8 +36,13 @@
   async function saveListenerNotificationPreference(){
     const input=$('#listener-release-notification-toggle');if(!input)return;
     input.disabled=true;
-    try{const {data,error:readError}=await sb.from('profiles').select('notification_preferences').eq('id',session.user.id).maybeSingle();if(readError)throw readError;const prefs={...(data?.notification_preferences||{}),new_followed_releases:input.checked};const {error}=await sb.from('profiles').update({notification_preferences:prefs}).eq('id',session.user.id);if(error)throw error;toast(input.checked?'New release notifications enabled.':'New release notifications paused.','success');}
-    catch(e){input.checked=!input.checked;toast(e.message||'Could not save notification preference.','error');}
+    try{
+      // Listener profile rows intentionally deny direct UPDATE. The narrowly
+      // scoped RPC changes only this one key after verifying the caller's role.
+      const {error}=await sb.rpc('set_listener_release_notification_preference',{p_enabled:input.checked});
+      if(error)throw error;
+      toast(input.checked?'New release notifications enabled.':'New release notifications paused.','success');
+    }catch(e){input.checked=!input.checked;toast(e.message||'Could not save notification preference.','error');}
     finally{input.disabled=false;}
   }
 

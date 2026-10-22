@@ -313,6 +313,16 @@ if (!listenerNotificationsMigration.includes('notifications_listener_select_scop
   fail('Listener release notifications must be visible only to the intended owner/kind and listeners must only update the read flag.');
 }
 
+
+const listenerPreferenceSource = read('supabase/migrations/20261022004707_add_listener_notification_preference_rpc.sql');
+if (!listenerPreferenceSource.includes('public.set_listener_release_notification_preference') ||
+    !listenerPreferenceSource.includes("p.role::text = 'listener'") ||
+    !listenerPreferenceSource.includes("'{new_followed_releases}'") ||
+    !listenerPreferenceSource.includes('GRANT EXECUTE ON FUNCTION public.set_listener_release_notification_preference(boolean) TO authenticated') ||
+    !read('js/views.js').includes("sb.rpc('set_listener_release_notification_preference',{p_enabled:input.checked})")) {
+  fail('Listener notification settings must use the role-scoped RPC rather than blocked direct profile writes.');
+}
+
 if (errors.length) {
   console.error('Static-site audit failed:');
   for (const error of errors) console.error(` - ${error}`);
