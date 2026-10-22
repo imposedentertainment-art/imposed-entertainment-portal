@@ -18,7 +18,7 @@
   function isListenerRoute(){
     const q=new URLSearchParams(location.search);
     const path=location.pathname.replace(/\/+$/,'')||'/';
-    return q.has('explore') || q.has('artist') || path==='/listen' || path==='/shop' || path==='/shop/manage' || path==='/listen/account' || /^\/listen\/artist\/[^/]+$/.test(path) || /^\/link\/[^/]+$/.test(path);
+    return path==='/' || q.has('explore') || q.has('artist') || path==='/listen' || path==='/shop' || path==='/shop/manage' || path==='/listen/account' || /^\/listen\/artist\/[^/]+$/.test(path) || /^\/link\/[^/]+$/.test(path);
   }
   function renderListenerRoute(){
     const q=new URLSearchParams(location.search);

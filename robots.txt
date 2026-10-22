@@ -1,9 +1,14 @@
 User-agent: *
 Allow: /help/
 Allow: /help/index.html
+Allow: /knowledge/
+Allow: /knowledge/index.html
+Allow: /listen
 Allow: /privacy/
 Allow: /terms/
 Disallow: /support
+Disallow: /signin
+Disallow: /login
 Disallow: /settings
 Disallow: /earnings
 Disallow: /statements

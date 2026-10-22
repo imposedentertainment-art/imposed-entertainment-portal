@@ -1,3 +1,10 @@
+## 3.3.33 — Performance, desktop UI and public AI knowledge access
+
+- Public discovery now renders at `/` without requiring an artist/label login; `/signin` remains the explicit private workspace entry point.
+- Added a dedicated crawlable `/knowledge/` page for the AI knowledge base, with links to public help, discovery, shop, artist profiles, policies and account guidance.
+- Reduced expensive global blur layers, constrained glass effects to purposeful surfaces, added reduced-transparency and reduced-motion fallbacks, and repaired common desktop overflow/grid constraints.
+- Added cache/version updates and static audit coverage for the public knowledge route and root visitor experience.
+
 ## 3.3.32 — Public help centre and authenticated support assistant foundation
 
 - Added a public, crawlable Help Centre covering listener discovery, accounts, public profiles, shop guidance and safe support practices.
