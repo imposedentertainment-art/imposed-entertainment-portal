@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /help/
+Allow: /help/index.html
+Allow: /privacy/
+Allow: /terms/
+Disallow: /support
+Disallow: /settings
+Disallow: /earnings
+Disallow: /statements
+Disallow: /operations
+Disallow: /roster
+Disallow: /vault
+Disallow: /business
+Disallow: /listen/account
+

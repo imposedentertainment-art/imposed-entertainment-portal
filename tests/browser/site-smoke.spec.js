@@ -26,7 +26,7 @@ test('mobile shell fits viewport without horizontal page overflow', async ({ pag
   expect(sizes.document, JSON.stringify(sizes)).toBeLessThanOrEqual(sizes.viewport + 2);
 });
 
-for (const route of ['/privacy', '/terms']) {
+for (const route of ['/privacy', '/terms', '/help']) {
   test(`direct route ${route} responds with the expected document`, async ({ request }) => {
     const response = await request.get(`http://127.0.0.1:4173${route}`);
     expect(response.ok()).toBeTruthy();
@@ -159,3 +159,13 @@ test('guest customiser persists an explicit workspace theme choice', async ({ pa
   expect(result.background).toContain('plum-dusk.jpg');
 });
 
+
+
+test('public help centre is crawlable and explains listener/workspace separation', async ({ request }) => {
+  const response = await request.get('http://127.0.0.1:4173/help');
+  expect(response.ok()).toBeTruthy();
+  const html = await response.text();
+  expect(html).toContain('name="robots" content="index,follow"');
+  expect(html).toContain('Listener accounts are intentionally separated');
+  expect(html).toContain('AI assistant');
+});

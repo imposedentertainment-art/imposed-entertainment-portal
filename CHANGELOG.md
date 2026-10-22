@@ -1,3 +1,11 @@
+## 3.3.32 — Public help centre and authenticated support assistant foundation
+
+- Added a public, crawlable Help Centre covering listener discovery, accounts, public profiles, shop guidance and safe support practices.
+- Added Botpress integration documentation, a guarded webchat loader for the authenticated workspace Support route, and an optional configuration value that remains disabled until a generated public webchat configuration URL is supplied.
+- Expanded Content Security Policy only for the Botpress hosts needed by the optional widget; added clean `/help/` routing and public crawl guidance.
+- Kept Botpress diagnostics disabled until server-side identity, role, ownership, rate-limit and retention controls are independently verified.
+- Added route smoke coverage and refreshed static asset/service-worker versioning.
+
 ## 3.3.12 — Correct final drawer stacking conflict
 
 - Overrode the legacy open-menu selector that explicitly lowered the navigation row to `z-index: 0`, placing it behind the drawer.
