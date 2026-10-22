@@ -6,5 +6,5 @@ window.IMPOSED_CONFIG = {
   TURNSTILE_SITE_KEY: "0x4AAAAAAFW6HJPKXJiFJIHu",
   // Optional public Botpress webchat configuration URL. Keep blank until Webchat is published.
   // Only the generated HTTPS files.bpcontent.cloud script URL is accepted by the loader.
-  BOTPRESS_WEBCHAT_SCRIPT_URL: ""
+  BOTPRESS_WEBCHAT_SHAREABLE_URL: "https://cdn.botpress.cloud/webchat/v5.0/shareable.html?configUrl=https://files.bpcontent.cloud/2026/10/22/02/20261022023954-Z0JC94PS.json"
 };
