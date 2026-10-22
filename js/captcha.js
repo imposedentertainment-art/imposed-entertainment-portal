@@ -3,7 +3,8 @@ let tsToken = '', tsWidget = null, tsEl = null, tsLoading = null;
 const TS_KEY = () => (window.IMPOSED_CONFIG && window.IMPOSED_CONFIG.TURNSTILE_SITE_KEY) || '';
 const IE_PRODUCTION_SIGNIN_URL = 'https://imposed-entertainment-portal.pages.dev/signin';
 function isPreviewPortalHost() {
-  return /^[a-f0-9]{8}\.imposed-entertainment-portal\.pages\.dev$/i.test(location.hostname);
+  const host = String(location.hostname || '').toLowerCase();
+  return host !== 'imposed-entertainment-portal.pages.dev' && host.endsWith('.imposed-entertainment-portal.pages.dev');
 }
 function showProductionPortalLink() {
   const status = document.getElementById('captcha-status');
