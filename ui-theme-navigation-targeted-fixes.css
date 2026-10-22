@@ -254,3 +254,152 @@ html[data-ie-mode="light"] body :is(.card,.panel,.settings-card,.settings-sectio
 }
 body.personalise-theme-light :is(img,video,canvas,svg){max-width:100%}
 @media(prefers-reduced-motion:reduce){body.personalise-theme-light *,body.personalise-palette-light-skies *{transition-duration:.01ms!important;animation-duration:.01ms!important}}
+
+
+/* v4: cohesive light surfaces for the dashboard hero, glass controls and nav.
+   This intentionally overrides legacy dark gradients only while a light palette is active. */
+:root{
+  --ie-light-page:#f4f6f9;
+  --ie-light-surface:#ffffff;
+  --ie-light-raised:#f7f9fc;
+  --ie-light-inset:#edf1f5;
+  --ie-light-ink:#18202b;
+  --ie-light-body:#303b49;
+  --ie-light-muted:#536071;
+  --ie-light-border:#d2d9e2;
+  --ie-light-border-strong:#aeb9c7;
+  --ie-light-elevation:0 12px 32px rgba(20,32,48,.09);
+}
+body.personalise-theme-light,
+body.personalise-palette-light-skies,
+html[data-ie-mode="light"] body,
+html[data-ie-workspace-theme="light-skies"] body{
+  --ui-page:var(--ie-light-page)!important;
+  --ui-surface:var(--ie-light-surface)!important;
+  --ui-surface-raised:var(--ie-light-inset)!important;
+  --ui-surface-hover:#e7edf4!important;
+  --ui-border:var(--ie-light-border)!important;
+  --ui-border-strong:var(--ie-light-border-strong)!important;
+  --ui-text:var(--ie-light-ink)!important;
+  --ui-text-soft:var(--ie-light-body)!important;
+  --ui-text-muted:var(--ie-light-muted)!important;
+  --ui-input:#fff!important;
+  --bg:var(--ie-light-page)!important;
+  --s1:#fff!important;--s2:var(--ie-light-inset)!important;--s3:#e7edf4!important;
+  --line:var(--ie-light-border)!important;--line2:var(--ie-light-border-strong)!important;
+  --text:var(--ie-light-ink)!important;--soft:var(--ie-light-body)!important;--muted:var(--ie-light-muted)!important;
+}
+/* The greeting hero was not included in the generic card selectors and kept its dark glass fill. */
+body.personalise-theme-light .dashboard-hero,
+body.personalise-palette-light-skies .dashboard-hero,
+html[data-ie-mode="light"] body .dashboard-hero,
+html[data-ie-workspace-theme="light-skies"] body .dashboard-hero,
+body.personalise-theme-light .dashboard-hero::before,
+body.personalise-theme-light .dashboard-hero::after,
+body.personalise-palette-light-skies .dashboard-hero::before,
+body.personalise-palette-light-skies .dashboard-hero::after,
+html[data-ie-mode="light"] body .dashboard-hero::before,
+html[data-ie-mode="light"] body .dashboard-hero::after{
+  background-color:#fff!important;
+  background-image:none!important;
+  color:var(--ie-light-body)!important;
+  border-color:var(--ie-light-border)!important;
+  box-shadow:var(--ie-light-elevation)!important;
+  -webkit-backdrop-filter:none!important;backdrop-filter:none!important;
+}
+body.personalise-theme-light .dashboard-hero :is(h1,h2,h3,strong,b),
+body.personalise-palette-light-skies .dashboard-hero :is(h1,h2,h3,strong,b),
+html[data-ie-mode="light"] body .dashboard-hero :is(h1,h2,h3,strong,b),
+html[data-ie-workspace-theme="light-skies"] body .dashboard-hero :is(h1,h2,h3,strong,b){
+  color:var(--ie-light-ink)!important;
+}
+body.personalise-theme-light .dashboard-hero :is(p,span,.hero-overline),
+body.personalise-palette-light-skies .dashboard-hero :is(p,span,.hero-overline),
+html[data-ie-mode="light"] body .dashboard-hero :is(p,span,.hero-overline),
+html[data-ie-workspace-theme="light-skies"] body .dashboard-hero :is(p,span,.hero-overline){
+  color:var(--ie-light-muted);
+}
+/* Shared panels/modals/cards use semantic surfaces rather than translucent dark glass. */
+body.personalise-theme-light :is(.card,.panel,.surface,.workspace-card,.workspace-panel,.widget-card,.widget-panel,.dashboard-panel,.dashboard-widget,.dashboard-widget-card,.content-card,.section-card,.settings-card,.settings-panel,.settings-section,.setting-section,.modal,.modal-card,.modal-content,.dialog,.dialog-content,.auth-card,.auth-panel,.dropdown-menu,.context-menu,.popover,.tooltip-panel,.menu-panel,.command-palette,.notification-panel,.drawer,.sheet,.account-menu,#ie-personalise-panel),
+body.personalise-palette-light-skies :is(.card,.panel,.surface,.workspace-card,.workspace-panel,.widget-card,.widget-panel,.dashboard-panel,.dashboard-widget,.dashboard-widget-card,.content-card,.section-card,.settings-card,.settings-panel,.settings-section,.setting-section,.modal,.modal-card,.modal-content,.dialog,.dialog-content,.auth-card,.auth-panel,.dropdown-menu,.context-menu,.popover,.tooltip-panel,.menu-panel,.command-palette,.notification-panel,.drawer,.sheet,.account-menu,#ie-personalise-panel),
+html[data-ie-mode="light"] body :is(.card,.panel,.surface,.workspace-card,.workspace-panel,.widget-card,.widget-panel,.dashboard-panel,.dashboard-widget,.dashboard-widget-card,.content-card,.section-card,.settings-card,.settings-panel,.settings-section,.setting-section,.modal,.modal-card,.modal-content,.dialog,.dialog-content,.auth-card,.auth-panel,.dropdown-menu,.context-menu,.popover,.tooltip-panel,.menu-panel,.command-palette,.notification-panel,.drawer,.sheet,.account-menu){
+  background-color:#fff!important;
+  background-image:none!important;
+  color:var(--ie-light-body)!important;
+  border-color:var(--ie-light-border)!important;
+  box-shadow:var(--ie-light-elevation)!important;
+  -webkit-backdrop-filter:none!important;backdrop-filter:none!important;
+}
+body.personalise-theme-light :is(.hero-secondary,.dashboard-customise-toggle,.dashboard-reset-layout,.icon-btn,.icon-button,.tab-button,.tab-btn,.ie-p-tab,.nav-link:not(.active)),
+body.personalise-palette-light-skies :is(.hero-secondary,.dashboard-customise-toggle,.dashboard-reset-layout,.icon-btn,.icon-button,.tab-button,.tab-btn,.ie-p-tab,.nav-link:not(.active)),
+html[data-ie-mode="light"] body :is(.hero-secondary,.dashboard-customise-toggle,.dashboard-reset-layout,.icon-btn,.icon-button,.tab-button,.tab-btn,.ie-p-tab,.nav-link:not(.active)){
+  background-color:#f4f6f9!important;
+  background-image:none!important;
+  color:var(--ie-light-ink)!important;
+  border:1px solid var(--ie-light-border-strong)!important;
+  box-shadow:0 2px 6px rgba(20,32,48,.06)!important;
+}
+body.personalise-theme-light :is(.primary,.btn-primary,.button-primary,[data-primary="true"],.hero-primary,.ie-p-save),
+body.personalise-palette-light-skies :is(.primary,.btn-primary,.button-primary,[data-primary="true"],.hero-primary,.ie-p-save),
+html[data-ie-mode="light"] body :is(.primary,.btn-primary,.button-primary,[data-primary="true"],.hero-primary,.ie-p-save){
+  color:#171c24!important;
+  text-shadow:none!important;
+}
+body.personalise-theme-light :is(.nav,.topbar,.app-header,.workspace-topbar,.sidebar,.side-nav,.mobile-nav,.bottom-nav),
+body.personalise-palette-light-skies :is(.nav,.topbar,.app-header,.workspace-topbar,.sidebar,.side-nav,.mobile-nav,.bottom-nav),
+html[data-ie-mode="light"] body :is(.nav,.topbar,.app-header,.workspace-topbar,.sidebar,.side-nav,.mobile-nav,.bottom-nav){
+  background-color:#fff!important;background-image:none!important;color:var(--ie-light-ink)!important;border-color:var(--ie-light-border)!important;
+}
+body.personalise-theme-light :is(button,a,[role="button"],.nav-link,.hero-secondary),
+body.personalise-palette-light-skies :is(button,a,[role="button"],.nav-link,.hero-secondary),
+html[data-ie-mode="light"] body :is(button,a,[role="button"],.nav-link,.hero-secondary){
+  text-decoration-color:currentColor;
+}
+body.personalise-theme-light :is(button,a,[role="button"],input,select,textarea):focus-visible,
+body.personalise-palette-light-skies :is(button,a,[role="button"],input,select,textarea):focus-visible,
+html[data-ie-mode="light"] body :is(button,a,[role="button"],input,select,textarea):focus-visible{
+  outline:3px solid color-mix(in srgb,var(--user-accent,#536579) 75%,#315f91)!important;outline-offset:3px;
+}
+/* Swatch fill comes from its inline background; preserve it and strengthen its edge. */
+#ie-personalise-panel .ie-p-swatch{
+  background-color:var(--swatch-color,inherit);
+  border:2px solid #667383!important;
+  outline-color:var(--user-accent,#536579);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.6),0 2px 6px rgba(15,23,42,.22)!important;
+  opacity:1!important;filter:none!important;
+}
+#ie-personalise-panel .ie-p-swatch[aria-pressed="true"]{
+  outline:3px solid var(--user-accent,#536579)!important;outline-offset:3px;
+  box-shadow:inset 0 0 0 2px #fff,0 3px 8px rgba(15,23,42,.3)!important;
+}
+#ie-personalise-panel .ie-p-swatch[aria-pressed="true"]::after{
+  display:flex;align-items:center;justify-content:center;width:100%;height:100%;
+  content:"✓";font-size:17px;font-weight:900;color:#fff!important;
+  -webkit-text-stroke:.6px #17202b;text-shadow:0 1px 3px #000;
+}
+@media (prefers-color-scheme:light){
+  body.personalise-theme-system{
+    color-scheme:light;
+    --ui-page:#f4f6f9;--ui-surface:#fff;--ui-surface-raised:#edf1f5;--ui-surface-hover:#e7edf4;
+    --ui-border:#d2d9e2;--ui-border-strong:#aeb9c7;--ui-text:#18202b;--ui-text-soft:#303b49;--ui-text-muted:#536071;
+    --bg:#f4f6f9;--s1:#fff;--s2:#edf1f5;--s3:#e7edf4;--line:#d2d9e2;--line2:#aeb9c7;--text:#18202b;--soft:#303b49;--muted:#536071;
+    background:#f4f6f9!important;color:#303b49!important;
+  }
+  body.personalise-theme-system :is(.dashboard-hero,.card,.panel,.surface,.workspace-card,.workspace-panel,.widget-card,.widget-panel,.dashboard-panel,.dashboard-widget,.content-card,.section-card,.settings-card,.settings-panel,.settings-section,.setting-section,.modal,.modal-card,.modal-content,.dialog,.dialog-content,.auth-card,.auth-panel,#ie-personalise-panel){
+    background:#fff!important;background-image:none!important;color:#303b49!important;border-color:#d2d9e2!important;box-shadow:var(--ie-light-elevation)!important;backdrop-filter:none!important;
+  }
+  body.personalise-theme-system :is(h1,h2,h3,h4,h5,h6,label,legend,strong,b,th,.page-title,.section-title,.card-title,.modal-title,.setting-title,.nav-title,.nav-link,.hero-overline){color:#18202b!important}
+  body.personalise-theme-system :is(p,small,.sub,.muted,.help-text,.description,.setting-description,.field-help,.form-hint,.secondary-text,.text-muted){color:#536071}
+  body.personalise-theme-system :is(.nav,.topbar,.app-header,.workspace-topbar,.sidebar,.side-nav,.mobile-nav,.bottom-nav){background:#fff!important;background-image:none!important;color:#18202b!important;border-color:#d2d9e2!important}
+}
+@media(max-width:760px){
+  body.personalise-theme-light .dashboard-hero,
+  body.personalise-palette-light-skies .dashboard-hero,
+  html[data-ie-mode="light"] body .dashboard-hero{padding:clamp(18px,5vw,26px)!important;border-radius:20px!important}
+  body.personalise-theme-light .dashboard-hero-actions,
+  body.personalise-palette-light-skies .dashboard-hero-actions,
+  html[data-ie-mode="light"] body .dashboard-hero-actions{display:flex;flex-wrap:wrap;gap:8px;min-width:0}
+  body.personalise-theme-light .dashboard-hero-actions>*,
+  body.personalise-palette-light-skies .dashboard-hero-actions>*,
+  html[data-ie-mode="light"] body .dashboard-hero-actions>*{max-width:100%;white-space:normal}
+}
