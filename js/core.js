@@ -29,17 +29,21 @@
   function getAppearancePreferences(){
     const saved=(profile&&profile.notification_preferences&&profile.notification_preferences.appearance)||{};
     const out={...IE_APPEARANCE_DEFAULTS,...saved};
-    /* Keep device customisation available to artists, public visitors and accounts
-       without an explicitly saved account appearance. Account values win only
-       when that specific preference has actually been saved. */
-    let device={};
-    try{device=JSON.parse(localStorage.getItem('ie-workspace-personalisation-v2')||localStorage.getItem('ie-workspace-personalisation-v1')||'{}')||{};}catch(_){}
-    if(!Object.prototype.hasOwnProperty.call(saved,'workspaceTheme')&&['light-skies','midnight-studio','graphite-minimal','plum-dusk','forest-room'].includes(device.palette))out.workspaceTheme=device.palette;
-    if(!Object.prototype.hasOwnProperty.call(saved,'mode')&&['dark','light','system','amoled'].includes(device.theme))out.mode=device.theme;
-    if(!Object.prototype.hasOwnProperty.call(saved,'accent')&&/^#[0-9a-f]{6}$/i.test(String(device.accent||'')))out.accent=device.accent;
-    if(!Object.prototype.hasOwnProperty.call(saved,'fontScale')&&Number.isFinite(Number(device.fontScale)))out.fontScale=Math.round(Number(device.fontScale)*100);
-    if(!Object.prototype.hasOwnProperty.call(saved,'lineHeight')&&Number.isFinite(Number(device.lineHeight)))out.lineHeight=Math.round(Number(device.lineHeight)*100);
-    if(!Object.prototype.hasOwnProperty.call(saved,'density')&&['compact','standard','comfortable'].includes(device.density))out.density=device.density==='standard'?'comfortable':device.density==='comfortable'?'spacious':'compact';
+    /* A local selection is meaningful even when account preferences have already
+       been populated with defaults by a different page or device. Remember explicit
+       customiser edits; infer non-default legacy choices for pre-marker browsers. */
+    let device={},deviceTouched=[];
+    try{
+      device=JSON.parse(localStorage.getItem('ie-workspace-personalisation-v2')||localStorage.getItem('ie-workspace-personalisation-v1')||'{}')||{};
+      const touched=JSON.parse(localStorage.getItem('ie-workspace-personalisation-touched-v1')||'[]');
+      if(Array.isArray(touched))deviceTouched=touched.filter(k=>typeof k==='string');
+    }catch(_){}
+    const locallyChosen=(key,changedFromDefault)=>deviceTouched.includes(key)||changedFromDefault;
+    if(['light-skies','midnight-studio','graphite-minimal','plum-dusk','forest-room'].includes(device.palette)&&locallyChosen('palette',device.palette!=='midnight-studio'))out.workspaceTheme=device.palette;
+    if(['dark','light','system','amoled'].includes(device.theme)&&locallyChosen('theme',device.theme!=='dark'))out.mode=device.theme;
+    if(/^#[0-9a-f]{6}$/i.test(String(device.accent||''))&&locallyChosen('accent',device.accent!=='#d8bd73'))out.accent=device.accent;
+    if(Number.isFinite(Number(device.fontScale))&&locallyChosen('fontScale',Number(device.fontScale)!==1))out.fontScale=Math.round(Number(device.fontScale)*100);
+    if(['compact','standard','comfortable'].includes(device.density)&&locallyChosen('density',device.density!=='standard'))out.density=({compact:'compact',standard:'comfortable',comfortable:'spacious'})[device.density];
     if(!IE_APPEARANCE_THEMES[out.theme])out.theme='slate';
     if(!['light-skies','midnight-studio','graphite-minimal','plum-dusk','forest-room'].includes(out.workspaceTheme))out.workspaceTheme='midnight-studio';
     if(!/^#[0-9a-f]{6}$/i.test(String(out.accent)))out.accent=IE_APPEARANCE_THEMES[out.theme].accent;
