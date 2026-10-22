@@ -296,7 +296,8 @@ if (!personalisation.includes("TOUCH_KEY='ie-workspace-personalisation-touched-v
 
 
 if (!read('supabase/functions/printful-catalog/index.ts').includes('https://imposed-entertainment-portal.pages.dev') ||
-    !read('supabase/functions/printful-catalog/index.ts').includes('imposed-entertainment-portal\\\\.pages\\\\.dev') ||
+    !read('supabase/functions/printful-catalog/index.ts').includes('function isAllowedOrigin(origin: string)') ||
+    !read('supabase/functions/printful-catalog/index.ts').includes('/^[a-f0-9]{8}') ||
     !read('supabase/functions/portal-health/index.ts').includes('isAllowedOrigin(origin)')) {
   fail('Edge Function CORS must include the actual Pages production origin and constrain preview aliases to this project.');
 }
