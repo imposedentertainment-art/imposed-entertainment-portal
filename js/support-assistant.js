@@ -35,7 +35,7 @@
     card.id = 'ie-ai-support-card';
     card.className = 'settings-card card ie-ai-support-card';
     card.setAttribute('aria-labelledby', 'ie-ai-support-title');
-    card.innerHTML = '<div class="setting-section"><div class="setting-icon" aria-hidden="true">✳</div><div><h2 id="ie-ai-support-title">AI support assistant</h2><p>Get help with common portal questions before sending a message to the team. Never share passwords, one-time codes or recovery codes in chat.</p></div></div><div class="ie-ai-support-status" id="ie-ai-support-status" role="status" aria-live="polite"></div><p class="muted">The assistant only appears in this signed-in workspace. Account-specific checks must still be authorised by the server.</p><p><a href="/help/">Open the public Help Centre ↗</a></p>';
+    card.innerHTML = '<div class="setting-section"><div class="setting-icon" aria-hidden="true">✳</div><div><h2 id="ie-ai-support-title">AI support assistant</h2><p>Get help with common portal questions before sending a message to the team. Never share passwords, one-time codes or recovery codes in chat.</p></div></div><div class="ie-ai-support-status" id="ie-ai-support-status" role="status" aria-live="polite"></div><p class="muted">The assistant only appears for signed-in accounts. Account-specific checks must still be authorised by the server.</p><p><a href="/help/">Open the public Help Centre ↗</a></p>';
     if (listenerAccount) listenerLibrary.insertAdjacentElement('beforebegin', card);
     else heading.insertAdjacentElement('afterend', card);
   }
