@@ -188,6 +188,34 @@
     appLoadPromise=task;
     return task.finally(()=>{if(appLoadPromise===task){appLoadPromise=null;appLoadUserId=null;}});
   }
+  function renderSignedInWorkspaceRecovery(expectedUserId){
+    const app=document.getElementById('app');
+    if(!app)return;
+    app.innerHTML=`<main id="main-content" class="auth-shell" tabindex="-1"><section class="auth-panel"><div class="auth-card"><p class="eyebrow blue">SIGNED IN</p><h1>Your session is safe.</h1><p class="sub">We signed you in, but couldn't finish loading your workspace. Your account hasn't been signed out. Check your connection and retry.</p><p id="workspace-recovery-status" role="status" aria-live="polite"></p><button id="workspace-retry" class="primary full" type="button">Retry workspace</button><button id="workspace-signout" class="secondary full" type="button">Sign out</button></div></section></main>`;
+    const retry=document.getElementById('workspace-retry');
+    const status=document.getElementById('workspace-recovery-status');
+    if(retry)retry.onclick=async()=>{
+      if(!session||session.user.id!==expectedUserId){renderAuth();hidePortalLoading();return;}
+      retry.disabled=true;retry.textContent='Retrying…';
+      if(status)status.textContent='Reconnecting to your workspace…';
+      try{await loadApp();}
+      catch(_){if(status&&status.isConnected)status.textContent='The workspace is still unavailable. Please retry in a moment.';}
+      finally{if(retry.isConnected){retry.disabled=false;retry.textContent='Retry workspace';}}
+    };
+    const signout=document.getElementById('workspace-signout');
+    if(signout)signout.onclick=async()=>{
+      signout.disabled=true;signout.textContent='Signing out…';
+      try{
+        const {error}=await sb.auth.signOut();
+        if(error)throw error;
+        session=null;profile=null;clearCurrentAccountRole();
+        renderAuth();hidePortalLoading();
+      }catch(_){
+        if(signout.isConnected){signout.disabled=false;signout.textContent='Sign out';}
+        if(status)status.textContent='Sign-out failed. Check your connection and try again.';
+      }
+    };
+  }
   async function loadAppInternal(expectedUserId){
     if(!session || session.user.id!==expectedUserId){renderAuth();hidePortalLoading();return;}
     if(window.__workspaceDataUid!==expectedUserId){
@@ -221,4 +249,4 @@
     if(view==='podcasts')await loadPodcastSubmissions();
     if(view==='statements')await loadStatementData();
     if(window.__draftRestored&&(['','/','/index.html','/dashboard'].includes(location.pathname.replace(/\/+$/,''))))view='builder';
-    if(!session || session.user.id!==expectedUserId) return; render(); } catch(e){ console.error(e); toast('Some workspace data could not be loaded. Check your connection and retry.','error'); if(session && session.user.id===expectedUserId){if(!profile)renderAuth();else render();} } finally { if(!session || session.user.id===expectedUserId) hidePortalLoading(); } }
+    if(!session || session.user.id!==expectedUserId) return; render(); } catch(e){ console.error('Workspace load failed for active session',e); toast('You are signed in, but your workspace could not finish loading. Retry below.','error'); if(session && session.user.id===expectedUserId){if(!profile)renderSignedInWorkspaceRecovery(expectedUserId);else render();} } finally { if(!session || session.user.id===expectedUserId) hidePortalLoading(); } }
