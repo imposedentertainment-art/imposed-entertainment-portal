@@ -169,3 +169,26 @@ test('public help centre is crawlable and explains listener/workspace separation
   expect(html).toContain('Listener accounts are intentionally separated');
   expect(html).toContain('AI assistant');
 });
+
+
+test('liquid-glass chrome remains transparent and desktop navigation stays available', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
+  const result = await page.evaluate(() => {
+    const nav = document.querySelector('.shell > header.nav');
+    const desktop = nav?.querySelector('.desktop-nav');
+    const inner = nav?.querySelector('.nav-inner');
+    return { nav: !!nav, desktop: !!desktop, display: desktop ? getComputedStyle(desktop).display : 'missing',
+      background: inner ? getComputedStyle(inner).backgroundColor : 'missing' };
+  });
+  expect(result.nav).toBeTruthy();
+  expect(result.desktop).toBeTruthy();
+  expect(result.display).not.toBe('none');
+  expect(result.background).not.toBe('rgb(11, 15, 20)');
+});
+
+test('welcome hero does not duplicate the page wallpaper with artwork', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('.dashboard-hero img, .welcome-card img, .welcome-widget img')).toHaveCount(0);
+});
