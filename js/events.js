@@ -68,10 +68,10 @@ function ieStartEmailCodeCooldown(){
       font: fontMap[d.font] || current.font,
       fontScale: Math.min(125, Math.max(85, Math.round((Number(d.fontScale) || 1) * 100))),
       lineHeight: Math.min(130, Math.max(90, Math.round((Number(d.lineHeight) || 1.5) / 1.5 * 100))),
-      radius: d.radius === 'sharp' ? 4 : 16,
-      saturation: d.surface === 'flat' ? 100 : 150,
-      motion: d.motion === 'none' || d.motion === 'reduced' ? 'reduced' : 'full',
-      contrast: d.contrast ? 'high' : 'standard',
+      radius: current.radius,
+      saturation: current.saturation,
+      motion: current.motion,
+      contrast: current.contrast,
       quickCustomiser: normaliseQuickCustomiser({...current.quickCustomiser,contentWidth:d.contentWidth,surface:d.surface,navStyle:d.navStyle,buttonStyle:d.buttonStyle,cardStyle:d.cardStyle,artworkShape:d.artworkShape,radius:d.radius,motion:d.motion,glow:d.glow,contrast:d.contrast,shadows:d.shadows,decorative:d.decorative})
     });
     saveAppearancePreferences(next);
