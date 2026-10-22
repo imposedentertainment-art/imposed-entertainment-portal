@@ -260,7 +260,7 @@ for (const palette of ['light-skies','midnight-studio','graphite-minimal','plum-
   }
 }
 if (!themeOverhaul.includes('.page:not(.dashboard-page) > .page-heading') ||
-    !themeOverhaul.includes('.artist-profile-page') ||
+    !repairCss.includes('.artist-profile-page') ||
     !themeOverhaul.includes('@media(max-width:700px)')) {
   fail('Non-label pages need shared responsive page hierarchy and artist/public profile styling.');
 }
