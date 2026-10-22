@@ -186,7 +186,7 @@ function ieStartEmailCodeCooldown(){
         if(file.size>350000)throw new Error('That preset is too large. Choose an export under 350 KB.');
         const parsed=JSON.parse(await file.text());
         if(parsed?.format!=='imposed-entertainment-appearance'||parsed?.version!==1||!parsed.appearance||typeof parsed.appearance!=='object'||Array.isArray(parsed.appearance))throw new Error('This is not a supported Imposed Entertainment appearance preset.');
-        const allowed=['theme','workspaceTheme','accent','mode','surfaceTint','shadowIntensity','fontScale','contrast','motion','lineHeight','borderWidth','saturation','density','style','font','cards','grain','radius','banner','bannerColor','bannerEnabled','dashboard','dashboardLayout'];
+        const allowed=['theme','workspaceTheme','accent','mode','surfaceTint','shadowIntensity','fontScale','contrast','motion','lineHeight','borderWidth','saturation','density','style','font','cards','grain','radius','banner','bannerColor','bannerEnabled','dashboard','dashboardLayout','quickCustomiser'];
         const imported=Object.fromEntries(allowed.filter(key=>Object.prototype.hasOwnProperty.call(parsed.appearance,key)).map(key=>[key,parsed.appearance[key]]));
         const next={...getAppearancePreferences(),...imported};
         next.dashboardLayout=normaliseDashboardLayout(next.dashboardLayout);
@@ -236,7 +236,7 @@ function ieStartEmailCodeCooldown(){
       }
       if(a==='podcasts'||a.startsWith('podcast-')){await podcastAction(a,el);return;}
       if(isDiscAction(a)){await discAction(a,el);return;}
-      else if(a==='reset-appearance'){const defaults={...IE_APPEARANCE_DEFAULTS};applyAppearancePreferences(defaults);const current=document.querySelector('#appearance-current');if(current)current.textContent='Blood';saveAppearancePreferences(defaults);toast('Appearance reset','success');}
+      else if(a==='reset-appearance'){const defaults={...IE_APPEARANCE_DEFAULTS};window.dispatchEvent(new CustomEvent('ie-personalise-reset'));applyAppearancePreferences(defaults);const current=document.querySelector('#appearance-current');if(current)current.textContent='Blood';saveAppearancePreferences(defaults);toast('Appearance reset','success');}
       if(a==='dashboard'){view='dashboard';mobile=false;render();}
       else if(a==='calendar'){view='calendar';mobile=false;render();}
       else if(a==='insights'){view='insights';mobile=false;render();}
