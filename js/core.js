@@ -36,7 +36,7 @@ function normaliseQuickCustomiser(value){
       cardStyle:['elevated','outlined','minimal'].includes(q.cardStyle)?q.cardStyle:'elevated',
       artworkShape:['rounded','square','circle'].includes(q.artworkShape)?q.artworkShape:'rounded',
       radius:['sharp','rounded'].includes(q.radius)?q.radius:'rounded',
-      motion:['standard','reduced','none'].includes(q.motion)?q.motion:'standard',
+      motion:['system','standard','reduced','none'].includes(q.motion)?q.motion:'standard',
       glow:q.glow===true,contrast:q.contrast===true,shadows:q.shadows!==false,decorative:q.decorative!==false
     };
   }
@@ -67,7 +67,7 @@ function normaliseQuickCustomiser(value){
     if(['elevated','outlined','minimal'].includes(device.cardStyle)&&locallyChosen('cardStyle',device.cardStyle!=='elevated'))quick.cardStyle=device.cardStyle;
     if(['rounded','square','circle'].includes(device.artworkShape)&&locallyChosen('artworkShape',device.artworkShape!=='rounded'))quick.artworkShape=device.artworkShape;
     if(['sharp','rounded'].includes(device.radius)&&locallyChosen('radius',device.radius!=='rounded'))quick.radius=device.radius;
-    if(['standard','reduced','none'].includes(device.motion)&&locallyChosen('motion',device.motion!=='standard'))quick.motion=device.motion;
+    if(['system','standard','reduced','none'].includes(device.motion)&&locallyChosen('motion',device.motion!=='standard'))quick.motion=device.motion;
     ['glow','contrast','shadows','decorative'].forEach(k=>{if(typeof device[k]==='boolean'&&locallyChosen(k,device[k]!==({glow:false,contrast:false,shadows:true,decorative:true})[k]))quick[k]=device[k];});
     if(!IE_APPEARANCE_THEMES[out.theme])out.theme='slate';
     if(!['light-skies','midnight-studio','graphite-minimal','plum-dusk','forest-room'].includes(out.workspaceTheme))out.workspaceTheme='midnight-studio';
