@@ -4,10 +4,24 @@ const allowedOrigins = new Set([
   "https://portal.pages.dev",
   "https://imposed-entertainment-portal.pages.dev",
   "https://imposedentertainment.pages.dev",
+  "https://imposedentertainment.com",
+  "https://www.imposedentertainment.com",
 ]);
+function isAllowedOrigin(origin: string) {
+  if (allowedOrigins.has(origin) || /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) return true;
+  try {
+    const parsed = new URL(origin);
+    // Cloudflare Pages preview aliases are eight-character commit hashes under
+    // the exact portal project domain. This is a CORS rule, not authorization:
+    // the handler still requires a valid user JWT and a label-admin profile.
+    return parsed.protocol === "https:" &&
+      /^[a-f0-9]{8}\.imposed-entertainment-portal\.pages\.dev$/i.test(parsed.hostname) &&
+      !parsed.port;
+  } catch { return false; }
+}
 function cors(req: Request) {
   const origin = req.headers.get("origin") || "";
-  const allow = allowedOrigins.has(origin) || /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin);
+  const allow = isAllowedOrigin(origin);
   return {
     "Access-Control-Allow-Origin": allow ? origin : "https://imposed-entertainment-portal.pages.dev",
     "Access-Control-Allow-Headers": "authorization, apikey, content-type, x-client-info",

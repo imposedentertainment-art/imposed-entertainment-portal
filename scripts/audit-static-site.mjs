@@ -294,6 +294,13 @@ if (!personalisation.includes("TOUCH_KEY='ie-workspace-personalisation-touched-v
   fail('Explicit local appearance choices must survive account-level default preference loading.');
 }
 
+
+if (!read('supabase/functions/printful-catalog/index.ts').includes('https://imposed-entertainment-portal.pages.dev') ||
+    !read('supabase/functions/printful-catalog/index.ts').includes('imposed-entertainment-portal\\\\.pages\\\\.dev') ||
+    !read('supabase/functions/portal-health/index.ts').includes('isAllowedOrigin(origin)')) {
+  fail('Edge Function CORS must include the actual Pages production origin and constrain preview aliases to this project.');
+}
+
 if (errors.length) {
   console.error('Static-site audit failed:');
   for (const error of errors) console.error(` - ${error}`);

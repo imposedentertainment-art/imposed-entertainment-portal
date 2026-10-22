@@ -4,12 +4,34 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
   "Content-Type": "application/json; charset=utf-8",
+  "Cache-Control": "no-store",
   "Vary": "Origin",
 };
-
+const allowedOrigins = new Set([
+  "https://imposedentertainment.com",
+  "https://www.imposedentertainment.com",
+  "https://imposed-entertainment-portal.pages.dev",
+  "https://imposedentertainment.pages.dev",
+  "http://localhost:8888",
+  "http://127.0.0.1:8888",
+]);
+function isAllowedOrigin(origin: string) {
+  if (allowedOrigins.has(origin)) return true;
+  try {
+    const parsed = new URL(origin);
+    // Only aliases for this Cloudflare Pages project are admitted; arbitrary
+    // *.pages.dev origins are not. JWT validation and the profile role check
+    // below remain the actual access-control boundary.
+    return parsed.protocol === "https:" &&
+      /^[a-f0-9]{8}\.imposed-entertainment-portal\.pages\.dev$/i.test(parsed.hostname) &&
+      !parsed.port;
+  } catch { return false; }
+}
+function corsOrigin(origin: string) {
+  return isAllowedOrigin(origin) ? origin : "https://imposed-entertainment-portal.pages.dev";
+}
 function json(body: Record<string, unknown>, status = 200, origin = "") {
-  const allowed = new Set(["https://imposedentertainment.com", "https://www.imposedentertainment.com", "http://localhost:8888", "http://127.0.0.1:8888"]);
-  return new Response(JSON.stringify(body), { status, headers: { ...corsHeaders, "Access-Control-Allow-Origin": allowed.has(origin) ? origin : "https://imposedentertainment.com" } });
+  return new Response(JSON.stringify(body), { status, headers: { ...corsHeaders, "Access-Control-Allow-Origin": corsOrigin(origin) } });
 }
 
 Deno.serve(async (req: Request) => {
