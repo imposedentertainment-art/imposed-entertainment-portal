@@ -1,6 +1,6 @@
 # Supabase project source of truth
 
-The `migrations/` directory is being aligned to the 87 migration records currently present in `supabase_migrations.schema_migrations`. Preserve the 14-digit version prefixes exactly; Supabase compares local and remote migrations by version, not just their description.
+The `migrations/` directory mirrors the applied records currently present in `supabase_migrations.schema_migrations`. The CI audit compares the complete migration version/name set with the repository; preserve the 14-digit version prefixes and do not re-run applied versions.
 
 Active Edge Function code is tracked under `functions/<name>/index.ts`; gateway JWT settings are in `config.toml`. `verify-turnstile` intentionally disables gateway JWT verification because it is the public challenge entry point. It validates requests itself and issues a short-lived signed visitor session before serving public discovery data. Privileged functions remain JWT protected.
 
