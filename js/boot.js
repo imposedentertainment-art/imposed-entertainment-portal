@@ -75,6 +75,9 @@
         const currentUserId=session?.user?.id||null;
         const nextUserId=nextSession?.user?.id||null;
         if(!nextSession||currentUserId!==nextUserId){
+          // Persist any dirty draft under the outgoing identity before replacing the session.
+          if(currentUserId&&draftDirty)flushDraftBackup();
+          draft=freshDraft();draftDirty=false;wizardStep=1;window.__draftRestored=false;
           cleanupWorkspaceSubscriptions();
           profile=null;
           clearCurrentAccountRole();
