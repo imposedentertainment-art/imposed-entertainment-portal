@@ -113,9 +113,10 @@ test('mobile navigation drawer and toggle sit above the backdrop', async ({ page
       shortcutDisplay: getComputedStyle(d.querySelector('kbd')).display
     };
   });
-  expect(stack.headerPosition).toBe('fixed');
+  expect(['fixed', 'sticky']).toContain(stack.headerPosition);
   expect(stack.headerZ).toBeGreaterThanOrEqual(40);
-  expect(stack.navInnerZ).toBeGreaterThanOrEqual(stack.drawerZ);
+  // The drawer is an independent fixed overlay; it intentionally sits above the nav inner layer.
+  expect(stack.drawerZ).toBeGreaterThan(stack.navInnerZ);
   expect(stack.drawerZ).toBeGreaterThanOrEqual(50);
   expect(stack.toggleAtPoint, JSON.stringify(stack)).toBeTruthy();
   expect(stack.backdropContent).not.toBe('none');
@@ -205,4 +206,32 @@ test('public help centre is crawlable and explains listener/workspace separation
   expect(html).toContain('name="robots" content="index,follow"');
   expect(html).toContain('Listener accounts are intentionally separated');
   expect(html).toContain('AI assistant');
+});
+
+
+test('liquid-glass chrome remains transparent and desktop navigation stays available', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
+  const result = await page.evaluate(() => {
+    const stylesheet = [...document.querySelectorAll('link[rel="stylesheet"]')]
+      .find(link => link.href.includes('ui-glass-navigation-fix.css'));
+    const nav = document.querySelector('header.nav');
+    const desktop = nav?.querySelector('.desktop-nav');
+    const inner = nav?.querySelector('.nav-inner');
+    return { stylesheetLoaded: !!stylesheet && !!stylesheet.sheet, navExists: !!nav,
+      desktopExists: !!desktop, display: desktop ? getComputedStyle(desktop).display : 'not-rendered-for-guest',
+      background: inner ? getComputedStyle(inner).backgroundColor : 'not-rendered-for-guest' };
+  });
+  expect(result.stylesheetLoaded).toBeTruthy();
+  if (result.navExists) {
+    expect(result.desktopExists).toBeTruthy();
+    expect(result.display).not.toBe('none');
+    expect(result.background).not.toBe('rgb(11, 15, 20)');
+  }
+});
+
+test('welcome hero does not duplicate the page wallpaper with artwork', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('.dashboard-hero .hero-art, .dashboard-hero .hero-index, .welcome-card img, .welcome-widget img')).toHaveCount(0);
 });

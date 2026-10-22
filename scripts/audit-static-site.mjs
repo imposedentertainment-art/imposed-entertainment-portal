@@ -72,9 +72,12 @@ const personalisation = read('js/personalise.js');
 const navigationCss = read('mobile-navigation.css');
 const core = read('js/core.js');
 const personalisationFixes = read('ui-personalisation-fixes.css');
+const glassNavigationFix = read('ui-glass-navigation-fix.css');
 const themeOverhaul = read('ui-theme-overhaul.css');
 const coreIcons = read('js/core.js');
 
+if (!html.includes('/ui-glass-navigation-fix.css?v=' + version) || !worker.includes("'/ui-glass-navigation-fix.css'")) fail('Glass navigation fix must be versioned and included in service-worker assets.');
+if (!glassNavigationFix.includes('z-index:2147483000') || !glassNavigationFix.includes('backdrop-filter:blur(36px)') || !glassNavigationFix.includes('min-width:761px')) fail('Glass navigation must use an elevated overlay layer and preserve desktop navigation.');
 if (!views.includes('mobile-menu icon-btn') || !views.includes('id="mobile-navigation-menu"')) {
   fail('Workspace navigation trigger and mobile menu container must both exist.');
 }
