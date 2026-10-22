@@ -35,7 +35,7 @@
     card.id = 'ie-ai-support-card';
     card.className = 'settings-card card ie-ai-support-card';
     card.setAttribute('aria-labelledby', 'ie-ai-support-title');
-    card.innerHTML = '<div class="setting-section"><div class="setting-icon" aria-hidden="true">✳</div><div><h2 id="ie-ai-support-title">AI support assistant</h2><p>Get help with common portal questions before sending a message to the team. Never share passwords, one-time codes or recovery codes in chat.</p></div></div><div class="ie-ai-support-status" id="ie-ai-support-status" role="status" aria-live="polite"></div><p class="muted">The assistant only appears for signed-in accounts. Account-specific checks must still be authorised by the server.</p><p><a href="/help/">Open the public Help Centre ↗</a></p>';
+    card.innerHTML = '<div class="setting-section"><div class="setting-icon" aria-hidden="true">✳</div><div><h2 id="ie-ai-support-title">AI support assistant</h2><p>Get help with common website and account questions before contacting the team. Never share passwords, one-time codes or recovery codes in chat.</p></div></div><div class="ie-ai-support-status" id="ie-ai-support-status" role="status" aria-live="polite"></div><p class="muted">The assistant only appears for signed-in accounts. Account-specific checks must still be authorised by the server.</p><p><a href="/help/">Open the public Help Centre ↗</a></p>';
     if (listenerAccount) listenerLibrary.insertAdjacentElement('beforebegin', card);
     else heading.insertAdjacentElement('afterend', card);
   }
@@ -51,7 +51,9 @@
       if (window[LOADED_ATTR]) { if (status) status.textContent = 'The assistant is ready. Open the chat control in the corner to start.'; return; }
       const url = getTrustedScriptUrl();
       if (!url) {
-        if (status) status.textContent = 'The AI assistant is not connected yet. The support form and Help Centre are available in the meantime.';
+        if (status) status.textContent = (location.pathname.replace(/\\/+$/, '') || '/') === '/listen/account'
+          ? 'The AI assistant is not connected yet. Use the Help Centre for listener questions.'
+          : 'The AI assistant is not connected yet. Use the support form below or the Help Centre.';
         return;
       }
       if (document.querySelector('script[data-ie-botpress-script]')) return;
