@@ -15,6 +15,43 @@ test('homepage loads and local assets resolve', async ({ page }) => {
   expect(failedLocalResponses, JSON.stringify(failedLocalResponses)).toEqual([]);
 });
 
+
+test('removed overview banner cannot return from stale saved appearance preferences', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('#app')).toBeAttached();
+  await page.waitForTimeout(1200);
+  await expect(page.locator('.ie-banner, [data-banner-enabled], [data-banner-file]')).toHaveCount(0);
+  const trigger = page.locator('#ie-personalise-trigger');
+  if (await trigger.isVisible()) {
+    await trigger.click();
+    await expect(page.locator('#ie-personalise-panel')).toBeVisible();
+    await expect(page.getByText('Overview banner', { exact: true })).toHaveCount(0);
+  }
+});
+
+test('keyboard focus indicators remain visible and reduced-motion preference is respected', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
+  await page.keyboard.press('Tab');
+  const focus = await page.evaluate(() => {
+    const el = document.activeElement;
+    if (!el || el === document.body) return null;
+    const style = getComputedStyle(el);
+    return {
+      tag: el.tagName,
+      outlineStyle: style.outlineStyle,
+      outlineWidth: style.outlineWidth,
+      boxShadow: style.boxShadow,
+      motion: matchMedia('(prefers-reduced-motion: reduce)').matches
+    };
+  });
+  expect(focus, 'Tab should move focus to an interactive element').not.toBeNull();
+  expect(focus.motion).toBeTruthy();
+  expect(focus.outlineStyle === 'none' && focus.boxShadow === 'none', JSON.stringify(focus)).toBeFalsy();
+});
+
 test('mobile shell fits viewport without horizontal page overflow', async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 800 });
   await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
