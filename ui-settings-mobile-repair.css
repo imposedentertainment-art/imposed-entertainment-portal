@@ -101,3 +101,9 @@ body{overflow-x:clip}
 @media(max-width:760px){#app .support-topic-grid{grid-template-columns:repeat(2,minmax(0,1fr))}#app .support-centre-intro{grid-template-columns:1fr}}
 @media(max-width:520px){#app .support-form-grid{grid-template-columns:1fr;gap:12px}#app .support-field-wide{grid-column:auto}#app .support-submit-row{align-items:stretch;flex-direction:column}#app .support-submit-row button{width:100%}#app .support-topic-choice{min-height:118px;padding:12px}#app .support-hub-card{padding:16px;gap:12px}}
 @media(prefers-reduced-motion:reduce){#app .support-topic-choice{transition:none}#app .support-topic-choice:hover{transform:none}}
+
+
+/* Build 3.3.65 — clear, accessible recovery for expired Supabase email links. */
+#app .auth-callback-notice{margin:0 0 18px;padding:15px 16px;border:1px solid color-mix(in srgb,#e5a24a 55%,transparent);border-radius:14px;background:color-mix(in srgb,#e5a24a 9%,transparent);color:var(--text-primary,inherit)}
+#app .auth-callback-notice strong{display:block;margin-bottom:5px}
+#app .auth-callback-notice p{margin:0;color:var(--text-secondary,inherit);line-height:1.55;font-size:.92rem}
