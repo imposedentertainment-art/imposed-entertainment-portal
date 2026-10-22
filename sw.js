@@ -1,7 +1,7 @@
 /* Imposed Entertainment v2.8.9: versioned static assets; never cache query-bearing navigations/auth callbacks. */
 const CACHE_NAME = 'imposed-v3.3.31';
 const STATIC_ASSETS = [
-  '/ui-overlay-accessibility.css', '/ui-stability-fixes.css', '/ui-ux-repair.css', '/index.html',
+  '/ui-overlay-accessibility.css', '/ui-stability-fixes.css', '/ui-ux-repair.css', '/settings-centre.css', '/index.html',
   '/themes/light-skies.jpg', '/themes/midnight-studio.jpg', '/themes/graphite-minimal.jpg', '/themes/plum-dusk.jpg', '/themes/forest-room.jpg', '/shop.css', '/mobile-navigation.css', '/ui-personalisation-fixes.css', '/ui-theme-overhaul.css', '/ui-mobile-contrast-fixes.css', '/ui-design-tokens.css', '/ui-major-refresh.css', '/ui-refinement.css', '/ui-dashboard-resize.css', '/ui-theme-finish.css', '/ui-liquid-glass.css', '/ui-liquid-glass-overrides.css', '/ui-dashboard-finish.css', '/ui-performance-polish.css', '/ui-liquid-glass-system.css', '/ui-liquid-glass-refinement.css', '/ui-design-tokens.css', '/ui-mobile-contrast-fixes.css', '/ui-unified-system.css', '/js/shop.js', '/styles.css', '/ui-polish.css', '/ui-next.css', '/ui-research.css', '/ui-overhaul.css', '/ui-system-v2.css', '/quality.css', '/theme-system.css', '/auth-overhaul.css', '/v2-design-system.css', '/manifest.webmanifest', '/privacy/index.html', '/terms/index.html',
   '/img/logo-64.png', '/img/logo-128.png', '/img/logo-192.png', '/img/logo-512.png',
   '/js/i18n.js', '/js/core.js', '/js/boot.js', '/js/data.js', '/js/audio.js',
@@ -17,7 +17,7 @@ self.addEventListener('install', event => {
     // Keep first-install activation fast: precache only the app shell and legal documents.
     // Other allow-listed assets are cached as they are requested by the app.
     const criticalAssets = [
-      '/index.html', '/styles.css', '/mobile-navigation.css', '/ui-overlay-accessibility.css', '/ui-stability-fixes.css', '/ui-ux-repair.css', '/ui-personalisation-fixes.css', '/ui-theme-overhaul.css', '/ui-major-refresh.css', '/ui-refinement.css', '/ui-dashboard-resize.css', '/ui-theme-finish.css', '/ui-liquid-glass.css', '/ui-polish.css', '/ui-next.css', '/ui-research.css', '/ui-overhaul.css', '/ui-system-v2.css', '/quality.css', '/personalise.css', '/js/personalise.js', '/js/quality.js', '/js/i18n.js', '/js/core.js', '/js/boot.js',
+      '/index.html', '/styles.css', '/mobile-navigation.css', '/ui-overlay-accessibility.css', '/ui-stability-fixes.css', '/ui-ux-repair.css', '/settings-centre.css', '/ui-personalisation-fixes.css', '/ui-theme-overhaul.css', '/ui-major-refresh.css', '/ui-refinement.css', '/ui-dashboard-resize.css', '/ui-theme-finish.css', '/ui-liquid-glass.css', '/ui-polish.css', '/ui-next.css', '/ui-research.css', '/ui-overhaul.css', '/ui-system-v2.css', '/quality.css', '/personalise.css', '/js/personalise.js', '/js/quality.js', '/js/i18n.js', '/js/core.js', '/js/boot.js',
       '/privacy/index.html', '/terms/index.html', '/img/logo-128.png'
     ];
     await Promise.allSettled(criticalAssets.map(async path => {
