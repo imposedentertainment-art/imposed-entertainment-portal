@@ -302,6 +302,17 @@ if (!read('supabase/functions/printful-catalog/index.ts').includes('https://impo
   fail('Edge Function CORS must include the actual Pages production origin and constrain preview aliases to this project.');
 }
 
+
+const listenerNotificationsMigration = read('supabase/migrations/20261022004519_scope_listener_release_notifications.sql');
+if (!listenerNotificationsMigration.includes('notifications_listener_select_scope') ||
+    !listenerNotificationsMigration.includes("kind = 'followed_artist_release'") ||
+    !listenerNotificationsMigration.includes('notifications_listener_update_scope') ||
+    !listenerNotificationsMigration.includes('GRANT UPDATE (read) ON TABLE public.notifications TO authenticated') ||
+    !listenerNotificationsMigration.includes('notifications_listener_delete_block') ||
+    !listenerNotificationsMigration.includes('notifications_listener_insert_block')) {
+  fail('Listener release notifications must be visible only to the intended owner/kind and listeners must only update the read flag.');
+}
+
 if (errors.length) {
   console.error('Static-site audit failed:');
   for (const error of errors) console.error(` - ${error}`);
