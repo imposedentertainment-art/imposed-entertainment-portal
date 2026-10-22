@@ -384,3 +384,58 @@ body.personalise-motion-reduced *, body.personalise-motion-reduced *::before, bo
     scroll-behavior: auto !important;
   }
 }
+
+/* v3.3.53: make the customiser panel adapt to the active colour mode. */
+#ie-personalise-panel {
+  --ie-p-bg: var(--s1, #121012);
+  --ie-p-surface: var(--s2, #211d20);
+  --ie-p-text: var(--text, #f5f1f2);
+  --ie-p-muted: var(--muted, #b8afb5);
+  --ie-p-line: var(--line, #ffffff30);
+  background: var(--ie-p-bg);
+  color: var(--ie-p-text);
+  border-color: color-mix(in srgb, var(--user-accent, #d8bd73) 24%, var(--ie-p-line));
+  padding-bottom: max(20px, env(safe-area-inset-bottom));
+}
+#ie-personalise-panel .ie-p-sub,
+#ie-personalise-panel [role="status"] { color: var(--ie-p-muted); }
+#ie-personalise-panel fieldset { border-color: var(--ie-p-line); }
+#ie-personalise-panel select,
+#ie-personalise-panel button:not(.ie-p-swatch) {
+  background: var(--ie-p-surface);
+  color: var(--ie-p-text);
+  border-color: var(--ie-p-line);
+}
+#ie-personalise-panel .ie-p-save {
+  background: var(--user-accent, #d8bd73) !important;
+  color: #17120b !important;
+}
+body.personalise-theme-light #ie-personalise-panel {
+  --ie-p-bg: #ffffff;
+  --ie-p-surface: #f1f3f6;
+  --ie-p-text: #171a20;
+  --ie-p-muted: #566171;
+  --ie-p-line: #d6dae1;
+}
+@media (prefers-color-scheme: light) {
+  body.personalise-theme-system #ie-personalise-panel {
+    --ie-p-bg: #ffffff;
+    --ie-p-surface: #f1f3f6;
+    --ie-p-text: #171a20;
+    --ie-p-muted: #566171;
+    --ie-p-line: #d6dae1;
+  }
+}
+#ie-personalise-panel :where(button, input, select, a, [tabindex]):focus-visible {
+  outline: 2px solid var(--user-accent, #d8bd73);
+  outline-offset: 3px;
+}
+@media (max-width: 520px) {
+  #ie-personalise-panel {
+    width: min(380px, calc(100vw - 16px));
+    right: 8px;
+    max-height: min(78dvh, 680px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+}
