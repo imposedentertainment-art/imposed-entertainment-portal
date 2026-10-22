@@ -115,7 +115,8 @@ test('mobile navigation drawer and toggle sit above the backdrop', async ({ page
   });
   expect(['fixed', 'sticky']).toContain(stack.headerPosition);
   expect(stack.headerZ).toBeGreaterThanOrEqual(40);
-  expect(stack.navInnerZ).toBeGreaterThanOrEqual(stack.drawerZ);
+  // The drawer is an independent fixed overlay; it intentionally sits above the nav inner layer.
+  expect(stack.drawerZ).toBeGreaterThan(stack.navInnerZ);
   expect(stack.drawerZ).toBeGreaterThanOrEqual(50);
   expect(stack.toggleAtPoint, JSON.stringify(stack)).toBeTruthy();
   expect(stack.backdropContent).not.toBe('none');
