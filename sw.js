@@ -1,13 +1,13 @@
-/* Imposed Entertainment v3.3.68: versioned static assets; never cache query-bearing navigations/auth callbacks. */
-const CACHE_NAME = 'imposed-v3.3.68';
+/* Imposed Entertainment v3.3.69: versioned static assets; never cache query-bearing navigations/auth callbacks. */
+const CACHE_NAME = 'imposed-v3.3.69';
 const STATIC_ASSETS = [
   '/ui-engine.css',
   '/index.html',
-  '/themes/light-skies.jpg', '/themes/midnight-studio.jpg', '/themes/graphite-minimal.jpg', '/themes/plum-dusk.jpg', '/themes/forest-room.jpg', '/shop.css', '/mobile-navigation.css', '/js/shop.js', '/styles.css', '/quality.css', '/theme-system.css', '/auth-overhaul.css', '/v2-design-system.css', '/manifest.webmanifest', '/privacy/index.html', '/terms/index.html',
+  '/themes/light-skies.jpg', '/themes/midnight-studio.jpg', '/themes/graphite-minimal.jpg', '/themes/plum-dusk.jpg', '/themes/forest-room.jpg', '/manifest.webmanifest', '/privacy/index.html', '/terms/index.html',
   '/img/logo-64.png', '/img/logo-128.png', '/img/logo-192.png', '/img/logo-512.png',
   '/js/i18n.js', '/js/core.js', '/js/boot.js', '/js/data.js', '/js/audio.js',
   '/js/extras.js', '/js/podcasts.js', '/js/business.js', '/js/views.js', '/js/release.js', '/js/profiles.js', '/js/support-assistant.js', '/help/index.html', '/knowledge/index.html', 
-  '/js/ui-targeted-fixes.js', '/js/discography.js', '/js/studio.js', '/js/vault.js', '/js/captcha.js', '/js/events.js', '/js/personalise.js', '/js/quality.js', '/personalise.css'
+  '/js/ui-targeted-fixes.js', '/js/discography.js', '/js/studio.js', '/js/vault.js', '/js/captcha.js', '/js/events.js', '/js/personalise.js', '/js/quality.js'
 ];
 const STATIC_PATHS = new Set(STATIC_ASSETS.map(path => new URL(path, self.location.origin).pathname));
 const NETWORK_TIMEOUT_MS = 7000;
@@ -19,7 +19,7 @@ self.addEventListener('install', event => {
     // Other allow-listed assets are cached as they are requested by the app.
     const criticalAssets = [
       '/ui-engine.css',
-      '/index.html', '/styles.css', '/mobile-navigation.css', '/quality.css', '/personalise.css', '/js/personalise.js', '/js/quality.js', '/js/i18n.js', '/js/core.js', '/js/boot.js',
+      '/index.html', '/ui-engine.css', '/js/personalise.js', '/js/quality.js', '/js/i18n.js', '/js/core.js', '/js/boot.js',
       '/privacy/index.html', '/terms/index.html', '/img/logo-128.png'
     ];
     await Promise.allSettled(criticalAssets.map(async path => {
