@@ -23,6 +23,7 @@
     return path==='/' || q.has('explore') || q.has('artist') || path==='/listen' || path==='/shop' || path==='/shop/manage' || path==='/listen/account' || /^\/listen\/artist\/[^/]+$/.test(path) || /^\/link\/[^/]+$/.test(path);
   }
   function renderListenerRoute(){
+    const routeEpoch=window.__iePublicRouteEpoch=(Number(window.__iePublicRouteEpoch)||0)+1;
     const q=new URLSearchParams(location.search);
     const path=location.pathname.replace(/\/+$/,'')||'/';
     let slug=q.get('artist');
@@ -32,7 +33,7 @@
     if(path==='/listen/account'){renderListenerAccount();return;}
     if(linkMatch){let linkSlug;try{linkSlug=decodeURIComponent(linkMatch[1]);}catch(_){linkSlug=linkMatch[1];}renderPublicSmartLink(linkSlug);return;}
     if(!slug&&match){try{slug=decodeURIComponent(match[1]);}catch(_){slug=match[1];}}
-    if(slug) renderPublicArtist(slug); else renderGuestDiscover();
+    if(slug) renderPublicArtist(slug,routeEpoch); else renderGuestDiscover(routeEpoch);
   }
   function renderSetup(){
     const hasConfig=Boolean(C.SUPABASE_URL&&C.SUPABASE_ANON_KEY&&!String(C.SUPABASE_URL).includes('PASTE_')&&!String(C.SUPABASE_ANON_KEY).includes('PASTE_'));
