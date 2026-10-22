@@ -103,8 +103,8 @@ if (!worker.includes("'/ui-personalisation-fixes.css'") ||
     !html.includes('/ui-personalisation-fixes.css?v=' + version)) {
   fail('Personalisation fixes stylesheet must be versioned and included in the service-worker asset allow-list.');
 }
-if (!personalisation.includes("s.addEventListener('change',function(){state[key]=s.value;save()})") ||
-    !personalisation.includes("input.addEventListener('change',function(){state[key]=input.checked;save()")) {
+if (!personalisation.includes("s.addEventListener('change',function(){state[key]=s.value;pendingTouchedKey=key;save()})") ||
+    !personalisation.includes("input.addEventListener('change',function(){state[key]=input.checked;pendingTouchedKey=key;save()")) {
   fail('Personalisation controls must persist changes instead of only changing their preview.');
 }
 if (!boot.includes('Retry a single transient Supabase Auth failure') ||
@@ -278,9 +278,9 @@ const expectedEdgeFunctions = [
 for (const [name, verifyJwt] of expectedEdgeFunctions) {
   const sourcePath = `supabase/functions/${name}/index.ts`;
   if (!existsSync(resolve(root, sourcePath))) fail(`Supabase Edge Function source is missing: ${sourcePath}`);
-  const expectedConfig = `[functions.${name}]\\nverify_jwt = ${verifyJwt}`;
+  const expectedConfig = `[functions.${name}]\nverify_jwt = ${verifyJwt}`;
   if (!supabaseFunctionConfig.includes(expectedConfig)) fail(`Supabase JWT gateway configuration is missing or incorrect for ${name}.`);
-  if (existsSync(resolve(root, sourcePath)) && /\\b(?:sb_secret_[A-Za-z0-9_-]{20,}|sk_(?:live|test)_[A-Za-z0-9]{16,}|whsec_[A-Za-z0-9]{16,})\\b/i.test(read(sourcePath))) fail(`Possible hard-coded provider secret found in ${sourcePath}.`);
+  if (existsSync(resolve(root, sourcePath)) && /\b(?:sb_secret_[A-Za-z0-9_-]{20,}|sk_(?:live|test)_[A-Za-z0-9]{16,}|whsec_[A-Za-z0-9]{16,})\b/i.test(read(sourcePath))) fail(`Possible hard-coded provider secret found in ${sourcePath}.`);
 }
 for (const palette of ['light-skies','midnight-studio','graphite-minimal','plum-dusk','forest-room']) {
   if (!repairCss.includes(`html[data-ie-workspace-theme="${palette}"][data-ie-mode] body`)) {
