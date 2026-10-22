@@ -1,0 +1,26 @@
+/* v3.3.46 — final, route-independent workspace artwork layer.
+   Loaded after all legacy CSS so later opaque body rules cannot hide the backdrop. */
+html { min-height:100%; background:#080a0d; }
+html::before {
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  background-color:var(--ie-theme-fallback,#080a0d);
+  background-image:var(--ie-theme-overlay,linear-gradient(145deg,rgba(8,10,13,.55),rgba(8,10,13,.72))),var(--ie-theme-image,url("/themes/midnight-studio.jpg"));
+  background-position:center,center;
+  background-size:cover,cover;
+  background-repeat:no-repeat,no-repeat;
+}
+html[data-ie-workspace-theme="light-skies"] {--ie-theme-fallback:#eaf3fb;--ie-theme-image:url("/themes/light-skies.jpg");--ie-theme-overlay:linear-gradient(145deg,rgba(234,243,251,.22),rgba(238,245,251,.30))}
+html[data-ie-workspace-theme="midnight-studio"] {--ie-theme-fallback:#080a0d;--ie-theme-image:url("/themes/midnight-studio.jpg");--ie-theme-overlay:linear-gradient(145deg,rgba(8,10,13,.48),rgba(8,10,13,.62))}
+html[data-ie-workspace-theme="graphite-minimal"] {--ie-theme-fallback:#101114;--ie-theme-image:url("/themes/graphite-minimal.jpg");--ie-theme-overlay:linear-gradient(145deg,rgba(16,17,20,.52),rgba(16,17,20,.68))}
+html[data-ie-workspace-theme="plum-dusk"] {--ie-theme-fallback:#140e18;--ie-theme-image:url("/themes/plum-dusk.jpg");--ie-theme-overlay:linear-gradient(145deg,rgba(20,14,24,.48),rgba(20,14,24,.62))}
+html[data-ie-workspace-theme="forest-room"] {--ie-theme-fallback:#09140f;--ie-theme-image:url("/themes/forest-room.jpg");--ie-theme-overlay:linear-gradient(145deg,rgba(9,20,15,.48),rgba(9,20,15,.62))}
+html[data-ie-mode="amoled"] {--ie-theme-fallback:#000;--ie-theme-overlay:linear-gradient(145deg,rgba(0,0,0,.92),rgba(0,0,0,.96))}
+html[data-ie-mode="light"][data-ie-workspace-theme="light-skies"] {--ie-theme-overlay:linear-gradient(145deg,rgba(234,243,251,.12),rgba(238,245,251,.18))}
+body {background-color:transparent!important;background-image:none!important}
+body #app {background-color:transparent}
+body #app :where(.main,.main-content,.page,.page-content,.workspace,.workspace-content,.content-area,.auth-page,.auth-layout,.auth-shell,.public-page,.public-profile,.artist-profile,.profile-page,.catalogue-page,.shop-page) {background-color:transparent!important}
+@media(max-width:700px),(prefers-reduced-motion:reduce) {html::before{background-attachment:scroll,scroll}}
