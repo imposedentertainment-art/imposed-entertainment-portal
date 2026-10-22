@@ -1,6 +1,20 @@
 /* Cloudflare Turnstile integration for Supabase password sign-in, invite signup and email codes. */
 let tsToken = '', tsWidget = null, tsEl = null, tsLoading = null;
 const TS_KEY = () => (window.IMPOSED_CONFIG && window.IMPOSED_CONFIG.TURNSTILE_SITE_KEY) || '';
+const IE_PRODUCTION_SIGNIN_URL = 'https://imposed-entertainment-portal.pages.dev/signin';
+function isPreviewPortalHost() {
+  return /^[a-f0-9]{8}\.imposed-entertainment-portal\.pages\.dev$/i.test(location.hostname);
+}
+function showProductionPortalLink() {
+  const status = document.getElementById('captcha-status');
+  if (!status || document.getElementById('ie-production-auth-link')) return;
+  const link = document.createElement('a');
+  link.id = 'ie-production-auth-link';
+  link.className = 'link-button';
+  link.href = IE_PRODUCTION_SIGNIN_URL;
+  link.textContent = 'Open the production sign-in page';
+  status.insertAdjacentElement('afterend', link);
+}
 function captchaStatus(message, state='info') {
   const el = document.getElementById('captcha-status');
   if (!el) return;
@@ -24,6 +38,11 @@ function loadTurnstile() {
 async function mountCaptcha() {
   const el = document.getElementById('cf-turnstile');
   if (!el) return;
+  if (isPreviewPortalHost()) {
+    captchaStatus('This preview deployment cannot sign in because its hostname is not on the production security allowlist. Use the production portal instead.', 'error');
+    showProductionPortalLink();
+    return;
+  }
   if (!TS_KEY()) {
     captchaStatus('Security verification is not configured. Contact the portal administrator.', 'error');
     return;
@@ -52,6 +71,7 @@ async function mountCaptcha() {
   }
 }
 function captchaToken() {
+  if (isPreviewPortalHost()) throw new Error('Sign-in is disabled on preview deployments. Open the production sign-in page to continue.');
   if (!TS_KEY()) throw new Error('Security verification is not configured. Contact the portal administrator.');
   if (!window.turnstile || tsWidget === null) throw new Error('Cloudflare security verification has not loaded. Please reload and try again.');
   if (!tsToken) throw new Error('Complete the Cloudflare security check first.');
