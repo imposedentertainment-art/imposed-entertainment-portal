@@ -64,10 +64,10 @@
   <link rel="stylesheet" href="/ui-theme-navigation-targeted-fixes.css?v=3.3.40">
   <link rel="stylesheet" href="/responsive-layout-system.css?v=3.3.39">
 </head>
-<body data-portal-build="3.3.41">
+<body data-portal-build="3.3.42">
   <a class="skip-link" href="#main-content">Skip to main content</a>
   <div id="app" aria-busy="true"><main class="boot-skeleton" aria-label="Loading Imposed Entertainment"><div class="boot-brand"><img src="/img/logo-128.png?v=3.3.35" alt=""><span>IMPOSED ENTERTAINMENT</span></div><div class="boot-skeleton-line wide"></div><div class="boot-skeleton-line"></div><div class="boot-skeleton-grid"><i></i><i></i><i></i></div><p>Preparing your workspace…</p></main></div>
-  <div id="app-loading" class="app-loading" role="status" aria-live="polite"><div class="loading-card"><span class="loading-spinner" aria-hidden="true"></span><strong id="loading-message">Preparing your workspace…</strong><small id="loading-detail">Build 3.3.41 · Connecting securely</small><button id="loading-retry" type="button" hidden onclick="location.reload()">Reload portal</button></div></div>
+  <div id="app-loading" class="app-loading" role="status" aria-live="polite"><div class="loading-card"><span class="loading-spinner" aria-hidden="true"></span><strong id="loading-message">Preparing your workspace…</strong><small id="loading-detail">Build 3.3.42 · Connecting securely</small><button id="loading-retry" type="button" hidden onclick="location.reload()">Reload portal</button></div></div>
   <div id="network-status" class="network-status" role="status" aria-live="polite" hidden></div>
   <div id="toast-root" aria-live="polite"></div>
   <script>
@@ -127,17 +127,17 @@
   <script defer src="/js/discography.js?v=3.3.35"></script>
   <script defer src="/js/studio.js?v=3.3.35"></script>
   <script defer src="/js/vault.js?v=3.3.35"></script>
-  <script defer src="/js/captcha.js?v=3.3.35"></script>
+  <script defer src="/js/captcha.js?v=3.3.42"></script>
   <script defer src="/js/events.js?v=3.3.41"></script>
   <script defer src="/js/quality.js?v=3.3.35"></script>
   <script defer src="/js/support-assistant.js?v=3.3.35"></script>
   <script>
-    console.info("Imposed Entertainment portal build 3.3.41");
+    console.info("Imposed Entertainment portal build 3.3.42");
     if ("serviceWorker" in navigator) {
       // Check for a fresh worker on every page load and bypass the browser HTTP cache
       // when checking the worker script itself.
       var hadServiceWorkerController = !!navigator.serviceWorker.controller;
-      var updateReloadKey = "ie-sw-update-reload-3.3.41";
+      var updateReloadKey = "ie-sw-update-reload-3.3.42";
       navigator.serviceWorker.addEventListener("controllerchange", function () {
         // A first install should not interrupt the initial page load.
         if (!hadServiceWorkerController) {
