@@ -162,3 +162,95 @@ body.personalise-theme-light #ie-personalise-panel select{background:#fff!import
 @media(prefers-reduced-motion:reduce){
   #ie-personalise-panel .ie-p-swatch{transition:none}
 }
+
+
+/* v3: real cascade fix for light mode. Keep this section scoped to light themes:
+   earlier :where()-only selectors had zero specificity and lost to legacy dark rules. */
+body.personalise-theme-light,
+body.personalise-palette-light-skies,
+html[data-ie-mode="light"] body,
+html[data-ie-workspace-theme="light-skies"] body{
+  color-scheme:light!important;
+  --ui-page:#f4f6f9!important;
+  --ui-surface:#ffffff!important;
+  --ui-surface-raised:#edf1f5!important;
+  --ui-surface-hover:#e3e9f0!important;
+  --ui-border:#d2d9e2!important;
+  --ui-border-strong:#aeb9c7!important;
+  --ui-text:#18202b!important;
+  --ui-text-soft:#303b49!important;
+  --ui-text-muted:#536071!important;
+  --ui-input:#ffffff!important;
+  --bg:#f4f6f9!important;--s1:#ffffff!important;--s2:#edf1f5!important;--s3:#e3e9f0!important;
+  --line:#d2d9e2!important;--line2:#aeb9c7!important;--text:#18202b!important;--soft:#303b49!important;--muted:#536071!important;
+  background:#f4f6f9!important;color:#303b49!important;
+}
+body.personalise-theme-light :is(#app,.shell,.app-shell,.workspace,.workspace-shell,.main,.main-content,.page,.page-content,.content-area,.settings-page,.settings-content),
+body.personalise-palette-light-skies :is(#app,.shell,.app-shell,.workspace,.workspace-shell,.main,.main-content,.page,.page-content,.content-area,.settings-page,.settings-content),
+html[data-ie-mode="light"] body :is(#app,.shell,.app-shell,.workspace,.workspace-shell,.main,.main-content,.page,.page-content,.content-area,.settings-page,.settings-content){
+  color:#303b49!important;
+}
+body.personalise-theme-light :is(.card,.panel,.surface,.modal,.modal-card,.modal-content,.dialog,.dialog-content,.auth-card,.auth-panel,.settings-shell,.settings-card,.settings-panel,.settings-section,.setting-section,.dropdown-menu,.context-menu,.popover,.tooltip-panel,.menu-panel,.command-palette,.notification-panel,.drawer,.sheet,.list-row,.table-wrap,.table-container,.table-card,.section-card,.content-card,.workspace-card,.workspace-panel,.widget-card,.widget-panel,.form-panel,.search-panel,.filter-panel,.toolbar,.account-menu,#ie-personalise-panel),
+body.personalise-palette-light-skies :is(.card,.panel,.surface,.modal,.modal-card,.modal-content,.dialog,.dialog-content,.auth-card,.auth-panel,.settings-shell,.settings-card,.settings-panel,.settings-section,.setting-section,.dropdown-menu,.context-menu,.popover,.tooltip-panel,.menu-panel,.command-palette,.notification-panel,.drawer,.sheet,.list-row,.table-wrap,.table-container,.table-card,.section-card,.content-card,.workspace-card,.workspace-panel,.widget-card,.widget-panel,.form-panel,.search-panel,.filter-panel,.toolbar,.account-menu,#ie-personalise-panel),
+html[data-ie-mode="light"] body :is(.card,.panel,.surface,.modal,.modal-card,.modal-content,.dialog,.dialog-content,.auth-card,.auth-panel,.settings-shell,.settings-card,.settings-panel,.settings-section,.setting-section,.dropdown-menu,.context-menu,.popover,.tooltip-panel,.menu-panel,.command-palette,.notification-panel,.drawer,.sheet,.list-row,.table-wrap,.table-container,.table-card,.section-card,.content-card,.workspace-card,.workspace-panel,.widget-card,.widget-panel,.form-panel,.search-panel,.filter-panel,.toolbar,.account-menu){
+  background-color:#ffffff!important;
+  background-image:none!important;
+  color:#303b49!important;
+  border-color:#d2d9e2!important;
+  box-shadow:0 8px 24px rgba(20,32,48,.07)!important;
+  -webkit-backdrop-filter:none!important;backdrop-filter:none!important;
+}
+body.personalise-theme-light :is(h1,h2,h3,h4,h5,h6,label,legend,strong,b,th,.page-title,.section-title,.card-title,.modal-title,.setting-title,.nav-title,.nav-link,.nav-item,.sidebar-link,.tab-button,.tab-btn,.ie-p-tab),
+body.personalise-palette-light-skies :is(h1,h2,h3,h4,h5,h6,label,legend,strong,b,th,.page-title,.section-title,.card-title,.modal-title,.setting-title,.nav-title,.nav-link,.nav-item,.sidebar-link,.tab-button,.tab-btn,.ie-p-tab),
+html[data-ie-mode="light"] body :is(h1,h2,h3,h4,h5,h6,label,legend,strong,b,th,.page-title,.section-title,.card-title,.modal-title,.setting-title,.nav-title,.nav-link,.nav-item,.sidebar-link,.tab-button,.tab-btn){
+  color:#18202b!important;
+}
+body.personalise-theme-light :is(p,small,.sub,.muted,.help-text,.description,.setting-description,.field-help,.form-hint,.secondary-text,.text-muted,.ie-p-help,.ie-p-sub),
+body.personalise-palette-light-skies :is(p,small,.sub,.muted,.help-text,.description,.setting-description,.field-help,.form-hint,.secondary-text,.text-muted,.ie-p-help,.ie-p-sub),
+html[data-ie-mode="light"] body :is(p,small,.sub,.muted,.help-text,.description,.setting-description,.field-help,.form-hint,.secondary-text,.text-muted,.ie-p-help,.ie-p-sub){
+  color:#536071!important;
+}
+body.personalise-theme-light :is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]),select,textarea,[contenteditable="true"]),
+body.personalise-palette-light-skies :is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]),select,textarea,[contenteditable="true"]),
+html[data-ie-mode="light"] body :is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]),select,textarea,[contenteditable="true"]){
+  background:#ffffff!important;color:#18202b!important;border:1px solid #aeb9c7!important;box-shadow:none!important;
+}
+body.personalise-theme-light :is(input,textarea,select)::placeholder,
+body.personalise-palette-light-skies :is(input,textarea,select)::placeholder,
+html[data-ie-mode="light"] body :is(input,textarea,select)::placeholder{color:#657184!important;opacity:1!important}
+body.personalise-theme-light option,
+body.personalise-palette-light-skies option,
+html[data-ie-mode="light"] body option{background:#ffffff!important;color:#18202b!important}
+body.personalise-theme-light a:not(.primary):not(.btn-primary):not(.button-primary),
+body.personalise-palette-light-skies a:not(.primary):not(.btn-primary):not(.button-primary),
+html[data-ie-mode="light"] body a:not(.primary):not(.btn-primary):not(.button-primary){color:#315f91}
+body.personalise-theme-light :is(.primary,.btn-primary,.button-primary,[data-primary="true"],.ie-p-save),
+body.personalise-palette-light-skies :is(.primary,.btn-primary,.button-primary,[data-primary="true"],.ie-p-save),
+html[data-ie-mode="light"] body :is(.primary,.btn-primary,.button-primary,[data-primary="true"],.ie-p-save){color:#171c24!important}
+body.personalise-theme-light #ie-personalise-panel,
+body.personalise-palette-light-skies #ie-personalise-panel,
+html[data-ie-mode="light"] body #ie-personalise-panel{
+  background:#ffffff!important;color:#303b49!important;border-color:#d2d9e2!important;
+}
+body.personalise-theme-light #ie-personalise-panel .ie-p-top,
+body.personalise-palette-light-skies #ie-personalise-panel .ie-p-top,
+html[data-ie-mode="light"] body #ie-personalise-panel .ie-p-top{background:#ffffff!important;border-color:#d2d9e2!important}
+body.personalise-theme-light #ie-personalise-panel .ie-p-colours,
+body.personalise-palette-light-skies #ie-personalise-panel .ie-p-colours,
+html[data-ie-mode="light"] body #ie-personalise-panel .ie-p-colours{
+  display:grid!important;grid-template-columns:repeat(6,40px)!important;justify-content:start!important;gap:12px!important;max-width:100%!important;
+}
+#ie-personalise-panel .ie-p-swatch{box-sizing:border-box!important;position:relative!important;align-self:center!important;justify-self:center!important}
+@media(max-width:420px){
+  body.personalise-theme-light #ie-personalise-panel .ie-p-colours,
+  body.personalise-palette-light-skies #ie-personalise-panel .ie-p-colours,
+  html[data-ie-mode="light"] body #ie-personalise-panel .ie-p-colours{grid-template-columns:repeat(4,40px)!important;gap:10px!important}
+}
+/* Avoid oversized/uneven content blocks while preserving each feature's own layout. */
+body.personalise-theme-light :is(.card,.panel,.settings-card,.settings-section,.content-card,.workspace-card,.widget-card),
+body.personalise-palette-light-skies :is(.card,.panel,.settings-card,.settings-section,.content-card,.workspace-card,.widget-card),
+html[data-ie-mode="light"] body :is(.card,.panel,.settings-card,.settings-section,.content-card,.workspace-card,.widget-card){
+  min-width:0;box-sizing:border-box;
+}
+body.personalise-theme-light :is(img,video,canvas,svg){max-width:100%}
+@media(prefers-reduced-motion:reduce){body.personalise-theme-light *,body.personalise-palette-light-skies *{transition-duration:.01ms!important;animation-duration:.01ms!important}}
