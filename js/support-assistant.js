@@ -36,13 +36,13 @@
 
   async function mountAssistant() {
     if (!onWorkspaceSupportRoute()) return;
-    if (window[LOADED_ATTR]) return;
     try {
       if (typeof sb === 'undefined' || !sb?.auth) return;
       const { data, error } = await sb.auth.getSession();
       if (error || !data?.session?.user?.id) return;
       ensureSupportCard();
       const status = document.getElementById('ie-ai-support-status');
+      if (window[LOADED_ATTR]) { if (status) status.textContent = 'The assistant is ready. Open the chat control in the corner to start.'; return; }
       const url = getTrustedScriptUrl();
       if (!url) {
         if (status) status.textContent = 'The AI assistant is not connected yet. The support form and Help Centre are available in the meantime.';
