@@ -36,7 +36,7 @@ function json(body: Record<string, unknown>, status = 200, origin = "") {
 
 Deno.serve(async (req: Request) => {
   const origin = req.headers.get("origin") || "";
-  if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: { ...corsHeaders, "Access-Control-Allow-Origin": new Set(["https://imposedentertainment.com", "https://www.imposedentertainment.com", "http://localhost:8888", "http://127.0.0.1:8888"]).has(origin) ? origin : "https://imposedentertainment.com" } });
+  if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: { ...corsHeaders, "Access-Control-Allow-Origin": corsOrigin(origin) } });
   if (req.method !== "POST") return json({ error: "Method not allowed" }, 405, origin);
 
   const supabaseUrl = Deno.env.get("SUPABASE_URL");
