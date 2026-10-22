@@ -157,6 +157,19 @@
     else profile=data;
     profile.role=String(profile.role||'artist').trim().toLowerCase();
     cacheCurrentAccountRole(session.user.id,profile.role);
+    // Device customisation storage is shared by browser profiles, not by accounts.
+    // Clear it when the authenticated identity changes so a previous user's local
+    // overrides cannot take precedence over this account's saved appearance.
+    try {
+      const accountKey = 'ie-personalisation-account-v1';
+      const previousAccountId = localStorage.getItem(accountKey);
+      if (previousAccountId && previousAccountId !== session.user.id) {
+        ['ie-workspace-personalisation-v2','ie-workspace-personalisation-v1','ie-workspace-personalisation-touched-v1'].forEach(key => localStorage.removeItem(key));
+      }
+      localStorage.setItem(accountKey, session.user.id);
+    } catch (storageError) {
+      console.warn('Could not scope local appearance preferences to the signed-in account.', storageError);
+    }
     if(typeof applyAppearancePreferences==='function')applyAppearancePreferences(getAppearancePreferences());
     if(window.IE_I18N){
       if(profile.preferred_language && window.IE_I18N.languages[profile.preferred_language]) window.IE_I18N.setLanguage(profile.preferred_language,{notify:false});
