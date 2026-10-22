@@ -533,3 +533,25 @@ body.personalise-palette-light-skies{--ie-theme-art:url('/themes/light-skies.jpg
 #app .dashboard-page :is(.metric,.metric-card,.stat-card){min-width:0;overflow-wrap:anywhere}
 @media(max-width:800px){#app .dashboard-page .dashboard-hero{grid-template-columns:minmax(0,1fr);padding:22px}#app .dashboard-page .hero-art{min-height:130px;max-height:180px}}
 @media(prefers-reduced-transparency:reduce){#app .dashboard-page .dashboard-hero,#app .dashboard-page .dashboard-widget-layout>[data-dashboard-widget-card]{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:var(--s1,#11151b)!important}}
+
+
+/* v3.3.27 — theme application and layout polish must include non-label routes. */
+html[data-ie-workspace-theme] body #app :where(.artist-public-profile,.public-artist-profile,.artist-profile-page,.public-profile-page,.artist-profile-view,.profile-public-view) {
+  min-width:0;max-width:100%;
+}
+html[data-ie-workspace-theme] body #app :where(.artist-public-profile,.public-artist-profile,.artist-profile-page,.public-profile-page,.artist-profile-view,.profile-public-view) :where(img,video,iframe,svg) {
+  max-width:100%;
+}
+html[data-ie-workspace-theme] body #app :where(.artist-public-profile,.public-artist-profile,.artist-profile-page,.public-profile-page,.artist-profile-view,.profile-public-view) :where(.profile-hero,.artist-hero,.public-profile-hero) {
+  overflow:hidden;border-radius:clamp(18px,3vw,30px);
+}
+html[data-ie-workspace-theme] body #app :where(.artist-public-profile,.public-artist-profile,.artist-profile-page,.public-profile-page,.artist-profile-view,.profile-public-view) :where(.profile-hero,.artist-hero,.public-profile-hero) img {
+  object-fit:cover;
+}
+html[data-ie-workspace-theme] body #app :where(.artist-public-profile,.public-artist-profile,.artist-profile-page,.public-profile-page,.artist-profile-view,.profile-public-view) :where(.profile-actions,.artist-actions,.profile-links,.social-links) {
+  display:flex;flex-wrap:wrap;gap:10px;min-width:0;
+}
+@media(max-width:640px){
+  html[data-ie-workspace-theme] body #app :where(.artist-public-profile,.public-artist-profile,.artist-profile-page,.public-profile-page,.artist-profile-view,.profile-public-view) {padding-inline:12px}
+  html[data-ie-workspace-theme] body #app :where(.artist-public-profile,.public-artist-profile,.artist-profile-page,.public-profile-page,.artist-profile-view,.profile-public-view) :where(.profile-actions,.artist-actions,.profile-links,.social-links)>* {max-width:100%}
+}
