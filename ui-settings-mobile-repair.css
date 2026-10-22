@@ -1,0 +1,34 @@
+/* Settings/mobile repair — appended last so it wins over legacy layered styles. */
+:root{--ie-settings-gutter:clamp(14px,4vw,28px)}
+/* Never let a child force the document wider than the viewport. */
+html,body,#app{max-width:100%;min-width:0}
+body{overflow-x:clip}
+#app :where(main,.main,.workspace,.workspace-content,.page,.page-content,.settings-page,.settings-content){min-width:0;max-width:100%}
+#app :where(.settings-tabs,.settings-nav,.settings-categories,.settings-category-tabs,[role="tablist"]){max-width:100%;min-width:0}
+#app :where(.settings-tabs,.settings-nav,.settings-categories,.settings-category-tabs){display:flex;gap:8px;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:thin;scroll-snap-type:x proximity;padding:4px 4px 10px; -webkit-overflow-scrolling:touch}
+#app :where(.settings-tabs,.settings-nav,.settings-categories,.settings-category-tabs)>*{flex:0 0 auto;scroll-snap-align:start;max-width:100%}
+#app :where(.settings-hero,.settings-intro,.settings-header-card){min-width:0;overflow-wrap:anywhere}
+#app :where(.settings-hero h1,.settings-intro h1,.settings-header-card h1){font-size:clamp(1.8rem,6vw,3rem);line-height:1.08}
+#app :where(.settings-hero p,.settings-intro p,.settings-header-card p){font-size:clamp(1rem,3.5vw,1.25rem);line-height:1.55}
+/* Colour controls must visibly display their colour, including when global button styles interfere. */
+#app :where(.accent-swatches,.colour-swatches,.color-swatches,.settings-colour-options,.settings-color-options){display:grid;grid-template-columns:repeat(auto-fit,minmax(48px,1fr));gap:10px;min-width:0}
+#app :where(.accent-swatches button,.colour-swatches button,.color-swatches button,.settings-colour-options button,.settings-color-options button,[data-accent-color],[data-color-swatch]){min-width:0;min-height:48px;position:relative;background-color:var(--swatch-color,var(--color,var(--accent-color,#c4a5f5)));border:2px solid #ffffff70;border-radius:12px;box-shadow:inset 0 0 0 1px #0004}
+#app :where(.accent-swatches button,.colour-swatches button,.color-swatches button,.settings-colour-options button,.settings-color-options button,[data-accent-color],[data-color-swatch])[aria-pressed="true"],
+#app :where(.accent-swatches button,.colour-swatches button,.color-swatches button,.settings-colour-options button,.settings-color-options button,[data-accent-color],[data-color-swatch]).active{outline:3px solid var(--user-accent,#c4a5f5);outline-offset:2px}
+@media(max-width:700px){
+  #app :where(.settings-page,.settings-content,.settings-layout){width:100%;max-width:100%;padding-left:var(--ie-settings-gutter);padding-right:var(--ie-settings-gutter)}
+  #app :where(.settings-card,.settings-panel,.settings-section,.settings-hero,.settings-intro){max-width:100%;min-width:0}
+  #app :where(.settings-card,.settings-panel,.settings-section){padding:clamp(14px,4vw,22px);border-radius:20px}
+  #app :where(.settings-tabs button,.settings-nav button,.settings-categories button,.settings-category-tabs button){min-height:44px;padding:10px 15px;font-size:clamp(.9rem,3.4vw,1rem);white-space:nowrap}
+  /* Dialogs/overlays use a real viewport-bounded scroll region; action bars remain reachable. */
+  body :where([role="dialog"],.modal,.modal-card,.settings-modal,.interface-settings,.customisation-modal,.customization-modal){box-sizing:border-box;max-width:calc(100vw - 24px);max-height:calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 24px);min-width:0}
+  body :where([role="dialog"],.modal,.modal-card,.settings-modal,.interface-settings,.customisation-modal,.customization-modal){overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+  body :where([role="dialog"],.modal,.modal-card,.settings-modal,.interface-settings,.customisation-modal,.customization-modal) :where(.modal-footer,.settings-actions,.settings-footer,.ie-p-actions){position:sticky;bottom:-1px;z-index:2;background:inherit;padding-top:12px;padding-bottom:max(8px,env(safe-area-inset-bottom))}
+  body :where(.modal-backdrop,.overlay,.settings-overlay){z-index:10000}
+  body :where([role="dialog"],.modal,.modal-card,.settings-modal,.interface-settings,.customisation-modal,.customization-modal){z-index:10001}
+}
+@media(max-width:420px){
+  #app :where(.settings-card,.settings-panel,.settings-section){padding:14px}
+  #app :where(.settings-tabs,.settings-nav,.settings-categories,.settings-category-tabs){gap:6px}
+}
+@media(prefers-reduced-motion:reduce){#app :where(.settings-tabs,.settings-nav,.settings-categories,.settings-category-tabs){scroll-behavior:auto}}
