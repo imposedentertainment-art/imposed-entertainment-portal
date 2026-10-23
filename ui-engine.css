@@ -121,3 +121,11 @@ hr{height:1px;border:0;background:var(--line);margin:24px 0}
 .dashboard-widget{border:1px solid var(--line);border-radius:var(--radius-md);background:color-mix(in srgb,var(--surface) 78%,transparent);backdrop-filter:blur(var(--glass-blur));-webkit-backdrop-filter:blur(var(--glass-blur));box-shadow:var(--user-glass-shadow,var(--shadow-sm));padding:clamp(14px,2vw,22px)}
 .dashboard-panel,.quick-links-panel{border-radius:var(--radius-sm)}
 @media(max-width:760px){.dashboard-hero{grid-template-columns:minmax(0,1fr);padding:20px}.dashboard-widget-layout>[data-dashboard-widget-card][data-widget-size="half"],.dashboard-widget-layout>[data-dashboard-widget-card][data-widget-size="third"],.dashboard-widget-layout>[data-dashboard-widget-card][data-widget-size="two-thirds"]{grid-column:span 12}}
+
+
+/* Hidden state must remove overlays from hit testing, not just their visual treatment. */
+.is-hidden{display:none!important}
+#app-loading.is-hidden{display:none!important;pointer-events:none}
+#toast-root{pointer-events:none}
+#toast-root .toast{pointer-events:none}
+#toast-root .toast a,#toast-root .toast button{pointer-events:auto}
