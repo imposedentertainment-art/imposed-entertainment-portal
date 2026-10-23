@@ -13,7 +13,7 @@ const css = read(cssPath).replace(/\/\*[\s\S]*?\*\//g, '');
 
 if (!version) fail('VERSION is empty.');
 if (!html.includes(`content="${version}"`) || !html.includes(`data-portal-build="${version}"`)) fail('HTML build metadata does not match VERSION.');
-if (!worker.includes(`const CACHE_NAME = 'imposed-v${version}'`)) fail('Service-worker cache name does not match VERSION.');
+if (!worker.includes(`const CACHE_NAME = 'imposed-jitter-v${version}'`)) fail('Service-worker cache name does not match VERSION.');
 if (!html.includes(`/${cssPath}?v=${version}`)) fail('App shell must load the single versioned Jitter UI engine stylesheet.');
 const cssLinks = [...html.matchAll(/<link\b(?=[^>]*\brel=["']stylesheet["'])[^>]*\bhref=["']([^"']+)["'][^>]*>/gi)].map(m => m[1]).filter(href => href.startsWith('/'));
 if (cssLinks.length !== 1 || !cssLinks[0].startsWith('/ui-engine.css?')) fail(`Expected one local UI stylesheet (ui-engine.css), found ${cssLinks.join(', ') || 'none'}.`);
