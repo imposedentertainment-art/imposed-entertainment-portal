@@ -197,7 +197,9 @@
     try {
       const accountKey = 'ie-personalisation-account-v1';
       const previousAccountId = localStorage.getItem(accountKey);
-      if (previousAccountId && previousAccountId !== userId) {
+      // Never let guest preferences or another account's local overrides bleed into this account.
+      // A missing marker means this browser may contain guest customisation, so account settings win.
+      if (previousAccountId !== userId) {
         ['ie-workspace-personalisation-v2','ie-workspace-personalisation-v1','ie-workspace-personalisation-touched-v1'].forEach(key => localStorage.removeItem(key));
         window.dispatchEvent(new CustomEvent('ie-personalise-account-change', { detail: { userId } }));
       }
