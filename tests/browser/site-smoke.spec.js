@@ -339,7 +339,7 @@ test('Prism stays aligned with account appearance events without starting a sync
 });
 
 test('unified stylesheet retains the authentication, customiser, shop and navigation feature layers', async ({ request }) => {
-  const response = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.75');
+  const response = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.76');
   expect(response.ok()).toBeTruthy();
   const css = await response.text();
   for (const selector of ['.auth-shell.auth-layout', '.ie-p-control', '.ie-shop-page', '.mobile-nav', '[data-ie-mode']) {
@@ -442,7 +442,7 @@ test('font loading uses the document preload path without a redundant CSS import
   expect(htmlResponse.ok()).toBeTruthy();
   const html = await htmlResponse.text();
   expect(html).toContain('fonts.googleapis.com/css2?family=DM+Sans');
-  const cssResponse = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.75');
+  const cssResponse = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.76');
   expect(cssResponse.ok()).toBeTruthy();
   const css = await cssResponse.text();
   expect(css).not.toMatch(/^\s*@import\s/m);
@@ -475,11 +475,31 @@ test('reduced-motion preference disables non-essential motion across the interfa
 });
 
 test('high-contrast and forced-colours accessibility styles are present', async ({ request }) => {
-  const response = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.75');
+  const response = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.76');
   expect(response.ok()).toBeTruthy();
   const css = await response.text();
   expect(css).toContain('@media (prefers-contrast: more)');
   expect(css).toContain('@media (forced-colors: active)');
   expect(css).toContain('outline: 2px solid Highlight');
   expect(css).toContain('color: LinkText');
+});
+
+
+test('cross-browser CSS fallbacks cover older engines without color-mix, :has, or backdrop-filter', async ({ request }) => {
+  const response = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.76');
+  expect(response.ok()).toBeTruthy();
+  const css = await response.text();
+  expect(css).toContain('@supports not (color: color-mix(in srgb, #000 50%, #fff))');
+  expect(css).toContain('@supports not selector(.appearance-choice:has(input:checked))');
+  expect(css).toContain('@supports not (backdrop-filter: blur(1px))');
+  expect(css).toContain('--ie-safe-vh: 1vh');
+  expect(css).toContain('@supports (height: 100svh)');
+});
+
+test('service-worker release query handling does not rely on URLSearchParams.size', async ({ request }) => {
+  const response = await request.get('http://127.0.0.1:4173/sw.js');
+  expect(response.ok()).toBeTruthy();
+  const worker = await response.text();
+  expect(worker).toContain('Array.from(url.searchParams).length === 1');
+  expect(worker).not.toContain('url.searchParams.size');
 });
