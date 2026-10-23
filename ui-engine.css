@@ -5752,3 +5752,13 @@ hr{height:1px;border:0;background:var(--line);margin:24px 0}
 #toast-root{pointer-events:none}
 #toast-root .toast{pointer-events:none}
 #toast-root .toast a,#toast-root .toast button{pointer-events:auto}
+
+
+/* Workspace theme artwork: the customiser stores its selected theme on <html>
+   as data-ie-workspace-theme. Keep the image source on that same state hook so
+   all account types (including signed-out previews) resolve the right artwork. */
+html[data-ie-workspace-theme="midnight-studio"] { --theme-image: url('/themes/midnight-studio.jpg'); }
+html[data-ie-workspace-theme="light-skies"] { --theme-image: url('/themes/light-skies.jpg'); }
+html[data-ie-workspace-theme="graphite-minimal"] { --theme-image: url('/themes/graphite-minimal.jpg'); }
+html[data-ie-workspace-theme="plum-dusk"] { --theme-image: url('/themes/plum-dusk.jpg'); }
+html[data-ie-workspace-theme="forest-room"] { --theme-image: url('/themes/forest-room.jpg'); }
