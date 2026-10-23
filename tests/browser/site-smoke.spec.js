@@ -503,3 +503,26 @@ test('service-worker release query handling does not rely on URLSearchParams.siz
   expect(worker).toContain('Array.from(url.searchParams).length === 1');
   expect(worker).not.toContain('url.searchParams.size');
 });
+
+
+test('browser engine and viewport primitives are available for compatibility diagnostics', async ({ page, browserName }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
+  const result = await page.evaluate(() => ({
+    viewportWidth: document.documentElement.clientWidth,
+    documentWidth: document.documentElement.scrollWidth,
+    innerHeight: window.innerHeight,
+    visualViewportHeight: window.visualViewport ? window.visualViewport.height : null,
+    supportsColorMix: CSS.supports('color', 'color-mix(in srgb, #000 50%, #fff)'),
+    supportsHas: CSS.supports('selector(:has(*))'),
+    supportsBackdropFilter: CSS.supports('backdrop-filter', 'blur(1px)'),
+    supportsSvH: CSS.supports('height', '100svh')
+  }));
+  expect(result.documentWidth, JSON.stringify({ browserName, ...result })).toBeLessThanOrEqual(result.viewportWidth + 2);
+  expect(result.innerHeight).toBeGreaterThan(0);
+  expect(result.viewportWidth).toBeGreaterThan(0);
+  expect(typeof result.supportsColorMix).toBe('boolean');
+  expect(typeof result.supportsHas).toBe('boolean');
+  expect(typeof result.supportsBackdropFilter).toBe('boolean');
+  expect(typeof result.supportsSvH).toBe('boolean');
+});
