@@ -7230,3 +7230,32 @@ body :where(
   -webkit-backdrop-filter: blur(var(--user-glass-blur, var(--ie-glass-blur))) saturate(var(--user-glass-saturation, var(--ie-glass-saturation))) !important;
   backdrop-filter: blur(var(--user-glass-blur, var(--ie-glass-blur))) saturate(var(--user-glass-saturation, var(--ie-glass-saturation))) !important;
 }
+
+
+/* v3.3.90 — theme visibility hardening.
+   Some public-page rules used opaque background shorthands and a hidden entry state,
+   masking the wallpaper despite the selected image loading correctly. */
+#app > main#main-content,
+#app > main#main-content.guest-discover,
+#app .shell > main.page,
+#app .shell #main-content {
+  background: transparent !important;
+  background-image: none !important;
+  opacity: 1 !important;
+}
+#app .guest-discover .guest-welcome {
+  background: linear-gradient(135deg, rgba(26, 36, 52, .52), rgba(14, 20, 30, .68)) !important;
+  border-color: rgba(255, 255, 255, .18) !important;
+  -webkit-backdrop-filter: blur(var(--user-glass-blur, 26px)) saturate(var(--user-glass-saturation, 165%)) !important;
+  backdrop-filter: blur(var(--user-glass-blur, 26px)) saturate(var(--user-glass-saturation, 165%)) !important;
+}
+#app .guest-discover .guest-welcome .guest-verify-card {
+  background: var(--ie-glass-bg-strong, rgba(17, 21, 29, .70)) !important;
+}
+@media (prefers-reduced-transparency: reduce) {
+  #app .guest-discover .guest-welcome {
+    background: rgba(17, 21, 29, .94) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+}
