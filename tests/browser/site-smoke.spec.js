@@ -390,6 +390,7 @@ test('workspace theme art remains visible and mobile background attachment avoid
 test('support and appearance layouts respond cleanly across desktop and mobile widths', async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => window.CloudOS && window.CloudOS.status === 'ready' && document.querySelector('#app-loading')?.classList.contains('is-hidden'));
   await page.evaluate(() => {
     document.querySelector('#app').innerHTML =
       '<main id="main-content" class="page support-page">' +
@@ -429,6 +430,7 @@ test('support and appearance layouts respond cleanly across desktop and mobile w
 test('auth hero typography separates headline from explanatory copy', async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => window.CloudOS && window.CloudOS.status === 'ready' && document.querySelector('#app-loading')?.classList.contains('is-hidden'));
   await page.evaluate(() => {
     document.querySelector('#app').innerHTML =
       '<main class="auth-shell auth-layout"><section class="auth-story"><div class="auth-story-content"><h2>Your music.<br><em>Your next chapter.</em></h2><p class="auth-story-copy">One place to submit releases, stay connected with the label, and follow every step from review to release day.</p></div></section></main>';
