@@ -1,3 +1,10 @@
+## 3.3.78 — Workspace shell redesign
+
+- Applied a consistent responsive design layer across workspace navigation, headings, dashboards, cards, settings, forms, empty states and dialogs.
+- Improved typography scale, card hierarchy, touch targets, active navigation states and small-screen grid behaviour while preserving existing page-specific layouts.
+- Made the visual system honour personalisation tokens for accent, font scale, line height, radius, and shadows.
+- Updated cache and build version so the new shell styles are not hidden behind a stale service-worker cache.
+
 ## 3.3.77 — Appearance Studio and interface redesign
 
 - Reworked the floating personalisation panel into a responsive Appearance Studio with clearer hierarchy, structured tabs, more readable controls, stronger selected states and improved mobile sizing.
