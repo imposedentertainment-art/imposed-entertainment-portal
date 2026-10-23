@@ -200,8 +200,13 @@ function normaliseQuickCustomiser(value){
     const nextPreferences = { ...previous, appearance };
 
     try {
-      const { error } = await sb.from('profiles').update({ notification_preferences: nextPreferences }).eq('id', snapshot.userId);
+      const { data, error } = await sb.from('profiles')
+        .update({ notification_preferences: nextPreferences })
+        .eq('id', snapshot.userId)
+        .select('id')
+        .maybeSingle();
       if (error) throw error;
+      if (!data) throw new Error('Profile preference update did not affect a row.');
       if (session?.user?.id !== snapshot.userId || !profile || profile.id !== snapshot.userId) return;
       profile.notification_preferences = nextPreferences;
       clearPendingPersonaliseSnapshot(snapshot);
