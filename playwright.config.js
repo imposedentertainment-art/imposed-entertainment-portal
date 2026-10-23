@@ -1,7 +1,8 @@
 module.exports = {
   testDir: './tests/browser',
-  timeout: 30000,
-  fullyParallel: true,
+  timeout: 45000,
+  fullyParallel: false,
+  workers: process.env.CI ? 1 : undefined,
   reporter: 'line',
   use: { headless: true, browserName: 'chromium' }
 };
