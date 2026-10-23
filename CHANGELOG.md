@@ -1,3 +1,11 @@
+## 3.3.77 — Appearance Studio and interface redesign
+
+- Reworked the floating personalisation panel into a responsive Appearance Studio with clearer hierarchy, structured tabs, more readable controls, stronger selected states and improved mobile sizing.
+- Removed internal engine branding from the user-facing customisation launcher and panel.
+- Improved theme-card selection, accent swatches, control contrast, keyboard focus, reduced-motion handling and light-mode panel surfaces.
+- Added regression coverage for preference persistence across reloads, invalid preference recovery, theme selection, and the redesigned panel at narrow viewports.
+- Refreshed the app and service-worker cache version so browsers receive the updated UI.
+
 ## 3.3.72 — Complete UI stylesheet recovery
 
 - Recovered the full base stylesheet and the authentication, personalisation, accessibility, theme, design-system, shop and mobile-navigation layers into the single `ui-engine.css` entry point.

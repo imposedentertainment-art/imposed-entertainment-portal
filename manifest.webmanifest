@@ -1,8 +1,8 @@
 {
   "id": "/",
-  "name": "Imposed Entertainment — Jitter UI",
-  "short_name": "Jitter",
-  "description": "Jitter UI: a personalised, liquid-glass artist and label workspace for Imposed Entertainment.",
+  "name": "Imposed Entertainment — Artist & Label Workspace",
+  "short_name": "Imposed",
+  "description": "A personalised artist and label workspace for Imposed Entertainment.",
   "lang": "en-GB",
   "start_url": "/",
   "scope": "/",
