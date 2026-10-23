@@ -388,7 +388,7 @@ test('support and appearance layouts respond cleanly across desktop and mobile w
       '</main>';
   });
   const desktop = await page.evaluate(() => {
-    const columns = selector => getComputedStyle(document.querySelector(selector)).gridTemplateColumns.trim().split(/\\s+/).length;
+    const columns = selector => getComputedStyle(document.querySelector(selector)).gridTemplateColumns.trim().split(/\s+/).length;
     return {
       supportIntro: columns('.support-centre-intro'),
       topicGrid: columns('.support-topic-grid'),
@@ -403,9 +403,9 @@ test('support and appearance layouts respond cleanly across desktop and mobile w
 
   await page.setViewportSize({ width: 390, height: 844 });
   const mobile = await page.evaluate(() => ({
-    supportIntro: getComputedStyle(document.querySelector('.support-centre-intro')).gridTemplateColumns.trim().split(/\\s+/).length,
-    topicGrid: getComputedStyle(document.querySelector('.support-topic-grid')).gridTemplateColumns.trim().split(/\\s+/).length,
-    themeGrid: getComputedStyle(document.querySelector('.workspace-theme-grid')).gridTemplateColumns.trim().split(/\\s+/).length,
+    supportIntro: getComputedStyle(document.querySelector('.support-centre-intro')).gridTemplateColumns.trim().split(/\s+/).length,
+    topicGrid: getComputedStyle(document.querySelector('.support-topic-grid')).gridTemplateColumns.trim().split(/\s+/).length,
+    themeGrid: getComputedStyle(document.querySelector('.workspace-theme-grid')).gridTemplateColumns.trim().split(/\s+/).length,
     viewport: document.documentElement.clientWidth,
     pageWidth: document.documentElement.scrollWidth
   }));
