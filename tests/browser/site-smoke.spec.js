@@ -93,7 +93,12 @@ for (const route of ['/privacy', '/terms', '/help']) {
   test(`direct route ${route} responds with the expected document`, async ({ request }) => {
     const response = await request.get(`http://127.0.0.1:4173${route}`);
     expect(response.ok()).toBeTruthy();
-    expect(await response.text()).toContain('<html');
+    const html = await response.text();
+    expect(html).toContain('<html');
+    if (route === '/privacy' || route === '/terms') {
+      expect(html.toLowerCase()).toContain('routenote');
+      expect(html.toLowerCase()).toContain('botpress');
+    }
   });
 }
 
