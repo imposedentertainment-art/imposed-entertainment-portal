@@ -6345,3 +6345,67 @@ button.secondary.small,.secondary.small,.btn-secondary.small{
     border-color: GrayText;
   }
 }
+
+
+/* Cross-browser fallbacks for older Safari/WebViews and browsers without modern CSS features. */
+:root {
+  --ie-safe-vh: 1vh;
+}
+@supports (height: 100svh) {
+  :root { --ie-safe-vh: 1svh; }
+}
+.app-loading,
+.auth-shell,
+.shell,
+.main,
+.palette,
+.modal-backdrop,
+.dialog-backdrop {
+  min-height: calc(var(--ie-safe-vh) * 100);
+}
+@supports not (color: color-mix(in srgb, #000 50%, #fff)) {
+  /* Keep core controls and workspace surfaces readable when color-mix() is unavailable. */
+  .primary, .new-btn { box-shadow: 0 6px 18px rgba(0,0,0,.18); }
+  .secondary, .chip, .seg button, .collection-save {
+    border-color: var(--line, #46515e);
+  }
+  .card, .settings-card, .detail-card, .approval-card, .metric,
+  .invite-card, .up-card, .pf-card, .band-card, .appearance-choice,
+  .dashboard-widget-option, .track-card {
+    border-color: var(--line, #303844);
+  }
+  .band-card { background: var(--surface, #151a21); }
+  .band-art, .up-date, .empty-icon {
+    background: var(--s2, #202833);
+  }
+  .insight-track { background: rgba(255,255,255,.1); }
+  .primary:focus-visible, .new-btn:focus-visible,
+  .secondary:focus-visible, .chip:focus-visible,
+  .seg button:focus-visible {
+    outline: 2px solid var(--accent, #d7bd72);
+    outline-offset: 2px;
+  }
+  .auth-shell { background: var(--bg, #090b0f) !important; }
+  .auth-panel { background: var(--s1, #11151b); }
+  .network-status { border-color: var(--line2, #46515e); }
+}
+@supports not selector(.appearance-choice:has(input:checked)) {
+  /* Older Safari/Firefox still get a visible state through the native checked control. */
+  .appearance-choice:focus-within,
+  .appearance-choice:active {
+    border-color: var(--accent, #d7bd72);
+    outline: 1px solid var(--accent, #d7bd72);
+    outline-offset: 1px;
+  }
+}
+@supports not (backdrop-filter: blur(1px)) {
+  .nav, .workspace-topbar, .auth-card, .palette, .modal-backdrop,
+  .dialog-backdrop, .app-loading {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  .nav { background: rgba(9,12,17,.98); }
+  .workspace-topbar { background: rgba(250,250,253,.99); }
+  .auth-card { background: var(--s1, #11151b); }
+  .palette, .modal-backdrop, .dialog-backdrop { background: rgba(3,6,10,.96); }
+}
