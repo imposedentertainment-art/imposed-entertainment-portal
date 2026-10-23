@@ -1,5 +1,5 @@
-/* Imposed Entertainment v3.3.70: versioned static assets; never cache query-bearing navigations/auth callbacks. */
-const CACHE_NAME = 'imposed-jitter-v3.3.70';
+/* Imposed Entertainment v3.3.71: versioned static assets; never cache query-bearing navigations/auth callbacks. */
+const CACHE_NAME = 'imposed-jitter-v3.3.71';
 const STATIC_ASSETS = [
   '/engines/cloud-os.js',
   '/engines/null-core.js',
