@@ -445,7 +445,7 @@ test('font loading uses the document preload path without a redundant CSS import
   const cssResponse = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.74');
   expect(cssResponse.ok()).toBeTruthy();
   const css = await cssResponse.text();
-  expect(css).not.toMatch(/^\\s*@import\\s/m);
+  expect(css).not.toMatch(/^\s*@import\s/m);
   expect(css).toContain('--ui:"DM Sans"');
   expect(css).toContain('--display:"Space Grotesk"');
 });
