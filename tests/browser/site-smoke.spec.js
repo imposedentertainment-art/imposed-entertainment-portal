@@ -295,3 +295,27 @@ test('Prism validates and persists personalisation preferences through its engin
   expect(result.engineRegistered).toBeTruthy();
   expect(result.serviceRegistered).toBeTruthy();
 });
+
+test('Prism stays aligned with account appearance events without starting a sync loop', async ({ page }) => {
+  await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => window.Prism && window.NullCore);
+  const result = await page.evaluate(() => {
+    localStorage.removeItem('ie-workspace-personalisation-touched-v1');
+    let syncEvents = 0;
+    window.addEventListener('ie-personalise-change', () => { syncEvents += 1; });
+    window.dispatchEvent(new CustomEvent('ie-appearance-change', { detail: {
+      accent: '#123456',
+      workspaceTheme: 'forest-room',
+      mode: 'light',
+      quickCustomiser: { buttonStyle: 'pill', surface: 'glass' }
+    }}));
+    const prefs = window.Prism.read();
+    return { prefs, syncEvents };
+  });
+  expect(result.prefs.accent).toBe('#123456');
+  expect(result.prefs.palette).toBe('forest-room');
+  expect(result.prefs.theme).toBe('light');
+  expect(result.prefs.buttonStyle).toBe('pill');
+  expect(result.prefs.surface).toBe('glass');
+  expect(result.syncEvents).toBe(0);
+});
