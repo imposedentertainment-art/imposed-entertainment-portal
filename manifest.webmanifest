@@ -1,1 +1,53 @@
-{"id":"/","name":"Imposed Entertainment Portal","short_name":"Imposed","description":"Artist and label workspace for Imposed Entertainment: releases, rollout plans and catalogue.","lang":"en-GB","start_url":"/","scope":"/","display":"standalone","orientation":"any","background_color":"#060405","theme_color":"#060405","categories":["music","business"],"icons":[{"src":"/img/logo-192.png","sizes":"192x192","type":"image/png","purpose":"any"},{"src":"/img/logo-512.png","sizes":"512x512","type":"image/png","purpose":"any"}],"shortcuts":[{"name":"Dashboard","url":"/dashboard","icons":[{"src":"/img/logo-192.png","sizes":"192x192"}]},{"name":"Discography","url":"/discography","icons":[{"src":"/img/logo-192.png","sizes":"192x192"}]}]}
+{
+  "id": "/",
+  "name": "Imposed Entertainment — Jitter UI",
+  "short_name": "Jitter",
+  "description": "Jitter UI: a personalised, liquid-glass artist and label workspace for Imposed Entertainment.",
+  "lang": "en-GB",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#080a0d",
+  "theme_color": "#080a0d",
+  "categories": [
+    "music",
+    "business"
+  ],
+  "icons": [
+    {
+      "src": "/img/logo-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/img/logo-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "url": "/dashboard",
+      "icons": [
+        {
+          "src": "/img/logo-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Discography",
+      "url": "/discography",
+      "icons": [
+        {
+          "src": "/img/logo-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
+}
