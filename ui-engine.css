@@ -87,3 +87,12 @@ hr{height:1px;border:0;background:var(--line);margin:24px 0}
  body:not(.personalise-surface-flat) .card,body:not(.personalise-surface-flat) .panel,body:not(.personalise-surface-flat) .settings-card,body:not(.personalise-surface-flat) .settings-section,body:not(.personalise-surface-flat) .stat-card,body:not(.personalise-surface-flat) .widget,body:not(.personalise-surface-flat) .artist-card,body:not(.personalise-surface-flat) .release-card {background:color-mix(in srgb,var(--surface) 84%,transparent);backdrop-filter:blur(var(--glass-blur)) saturate(var(--user-glass-saturation,145%));-webkit-backdrop-filter:blur(var(--glass-blur)) saturate(var(--user-glass-saturation,145%));border-color:color-mix(in srgb,var(--line) 76%,transparent);box-shadow:var(--ui-glass-shadow, var(--shadow-md))}
 }
 .personalise-surface-flat .card,.personalise-surface-flat .panel,.personalise-surface-flat .settings-card,.personalise-surface-flat .settings-section,.personalise-surface-flat .stat-card,.personalise-surface-flat .widget,.personalise-surface-flat .artist-card,.personalise-surface-flat .release-card {backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:var(--surface)!important;box-shadow:none!important}
+
+/* Image-led theme picker: real supplied artwork, clear selection, and keyboard-visible focus. */
+.ie-p-theme-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+.ie-p-theme-card{position:relative;display:flex;align-items:flex-end;justify-content:space-between;min-height:94px;padding:12px;border:1px solid var(--line-strong);border-radius:var(--radius-md);background-color:var(--surface-raised);background-position:center;background-size:cover;color:#fff;text-align:left;overflow:hidden;isolation:isolate;transition:transform var(--motion) var(--ease),border-color var(--motion) var(--ease),box-shadow var(--motion) var(--ease)}
+.ie-p-theme-card:hover{transform:translateY(-2px);border-color:var(--accent);box-shadow:0 8px 24px #0003}
+.ie-p-theme-card[aria-pressed="true"]{border:2px solid var(--accent);box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 22%,transparent)}
+.ie-p-theme-name{font-size:.86rem;font-weight:700;text-shadow:0 1px 8px #000}
+.ie-p-theme-check{display:grid;place-items:center;flex:0 0 22px;width:22px;height:22px;border-radius:50%;background:var(--accent);color:var(--accent-contrast);font-weight:800}
+@media(max-width:380px){.ie-p-theme-grid{grid-template-columns:1fr}.ie-p-theme-card{min-height:76px}}
