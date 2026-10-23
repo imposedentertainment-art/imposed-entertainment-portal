@@ -4,5 +4,5 @@ module.exports = {
   fullyParallel: false,
   workers: process.env.CI ? 1 : undefined,
   reporter: 'line',
-  use: { headless: true, browserName: 'chromium' }
+  use: { headless: true, browserName: process.env.BROWSER || 'chromium' }
 };
