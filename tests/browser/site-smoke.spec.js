@@ -339,7 +339,7 @@ test('Prism stays aligned with account appearance events without starting a sync
   expect(result.prefs.theme).toBe('light');
   expect(result.prefs.density).toBe('comfortable');
   expect(result.prefs.fontScale).toBe(1.15);
-  expect(result.prefs.lineHeight).toBe(1.65);
+  expect(result.prefs.lineHeight).toBeCloseTo(1.65, 5);
   expect(result.prefs.buttonStyle).toBe('pill');
   expect(result.prefs.surface).toBe('glass');
   expect(result.syncEvents).toBe(0);
