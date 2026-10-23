@@ -621,3 +621,41 @@ test('Prism normalises and repairs invalid preferences in persistent storage', a
     expect(saved.density).toBe('standard');
   }
 });
+
+test('Prism recovers from corrupt JSON and prefers a valid legacy preference copy', async ({ page }) => {
+  await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
+  await page.evaluate(() => {
+    localStorage.setItem('ie-workspace-personalisation-v2', '{broken-json');
+    localStorage.setItem('ie-workspace-personalisation-v1', JSON.stringify({
+      palette: 'forest-room', accent: '#77aa88', fontScale: 1.1
+    }));
+  });
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  const recovered = await page.evaluate(() => ({
+    current: JSON.parse(localStorage.getItem('ie-workspace-personalisation-v2')),
+    legacy: JSON.parse(localStorage.getItem('ie-workspace-personalisation-v1')),
+    state: window.Prism.read()
+  }));
+  for (const saved of [recovered.current, recovered.legacy, recovered.state]) {
+    expect(saved.palette).toBe('forest-room');
+    expect(saved.accent).toBe('#77aa88');
+    expect(saved.fontScale).toBe(1.1);
+  }
+});
+
+test('Prism resets both preference keys to defaults when both stored JSON blobs are corrupt', async ({ page }) => {
+  await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
+  await page.evaluate(() => {
+    localStorage.setItem('ie-workspace-personalisation-v2', '{bad');
+    localStorage.setItem('ie-workspace-personalisation-v1', 'not-json');
+  });
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  const recovered = await page.evaluate(() => ({
+    current: JSON.parse(localStorage.getItem('ie-workspace-personalisation-v2')),
+    legacy: JSON.parse(localStorage.getItem('ie-workspace-personalisation-v1'))
+  }));
+  expect(recovered.current.palette).toBe('midnight-studio');
+  expect(recovered.legacy.palette).toBe('midnight-studio');
+  expect(recovered.current.accent).toBe('#d8bd73');
+  expect(recovered.legacy.accent).toBe('#d8bd73');
+});
