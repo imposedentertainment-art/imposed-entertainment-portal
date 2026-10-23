@@ -6409,3 +6409,343 @@ button.secondary.small,.secondary.small,.btn-secondary.small{
   .auth-card { background: var(--s1, #11151b); }
   .palette, .modal-backdrop, .dialog-backdrop { background: rgba(3,6,10,.96); }
 }
+
+
+/* 3.3.77 — Appearance Studio: coherent surfaces, stronger hierarchy, and responsive controls.
+   Deliberately placed last to replace legacy overlapping customiser rules without deleting feature CSS. */
+:root {
+  --ie-studio-panel: var(--ui-surface, #111720);
+  --ie-studio-raised: var(--ui-surface-raised, #171f2a);
+  --ie-studio-line: var(--ui-border, #303b49);
+  --ie-studio-copy: var(--ui-text, #f4f5f7);
+  --ie-studio-muted: var(--ui-text-muted, #a5afbc);
+}
+#ie-personalise-trigger {
+  display: grid;
+  place-items: center;
+  width: 50px;
+  height: 50px;
+  border: 1px solid color-mix(in srgb, var(--user-accent, var(--accent)) 65%, transparent);
+  background: color-mix(in srgb, var(--ie-studio-panel) 86%, var(--user-accent, var(--accent)));
+  color: var(--user-accent, var(--accent));
+  box-shadow: 0 10px 32px rgba(0,0,0,.28), inset 0 1px rgba(255,255,255,.08);
+  font-size: 23px;
+  line-height: 1;
+  transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+#ie-personalise-trigger:hover {
+  transform: translateY(-2px);
+  border-color: var(--user-accent, var(--accent));
+  box-shadow: 0 14px 38px rgba(0,0,0,.32), 0 0 0 4px color-mix(in srgb, var(--user-accent, var(--accent)) 12%, transparent);
+}
+#ie-personalise-trigger[aria-expanded="true"] {
+  border-color: var(--user-accent, var(--accent));
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--user-accent, var(--accent)) 15%, transparent);
+}
+#ie-personalise-panel {
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: min(468px, calc(100vw - 28px));
+  max-height: min(82vh, 820px);
+  max-height: min(82dvh, 820px);
+  overflow: hidden;
+  padding: 0;
+  border: 1px solid var(--ie-studio-line);
+  border-radius: 22px;
+  background: var(--ie-studio-panel);
+  color: var(--ie-studio-copy);
+  box-shadow: 0 28px 90px rgba(0,0,0,.44), 0 2px 12px rgba(0,0,0,.18);
+  overscroll-behavior: contain;
+}
+#ie-personalise-panel[hidden] { display: none !important; }
+#ie-personalise-panel .ie-p-top {
+  flex: 0 0 auto;
+  padding: 22px 22px 14px;
+  background: linear-gradient(140deg, color-mix(in srgb, var(--user-accent, var(--accent)) 10%, var(--ie-studio-panel)), var(--ie-studio-panel) 65%);
+  border-bottom: 1px solid var(--ie-studio-line);
+}
+#ie-personalise-panel .ie-p-head { align-items: center; gap: 14px; }
+#ie-personalise-panel .ie-p-head h2 {
+  font-size: clamp(1.25rem, 3vw, 1.55rem);
+  line-height: 1.15;
+  letter-spacing: -.035em;
+  font-weight: 750;
+}
+#ie-personalise-panel .ie-p-head > button {
+  display: grid;
+  place-items: center;
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid var(--ie-studio-line);
+  border-radius: 11px;
+  background: var(--ie-studio-raised);
+  font-size: 22px;
+  line-height: 1;
+}
+#ie-personalise-panel .ie-p-sub {
+  max-width: 36ch;
+  margin: 8px 0 0;
+  color: var(--ie-studio-muted);
+  font-size: .86rem;
+  line-height: 1.5;
+}
+#ie-personalise-panel .ie-p-tabs {
+  position: relative;
+  top: auto;
+  z-index: 3;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 12px 18px;
+  border: 0;
+  border-bottom: 1px solid var(--ie-studio-line);
+  background: var(--ie-studio-panel);
+}
+#ie-personalise-panel .ie-p-tab {
+  min-width: 0;
+  min-height: 38px;
+  padding: 8px 5px;
+  border: 1px solid transparent;
+  border-radius: 11px;
+  background: transparent;
+  color: var(--ie-studio-muted);
+  font-size: .8rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+#ie-personalise-panel .ie-p-tab:hover {
+  background: var(--ie-studio-raised);
+  color: var(--ie-studio-copy);
+}
+#ie-personalise-panel .ie-p-tab[aria-selected="true"] {
+  border-color: color-mix(in srgb, var(--user-accent, var(--accent)) 45%, var(--ie-studio-line));
+  background: color-mix(in srgb, var(--user-accent, var(--accent)) 12%, var(--ie-studio-raised)) !important;
+  color: var(--user-accent, var(--accent)) !important;
+}
+#ie-personalise-panel .ie-p-content {
+  display: grid;
+  gap: 12px;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 16px 18px 20px;
+  scrollbar-gutter: stable;
+}
+#ie-personalise-panel .ie-p-content fieldset {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+  margin: 0;
+  padding: 16px;
+  border: 1px solid var(--ie-studio-line);
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--ie-studio-raised) 62%, transparent);
+}
+#ie-personalise-panel .ie-p-content legend {
+  padding: 0 7px;
+  color: var(--ie-studio-copy);
+  font-size: .88rem;
+  font-weight: 750;
+  letter-spacing: -.01em;
+}
+#ie-personalise-panel .ie-p-help {
+  margin: -3px 0 2px;
+  color: var(--ie-studio-muted);
+  font-size: .78rem;
+  line-height: 1.5;
+}
+#ie-personalise-panel .ie-p-control {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(124px, 1fr);
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+#ie-personalise-panel .ie-p-control > span:first-child {
+  color: var(--ie-studio-copy);
+  font-size: .83rem;
+  font-weight: 650;
+  line-height: 1.4;
+}
+#ie-personalise-panel .ie-p-control select,
+#ie-personalise-panel .ie-p-control input[type="color"] {
+  width: 100%;
+  min-width: 0;
+  min-height: 40px;
+  border: 1px solid var(--ie-studio-line);
+  border-radius: 10px;
+  background: var(--ie-studio-raised);
+  color: var(--ie-studio-copy);
+}
+#ie-personalise-panel .ie-p-control select { padding: 8px 10px; }
+#ie-personalise-panel .ie-p-colours {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
+  padding: 4px 2px 6px;
+}
+#ie-personalise-panel .ie-p-swatch {
+  min-height: 0;
+  aspect-ratio: 1;
+  border: 2px solid color-mix(in srgb, var(--ie-studio-copy) 20%, transparent);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.1);
+}
+#ie-personalise-panel .ie-p-swatch[aria-pressed="true"] {
+  outline: 2px solid var(--user-accent, var(--accent));
+  outline-offset: 3px;
+}
+#ie-personalise-panel .ie-p-theme-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+#ie-personalise-panel .ie-p-theme-card {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-width: 0;
+  min-height: 94px;
+  overflow: hidden;
+  padding: 12px;
+  border: 1px solid var(--ie-studio-line);
+  border-radius: 13px;
+  background-color: var(--ie-studio-raised);
+  background-size: cover;
+  background-position: center;
+  text-align: left;
+  isolation: isolate;
+  transition: border-color .16s ease, transform .16s ease;
+}
+#ie-personalise-panel .ie-p-theme-card:hover { transform: translateY(-1px); }
+#ie-personalise-panel .ie-p-theme-card[aria-pressed="true"] {
+  border: 2px solid var(--user-accent, var(--accent));
+  padding: 11px;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--user-accent, var(--accent)) 15%, transparent);
+}
+#ie-personalise-panel .ie-p-theme-name {
+  position: relative;
+  z-index: 1;
+  color: #fff;
+  font-size: .82rem;
+  font-weight: 750;
+  text-shadow: 0 1px 8px rgba(0,0,0,.85);
+}
+#ie-personalise-panel .ie-p-theme-check {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--user-accent, var(--accent));
+  color: #151515;
+  font-size: .8rem;
+  font-weight: 800;
+}
+#ie-personalise-panel .ie-p-toggle {
+  min-height: 42px;
+  margin: 0;
+  padding: 8px 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--ie-studio-line) 72%, transparent);
+  color: var(--ie-studio-copy);
+  font-size: .84rem;
+}
+#ie-personalise-panel .ie-p-toggle:last-child { border-bottom: 0; }
+#ie-personalise-panel .ie-p-toggle input {
+  width: 19px;
+  height: 19px;
+  accent-color: var(--user-accent, var(--accent));
+}
+#ie-personalise-panel input[type="range"] { width: 100%; accent-color: var(--user-accent, var(--accent)); }
+#ie-personalise-panel .ie-p-actions {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 12px 18px;
+  border-top: 1px solid var(--ie-studio-line);
+  background: var(--ie-studio-panel);
+}
+#ie-personalise-panel .ie-p-actions > button {
+  min-width: 0;
+  min-height: 40px;
+  padding: 9px 12px;
+  border: 1px solid var(--ie-studio-line);
+  border-radius: 11px;
+  background: var(--ie-studio-raised);
+  color: var(--ie-studio-copy);
+  font-size: .8rem;
+  font-weight: 700;
+}
+#ie-personalise-panel .ie-p-actions > .ie-p-save {
+  border-color: transparent;
+  background: var(--user-accent, var(--accent)) !important;
+  color: var(--accent-ink, #16130d) !important;
+}
+#ie-personalise-panel #ie-p-status {
+  flex: 0 0 auto;
+  padding: 0 18px 14px !important;
+  color: var(--ie-studio-muted) !important;
+  font-size: .75rem !important;
+  line-height: 1.45;
+}
+#ie-personalise-panel :where(button, select, input, [tabindex]):focus-visible {
+  outline: 2px solid var(--user-accent, var(--accent));
+  outline-offset: 3px;
+}
+body.personalise-theme-light #ie-personalise-panel {
+  --ie-studio-panel: #f8fafc;
+  --ie-studio-raised: #eef2f6;
+  --ie-studio-line: #d5dce5;
+  --ie-studio-copy: #202a36;
+  --ie-studio-muted: #596779;
+  box-shadow: 0 24px 75px rgba(28,42,60,.2);
+}
+body.personalise-theme-light #ie-personalise-panel .ie-p-theme-name { color: #fff; }
+@media (max-width: 600px) {
+  #ie-personalise-trigger {
+    right: max(14px, env(safe-area-inset-right));
+    bottom: max(14px, env(safe-area-inset-bottom));
+    width: 46px;
+    height: 46px;
+  }
+  #ie-personalise-panel {
+    left: max(8px, env(safe-area-inset-left));
+    right: max(8px, env(safe-area-inset-right));
+    bottom: calc(max(8px, env(safe-area-inset-bottom)) + 58px);
+    width: auto;
+    max-height: min(78vh, 760px);
+    max-height: min(78dvh, 760px);
+    border-radius: 19px;
+  }
+  #ie-personalise-panel .ie-p-top { padding: 16px 16px 12px; }
+  #ie-personalise-panel .ie-p-tabs { padding: 10px 12px; }
+  #ie-personalise-panel .ie-p-content { padding: 12px; }
+  #ie-personalise-panel .ie-p-content fieldset { padding: 13px; }
+  #ie-personalise-panel .ie-p-control { grid-template-columns: minmax(0, 1fr) minmax(112px, .9fr); gap: 8px; }
+  #ie-personalise-panel .ie-p-theme-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 380px) {
+  #ie-personalise-panel .ie-p-control { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  #ie-personalise-panel .ie-p-colours { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  #ie-personalise-panel .ie-p-tab { font-size: .74rem; padding-inline: 2px; }
+  #ie-personalise-panel .ie-p-theme-card { min-height: 80px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #ie-personalise-trigger,
+  #ie-personalise-panel,
+  #ie-personalise-panel * {
+    transition-duration: .01ms !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
