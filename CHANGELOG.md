@@ -1,3 +1,10 @@
+## 3.3.79 — Preference recovery and regression fixes
+
+- Fix Prism preference reads so invalid, stale, or out-of-range local settings are normalised and written back to both current and legacy storage keys instead of recurring on every reload.
+- Keep preferences recoverable when storage is blocked by falling back to in-memory defaults.
+- Add regression assertions for canonical storage recovery and verify theme artwork assets exist in the repository.
+- Bump application and service-worker cache versions to ensure the fix reaches browsers.
+
 ## 3.3.78 — Workspace shell redesign
 
 - Applied a consistent responsive design layer across workspace navigation, headings, dashboards, cards, settings, forms, empty states and dialogs.
