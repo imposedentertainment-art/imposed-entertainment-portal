@@ -120,7 +120,39 @@ function normaliseQuickCustomiser(value){
   // Keep this bridge separate from ie-appearance-change to avoid an account-sync feedback loop.
   let personaliseSyncTimer = null;
   let pendingPersonaliseSnapshot = null;
+  let personaliseSnapshotSequence = 0;
+  const PERSONALISE_PENDING_KEY = 'ie-personalise-sync-pending-v1';
   const PERSONALISE_SYNC_MAX_RETRIES = 3;
+
+  function readPendingPersonaliseSnapshot() {
+    try {
+      const value = JSON.parse(localStorage.getItem(PERSONALISE_PENDING_KEY) || 'null');
+      if (!value || typeof value !== 'object' || typeof value.userId !== 'string' || !value.snapshot || typeof value.snapshot !== 'object') return null;
+      return value;
+    } catch (_) { return null; }
+  }
+
+  function persistPendingPersonaliseSnapshot(snapshot) {
+    try {
+      localStorage.setItem(PERSONALISE_PENDING_KEY, JSON.stringify({
+        userId: snapshot.userId,
+        revision: snapshot.revision,
+        snapshot
+      }));
+    } catch (_) { /* The in-memory retry queue remains available when storage is blocked. */ }
+  }
+
+  function clearPendingPersonaliseSnapshot(snapshot) {
+    const saved = readPendingPersonaliseSnapshot();
+    if (!saved || saved.userId !== snapshot.userId || saved.revision !== snapshot.revision) return;
+    try { localStorage.removeItem(PERSONALISE_PENDING_KEY); } catch (_) {}
+  }
+
+  function resumePendingPersonaliseSync() {
+    const saved = readPendingPersonaliseSnapshot();
+    if (!saved || !session?.user?.id || session.user.id !== saved.userId || !profile || profile.id !== saved.userId) return;
+    schedulePersonaliseSync({ ...saved.snapshot, userId: saved.userId, revision: saved.revision, attempt: 0 }, 150);
+  }
 
   function publishPersonaliseSyncStatus(detail) {
     window.dispatchEvent(new CustomEvent('ie-personalise-sync-status', { detail }));
@@ -129,6 +161,7 @@ function normaliseQuickCustomiser(value){
   function schedulePersonaliseSync(snapshot, delay) {
     clearTimeout(personaliseSyncTimer);
     pendingPersonaliseSnapshot = snapshot;
+    persistPendingPersonaliseSnapshot(snapshot);
     personaliseSyncTimer = setTimeout(() => {
       const next = pendingPersonaliseSnapshot;
       pendingPersonaliseSnapshot = null;
@@ -171,6 +204,7 @@ function normaliseQuickCustomiser(value){
       if (error) throw error;
       if (session?.user?.id !== snapshot.userId || !profile || profile.id !== snapshot.userId) return;
       profile.notification_preferences = nextPreferences;
+      clearPendingPersonaliseSnapshot(snapshot);
       publishPersonaliseSyncStatus({ synced: true, attempt: snapshot.attempt || 0 });
     } catch (error) {
       console.warn('Could not sync interface preferences to the account.', error);
@@ -193,12 +227,24 @@ function normaliseQuickCustomiser(value){
       publishPersonaliseSyncStatus({ synced: false, retrying: false, reason: 'local-only' });
       return;
     }
-    schedulePersonaliseSync({ ...detail, userId: session.user.id, attempt: 0 }, 350);
+    const revision = Date.now() + (++personaliseSnapshotSequence / 1000);
+    schedulePersonaliseSync({ ...detail, userId: session.user.id, attempt: 0, revision }, 350);
   });
 
+  window.addEventListener('ie-personalise-sync-resume', resumePendingPersonaliseSync);
   window.addEventListener('online', () => {
     const pending = pendingPersonaliseSnapshot;
     if (pending && session?.user?.id === pending.userId) schedulePersonaliseSync(pending, 100);
+    else resumePendingPersonaliseSync();
+  });
+  window.addEventListener('ie-personalise-account-change', event => {
+    const nextUserId = event?.detail?.userId || null;
+    const saved = readPendingPersonaliseSnapshot();
+    clearTimeout(personaliseSyncTimer);
+    pendingPersonaliseSnapshot = null;
+    if (saved && saved.userId !== nextUserId) {
+      try { localStorage.removeItem(PERSONALISE_PENDING_KEY); } catch (_) {}
+    }
   });
   const STORES = ['Spotify','Apple Music','iTunes','YouTube Music','Amazon Music','Deezer','TIDAL','Pandora','Napster','iHeartRadio','Claro Musica','JioSaavn','Anghami','KKBox','NetEase','Tencent','TikTok','Facebook','Instagram','Snapchat','CapCut','Pinterest','Nuuday','ROXi','Kuack Media','Qobuz','Joox','Boomplay','Trebel','Melon','Flo','Bugs','Genie','Vibe'];
   const GENRES = ['Electronic','Rock','Metal','Metalcore','Hip Hop','Pop','Alternative','Ambient','Other'];
