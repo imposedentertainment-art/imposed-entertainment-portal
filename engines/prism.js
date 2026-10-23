@@ -61,13 +61,31 @@
     try {
       const currentRaw = global.localStorage.getItem(STORAGE_KEY);
       const legacyRaw = global.localStorage.getItem(LEGACY_KEY);
-      const raw = currentRaw || legacyRaw;
-      if (!raw) return { ...defaults };
-      const parsed = JSON.parse(raw);
-      const next = normalise(parsed);
-      /* Heal malformed, stale, or out-of-range preferences once instead of
-         re-reading the same invalid values on every reload. */
+      if (!currentRaw && !legacyRaw) return { ...defaults };
+
+      /* Parse each key independently. A corrupt current value must not hide a
+         recoverable legacy value, and corrupt JSON must not poison every reload. */
+      function parseStored(raw) {
+        if (!raw) return { present: false, valid: false, value: null };
+        try {
+          const value = JSON.parse(raw);
+          return {
+            present: true,
+            valid: !!value && typeof value === 'object' && !Array.isArray(value),
+            value
+          };
+        } catch (_) {
+          return { present: true, valid: false, value: null };
+        }
+      }
+      const current = parseStored(currentRaw);
+      const legacy = parseStored(legacyRaw);
+      const source = current.valid ? current.value : legacy.valid ? legacy.value : defaults;
+      const next = normalise(source);
       const canonical = JSON.stringify(next);
+
+      /* Heal stale, malformed, and out-of-range values once, writing the same
+         canonical state to both keys so old clients cannot resurrect bad data. */
       if (currentRaw !== canonical || legacyRaw !== canonical) {
         try {
           global.localStorage.setItem(STORAGE_KEY, canonical);
