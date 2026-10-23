@@ -229,7 +229,7 @@ test('guest customiser persists an explicit workspace theme choice', async ({ pa
   const trigger = page.locator('#ie-personalise-trigger');
   await expect(trigger).toBeVisible({ timeout: 8000 });
   await trigger.click();
-  await page.locator('#ie-personalise-panel select[aria-label="Workspace theme"]').selectOption('plum-dusk');
+  await page.locator('#ie-personalise-panel button[aria-label="Use Plum dusk theme"]').click();
   const result = await page.evaluate(() => ({
     theme: document.documentElement.dataset.ieWorkspaceTheme,
     touched: JSON.parse(localStorage.getItem('ie-workspace-personalisation-touched-v1') || '[]'),
