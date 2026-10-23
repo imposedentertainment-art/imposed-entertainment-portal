@@ -58,30 +58,51 @@
   }
 
   function safeRead() {
+    let currentRaw;
+    let legacyRaw;
     try {
-      const currentRaw = global.localStorage.getItem(STORAGE_KEY);
-      const legacyRaw = global.localStorage.getItem(LEGACY_KEY);
-      const raw = currentRaw || legacyRaw;
-      if (!raw) return { ...defaults };
-      const parsed = JSON.parse(raw);
-      const next = normalise(parsed);
-      /* Heal malformed, stale, or out-of-range preferences once instead of
-         re-reading the same invalid values on every reload. */
-      const canonical = JSON.stringify(next);
-      if (currentRaw !== canonical || legacyRaw !== canonical) {
-        try {
-          global.localStorage.setItem(STORAGE_KEY, canonical);
-          global.localStorage.setItem(LEGACY_KEY, canonical);
-          persistence = 'local';
-        } catch (_) {
-          persistence = 'memory';
-        }
-      }
-      return next;
+      currentRaw = global.localStorage.getItem(STORAGE_KEY);
+      legacyRaw = global.localStorage.getItem(LEGACY_KEY);
     } catch (_) {
       persistence = 'memory';
       return { ...memoryState };
     }
+
+    /* Prefer the current schema, but fall back to a valid legacy copy if the
+       current value was truncated or corrupted during a previous write. */
+    let parsed = null;
+    let validCurrent = false;
+    let validLegacy = false;
+    if (currentRaw) {
+      try { parsed = JSON.parse(currentRaw); validCurrent = !!parsed && typeof parsed === 'object' && !Array.isArray(parsed); } catch (_) {}
+    }
+    if (!validCurrent && legacyRaw) {
+      try {
+        const legacy = JSON.parse(legacyRaw);
+        if (legacy && typeof legacy === 'object' && !Array.isArray(legacy)) {
+          parsed = legacy;
+          validLegacy = true;
+        }
+      } catch (_) {}
+    }
+    if (!validCurrent && !validLegacy) parsed = {};
+
+    const next = normalise(parsed);
+    /* Heal invalid JSON, stale schemas and out-of-range values so a bad
+       preference blob cannot poison every subsequent page load. */
+    const canonical = JSON.stringify(next);
+    if (currentRaw !== canonical || legacyRaw !== canonical) {
+      try {
+        global.localStorage.setItem(STORAGE_KEY, canonical);
+        global.localStorage.setItem(LEGACY_KEY, canonical);
+        persistence = 'local';
+      } catch (_) {
+        persistence = 'memory';
+      }
+    } else {
+      persistence = 'local';
+    }
+    return next;
   }
 
   function publish(reason, state) {

@@ -1,3 +1,10 @@
+## 3.3.81 — Resilient preference recovery
+
+- Recover valid legacy appearance preferences when the current preference key contains corrupted JSON.
+- Repair both current and legacy keys to a canonical, validated preference object when stored JSON is malformed.
+- Fall back to safe defaults and heal both keys when neither saved copy can be parsed.
+- Add browser regression coverage for corrupted storage and legacy recovery; bump app and service-worker cache versions.
+
 ## 3.3.80 — Theme rendering and browser reliability
 
 - Fix wallpaper stacking so selected theme artwork remains visible across browser engines instead of being painted behind the page canvas.
