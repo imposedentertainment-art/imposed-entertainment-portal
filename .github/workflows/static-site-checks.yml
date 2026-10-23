@@ -15,7 +15,13 @@ permissions:
 jobs:
   validate:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+    env:
+      BROWSER: ${{ matrix.browser }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -35,9 +41,9 @@ jobs:
         run: node scripts/audit-static-site.mjs
       - name: Install browser-test dependencies
         run: npm install --no-save @playwright/test http-server
-      - name: Install Chromium
-        run: npx playwright install --with-deps chromium
-      - name: Run browser smoke tests
+      - name: Install browser engine
+        run: npx playwright install --with-deps "$BROWSER"
+      - name: Run ${{ matrix.browser }} smoke tests
         shell: bash
         run: |
           set -euo pipefail
