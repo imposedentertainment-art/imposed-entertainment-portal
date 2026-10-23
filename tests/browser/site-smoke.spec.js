@@ -339,7 +339,7 @@ test('Prism stays aligned with account appearance events without starting a sync
 });
 
 test('unified stylesheet retains the authentication, customiser, shop and navigation feature layers', async ({ request }) => {
-  const response = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.78');
+  const response = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.79');
   expect(response.ok()).toBeTruthy();
   const css = await response.text();
   for (const selector of ['.auth-shell.auth-layout', '.ie-p-control', '.ie-shop-page', '.mobile-nav', '[data-ie-mode']) {
@@ -442,7 +442,7 @@ test('font loading uses the document preload path without a redundant CSS import
   expect(htmlResponse.ok()).toBeTruthy();
   const html = await htmlResponse.text();
   expect(html).toContain('fonts.googleapis.com/css2?family=DM+Sans');
-  const cssResponse = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.78');
+  const cssResponse = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.79');
   expect(cssResponse.ok()).toBeTruthy();
   const css = await cssResponse.text();
   expect(css).not.toMatch(/^\s*@import\s/m);
@@ -475,7 +475,7 @@ test('reduced-motion preference disables non-essential motion across the interfa
 });
 
 test('high-contrast and forced-colours accessibility styles are present', async ({ request }) => {
-  const response = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.78');
+  const response = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.79');
   expect(response.ok()).toBeTruthy();
   const css = await response.text();
   expect(css).toContain('@media (prefers-contrast: more)');
@@ -486,7 +486,7 @@ test('high-contrast and forced-colours accessibility styles are present', async 
 
 
 test('cross-browser CSS fallbacks cover older engines without color-mix, :has, or backdrop-filter', async ({ request }) => {
-  const response = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.78');
+  const response = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.79');
   expect(response.ok()).toBeTruthy();
   const css = await response.text();
   expect(css).toContain('@supports not (color: color-mix(in srgb, #000 50%, #fff))');
@@ -571,11 +571,11 @@ test('Appearance Studio remains usable without horizontal overflow on compact sc
 test('workspace shell uses responsive type and consistent component surfaces', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
-  const response = await page.request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.78');
+  const response = await page.request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.79');
   expect(response.ok()).toBeTruthy();
   const css = await response.text();
   expect(css).toContain('--ie-shell-max: 1440px');
-  expect(css).toContain('3.3.78 — Workspace shell refresh');
+  expect(css).toContain('3.3.79 — Workspace shell refresh');
   expect(css).toContain('@media (max-width: 420px)');
   const dimensions = await page.evaluate(() => ({
     viewport: document.documentElement.clientWidth,
@@ -584,4 +584,39 @@ test('workspace shell uses responsive type and consistent component surfaces', a
   }));
   expect(dimensions.document).toBeLessThanOrEqual(dimensions.viewport + 2);
   expect(parseFloat(dimensions.bodyFont)).toBeGreaterThan(0);
+});
+
+
+test('theme artwork assets resolve for every Appearance Studio theme', async ({ page }) => {
+  await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
+  const themes = ['light-skies', 'midnight-studio', 'graphite-minimal', 'plum-dusk', 'forest-room'];
+  for (const theme of themes) {
+    const response = await page.request.get('http://127.0.0.1:4173/themes/' + theme + '.jpg');
+    expect(response.ok(), 'theme artwork should load: ' + theme).toBeTruthy();
+    expect(response.headers()['content-type'] || '').toMatch(/image\/(jpeg|jpg)/i);
+  }
+});
+
+test('Prism normalises and repairs invalid preferences in persistent storage', async ({ page }) => {
+  await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
+  await page.evaluate(() => {
+    localStorage.setItem('ie-workspace-personalisation-v2', JSON.stringify({
+      accent: 'invalid-colour', palette: 'missing-theme', fontScale: 99, lineHeight: 0.1,
+      theme: 'unknown-mode', density: 'ultra-compact'
+    }));
+  });
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  const result = await page.evaluate(() => ({
+    stored: JSON.parse(localStorage.getItem('ie-workspace-personalisation-v2')),
+    legacy: JSON.parse(localStorage.getItem('ie-workspace-personalisation-v1')),
+    state: window.Prism.read()
+  }));
+  for (const saved of [result.stored, result.legacy, result.state]) {
+    expect(saved.accent).toMatch(/^#[0-9a-f]{6}$/i);
+    expect(saved.palette).toBe('midnight-studio');
+    expect(saved.fontScale).toBeLessThanOrEqual(1.3);
+    expect(saved.lineHeight).toBeGreaterThanOrEqual(1.25);
+    expect(saved.theme).toBe('dark');
+    expect(saved.density).toBe('standard');
+  }
 });
