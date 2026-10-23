@@ -120,7 +120,7 @@ window.addEventListener('ie-appearance-change',function(event){
   adopt('contrast',q.contrast,function(v){return typeof v==='boolean';});
   adopt('shadows',q.shadows,function(v){return typeof v==='boolean';});
   adopt('decorative',q.decorative,function(v){return typeof v==='boolean';});
-  try{localStorage.setItem(KEY,JSON.stringify(state));localStorage.setItem('ie-workspace-personalisation-v1',JSON.stringify(state));}catch(_){}
+  if(window.Prism&&typeof window.Prism.write==='function')window.Prism.write(state,{silent:true});else try{localStorage.setItem(KEY,JSON.stringify(state));localStorage.setItem('ie-workspace-personalisation-v1',JSON.stringify(state));}catch(_){}
   apply();
   var p=document.getElementById('ie-personalise-panel');if(p&&!p.hidden)render();
 });
