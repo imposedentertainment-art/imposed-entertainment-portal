@@ -346,7 +346,7 @@ test('Prism stays aligned with account appearance events without starting a sync
 });
 
 test('unified stylesheet retains the authentication, customiser, shop and navigation feature layers', async ({ request }) => {
-  const response = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.79');
+  const response = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.82');
   expect(response.ok()).toBeTruthy();
   const css = await response.text();
   for (const selector of ['.auth-shell.auth-layout', '.ie-p-control', '.ie-shop-page', '.mobile-nav', '[data-ie-mode']) {
@@ -449,7 +449,7 @@ test('font loading uses the document preload path without a redundant CSS import
   expect(htmlResponse.ok()).toBeTruthy();
   const html = await htmlResponse.text();
   expect(html).toContain('fonts.googleapis.com/css2?family=DM+Sans');
-  const cssResponse = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.79');
+  const cssResponse = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.82');
   expect(cssResponse.ok()).toBeTruthy();
   const css = await cssResponse.text();
   expect(css).not.toMatch(/^\s*@import\s/m);
@@ -482,7 +482,7 @@ test('reduced-motion preference disables non-essential motion across the interfa
 });
 
 test('high-contrast and forced-colours accessibility styles are present', async ({ request }) => {
-  const response = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.79');
+  const response = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.82');
   expect(response.ok()).toBeTruthy();
   const css = await response.text();
   expect(css).toContain('@media (prefers-contrast: more)');
@@ -493,7 +493,7 @@ test('high-contrast and forced-colours accessibility styles are present', async 
 
 
 test('cross-browser CSS fallbacks cover older engines without color-mix, :has, or backdrop-filter', async ({ request }) => {
-  const response = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.79');
+  const response = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.82');
   expect(response.ok()).toBeTruthy();
   const css = await response.text();
   expect(css).toContain('@supports not (color: color-mix(in srgb, #000 50%, #fff))');
@@ -578,7 +578,7 @@ test('Appearance Studio remains usable without horizontal overflow on compact sc
 test('workspace shell uses responsive type and consistent component surfaces', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
-  const response = await page.request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.79');
+  const response = await page.request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.82');
   expect(response.ok()).toBeTruthy();
   const css = await response.text();
   expect(css).toContain('--ie-shell-max: 1440px');
@@ -626,4 +626,38 @@ test('Prism normalises and repairs invalid preferences in persistent storage', a
     expect(saved.theme).toBe('dark');
     expect(saved.density).toBe('standard');
   }
+});
+
+
+test('Prism recovers from corrupt JSON and falls back to valid legacy preferences', async ({ page }) => {
+  await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
+  await page.evaluate(() => {
+    localStorage.setItem('ie-workspace-personalisation-v2', '{"palette":');
+    localStorage.setItem('ie-workspace-personalisation-v1', JSON.stringify({
+      palette: 'plum-dusk', accent: '#c4a5f5', fontScale: 1.1
+    }));
+  });
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  const recovered = await page.evaluate(() => ({
+    state: window.Prism.read(),
+    current: JSON.parse(localStorage.getItem('ie-workspace-personalisation-v2')),
+    legacy: JSON.parse(localStorage.getItem('ie-workspace-personalisation-v1'))
+  }));
+  for (const saved of [recovered.state, recovered.current, recovered.legacy]) {
+    expect(saved.palette).toBe('plum-dusk');
+    expect(saved.accent).toBe('#c4a5f5');
+    expect(saved.fontScale).toBe(1.1);
+  }
+
+  await page.evaluate(() => {
+    localStorage.setItem('ie-workspace-personalisation-v2', '{broken');
+    localStorage.setItem('ie-workspace-personalisation-v1', 'also broken');
+  });
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  const repaired = await page.evaluate(() => ({
+    current: JSON.parse(localStorage.getItem('ie-workspace-personalisation-v2')),
+    legacy: JSON.parse(localStorage.getItem('ie-workspace-personalisation-v1'))
+  }));
+  expect(repaired.current.palette).toBe('midnight-studio');
+  expect(repaired.legacy.palette).toBe('midnight-studio');
 });
