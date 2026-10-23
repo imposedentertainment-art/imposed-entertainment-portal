@@ -7300,3 +7300,24 @@ body.personalise-theme-light,
 body.personalise-palette-light-skies {
   background-color: #e9edf2 !important;
 }
+
+
+/* v3.3.94 — authoritative wallpaper mapping.
+   The customiser writes data-ie-workspace-theme on <html>; bind the wallpaper directly
+   to that attribute so account hydration and theme switches cannot leave a stale image. */
+html[data-ie-workspace-theme="light-skies"] { --theme-image: url('/themes/light-skies.jpg') !important; }
+html[data-ie-workspace-theme="midnight-studio"] { --theme-image: url('/themes/midnight-studio.jpg') !important; }
+html[data-ie-workspace-theme="graphite-minimal"] { --theme-image: url('/themes/graphite-minimal.jpg') !important; }
+html[data-ie-workspace-theme="plum-dusk"] { --theme-image: url('/themes/plum-dusk.jpg') !important; }
+html[data-ie-workspace-theme="forest-room"] { --theme-image: url('/themes/forest-room.jpg') !important; }
+
+/* Keep the selected image visible in light mode; the glass panels supply contrast. */
+html[data-ie-mode="light"] body::before,
+body.personalise-theme-light::before {
+  background-image:
+    linear-gradient(180deg, rgba(244,247,251,.06), rgba(244,247,251,.18)),
+    var(--theme-image, url('/themes/light-skies.jpg')) !important;
+  background-position: center, center !important;
+  background-size: cover, cover !important;
+  background-repeat: no-repeat, no-repeat !important;
+}
