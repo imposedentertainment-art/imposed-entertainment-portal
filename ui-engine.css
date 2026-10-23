@@ -7251,3 +7251,33 @@ body :where(
     backdrop-filter: none !important;
   }
 }
+
+
+/* v3.3.92 — signed-in workspace wallpaper fix.
+   Public discovery had no opaque shell, so earlier checks missed the authenticated layout.
+   Keep layout wrappers transparent; glass belongs on the actual cards/panels, not the full-page shell. */
+#app,
+#app > .shell,
+#app .shell,
+#app > .workspace-shell,
+#app .workspace-shell,
+#app > .app-shell,
+#app .app-shell,
+#app > .app-layout,
+#app .app-layout,
+#app > .page-shell,
+#app .page-shell,
+#app > main,
+#app > section,
+#app .shell > main,
+#app .shell > .page,
+#app .shell > .workspace,
+#app .shell > .page-content,
+#app .shell > .main-content,
+#app .workspace > main,
+#app .workspace > .page,
+#app .workspace > .page-content,
+#app .workspace > .main-content {
+  background-color: transparent !important;
+  background-image: none !important;
+}
