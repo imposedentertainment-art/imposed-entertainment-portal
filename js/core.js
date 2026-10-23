@@ -120,51 +120,85 @@ function normaliseQuickCustomiser(value){
   // Keep this bridge separate from ie-appearance-change to avoid an account-sync feedback loop.
   let personaliseSyncTimer = null;
   let pendingPersonaliseSnapshot = null;
+  const PERSONALISE_SYNC_MAX_RETRIES = 3;
+
+  function publishPersonaliseSyncStatus(detail) {
+    window.dispatchEvent(new CustomEvent('ie-personalise-sync-status', { detail }));
+  }
+
+  function schedulePersonaliseSync(snapshot, delay) {
+    clearTimeout(personaliseSyncTimer);
+    pendingPersonaliseSnapshot = snapshot;
+    personaliseSyncTimer = setTimeout(() => {
+      const next = pendingPersonaliseSnapshot;
+      pendingPersonaliseSnapshot = null;
+      if (next) syncPersonaliseSnapshot(next);
+    }, delay);
+  }
+
+  async function syncPersonaliseSnapshot(snapshot) {
+    if (!snapshot || !session?.user?.id || session.user.id !== snapshot.userId) return;
+    if (!profile || profile.id !== snapshot.userId) {
+      if ((snapshot.attempt || 0) < PERSONALISE_SYNC_MAX_RETRIES) {
+        publishPersonaliseSyncStatus({ synced: false, retrying: true, reason: 'profile-not-ready', attempt: snapshot.attempt || 0 });
+        schedulePersonaliseSync({ ...snapshot, attempt: (snapshot.attempt || 0) + 1 }, 500 * Math.pow(2, snapshot.attempt || 0));
+      } else {
+        publishPersonaliseSyncStatus({ synced: false, retrying: false, reason: 'profile-not-ready' });
+      }
+      return;
+    }
+
+    const previous = profile.notification_preferences && typeof profile.notification_preferences === 'object'
+      ? profile.notification_preferences : {};
+    const appearance = { ...(previous.appearance && typeof previous.appearance === 'object' ? previous.appearance : {}) };
+    const validAccent = /^#[0-9a-f]{6}$/i.test(String(snapshot.accent || ''));
+    if (validAccent) appearance.accent = snapshot.accent;
+    if (['light-skies','midnight-studio','graphite-minimal','plum-dusk','forest-room'].includes(snapshot.workspaceTheme)) appearance.workspaceTheme = snapshot.workspaceTheme;
+    if (['dark','light','system','amoled'].includes(snapshot.mode || snapshot.theme)) appearance.mode = snapshot.mode || snapshot.theme;
+    if (['compact','standard','comfortable'].includes(snapshot.density)) appearance.density = ({ compact:'compact', standard:'comfortable', comfortable:'spacious' })[snapshot.density];
+    const fontMap = { modern:'clean', display:'poster', serif:'occult', mono:'typewriter' };
+    if (fontMap[snapshot.font]) appearance.font = fontMap[snapshot.font];
+    if (Number.isFinite(Number(snapshot.fontScale))) appearance.fontScale = Math.min(125, Math.max(85, Math.round(Number(snapshot.fontScale) * 100)));
+    if (Number.isFinite(Number(snapshot.lineHeight))) appearance.lineHeight = Math.min(127, Math.max(83, Math.round((Number(snapshot.lineHeight) / 1.5) * 100)));
+    const quickKeys = ['contentWidth','surface','navStyle','buttonStyle','cardStyle','artworkShape','radius','motion','glow','contrast','shadows','decorative'];
+    const quick = { ...(appearance.quickCustomiser && typeof appearance.quickCustomiser === 'object' ? appearance.quickCustomiser : {}) };
+    quickKeys.forEach(key => { if (Object.prototype.hasOwnProperty.call(snapshot, key)) quick[key] = snapshot[key]; });
+    appearance.quickCustomiser = normaliseQuickCustomiser(quick);
+    const nextPreferences = { ...previous, appearance };
+
+    try {
+      const { error } = await sb.from('profiles').update({ notification_preferences: nextPreferences }).eq('id', snapshot.userId);
+      if (error) throw error;
+      if (session?.user?.id !== snapshot.userId || !profile || profile.id !== snapshot.userId) return;
+      profile.notification_preferences = nextPreferences;
+      publishPersonaliseSyncStatus({ synced: true, attempt: snapshot.attempt || 0 });
+    } catch (error) {
+      console.warn('Could not sync interface preferences to the account.', error);
+      const attempt = snapshot.attempt || 0;
+      if (attempt < PERSONALISE_SYNC_MAX_RETRIES && session?.user?.id === snapshot.userId) {
+        publishPersonaliseSyncStatus({ synced: false, retrying: true, reason: 'sync-failed', attempt: attempt + 1 });
+        schedulePersonaliseSync({ ...snapshot, attempt: attempt + 1 }, 750 * Math.pow(2, attempt));
+      } else {
+        publishPersonaliseSyncStatus({ synced: false, retrying: false, reason: 'sync-failed', attempt });
+      }
+    }
+  }
+
   window.addEventListener('ie-personalise-change', event => {
     const detail = event?.detail;
     if (!detail) return;
     if (!session?.user?.id || !sb) {
-      window.dispatchEvent(new CustomEvent('ie-personalise-sync-status', { detail: { synced: false, reason: 'local-only' } }));
+      clearTimeout(personaliseSyncTimer);
+      pendingPersonaliseSnapshot = null;
+      publishPersonaliseSyncStatus({ synced: false, retrying: false, reason: 'local-only' });
       return;
     }
-    pendingPersonaliseSnapshot = { ...detail, userId: session.user.id };
-    clearTimeout(personaliseSyncTimer);
-    personaliseSyncTimer = setTimeout(async () => {
-      const snapshot = pendingPersonaliseSnapshot;
-      pendingPersonaliseSnapshot = null;
-      if (!snapshot || !session?.user?.id || session.user.id !== snapshot.userId) return;
-      if (!profile || profile.id !== snapshot.userId) {
-        window.dispatchEvent(new CustomEvent('ie-personalise-sync-status', { detail: { synced: false, reason: 'profile-not-ready' } }));
-        return;
-      }
-      const previous = profile.notification_preferences && typeof profile.notification_preferences === 'object'
-        ? profile.notification_preferences : {};
-      const appearance = { ...(previous.appearance && typeof previous.appearance === 'object' ? previous.appearance : {}) };
-      const validAccent = /^#[0-9a-f]{6}$/i.test(String(snapshot.accent || ''));
-      if (validAccent) appearance.accent = snapshot.accent;
-      if (['light-skies','midnight-studio','graphite-minimal','plum-dusk','forest-room'].includes(snapshot.workspaceTheme)) appearance.workspaceTheme = snapshot.workspaceTheme;
-      if (['dark','light','system','amoled'].includes(snapshot.mode || snapshot.theme)) appearance.mode = snapshot.mode || snapshot.theme;
-      if (['compact','standard','comfortable'].includes(snapshot.density)) appearance.density = ({ compact:'compact', standard:'comfortable', comfortable:'spacious' })[snapshot.density];
-      const fontMap = { modern:'clean', display:'poster', serif:'occult', mono:'typewriter' };
-      if (fontMap[snapshot.font]) appearance.font = fontMap[snapshot.font];
-      if (Number.isFinite(Number(snapshot.fontScale))) appearance.fontScale = Math.min(125, Math.max(85, Math.round(Number(snapshot.fontScale) * 100)));
-      if (Number.isFinite(Number(snapshot.lineHeight))) appearance.lineHeight = Math.min(127, Math.max(83, Math.round((Number(snapshot.lineHeight) / 1.5) * 100)));
-      const quickKeys = ['contentWidth','surface','navStyle','buttonStyle','cardStyle','artworkShape','radius','motion','glow','contrast','shadows','decorative'];
-      const quick = { ...(appearance.quickCustomiser && typeof appearance.quickCustomiser === 'object' ? appearance.quickCustomiser : {}) };
-      quickKeys.forEach(key => { if (Object.prototype.hasOwnProperty.call(snapshot, key)) quick[key] = snapshot[key]; });
-      appearance.quickCustomiser = normaliseQuickCustomiser(quick);
-      const nextPreferences = { ...previous, appearance };
-      try {
-        const { error } = await sb.from('profiles').update({ notification_preferences: nextPreferences }).eq('id', snapshot.userId);
-        if (error) throw error;
-        if (session?.user?.id !== snapshot.userId || !profile || profile.id !== snapshot.userId) return;
-        profile.notification_preferences = nextPreferences;
-        window.dispatchEvent(new CustomEvent('ie-personalise-sync-status', { detail: { synced: true } }));
-      } catch (error) {
-        console.warn('Could not sync interface preferences to the account.', error);
-        window.dispatchEvent(new CustomEvent('ie-personalise-sync-status', { detail: { synced: false } }));
-      }
-    }, 350);
+    schedulePersonaliseSync({ ...detail, userId: session.user.id, attempt: 0 }, 350);
+  });
+
+  window.addEventListener('online', () => {
+    const pending = pendingPersonaliseSnapshot;
+    if (pending && session?.user?.id === pending.userId) schedulePersonaliseSync(pending, 100);
   });
   const STORES = ['Spotify','Apple Music','iTunes','YouTube Music','Amazon Music','Deezer','TIDAL','Pandora','Napster','iHeartRadio','Claro Musica','JioSaavn','Anghami','KKBox','NetEase','Tencent','TikTok','Facebook','Instagram','Snapchat','CapCut','Pinterest','Nuuday','ROXi','Kuack Media','Qobuz','Joox','Boomplay','Trebel','Melon','Flo','Bugs','Genie','Vibe'];
   const GENRES = ['Electronic','Rock','Metal','Metalcore','Hip Hop','Pop','Alternative','Ambient','Other'];
