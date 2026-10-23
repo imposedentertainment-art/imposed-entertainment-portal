@@ -58,30 +58,42 @@
   }
 
   function safeRead() {
+    let currentRaw;
+    let legacyRaw;
     try {
-      const currentRaw = global.localStorage.getItem(STORAGE_KEY);
-      const legacyRaw = global.localStorage.getItem(LEGACY_KEY);
-      const raw = currentRaw || legacyRaw;
-      if (!raw) return { ...defaults };
-      const parsed = JSON.parse(raw);
-      const next = normalise(parsed);
-      /* Heal malformed, stale, or out-of-range preferences once instead of
-         re-reading the same invalid values on every reload. */
-      const canonical = JSON.stringify(next);
-      if (currentRaw !== canonical || legacyRaw !== canonical) {
-        try {
-          global.localStorage.setItem(STORAGE_KEY, canonical);
-          global.localStorage.setItem(LEGACY_KEY, canonical);
-          persistence = 'local';
-        } catch (_) {
-          persistence = 'memory';
-        }
-      }
-      return next;
+      currentRaw = global.localStorage.getItem(STORAGE_KEY);
+      legacyRaw = global.localStorage.getItem(LEGACY_KEY);
     } catch (_) {
       persistence = 'memory';
       return { ...memoryState };
     }
+
+    /* Prefer the current schema, but fall back to a valid legacy snapshot if the
+       current key was truncated or manually edited. Corrupt JSON must not poison
+       every future page load: repair both keys to a canonical validated snapshot. */
+    let parsed = null;
+    if (currentRaw) {
+      try { parsed = JSON.parse(currentRaw); } catch (_) {}
+    }
+    if (!parsed && legacyRaw) {
+      try { parsed = JSON.parse(legacyRaw); } catch (_) {}
+    }
+    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) parsed = { ...defaults };
+
+    const next = normalise(parsed);
+    const canonical = JSON.stringify(next);
+    if (currentRaw !== canonical || legacyRaw !== canonical) {
+      try {
+        global.localStorage.setItem(STORAGE_KEY, canonical);
+        global.localStorage.setItem(LEGACY_KEY, canonical);
+        persistence = 'local';
+      } catch (_) {
+        persistence = 'memory';
+      }
+    } else {
+      persistence = 'local';
+    }
+    return next;
   }
 
   function publish(reason, state) {
