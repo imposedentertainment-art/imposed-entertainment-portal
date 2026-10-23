@@ -191,6 +191,7 @@
     loadedProfile.role=String(loadedProfile.role||'artist').trim().toLowerCase();
     profile=loadedProfile;
     cacheCurrentAccountRole(userId,loadedProfile.role);
+    window.dispatchEvent(new CustomEvent('ie-personalise-sync-resume', { detail: { userId } }));
     // Device customisation storage is shared by browser profiles, not by accounts.
     // Clear it when the authenticated identity changes so a previous user's local
     // overrides cannot take precedence over this account's saved appearance.
