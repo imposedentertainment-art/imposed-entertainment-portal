@@ -18,7 +18,7 @@
   let bootPromise = null;
 
   function safeName(value) {
-    return String(value || '').trim().toLowerCase().replace(/[^a-z0-9.-]/g, '');
+    return String(value || '').trim().toLowerCase().replace(/[^a-z0-9:.-]/g, '');
   }
 
   function record(level, code, detail) {
@@ -76,7 +76,7 @@
 
     readConfig(fallback) {
       if (Object.keys(config).length) return config;
-      return this.configure(fallback && typeof fallback === 'object' ? fallback : {});
+      return api.configure(fallback && typeof fallback === 'object' ? fallback : {});
     },
 
     on(name, callback) {
@@ -133,7 +133,7 @@
         engine: 'null-core',
         version: VERSION,
         lifecycle,
-        uptimeMs: this.uptimeMs,
+        uptimeMs: Math.max(0, Date.now() - startedAt),
         registeredEngines: engines.size,
         diagnosticCount: diagnostics.length
       });
@@ -145,9 +145,9 @@
       record('info', 'startup', 'Null Core startup initiated.');
       bootPromise = Promise.resolve().then(() => {
         lifecycle = 'ready';
-        emit('core-ready', this.health());
+        emit('core-ready', api.health());
         record('info', 'ready', 'Null Core is ready.');
-        return this.health();
+        return api.health();
       }).catch(error => {
         lifecycle = 'failed';
         record('error', 'startup-failed', error && error.message);
