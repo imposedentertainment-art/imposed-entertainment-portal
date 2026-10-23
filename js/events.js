@@ -48,10 +48,10 @@ function ieStartEmailCodeCooldown(){
     iePreferenceSaveQueue=iePreferenceSaveQueue.catch(()=>{}).then(async()=>{
       if(!session||session.user.id!==userId||!profile)return;
       const prefs={...(profile.notification_preferences||{}),appearance:safe};
-      const {error}=await sb.from('profiles').update({notification_preferences:prefs}).eq('id',userId);
+      const {data,error}=await sb.from('profiles').update({notification_preferences:prefs}).eq('id',userId).select('id').maybeSingle();
       if(!session||session.user.id!==userId||!profile||profile.id!==userId)return;
       const status=document.querySelector('#appearance-save-status');
-      if(error){if(status)status.textContent='Preview applied, but account sync failed. Changes may not follow you to another device.';console.warn('Appearance preference save failed',error);toast('Appearance preview applied; could not sync to your account.','error');return;}
+      if(error||!data){const syncError=error||new Error('Profile preference update did not affect a row.');if(status)status.textContent='Preview applied, but account sync failed. Changes may not follow you to another device.';console.warn('Appearance preference save failed',syncError);toast('Appearance preview applied; could not sync to your account.','error');return;}
       profile.notification_preferences=prefs;if(status)status.textContent='Appearance saved to your account.';
     });
   }
