@@ -5,12 +5,17 @@ on:
     branches: [main]
   pull_request:
 
+concurrency:
+  group: static-site-checks-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
 jobs:
   validate:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -22,7 +27,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          for file in config.js sw.js js/*.js; do
+          for file in config.js sw.js js/*.js engines/*.js; do
             test -f "$file"
             node --check "$file"
           done

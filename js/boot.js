@@ -191,13 +191,16 @@
     loadedProfile.role=String(loadedProfile.role||'artist').trim().toLowerCase();
     profile=loadedProfile;
     cacheCurrentAccountRole(userId,loadedProfile.role);
+    window.dispatchEvent(new CustomEvent('ie-personalise-sync-resume', { detail: { userId } }));
     // Device customisation storage is shared by browser profiles, not by accounts.
     // Clear it when the authenticated identity changes so a previous user's local
     // overrides cannot take precedence over this account's saved appearance.
     try {
       const accountKey = 'ie-personalisation-account-v1';
       const previousAccountId = localStorage.getItem(accountKey);
-      if (previousAccountId && previousAccountId !== userId) {
+      // Never let guest preferences or another account's local overrides bleed into this account.
+      // A missing marker means this browser may contain guest customisation, so account settings win.
+      if (previousAccountId !== userId) {
         ['ie-workspace-personalisation-v2','ie-workspace-personalisation-v1','ie-workspace-personalisation-touched-v1'].forEach(key => localStorage.removeItem(key));
         window.dispatchEvent(new CustomEvent('ie-personalise-account-change', { detail: { userId } }));
       }

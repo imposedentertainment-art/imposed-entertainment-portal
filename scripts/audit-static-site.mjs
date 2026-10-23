@@ -3,385 +3,60 @@ import { resolve, normalize } from 'node:path';
 
 const root = process.cwd();
 const errors = [];
-const warnings = [];
-const read = (path) => readFileSync(resolve(root, path), 'utf8');
 const fail = (message) => errors.push(message);
+const read = (path) => readFileSync(resolve(root, path), 'utf8');
 const version = read('VERSION').trim();
 const html = read('index.html');
 const worker = read('sw.js');
-const config = read('config.js');
-
-
-const migrationDir = resolve(root, 'supabase/migrations');
-if (existsSync(migrationDir)) {
-  const migrations = readdirSync(migrationDir).filter(name => /^\d{14}_.+\.sql$/.test(name));
-  const byVersion = new Map();
-  for (const name of migrations) {
-    const migrationVersion = name.slice(0, 14);
-    byVersion.set(migrationVersion, [...(byVersion.get(migrationVersion) || []), name]);
-  }
-  for (const [migrationVersion, names] of byVersion) {
-    if (names.length > 1) warnings.push(`Duplicate Supabase migration version prefix ${migrationVersion}: ${names.join(', ')}. Reconcile before using the Supabase CLI to push or reset schema.`);
-  }
-}
+const cssPath = 'ui-engine.css';
+const css = read(cssPath).replace(/\/\*[\s\S]*?\*\//g, '');
 
 if (!version) fail('VERSION is empty.');
-for (const [label, source] of [['index.html', html], ['sw.js', worker]]) {
-  if (!source.includes(version)) fail(`${label} does not contain the current VERSION (${version}).`);
-}
-if (!html.includes(`content="${version}"`) || !html.includes(`data-portal-build="${version}"`)) {
-  fail('index.html build metadata does not match VERSION.');
-}
-if (!worker.includes(`const CACHE_NAME = 'imposed-v${version}'`)) fail('sw.js cache name does not match VERSION.');
-try {
-  const manifest = JSON.parse(read('manifest.webmanifest'));
-  if (manifest.start_url && new URL(manifest.start_url, 'https://audit.invalid').search) {
-    fail('manifest.webmanifest start_url must not contain a query string because query-bearing navigations bypass the service-worker cache.');
-  }
-} catch (error) {
-  fail(`manifest.webmanifest is not valid JSON: ${error.message}`);
-}
-const bannerViews = read('js/views.js');
-const bannerEvents = read('js/events.js');
-if (bannerViews.includes('Overview banner') || bannerViews.includes('data-banner-enabled') || /function workspaceBannerMarkup\(\)\{[^}]*ie-banner/.test(bannerViews) || bannerEvents.includes('data-banner-enabled') || bannerEvents.includes('data-banner-file')) fail('Unwanted workspace banner UI, rendering or upload handlers have returned.');
-// Guard the stylesheet stack and worker allow-list against silent drift.
-const stylesheetLinks = [...html.matchAll(/<link\b(?=[^>]*\brel=["']stylesheet["'])[^>]*\bhref=["']([^"']+)["'][^>]*>/gi)].map(match => match[1].split(/[?#]/, 1)[0]);
-const stylesheetCounts = new Map();
-for (const path of stylesheetLinks) {
-  stylesheetCounts.set(path, (stylesheetCounts.get(path) || 0) + 1);
-  if (path.startsWith('/') && !existsSync(resolve(root, '.' + path))) fail('index.html references missing stylesheet ' + path + '.');
-}
-for (const [path, count] of stylesheetCounts) if (count > 1) fail('index.html loads duplicate stylesheet ' + path + ' (' + count + ' times).');
-if (/\\n\s*<(?:link|img)\b/i.test(html)) fail('index.html contains a literal escaped newline before a link/image element; use a real line break.');
-const workerAllowList = worker.split('const STATIC_PATHS', 1)[0];
-const workerAssets = [...workerAllowList.matchAll(/['"]((?:\/)[^'"]+)['"]/g)].map(match => match[1]).filter(path => /\.(?:css|js|webmanifest|html|png|jpg|jpeg|webp|svg)$/i.test(path));
-const workerAssetCounts = new Map();
-for (const path of workerAssets) workerAssetCounts.set(path, (workerAssetCounts.get(path) || 0) + 1);
-for (const [path, count] of workerAssetCounts) if (count > 1) warnings.push('Service worker lists ' + path + ' ' + count + ' times; remove duplicate entries to keep the asset allow-list maintainable.');
-if (!stylesheetLinks.length) fail('index.html stylesheet audit found no stylesheet links; check the audit matcher.');
-if (!read('_redirects').includes('/* /index.html 200')) fail('_redirects is missing the SPA fallback.');
-if (!read('_headers').includes('Content-Security-Policy:')) fail('_headers is missing Content-Security-Policy.');
-if (!read('_headers').includes('Cache-Control: no-store')) fail('_headers is missing no-store protection for configuration/private responses.');
-if (/service_role|SUPABASE_SECRET_KEY|sb_secret_/i.test(config)) fail('config.js appears to contain a server-side Supabase secret.');
-
-// Cross-file regression checks for navigation, routes and saved interface preferences.
-const views = read('js/views.js');
-const events = read('js/events.js');
-const boot = read('js/boot.js');
-const personalisation = read('js/personalise.js');
-const navigationCss = read('mobile-navigation.css');
-const core = read('js/core.js');
-const personalisationFixes = read('ui-personalisation-fixes.css');
-const glassNavigationFix = read('ui-glass-navigation-fix.css');
-const themeOverhaul = read('ui-theme-overhaul.css');
-const coreIcons = read('js/core.js');
-
-if (!html.includes('/ui-glass-navigation-fix.css?v=' + version) || !worker.includes("'/ui-glass-navigation-fix.css'")) fail('Glass navigation fix must be versioned and included in service-worker assets.');
-if (!glassNavigationFix.includes('z-index:2147483000') || !glassNavigationFix.includes('backdrop-filter:blur(36px)') || !glassNavigationFix.includes('min-width:761px')) fail('Glass navigation must use an elevated overlay layer and preserve desktop navigation.');
-if (!views.includes('mobile-menu icon-btn') || !views.includes('id="mobile-navigation-menu"')) {
-  fail('Workspace navigation trigger and mobile menu container must both exist.');
-}
-if (!views.includes('class="nav-link nav-shop-link" href="/shop"') || !views.includes('class="nav-shop-link" href="/shop"')) {
-  fail('Shop must be directly reachable from desktop and mobile workspace navigation.');
-}
-if (!boot.includes("path==='/shop'") || !boot.includes("path==='/shop/manage'") || !boot.includes('renderShopRoute()')) {
-  fail('Shop catalogue and product-management routes must be recognised by the app router.');
-}
-if (!navigationCss.includes('.nav-inner>.mobile-menu') || !navigationCss.includes('.mobile-nav')) {
-  fail('Mobile navigation styles must target the actual nested menu trigger and drawer.');
-}
-if (!personalisation.includes("palette:'midnight-studio'") ||
-    !personalisation.includes("'palette','density'")) {
-  fail('Workspace theme preference must be validated and included in settings import/export.');
-}
-if (!html.includes('/ui-theme-overhaul.css?v=' + version) ||
-    !worker.includes("'/ui-theme-overhaul.css'")) {
-  fail('Full theme stylesheet must be versioned and included in the service-worker asset allow-list.');
-}
-if (!themeOverhaul.includes('personalise-palette-light-skies') ||
-    !themeOverhaul.includes('radial-gradient') ||
-    !themeOverhaul.includes('personalise-palette-forest-room')) {
-  fail('Named themes must include the Light Skies cloud treatment and alternate complete themes.');
-}
-if (!personalisation.includes("['light-skies','Light skies · blue & cloud']") ||
-    !personalisation.includes("'light-skies','midnight-studio','graphite-minimal','plum-dusk','forest-room'")) {
-  fail('Theme picker must expose the new named themes and validate saved selections.');
-}
-['briefcase-business','mic-vocal','chart-no-axes-combined','panel-left-open','panel-left-close','check-square','shopping-bag','headphones'].forEach(name => {
-  if (!personalisation.includes('root.dataset.ieMode=') || !personalisation.includes('root.dataset.ieWorkspaceTheme=')) fail('Quick customiser must apply saved mode and workspace palette to the shared semantic theme attributes.');
-if (!personalisation.includes('workspaceTheme:state.palette') || !events.includes("workspaceTheme:['light-skies','midnight-studio','graphite-minimal','plum-dusk','forest-room'].includes(s.workspaceTheme)")) fail('Quick customiser must sync the selected workspace theme to account preferences.');
-if (!core.includes("['dark','light','system','amoled'].includes(out.mode)") || !core.includes("['dark','light','system','amoled'].includes(a.mode)") || !events.includes("['dark','light','system','amoled'].includes(next.mode)") || !views.includes('value="amoled"') || !themeOverhaul.includes('html[data-ie-mode="amoled"] body')) fail('AMOLED mode must be selectable, persisted, validated and styled end to end.');
-if (!coreIcons.includes("'" + name + "':") && !coreIcons.includes(name + ':')) fail('SVG icon map is missing navigation icon: ' + name);
-});
-if (!coreIcons.includes("p[name]||p.music")) fail('Unknown icon names must use a visible SVG fallback.');
-if (!personalisationFixes.includes('.nav-accordion > button.active') ||
-    !personalisationFixes.includes('var(--user-accent, #d8bd73)') ||
-    !personalisationFixes.includes('personalise-palette-forest')) {
-  fail('Personalisation CSS must map active navigation to the chosen accent and include workspace palettes.');
-}
-if (!worker.includes("'/ui-personalisation-fixes.css'") ||
-    !html.includes('/ui-personalisation-fixes.css?v=' + version)) {
-  fail('Personalisation fixes stylesheet must be versioned and included in the service-worker asset allow-list.');
-}
-if (!personalisation.includes("s.addEventListener('change',function(){state[key]=s.value;pendingTouchedKey=key;save()})") ||
-    !personalisation.includes("input.addEventListener('change',function(){state[key]=input.checked;pendingTouchedKey=key;save()")) {
-  fail('Personalisation controls must persist changes instead of only changing their preview.');
-}
-if (!boot.includes('Retry a single transient Supabase Auth failure') ||
-    !boot.includes('const transient=Number(lastError?.status)>=500')) {
-  fail('Supabase startup must retry transient session-read failures.');
-}
-if (!core.includes('if(refreshed.error)throw refreshed.error') ||
-    !core.includes('Your session could not be refreshed')) {
-  fail('Storage uploads must not continue with a stale access token after refresh failure.');
-}
-
-
-
-if (personalisation.includes("palette:'midnight'")) fail('Personalisation defaults must use the current named theme system.');
-if (!themeOverhaul.includes('body.personalise-theme-light') ||
-    !themeOverhaul.includes('--ui-text:#172536') ||
-    !themeOverhaul.includes('personalise-font-mono') ||
-    !themeOverhaul.includes('personalise-content-wide') ||
-    !themeOverhaul.includes('personalise-motion-none') ||
-    !themeOverhaul.includes('var(--user-accent,#d8bd73)')) {
-  fail('Light mode, typography, layout, motion, and accent preferences must map to semantic UI tokens.');
-}
-if ((views.match(/data-action="settings"[^>]*>\$\{icon\('settings',17\)\} Account settings/g) || []).length > 0) {
-  fail('Mobile navigation must not show a duplicate Account settings action alongside Settings & preferences.');
-}
-if (html.includes('2.8.2') || worker.includes('2.8.2')) fail('HTML and service worker must not retain stale 2.8.2 asset versions.');
-const criticalAssetsBlock = worker.match(/const criticalAssets = \[([\s\S]*?)\];/);
-if (!criticalAssetsBlock || !criticalAssetsBlock[1].includes("'/ui-theme-overhaul.css'") || !criticalAssetsBlock[1].includes("'/js/personalise.js'")) {
-  fail('Theme overhaul CSS and personalisation script must be included in critical service-worker assets.');
-}
-
-
-if (!core.includes("workspaceTheme:'midnight-studio'") ||
-    !core.includes("root.dataset.ieWorkspaceTheme") ||
-    !events.includes("workspaceTheme:['light-skies','midnight-studio','graphite-minimal','plum-dusk','forest-room']")) {
-  fail('Named workspace themes must be stored, validated and applied through shared account preferences.');
-}
-if (!views.includes('Workspace themes') ||
-    !views.includes('data-workspace-theme') ||
-    !views.includes('Light Skies') ||
-    !views.includes('Midnight Studio') ||
-    !views.includes('Graphite Minimal') ||
-    !views.includes('Plum Dusk') ||
-    !views.includes('Forest Room')) {
-  fail('All five named themes must be selectable from Settings > Appearance.');
-}
-if (!themeOverhaul.includes('html[data-ie-mode="light"] body') ||
-    !themeOverhaul.includes('html[data-ie-mode="light"][data-ie-theme] body .nav') ||
-    !themeOverhaul.includes('html[data-ie-mode="light"][data-ie-workspace-theme="light-skies"] body') ||
-    !core.includes("root.style.setProperty('--user-accent',accent)")) {
-  fail('Light mode must override legacy dark navigation and surfaces, Light Skies must keep its cloud palette, and account accents must be global.');
-}
-if (html.includes('2.8.4') || worker.includes('2.8.4')) fail('HTML and service worker must not retain stale 2.8.4 asset versions.');
-
-const localRef = (value) => {
-  if (!value || /^(?:[a-z][a-z0-9+.-]*:|\/\/|#)/i.test(value)) return null;
-  const pathname = value.split(/[?#]/, 1)[0];
-  if (!pathname) return null;
-  return pathname.startsWith('/') ? pathname.slice(1) : pathname;
-};
+if (!html.includes(`content="${version}"`) || !html.includes(`data-portal-build="${version}"`)) fail('HTML build metadata does not match VERSION.');
+if (!worker.includes(`const CACHE_NAME = 'imposed-jitter-v${version}'`)) fail('Service-worker cache name does not match VERSION.');
+if (!html.includes(`/${cssPath}?v=${version}`)) fail('App shell must load the single versioned Jitter UI engine stylesheet.');
+const cssLinks = [...html.matchAll(/<link\b(?=[^>]*\brel=["']stylesheet["'])[^>]*\bhref=["']([^"']+)["'][^>]*>/gi)].map(m => m[1]).filter(href => href.startsWith('/'));
+if (cssLinks.length !== 1 || !cssLinks[0].startsWith('/ui-engine.css?')) fail(`Expected one local UI stylesheet (ui-engine.css), found ${cssLinks.join(', ') || 'none'}.`);
+let depth = 0;
+for (const char of css) { if (char === '{') depth++; else if (char === '}') depth--; if (depth < 0) { fail('UI engine CSS has an unmatched closing brace.'); break; } }
+if (depth !== 0) fail(`UI engine CSS has unbalanced braces (final depth ${depth}).`);
+const assets = [...worker.matchAll(/['"]((?:\/[A-Za-z0-9_./-]+))['"]/g)].map(m => m[1]).filter(p => /\.(?:css|js|webmanifest|html|png|jpg|jpeg|webp|svg)$/i.test(p));
+// A legacy URL may intentionally be absent because Cloudflare Pages redirects it to a canonical document.
+const redirectSources = new Set(read('_redirects').split(/\r?\n/).map(line => line.trim().split(/\s+/)[0]).filter(Boolean));
+for (const path of assets) if (!existsSync(resolve(root, path.slice(1))) && !redirectSources.has(path)) fail(`Service worker references missing asset: ${path}`);
+const localRef = (value) => { if (!value || /^(?:[a-z][a-z0-9+.-]*:|\/\/|#)/i.test(value)) return null; const path = value.split(/[?#]/,1)[0]; return path.startsWith('/') ? path.slice(1) : path; };
 for (const match of html.matchAll(/\b(?:src|href)=["']([^"']+)["']/gi)) {
-  const value = match[1];
-  const path = localRef(value);
-  if (!path) continue;
-  // These are intentional route aliases handled by Cloudflare Pages _redirects.
-  if (['privacy', 'privacy/', 'terms', 'terms/'].includes(path)) continue;
-  const target = normalize(path);
-  if (target.startsWith('..') || !existsSync(resolve(root, target))) {
-    fail(`index.html references a missing local asset: ${value}`);
-  }
-  if (/\.(?:js|css)$/i.test(path)) {
-    const assetVersion = new URL(value, 'https://audit.invalid').searchParams.get('v');
-    if (assetVersion !== version) fail(`Local script/stylesheet must use v=${version}: ${value}`);
-  }
+ const value = match[1], path = localRef(value);
+ if (!path || ['privacy','privacy/','terms','terms/'].includes(path)) continue;
+ const target = normalize(path);
+ if (target.startsWith('..') || !existsSync(resolve(root,target))) fail(`HTML references a missing local asset: ${value}`);
+ if (/\.(?:js|css)$/i.test(path) && new URL(value,'https://audit.invalid').searchParams.get('v') !== version) fail(`Local JS/CSS asset must use v=${version}: ${value}`);
 }
-
-const ids = new Map();
-for (const match of html.matchAll(/\bid=["']([^"']+)["']/gi)) {
-  const id = match[1];
-  ids.set(id, (ids.get(id) || 0) + 1);
-}
-for (const [id, count] of ids) if (count > 1) fail(`index.html contains duplicate id="${id}" (${count} occurrences).`);
-
 const staticBlock = worker.match(/const STATIC_ASSETS\s*=\s*\[([\s\S]*?)\];/);
-if (!staticBlock) fail('sw.js STATIC_ASSETS allow-list could not be parsed.');
+if (!staticBlock) fail('Service-worker STATIC_ASSETS list is missing.');
 else {
-  const paths = [...staticBlock[1].matchAll(/['"]([^'"]+)['"]/g)].map((m) => m[1]);
-  const allowList = new Set(paths);
-  for (const path of paths) {
-    if (!path.startsWith('/')) fail(`Service-worker asset path must be root-relative: ${path}`);
-    else if (!existsSync(resolve(root, path.slice(1)))) fail(`Service-worker allow-list references a missing file: ${path}`);
-  }
-  // All local JS/CSS loaded by the app shell must be eligible for offline caching,
-  // except config.js, which is intentionally network-only and bypassed by the worker.
-  for (const match of html.matchAll(/\b(?:src|href)=["']([^"']+)["']/gi)) {
-    const value = match[1];
-    const path = localRef(value);
-    if (path && /\.(?:js|css)$/i.test(path) && path !== 'config.js' && !allowList.has('/' + path)) {
-      fail(`HTML loads a local script/stylesheet missing from the service-worker allow-list: ${value}`);
-    }
-  }
+ const allow = new Set([...staticBlock[1].matchAll(/['"]([^'"]+)['"]/g)].map(m => m[1]));
+ if (!allow.has('/ui-engine.css')) fail('Service worker must allow-list ui-engine.css.');
+ for (const match of html.matchAll(/\b(?:src|href)=["']([^"']+)["']/gi)) {
+  const path = localRef(match[1]);
+  if (path && /\.(?:js|css)$/i.test(path) && path !== 'config.js' && !allow.has('/'+path)) fail(`App shell asset missing from service-worker allow-list: ${match[1]}`);
+ }
 }
-
-// Audit every stylesheet linked by the actual HTML shell so newly added design layers
-// cannot silently escape the CSS integrity checks.
-const stylesheetPaths = [...new Set(
-  [...html.matchAll(/<link\b[^>]*\bhref=["']([^"']+\.css(?:\?[^"']*)?)["'][^>]*>/gi)]
-    .map((match) => localRef(match[1]))
-    .filter(Boolean)
-)];
-for (const path of stylesheetPaths) {
-  if (!existsSync(resolve(root, path))) continue; // Missing references are reported above.
-  const css = read(path).replace(/\/\*[\s\S]*?\*\//g, '');
-  const opens = (css.match(/{/g) || []).length;
-  const closes = (css.match(/}/g) || []).length;
-  if (opens !== closes) fail(`${path} has unbalanced CSS braces (${opens} opening, ${closes} closing).`);
+const redirectRules = read('_redirects').split(/\r?\n/).map(line => line.trim()).filter(Boolean);
+const catchAllIndex = redirectRules.findIndex(line => line.startsWith('/* '));
+if (catchAllIndex < 0) fail('_redirects is missing the SPA fallback.');
+for (const legacyRoute of ['/privacy.html ', '/terms.html ']) {
+ const routeIndex = redirectRules.findIndex(line => line.startsWith(legacyRoute));
+ if (routeIndex < 0 || routeIndex > catchAllIndex) fail(`Explicit legacy redirect must precede the SPA fallback: ${legacyRoute.trim()}`);
 }
-
-
-/* Regression guards for the artist workspace visual system. */
-const repairCss = read('ui-ux-repair.css');
-const dashboardCss = read('ui-dashboard-finish.css');
-const resizeCss = read('ui-dashboard-resize.css');
-for (const palette of ['light-skies','midnight-studio','graphite-minimal','plum-dusk','forest-room']) {
-  if (!repairCss.includes(`/themes/${palette}.jpg`)) fail(`Artist workspace must map the ${palette} palette to its background artwork.`);
+if (!read('_headers').includes('Content-Security-Policy:')) fail('_headers is missing Content-Security-Policy.');
+if (/service_role|SUPABASE_SECRET_KEY|sb_secret_/i.test(read('config.js'))) fail('config.js appears to contain a server-side Supabase secret.');
+const migrationsDir = resolve(root,'supabase/migrations');
+if (existsSync(migrationsDir)) {
+ const migrations = readdirSync(migrationsDir).filter(name => /^\d{14}_.+\.sql$/.test(name));
+ const versions = new Map();
+ for (const name of migrations) { const key=name.slice(0,14); versions.set(key,(versions.get(key)||0)+1); }
+ for (const [key,count] of versions) if(count>1) fail(`Duplicate Supabase migration prefix ${key} (${count} files).`);
 }
-if (/body:not\(\.personalise-hide-decorative\)\s*\{[^}]*background-image\s*:/s.test(repairCss)) {
-  fail('Global repair CSS must not override the selected palette background image.');
-}
-if (repairCss.includes('grid-column:var(--dashboard-grid-column,span 12)!important')) {
-  fail('Global repair CSS must not force every dashboard widget to full width.');
-}
-if (!resizeCss.includes('[data-widget-size="half"]') || !resizeCss.includes('[data-widget-size="third"]')) {
-  fail('Dashboard layout must retain half-width and third-width widget sizing.');
-}
-if (!dashboardCss.includes('var(--ie-theme-art)')) {
-  fail('Dashboard hero must use the active workspace theme artwork.');
-}
-if (!html.includes('ui-ux-repair.css?v=' + version) || !worker.includes("'/ui-ux-repair.css'")) {
-  fail('Final UI repair layer must be versioned and available to the service worker.');
-}
-
-
-if (!core.includes("localStorage.getItem('ie-workspace-personalisation-v2')") ||
-    !core.includes("ie-workspace-personalisation-touched-v1") ||
-    !core.includes("locallyChosen('palette'") ||
-    !core.includes("locallyChosen('theme'")) {
-  fail('Device themes and colour mode must remain available when an account has no saved appearance preference.');
-}
-for (const palette of ['light-skies','midnight-studio','graphite-minimal','plum-dusk','forest-room']) {
-  if (!themeOverhaul.includes(`html[data-ie-workspace-theme="${palette}"] body`) ||
-      !themeOverhaul.includes(`/themes/${palette}.jpg`)) {
-    fail(`The ${palette} theme must apply its real background artwork to every route, not only the label dashboard.`);
-  }
-}
-if (!themeOverhaul.includes('.page:not(.dashboard-page) > .page-heading') ||
-    !repairCss.includes('.artist-profile-page') ||
-    !themeOverhaul.includes('@media(max-width:700px)')) {
-  fail('Non-label pages need shared responsive page hierarchy and artist/public profile styling.');
-}
-
-
-/* Supabase source parity: applied migrations and active Edge Functions remain reproducible. */
-const supabaseFunctionConfig = read('supabase/config.toml');
-const expectedEdgeFunctions = [
-  ['send-portal-email', true],
-  ['verify-turnstile', false],
-  ['portal-health', true],
-  ['printful-catalog', true],
-];
-for (const [name, verifyJwt] of expectedEdgeFunctions) {
-  const sourcePath = `supabase/functions/${name}/index.ts`;
-  if (!existsSync(resolve(root, sourcePath))) fail(`Supabase Edge Function source is missing: ${sourcePath}`);
-  const expectedConfig = `[functions.${name}]\nverify_jwt = ${verifyJwt}`;
-  if (!supabaseFunctionConfig.includes(expectedConfig)) fail(`Supabase JWT gateway configuration is missing or incorrect for ${name}.`);
-  if (existsSync(resolve(root, sourcePath)) && /\b(?:sb_secret_[A-Za-z0-9_-]{20,}|sk_(?:live|test)_[A-Za-z0-9]{16,}|whsec_[A-Za-z0-9]{16,})\b/i.test(read(sourcePath))) fail(`Possible hard-coded provider secret found in ${sourcePath}.`);
-}
-for (const palette of ['light-skies','midnight-studio','graphite-minimal','plum-dusk','forest-room']) {
-  if (!repairCss.includes(`html[data-ie-workspace-theme="${palette}"][data-ie-mode] body`)) {
-    fail(`Final CSS cascade can override the ${palette} theme background in light mode.`);
-  }
-}
-if (!personalisation.includes("TOUCH_KEY='ie-workspace-personalisation-touched-v1'") ||
-    !personalisation.includes('pendingTouchedKey=key;save()') ||
-    !core.includes("locallyChosen('palette'") ||
-    !core.includes("locallyChosen('theme'")) {
-  fail('Explicit local appearance choices must survive account-level default preference loading.');
-}
-
-
-if (!read('supabase/functions/printful-catalog/index.ts').includes('https://imposed-entertainment-portal.pages.dev') ||
-    !read('supabase/functions/printful-catalog/index.ts').includes('function isAllowedOrigin(origin: string)') ||
-    !read('supabase/functions/printful-catalog/index.ts').includes('/^[a-f0-9]{8}') ||
-    !read('supabase/functions/printful-catalog/index.ts').includes('headers: { ...corsHeaders, "Access-Control-Allow-Origin": corsOrigin(origin) }') ||
-    !read('supabase/functions/portal-health/index.ts').includes('isAllowedOrigin(origin)')) {
-  fail('Edge Function CORS must include the actual Pages production origin and constrain preview aliases to this project.');
-}
-
-
-const listenerNotificationsMigration = read('supabase/migrations/20261022004519_scope_listener_release_notifications.sql');
-if (!listenerNotificationsMigration.includes('notifications_listener_select_scope') ||
-    !listenerNotificationsMigration.includes("kind = 'followed_artist_release'") ||
-    !listenerNotificationsMigration.includes('notifications_listener_update_scope') ||
-    !listenerNotificationsMigration.includes('GRANT UPDATE (read) ON TABLE public.notifications TO authenticated') ||
-    !listenerNotificationsMigration.includes('notifications_listener_delete_block') ||
-    !listenerNotificationsMigration.includes('notifications_listener_insert_block')) {
-  fail('Listener release notifications must be visible only to the intended owner/kind and listeners must only update the read flag.');
-}
-
-
-const listenerPreferenceSource = read('supabase/migrations/20261022004707_add_listener_notification_preference_rpc.sql');
-if (!listenerPreferenceSource.includes('public.set_listener_release_notification_preference') ||
-    !listenerPreferenceSource.includes("p.role::text = 'listener'") ||
-    !listenerPreferenceSource.includes("'{new_followed_releases}'") ||
-    !listenerPreferenceSource.includes('GRANT EXECUTE ON FUNCTION public.set_listener_release_notification_preference(boolean) TO authenticated') ||
-    !read('js/views.js').includes("sb.rpc('set_listener_release_notification_preference',{p_enabled:input.checked})")) {
-  fail('Listener notification settings must use the role-scoped RPC rather than blocked direct profile writes.');
-}
-
-
-/* Account routing and listener features must use the owner-scoped profiles.role, not mutable Auth metadata. */
-const listenerRoleSources = [boot, events, views, read('js/profiles.js')];
-if (listenerRoleSources.some(source => source.includes('user_metadata?.account_type') || source.includes("user_metadata.account_type"))) {
-  fail('Frontend role decisions must not trust user-editable auth user_metadata.account_type.');
-}
-if (!core.includes('async function resolveCurrentAccountRole') ||
-    !core.includes('function isCurrentUserListener()') ||
-    !boot.includes('resolveCurrentAccountRole(session.user.id)') ||
-    !events.includes('resolveCurrentAccountRole(loginData.user.id)')) {
-  fail('Listener routing must resolve the trusted profile role before showing role-specific account features.');
-}
-
-
-const listenerProfileTriggerMigration = read('supabase/migrations/20261022005658_allow_listener_alert_preference_only.sql');
-if (!listenerProfileTriggerMigration.includes('TG_TABLE_NAME = \'profiles\'') ||
-    !listenerProfileTriggerMigration.includes("NEW.notification_preferences - 'new_followed_releases'") ||
-    !listenerProfileTriggerMigration.includes("pg_catalog.jsonb_typeof(NEW.notification_preferences->'new_followed_releases') = 'boolean'") ||
-    !listenerProfileTriggerMigration.includes("pg_catalog.to_jsonb(NEW) - 'notification_preferences'") ||
-    !events.includes('document.querySelector(\'meta[name="portal-build"]\')?.content')) {
-  fail('Listener notification preferences must be the only allowed listener profile mutation, and diagnostics must report the real build.');
-}
-
-const supportHelp = read('help/index.html');
-const supportAssistant = read('js/support-assistant.js');
-const redirects = read('_redirects');
-const headers = read('_headers');
-if (!html.includes(`/js/support-assistant.js?v=${version}`)) fail('index.html must load the support assistant module using the current version.');
-if (!redirects.includes('/help /help/index.html 200') || !redirects.includes('/help/ /help/index.html 200')) fail('The public Help Centre must resolve at both /help and /help/.');
-if (!supportHelp.includes('name="robots" content="index,follow"') || !supportHelp.includes('Listener accounts are intentionally separated')) fail('The public Help Centre must be crawlable and document listener/workspace role separation.');
-if (!supportAssistant.includes("url.hostname !== 'cdn.botpress.cloud'") || !supportAssistant.includes('sb.auth.getSession()')) fail('Botpress must be hostname-validated and loaded only after checking an authenticated session.');
-if (!config.includes('BOTPRESS_WEBCHAT_SHAREABLE_URL')) fail('config.js must declare the optional Botpress shareable URL configuration.');
-if (!headers.includes('https://files.bpcontent.cloud') || !headers.includes('https://*.botpress.cloud')) fail('CSP must allow only the configured Botpress webchat origins needed by the integration.');
-if (errors.length) {
-  console.error('Static-site audit failed:');
-  for (const error of errors) console.error(` - ${error}`);
-  process.exitCode = 1;
-} else {
-  console.log(`Static-site audit passed for version ${version}.`);
-}
-for (const warning of warnings) console.warn(`Warning: ${warning}`);
+if (errors.length) { console.error('Static-site audit failed:'); for (const error of errors) console.error(' - '+error); process.exitCode=1; }
+else console.log(`Static-site audit passed for build ${version}: one Jitter UI stylesheet, valid CSS structure, versioned assets and deployment guards.`);

@@ -1,5 +1,31 @@
 const { test, expect } = require('@playwright/test');
 
+test('Cloud OS starts after Null Core and exposes an isolated service registry', async ({ page }) => {
+  await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => window.NullCore && window.NullCore.lifecycle === 'ready' && window.CloudOS && window.CloudOS.status === 'ready');
+  const result = await page.evaluate(() => ({
+    health: window.CloudOS.health(),
+    coreEngines: window.NullCore.getEngines().map(engine => engine.name)
+  }));
+  expect(result.health.engine).toBe('cloud-os');
+  expect(result.health.status).toBe('ready');
+  expect(result.coreEngines).toContain('cloud-os');
+});
+
+test('Null Core boots, exposes a stable engine contract and accepts application configuration', async ({ page }) => {
+  await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => window.NullCore && window.NullCore.lifecycle === 'ready');
+  const health = await page.evaluate(() => ({
+    health: window.NullCore.health(),
+    engines: window.NullCore.getEngines().map(engine => engine.name),
+    configIsObject: Boolean(window.NullCore.readConfig(window.IMPOSED_CONFIG) && typeof window.NullCore.readConfig(window.IMPOSED_CONFIG) === 'object')
+  }));
+  expect(health.health.engine).toBe('null-core');
+  expect(health.health.lifecycle).toBe('ready');
+  expect(health.engines).toContain('null-core');
+  expect(health.configIsObject).toBeTruthy();
+});
+
 test('homepage loads and local assets resolve', async ({ page }) => {
   const failedLocalResponses = [];
   page.on('response', response => {
@@ -67,10 +93,27 @@ for (const route of ['/privacy', '/terms', '/help']) {
   test(`direct route ${route} responds with the expected document`, async ({ request }) => {
     const response = await request.get(`http://127.0.0.1:4173${route}`);
     expect(response.ok()).toBeTruthy();
-    expect(await response.text()).toContain('<html');
+    const html = await response.text();
+    expect(html).toContain('<html');
+    if (route === '/privacy' || route === '/terms') {
+      expect(html.toLowerCase()).toContain('routenote');
+      expect(html.toLowerCase()).toContain('botpress');
+    }
   });
 }
 
+
+test('hidden boot overlay and passive toasts do not intercept workspace controls', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('#app-loading')).toHaveClass(/is-hidden/);
+  const overlay = await page.locator('#app-loading').evaluate(el => ({
+    display: getComputedStyle(el).display,
+    pointerEvents: getComputedStyle(el).pointerEvents
+  }));
+  expect(overlay.display).toBe('none');
+  expect(overlay.pointerEvents).toBe('none');
+});
 
 test('appearance launcher remains visible and opens its settings panel', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
@@ -78,8 +121,7 @@ test('appearance launcher remains visible and opens its settings panel', async (
   const trigger = page.locator('#ie-personalise-trigger');
   await expect(trigger).toBeVisible({ timeout: 8000 });
   await expect(trigger).toHaveAttribute('aria-expanded', 'false');
-  const glyph = await trigger.evaluate(el => getComputedStyle(el, '::before').content);
-  expect(glyph).toContain('✳');
+  expect(await trigger.textContent()).toContain('✳');
   await trigger.click();
   await expect(trigger).toHaveAttribute('aria-expanded', 'true');
   await expect(page.locator('#ie-personalise-panel')).toBeVisible();
@@ -143,7 +185,7 @@ test('artist workspace preserves theme artwork, glass panels and saved widget si
     const hero = document.querySelector('.dashboard-hero');
     const cards = [...document.querySelectorAll('[data-dashboard-widget-card]')];
     return {
-      themeArt: getComputedStyle(document.body).getPropertyValue('--ie-theme-art').trim(),
+      themeArt: getComputedStyle(document.body, '::before').backgroundImage,
       heroBackground: getComputedStyle(hero).backgroundImage,
       heroColumns: getComputedStyle(hero).gridTemplateColumns,
       cardSpans: cards.map(card => getComputedStyle(card).gridColumnStart + '/' + getComputedStyle(card).gridColumnEnd),
@@ -152,7 +194,7 @@ test('artist workspace preserves theme artwork, glass panels and saved widget si
     };
   });
   expect(result.themeArt).toContain('midnight-studio.jpg');
-  expect(result.heroBackground).toContain('url(');
+  expect(result.heroBackground).not.toContain('midnight-studio.jpg');
   expect(result.heroColumns).not.toBe('none');
   expect(result.cardSpans[0]).not.toBe('1 / -1');
   expect(result.cardSpans[1]).not.toBe('1 / -1');
@@ -170,7 +212,8 @@ test('all workspace themes keep their background artwork in light mode and on no
     const themes = ['light-skies', 'midnight-studio', 'graphite-minimal', 'plum-dusk', 'forest-room'];
     return themes.map(theme => {
       document.documentElement.dataset.ieWorkspaceTheme = theme;
-      const image = getComputedStyle(document.body).backgroundImage;
+      document.body.className = 'personalise-palette-' + theme;
+      const image = getComputedStyle(document.body, '::before').backgroundImage;
       return { theme, image };
     });
   });
@@ -186,11 +229,11 @@ test('guest customiser persists an explicit workspace theme choice', async ({ pa
   const trigger = page.locator('#ie-personalise-trigger');
   await expect(trigger).toBeVisible({ timeout: 8000 });
   await trigger.click();
-  await page.locator('#ie-personalise-panel select[aria-label="Workspace theme"]').selectOption('plum-dusk');
+  await page.locator('#ie-personalise-panel button[aria-label="Use Plum dusk theme"]').click();
   const result = await page.evaluate(() => ({
     theme: document.documentElement.dataset.ieWorkspaceTheme,
     touched: JSON.parse(localStorage.getItem('ie-workspace-personalisation-touched-v1') || '[]'),
-    background: getComputedStyle(document.body).backgroundImage
+    background: getComputedStyle(document.body, '::before').backgroundImage
   }));
   expect(result.theme).toBe('plum-dusk');
   expect(result.touched).toContain('palette');
@@ -214,7 +257,7 @@ test('liquid-glass chrome remains transparent and desktop navigation stays avail
   await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
   const result = await page.evaluate(() => {
     const stylesheet = [...document.querySelectorAll('link[rel="stylesheet"]')]
-      .find(link => link.href.includes('ui-glass-navigation-fix.css'));
+      .find(link => link.href.includes('ui-engine.css'));
     const nav = document.querySelector('header.nav');
     const desktop = nav?.querySelector('.desktop-nav');
     const inner = nav?.querySelector('.nav-inner');
@@ -234,4 +277,62 @@ test('welcome hero does not duplicate the page wallpaper with artwork', async ({
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
   await expect(page.locator('.dashboard-hero .hero-art, .dashboard-hero .hero-index, .welcome-card img, .welcome-widget img')).toHaveCount(0);
+});
+
+test('Prism validates and persists personalisation preferences through its engine contract', async ({ page }) => {
+  await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => window.Prism && window.CloudOS && window.NullCore);
+  const result = await page.evaluate(() => {
+    const saved = window.Prism.write({
+      accent: '#12abef',
+      palette: 'forest-room',
+      theme: 'light',
+      fontScale: 9,
+      lineHeight: 0.2,
+      buttonStyle: 'not-a-real-style',
+      glow: true
+    });
+    const readBack = window.Prism.read();
+    return {
+      saved: saved.state,
+      readBack,
+      health: window.Prism.health(),
+      engineRegistered: window.NullCore.getEngines().some(engine => engine.name === 'prism'),
+      serviceRegistered: window.CloudOS.getServices().some(service => service.name === 'prism-preferences')
+    };
+  });
+  expect(result.saved.accent).toBe('#12abef');
+  expect(result.saved.palette).toBe('forest-room');
+  expect(result.saved.fontScale).toBe(1.3);
+  expect(result.saved.lineHeight).toBe(1.25);
+  expect(result.saved.buttonStyle).toBe('soft');
+  expect(result.saved.glow).toBeTruthy();
+  expect(result.readBack.palette).toBe('forest-room');
+  expect(result.health.preferenceCount).toBeGreaterThan(10);
+  expect(result.engineRegistered).toBeTruthy();
+  expect(result.serviceRegistered).toBeTruthy();
+});
+
+test('Prism stays aligned with account appearance events without starting a sync loop', async ({ page }) => {
+  await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => window.Prism && window.NullCore);
+  const result = await page.evaluate(() => {
+    localStorage.removeItem('ie-workspace-personalisation-touched-v1');
+    let syncEvents = 0;
+    window.addEventListener('ie-personalise-change', () => { syncEvents += 1; });
+    window.dispatchEvent(new CustomEvent('ie-appearance-change', { detail: {
+      accent: '#123456',
+      workspaceTheme: 'forest-room',
+      mode: 'light',
+      quickCustomiser: { buttonStyle: 'pill', surface: 'glass' }
+    }}));
+    const prefs = window.Prism.read();
+    return { prefs, syncEvents };
+  });
+  expect(result.prefs.accent).toBe('#123456');
+  expect(result.prefs.palette).toBe('forest-room');
+  expect(result.prefs.theme).toBe('light');
+  expect(result.prefs.buttonStyle).toBe('pill');
+  expect(result.prefs.surface).toBe('glass');
+  expect(result.syncEvents).toBe(0);
 });

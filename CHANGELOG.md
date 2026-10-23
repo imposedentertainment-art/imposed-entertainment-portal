@@ -1,3 +1,11 @@
+## 3.3.70 — Jitter UI engine integration and repository recovery
+
+- Added Null Core for application lifecycle, configuration, event routing and bounded diagnostics; added Cloud OS for isolated service lifecycle and Prism for validated personalisation state.
+- Preserved Supabase as the source of truth for authentication, account data, storage, realtime and email workflows.
+- Restored monotonic app/service-worker versioning instead of downgrading the existing 3.3.69 build.
+- Fixed responsive workspace navigation layering and dashboard widget layout; retained all five theme backgrounds and ensured wallpaper is owned by the page rather than duplicated inside the welcome hero.
+- Updated browser smoke tests to assert the current design-system contracts and made CI browser execution serial to reduce flaky timeouts.
+
 ## 3.3.33 — Performance, desktop UI and public AI knowledge access
 
 - Public discovery now renders at `/` without requiring an artist/label login; `/signin` remains the explicit private workspace entry point.

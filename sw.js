@@ -1,6 +1,9 @@
-/* Imposed Entertainment v3.3.69: versioned static assets; never cache query-bearing navigations/auth callbacks. */
-const CACHE_NAME = 'imposed-v3.3.69';
+/* Imposed Entertainment v3.3.70: versioned static assets; never cache query-bearing navigations/auth callbacks. */
+const CACHE_NAME = 'imposed-jitter-v3.3.70';
 const STATIC_ASSETS = [
+  '/engines/cloud-os.js',
+  '/engines/null-core.js',
+  '/engines/prism.js',
   '/ui-engine.css',
   '/index.html',
   '/themes/light-skies.jpg', '/themes/midnight-studio.jpg', '/themes/graphite-minimal.jpg', '/themes/plum-dusk.jpg', '/themes/forest-room.jpg', '/js/shop.js', '/manifest.webmanifest', '/privacy/index.html', '/terms/index.html',
@@ -19,7 +22,7 @@ self.addEventListener('install', event => {
     // Other allow-listed assets are cached as they are requested by the app.
     const criticalAssets = [
       '/ui-engine.css',
-      '/index.html', '/js/personalise.js', '/js/quality.js', '/js/i18n.js', '/js/core.js', '/js/boot.js',
+      '/index.html', '/engines/null-core.js', '/engines/cloud-os.js', '/engines/prism.js', '/js/personalise.js', '/js/quality.js', '/js/i18n.js', '/js/core.js', '/js/boot.js',
       '/privacy/index.html', '/terms/index.html', '/img/logo-128.png'
     ];
     await Promise.allSettled(criticalAssets.map(async path => {
@@ -56,7 +59,7 @@ self.addEventListener('fetch', event => {
   const isStaticAsset = STATIC_PATHS.has(url.pathname);
   // Only accept the known release query on allow-listed public assets. All other query-bearing
   // requests (auth codes, invites, search state, user-specific data) bypass Cache Storage.
-  const releaseVersion = CACHE_NAME.slice('imposed-v'.length);
+  const releaseVersion = CACHE_NAME.slice(CACHE_NAME.lastIndexOf('-v') + 2);
   const isVersionedStaticAsset = isStaticAsset && url.searchParams.size === 1 && url.searchParams.get('v') === releaseVersion;
   if ((url.search && !isVersionedStaticAsset) || url.hash || /\/(auth|callback|invite)(\/|$)/i.test(url.pathname)) return;
   if (!isNavigation && !isStaticAsset) return;
@@ -77,16 +80,24 @@ self.addEventListener('fetch', event => {
       }
       if (isNavigation) {
         const path = url.pathname.replace(/\/+$/, '') || '/';
-        if (path === '/privacy') {
+        if (path === '/privacy' || path === '/privacy.html') {
           const legal = await cache.match('/privacy/index.html');
           if (legal) return legal;
         }
-        if (path === '/terms') {
+        if (path === '/terms' || path === '/terms.html') {
           const legal = await cache.match('/terms/index.html');
           if (legal) return legal;
         }
+        if (path === '/help' || path === '/help/') {
+          const help = await cache.match('/help/index.html');
+          if (help) return help;
+        }
+        if (path === '/knowledge' || path === '/knowledge/') {
+          const knowledge = await cache.match('/knowledge/index.html');
+          if (knowledge) return knowledge;
+        }
         // Serve the cached app shell for known SPA paths; preserve the address bar URL.
-        const spaPaths = new Set(['/','/index.html','/dashboard','/listen','/listen/account','/support','/settings','/earnings','/statements','/operations','/notifications','/activity','/bands','/roster','/discover','/listen/artist','/link','/discography','/podcasts','/calendar','/insights','/pipeline','/studio','/vault','/business','/builder']);
+        const spaPaths = new Set(['/','/index.html','/dashboard','/listen','/listen/account','/support','/settings','/earnings','/statements','/operations','/notifications','/activity','/bands','/roster','/discover','/listen/artist','/link','/discography','/podcasts','/calendar','/insights','/pipeline','/studio','/vault','/business','/builder','/shop','/shop/manage']);
         if (spaPaths.has(path) || (path.startsWith('/profile/') && path.endsWith('/edit') && path.split('/').length===4) || /^\/(release|profile|listen\/artist|link)\/[^/]+$/.test(path)) {
           const shell = await cache.match('/index.html');
           if (shell) return shell;
