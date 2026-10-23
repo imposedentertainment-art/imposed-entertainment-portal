@@ -7111,3 +7111,105 @@ html[data-ie-workspace-theme="forest-room"] {
     radial-gradient(ellipse at 48% 92%, rgba(7, 35, 26, .95), transparent 56%),
     linear-gradient(135deg, #10281d 0%, #07140f 54%, #132e20 100%);
 }
+
+
+/* v3.3.88 — production rendering correction.
+   Render wallpaper on a dedicated fixed layer (not behind the body canvas), then
+   let all workspace/auth surfaces share the same translucent material. */
+html {
+  background: var(--bg, #090a0c) !important;
+  min-height: 100%;
+}
+body {
+  position: relative;
+  isolation: isolate;
+  background: var(--bg, #090a0c) !important;
+  background-image: none !important;
+}
+body::before {
+  content: "" !important;
+  display: block !important;
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100dvh !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+  opacity: 1 !important;
+  background:
+    linear-gradient(180deg, rgba(7, 9, 14, .20), rgba(7, 9, 14, .54)),
+    var(--theme-image, url('/themes/midnight-studio.jpg')) center / cover no-repeat !important;
+}
+body::after {
+  content: "" !important;
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+  opacity: .10 !important;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.16'/%3E%3C/svg%3E") !important;
+}
+body > * {
+  position: relative;
+  z-index: 1;
+}
+#app, #app > main, #main-content, .main, .page, .page-content, .workspace,
+.main-content, .auth-shell, .auth-layout, .setup {
+  background-color: transparent !important;
+  background-image: none;
+}
+:root {
+  --ie-glass-bg: rgba(17, 21, 29, .48);
+  --ie-glass-bg-strong: rgba(17, 21, 29, .70);
+  --ie-glass-border: rgba(255, 255, 255, .18);
+  --ie-glass-highlight: rgba(255, 255, 255, .12);
+  --ie-glass-blur: 26px;
+  --ie-glass-saturation: 165%;
+}
+html[data-ie-mode="light"], body.personalise-theme-light,
+body.personalise-palette-light-skies {
+  --ie-glass-bg: rgba(248, 251, 255, .58);
+  --ie-glass-bg-strong: rgba(248, 251, 255, .76);
+  --ie-glass-border: rgba(35, 53, 75, .18);
+  --ie-glass-highlight: rgba(255, 255, 255, .70);
+}
+#app :where(
+  .card, .panel, .surface, .settings-card, .settings-section, .setting-section,
+  .detail-card, .approval-card, .invite-card, .builder-card, .metric, .empty,
+  .roster-list, .insight, .modal, .modal-content, .dialog, .drawer, .popover,
+  .dropdown-menu, .menu-panel, .nav, .desktop-nav, .mobile-nav, .sidebar,
+  .settings-nav, .profile-card, .artist-card, .release-card, .track-card,
+  .upload-card, .support-card, .stat-card, .toast, .table-wrap, .form-card,
+  .auth-card, .auth-panel, .auth-story, .auth-story-art, .auth-method,
+  .auth-option, .auth-provider, .setup-card, .setup-panel, .welcome-card,
+  .hero-card, .metric-card, .stat-tile, .tile, .sheet, .floating-panel
+) {
+  background-color: var(--ie-glass-bg) !important;
+  background-image: linear-gradient(145deg, var(--ie-glass-highlight), transparent 58%) !important;
+  border-color: var(--ie-glass-border) !important;
+  box-shadow: var(--ie-glass-shadow, 0 14px 40px rgba(0,0,0,.20)) !important;
+  -webkit-backdrop-filter: blur(var(--user-glass-blur, var(--ie-glass-blur))) saturate(var(--user-glass-saturation, var(--ie-glass-saturation))) !important;
+  backdrop-filter: blur(var(--user-glass-blur, var(--ie-glass-blur))) saturate(var(--user-glass-saturation, var(--ie-glass-saturation))) !important;
+}
+#app :where(.nav, .desktop-nav, .mobile-nav, .sidebar, .settings-nav,
+  .modal, .modal-content, .dialog, .drawer, .popover, .dropdown-menu, .menu-panel,
+  .auth-card, .auth-panel, .setup-card, .setup-panel, .welcome-card, .floating-panel) {
+  background-color: var(--ie-glass-bg-strong) !important;
+}
+#app :where(button, .btn, .primary, .secondary, .new-btn, .success, .danger-btn,
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]),
+  select, textarea, [role="combobox"], [role="listbox"]) {
+  -webkit-backdrop-filter: blur(calc(var(--user-glass-blur, var(--ie-glass-blur)) * .7)) saturate(var(--user-glass-saturation, var(--ie-glass-saturation))) !important;
+  backdrop-filter: blur(calc(var(--user-glass-blur, var(--ie-glass-blur)) * .7)) saturate(var(--user-glass-saturation, var(--ie-glass-saturation))) !important;
+}
+@media (max-width: 680px) {
+  body::before { height: 100dvh !important; }
+}
+@media (prefers-reduced-transparency: reduce) {
+  #app :where(.card, .panel, .surface, .settings-card, .auth-card, .auth-panel,
+    .modal, .dialog, .drawer, .popover, .dropdown-menu, .menu-panel) {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    background-color: var(--surface, #17191e) !important;
+  }
+}
