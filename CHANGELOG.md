@@ -1,3 +1,9 @@
+## 3.3.81 — Appearance sync consistency
+
+- Make account-to-device density translation explicit, preventing account density values from being temporarily treated as device-only values.
+- Add regression coverage for account appearance events syncing density, font scale, and line spacing into the device customiser.
+- Bump portal asset URLs and service-worker cache to 3.3.81.
+
 ## 3.3.80 — Theme rendering and browser reliability
 
 - Fix wallpaper stacking so selected theme artwork remains visible across browser engines instead of being painted behind the page canvas.

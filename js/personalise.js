@@ -104,8 +104,12 @@ window.addEventListener('ie-appearance-change',function(event){
   adopt('accent',a.accent,function(v){return /^#[0-9a-f]{6}$/i.test(String(v||''));});
   adopt('palette',a.workspaceTheme,function(v){return ['light-skies','midnight-studio','graphite-minimal','plum-dusk','forest-room'].includes(v);});
   adopt('theme',a.mode,function(v){return ['dark','light','system','amoled'].includes(v);});
-  adopt('density',a.density,function(v){return ['compact','comfortable','spacious'].includes(v);});
-  if(!touchedKeys.includes('density')&&a.density)state.density=({compact:'compact',comfortable:'standard',spacious:'comfortable'})[a.density]||state.density;
+  /* Account appearance uses compact / comfortable / spacious, while the device
+     customiser uses compact / standard / comfortable. Translate once, at the boundary. */
+  if(!touchedKeys.includes('density')){
+    var accountDensityMap={compact:'compact',comfortable:'standard',spacious:'comfortable'};
+    if(Object.prototype.hasOwnProperty.call(accountDensityMap,a.density))state.density=accountDensityMap[a.density];
+  }
   adopt('font',({clean:'modern',poster:'display',occult:'serif',typewriter:'mono',blackletter:'display'})[a.font],function(v){return ['modern','display','serif','mono'].includes(v);});
   if(!touchedKeys.includes('fontScale')&&Number.isFinite(Number(a.fontScale)))state.fontScale=Math.max(.85,Math.min(1.3,Number(a.fontScale)/100));
   if(!touchedKeys.includes('lineHeight')&&Number.isFinite(Number(a.lineHeight)))state.lineHeight=Math.max(1.25,Math.min(1.9,(Number(a.lineHeight)/100)*1.5));

@@ -326,6 +326,9 @@ test('Prism stays aligned with account appearance events without starting a sync
       accent: '#123456',
       workspaceTheme: 'forest-room',
       mode: 'light',
+      density: 'spacious',
+      fontScale: 115,
+      lineHeight: 110,
       quickCustomiser: { buttonStyle: 'pill', surface: 'glass' }
     }}));
     const prefs = window.Prism.read();
@@ -334,6 +337,9 @@ test('Prism stays aligned with account appearance events without starting a sync
   expect(result.prefs.accent).toBe('#123456');
   expect(result.prefs.palette).toBe('forest-room');
   expect(result.prefs.theme).toBe('light');
+  expect(result.prefs.density).toBe('comfortable');
+  expect(result.prefs.fontScale).toBe(1.15);
+  expect(result.prefs.lineHeight).toBeCloseTo(1.65, 5);
   expect(result.prefs.buttonStyle).toBe('pill');
   expect(result.prefs.surface).toBe('glass');
   expect(result.syncEvents).toBe(0);
