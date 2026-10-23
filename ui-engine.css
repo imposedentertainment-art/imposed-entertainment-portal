@@ -1,4 +1,4 @@
-/* Imposed Entertainment UI 4.0 — one coherent design system.
+/* Jitter UI 1.0 — the unified Imposed Entertainment design system.
    Semantic tokens first. Components inherit the same rules on artist, label and public routes. */
 :root{
  color-scheme:dark;
@@ -12,19 +12,19 @@
  --shadow-sm:0 2px 8px #0002;--shadow-md:0 12px 32px #0003;--shadow-lg:0 24px 70px #0005;
  --focus:0 0 0 3px color-mix(in srgb,var(--accent) 32%,transparent);
  --motion:var(--user-motion-duration,180ms);--ease:cubic-bezier(.2,.75,.25,1);
- --glass:var(--user-glass-opacity,.15);--glass-blur:var(--user-glass-blur,18px);
+ --glass:var(--user-glass-opacity,.15);--glass-blur:var(--user-glass-blur,18px);--theme-image:url('/themes/midnight-studio.jpg');
  font-family:var(--font-sans);font-size:var(--font-size);line-height:var(--line-height);
  background:var(--bg);color:var(--text);font-synthesis:none;text-rendering:optimizeLegibility;
  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
 }
 *{box-sizing:border-box}
 html{min-height:100%;scroll-behavior:smooth;scroll-padding-top:88px;background:var(--bg);overflow-x:clip}
-body{min-height:100vh;margin:0;background:var(--bg);color:var(--text);font-family:var(--font-sans);font-size:var(--font-size);line-height:var(--line-height);overflow-x:clip}
-body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 12% 0%,color-mix(in srgb,var(--accent) 7%,transparent),transparent 36%),radial-gradient(ellipse at 90% 20%,#4771a00b,transparent 38%)}
-body.personalise-palette-light-skies{--bg:#eaf2fb;--bg-elevated:#f6f9fd;--surface:#f8fbff;--surface-raised:#fff;--surface-hover:#e7eff8;--line:#d8e2ee;--line-strong:#bdcddd;--text:#182638;--muted:#526579;--subtle:#71869a;--accent-contrast:#fff}
-body.personalise-palette-graphite-minimal{--bg:#101114;--bg-elevated:#151619;--surface:#191a1e;--surface-raised:#202126;--surface-hover:#28292f;--line:#303137;--line-strong:#42444d}
-body.personalise-palette-plum-dusk{--bg:#140f19;--bg-elevated:#1b1422;--surface:#211829;--surface-raised:#2b1f35;--surface-hover:#352640;--line:#403047;--line-strong:#594264;--accent:#d6a8f0}
-body.personalise-palette-forest-room{--bg:#091510;--bg-elevated:#101e17;--surface:#14251c;--surface-raised:#1b3025;--surface-hover:#25402f;--line:#2c4938;--line-strong:#3d654c;--accent:#b9d99a}
+body{min-height:100vh;margin:0;background:var(--bg);color:var(--text);font-family:var(--font-sans);font-size:var(--font-size);line-height:var(--line-height);overflow-x:clip;isolation:isolate}
+body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:linear-gradient(180deg,color-mix(in srgb,var(--bg) 42%,transparent),color-mix(in srgb,var(--bg) 72%,transparent)),var(--theme-image),radial-gradient(ellipse at 12% 0%,color-mix(in srgb,var(--accent) 12%,transparent),transparent 48%);background-position:center,center,center;background-size:cover,cover,cover;background-repeat:no-repeat;opacity:1;contain:paint}
+body.personalise-palette-light-skies{--theme-image:url('/themes/light-skies.jpg');--bg:#eaf2fb;--bg-elevated:#f6f9fd;--surface:#f8fbff;--surface-raised:#fff;--surface-hover:#e7eff8;--line:#d8e2ee;--line-strong:#bdcddd;--text:#182638;--muted:#526579;--subtle:#71869a;--accent-contrast:#fff}
+body.personalise-palette-graphite-minimal{--theme-image:url('/themes/graphite-minimal.jpg');--bg:#101114;--bg-elevated:#151619;--surface:#191a1e;--surface-raised:#202126;--surface-hover:#28292f;--line:#303137;--line-strong:#42444d}
+body.personalise-palette-plum-dusk{--theme-image:url('/themes/plum-dusk.jpg');--bg:#140f19;--bg-elevated:#1b1422;--surface:#211829;--surface-raised:#2b1f35;--surface-hover:#352640;--line:#403047;--line-strong:#594264;--accent:#d6a8f0}
+body.personalise-palette-forest-room{--theme-image:url('/themes/forest-room.jpg');--bg:#091510;--bg-elevated:#101e17;--surface:#14251c;--surface-raised:#1b3025;--surface-hover:#25402f;--line:#2c4938;--line-strong:#3d654c;--accent:#b9d99a}
 html[data-ie-mode="light"],body.personalise-theme-light{color-scheme:light;--bg:#f2f5f9;--bg-elevated:#fff;--surface:#fff;--surface-raised:#fff;--surface-hover:#edf1f6;--line:#dce3ec;--line-strong:#c4cfdd;--text:#182433;--muted:#566579;--subtle:#77869a;--shadow-md:0 12px 32px #23354b12;--shadow-lg:0 24px 70px #23354b18}
 html[data-ie-mode="light"] body{background:var(--bg);color:var(--text)}
 html[data-ie-mode="amoled"],body.personalise-theme-amoled{--bg:#000;--bg-elevated:#050505;--surface:#090909;--surface-raised:#101010;--surface-hover:#191919;--line:#252525;--line-strong:#393939}
@@ -80,3 +80,10 @@ hr{height:1px;border:0;background:var(--line);margin:24px 0}
 @media(max-width:700px){:root{--gap:12px}html{scroll-padding-top:70px}.page,.workspace,.main-content,#main-content{width:calc(100% - 24px)}.page{padding-block:22px}.page-heading{display:grid;gap:8px;margin-bottom:20px}.page-heading h1{font-size:2rem}.stats-grid>*{grid-column:span 6}.card-grid>* ,.artist-grid>* ,.release-grid>* ,.shop-grid>*{grid-column:span 12}.dashboard-grid,.stats-grid,.card-grid,.artist-grid,.release-grid,.shop-grid,.profile-grid{gap:12px}.card,.panel,.surface,.stat-card,.widget,.settings-card,.settings-section{padding:16px}.form-row{grid-template-columns:minmax(0,1fr)}.nav-inner,.navbar-inner,.topbar-inner{min-height:56px}#ie-personalise-panel{right:8px;bottom:calc(max(8px,env(safe-area-inset-bottom)) + 62px);width:calc(100vw - 16px);max-height:min(78dvh,760px);border-radius:20px}#ie-personalise-trigger{right:max(12px,env(safe-area-inset-right));bottom:max(12px,env(safe-area-inset-bottom));width:48px;height:48px}.ie-p-top{padding:16px 16px 8px}.ie-p-tabs{padding-inline:10px}.ie-p-content{padding:12px}.ie-p-control{grid-template-columns:minmax(0,1fr) minmax(110px,1fr)}.boot-skeleton{margin:5vh auto;padding:18px}.boot-skeleton-grid i{height:100px}th,td{padding:10px}.modal-backdrop,.dialog-backdrop{padding:10px}}
 @media(max-width:380px){.ie-p-control{grid-template-columns:1fr}.stats-grid>*{grid-column:span 12}.ie-p-colours{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+
+/* Jitter UI liquid-glass surfaces: consistent refraction, edge definition and fallbacks. */
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+ body:not(.personalise-surface-flat) .card,body:not(.personalise-surface-flat) .panel,body:not(.personalise-surface-flat) .settings-card,body:not(.personalise-surface-flat) .settings-section,body:not(.personalise-surface-flat) .stat-card,body:not(.personalise-surface-flat) .widget,body:not(.personalise-surface-flat) .artist-card,body:not(.personalise-surface-flat) .release-card {background:color-mix(in srgb,var(--surface) calc(100% - var(--user-glass-opacity, .15)*100%),transparent);backdrop-filter:blur(var(--glass-blur)) saturate(var(--user-glass-saturation,145%));-webkit-backdrop-filter:blur(var(--glass-blur)) saturate(var(--user-glass-saturation,145%));border-color:color-mix(in srgb,var(--line) 76%,transparent);box-shadow:var(--ui-glass-shadow, var(--shadow-md))}
+}
+.personalise-surface-flat .card,.personalise-surface-flat .panel,.personalise-surface-flat .settings-card,.personalise-surface-flat .settings-section,.personalise-surface-flat .stat-card,.personalise-surface-flat .widget,.personalise-surface-flat .artist-card,.personalise-surface-flat .release-card {backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:var(--surface)!important;box-shadow:none!important}
