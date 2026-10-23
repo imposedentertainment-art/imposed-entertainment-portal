@@ -1,3 +1,10 @@
+## 3.3.71 — Restore missing UI feature layers
+
+- Restored the previously deleted authentication, personalisation, accessibility, theme, design-system, shop and mobile-navigation CSS layers into the unified stylesheet in their original cascade order.
+- Kept a single stylesheet entry point while restoring feature-specific rules that had not been fully migrated during consolidation.
+- Bumped the app and service-worker cache version so browsers fetch the corrected stylesheet instead of reusing stale assets.
+- Removed the internal engine codename from the browser tab title.
+
 ## 3.3.70 — Jitter UI engine integration and repository recovery
 
 - Added Null Core for application lifecycle, configuration, event routing and bounded diagnostics; added Cloud OS for isolated service lifecycle and Prism for validated personalisation state.
