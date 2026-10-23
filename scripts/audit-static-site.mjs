@@ -14,7 +14,7 @@ const css = read(cssPath).replace(/\/\*[\s\S]*?\*\//g, '');
 if (!version) fail('VERSION is empty.');
 if (!html.includes(`content="${version}"`) || !html.includes(`data-portal-build="${version}"`)) fail('HTML build metadata does not match VERSION.');
 if (!worker.includes(`const CACHE_NAME = 'imposed-v${version}'`)) fail('Service-worker cache name does not match VERSION.');
-if (!html.includes(`/${cssPath}?v=${version}`)) fail('App shell must load the single versioned UI engine stylesheet.');
+if (!html.includes(`/${cssPath}?v=${version}`)) fail('App shell must load the single versioned Jitter UI engine stylesheet.');
 const cssLinks = [...html.matchAll(/<link\b(?=[^>]*\brel=["']stylesheet["'])[^>]*\bhref=["']([^"']+)["'][^>]*>/gi)].map(m => m[1]).filter(href => href.startsWith('/'));
 if (cssLinks.length !== 1 || !cssLinks[0].startsWith('/ui-engine.css?')) fail(`Expected one local UI stylesheet (ui-engine.css), found ${cssLinks.join(', ') || 'none'}.`);
 let depth = 0;
@@ -51,4 +51,4 @@ if (existsSync(migrationsDir)) {
  for (const [key,count] of versions) if(count>1) fail(`Duplicate Supabase migration prefix ${key} (${count} files).`);
 }
 if (errors.length) { console.error('Static-site audit failed:'); for (const error of errors) console.error(' - '+error); process.exitCode=1; }
-else console.log(`Static-site audit passed for build ${version}: one UI stylesheet, valid CSS structure, versioned assets and deployment guards.`);
+else console.log(`Static-site audit passed for build ${version}: one Jitter UI stylesheet, valid CSS structure, versioned assets and deployment guards.`);
