@@ -372,8 +372,12 @@ test('workspace theme art remains visible and mobile background attachment avoid
   expect(desktopTheme.display).not.toBe('none');
 
   await page.setViewportSize({ width: 390, height: 844 });
-  const mobileAttachment = await page.evaluate(() => getComputedStyle(document.body).backgroundAttachment);
-  expect(mobileAttachment).toContain('scroll');
+  const mobileBackground = await page.evaluate(() => ({
+    attachment: getComputedStyle(document.body).backgroundAttachment,
+    wallpaperPosition: getComputedStyle(document.body, '::before').position
+  }));
+  expect(mobileBackground.attachment).toContain('scroll');
+  expect(mobileBackground.wallpaperPosition).toBe('absolute');
 });
 
 test('support and appearance layouts respond cleanly across desktop and mobile widths', async ({ page }) => {
