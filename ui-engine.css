@@ -6263,3 +6263,44 @@ body:before{
   .file-line{padding:10px;gap:8px}
   .file-line input[type="file"]{font-size:.75rem}
 }
+
+
+/* Semantic status colours stay compatible with dark, light, and high-contrast themes. */
+#app .eyebrow.blue,#app .eyebrow.info{color:var(--info)}
+.pill.neutral,.badge.neutral,.status-pill.neutral{
+  background:color-mix(in srgb,var(--muted) 10%,var(--surface));
+  color:var(--muted);
+  border-color:color-mix(in srgb,var(--muted) 28%,var(--line));
+}
+.pill.blue,.badge.blue,.status-pill.blue{
+  background:color-mix(in srgb,var(--info) 14%,var(--surface));
+  color:color-mix(in srgb,var(--info) 88%,var(--text));
+  border-color:color-mix(in srgb,var(--info) 32%,var(--line));
+}
+.pill.green,.badge.green,.status-pill.green{
+  background:color-mix(in srgb,var(--success) 13%,var(--surface));
+  color:color-mix(in srgb,var(--success) 86%,var(--text));
+  border-color:color-mix(in srgb,var(--success) 32%,var(--line));
+}
+.pill.amber,.badge.amber,.status-pill.amber{
+  background:color-mix(in srgb,var(--warning) 13%,var(--surface));
+  color:color-mix(in srgb,var(--warning) 86%,var(--text));
+  border-color:color-mix(in srgb,var(--warning) 35%,var(--line));
+}
+.pill.red,.badge.red,.status-pill.red{
+  background:color-mix(in srgb,var(--danger) 13%,var(--surface));
+  color:color-mix(in srgb,var(--danger) 88%,var(--text));
+  border-color:color-mix(in srgb,var(--danger) 34%,var(--line));
+}
+.date{color:var(--muted);font-size:.78rem;font-variant-numeric:tabular-nums;white-space:nowrap}
+button.primary.large,.primary.large,.btn-primary.large{
+  min-height:48px;
+  padding:12px 18px;
+  font-weight:800;
+  letter-spacing:-.01em;
+}
+button.secondary.small,.secondary.small,.btn-secondary.small{
+  min-height:34px;
+  padding:7px 10px;
+  font-size:.82rem;
+}
