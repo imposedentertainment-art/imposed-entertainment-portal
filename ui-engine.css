@@ -6751,7 +6751,7 @@ body.personalise-theme-light #ie-personalise-panel .ie-p-theme-name { color: #ff
 }
 
 
-/* 3.3.80 — Workspace shell refresh: consistent spacing, calm surfaces, and clearer hierarchy. */
+/* 3.3.82 — Workspace shell refresh: consistent spacing, calm surfaces, and clearer hierarchy. */
 :root {
   --ie-space-1: 4px;
   --ie-space-2: 8px;
