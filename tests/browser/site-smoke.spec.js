@@ -339,7 +339,7 @@ test('Prism stays aligned with account appearance events without starting a sync
 });
 
 test('unified stylesheet retains the authentication, customiser, shop and navigation feature layers', async ({ request }) => {
-  const response = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.72');
+  const response = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.74');
   expect(response.ok()).toBeTruthy();
   const css = await response.text();
   for (const selector of ['.auth-shell.auth-layout', '.ie-p-control', '.ie-shop-page', '.mobile-nav', '[data-ie-mode']) {
@@ -434,4 +434,18 @@ test('auth hero typography separates headline from explanatory copy', async ({ p
   expect(sizes.headline).toBeGreaterThan(sizes.copy * 1.5);
   expect(sizes.copy).toBeLessThanOrEqual(20);
   expect(sizes.copyWidth).toBeGreaterThan(250);
+});
+
+
+test('font loading uses the document preload path without a redundant CSS import', async ({ request }) => {
+  const htmlResponse = await request.get('http://127.0.0.1:4173/');
+  expect(htmlResponse.ok()).toBeTruthy();
+  const html = await htmlResponse.text();
+  expect(html).toContain('fonts.googleapis.com/css2?family=DM+Sans');
+  const cssResponse = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.74');
+  expect(cssResponse.ok()).toBeTruthy();
+  const css = await cssResponse.text();
+  expect(css).not.toMatch(/^\s*@import\s/m);
+  expect(css).toContain('--ui:"DM Sans"');
+  expect(css).toContain('--display:"Space Grotesk"');
 });
