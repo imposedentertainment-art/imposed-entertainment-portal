@@ -88,8 +88,16 @@ self.addEventListener('fetch', event => {
           const legal = await cache.match('/terms/index.html');
           if (legal) return legal;
         }
+        if (path === '/help' || path === '/help/') {
+          const help = await cache.match('/help/index.html');
+          if (help) return help;
+        }
+        if (path === '/knowledge' || path === '/knowledge/') {
+          const knowledge = await cache.match('/knowledge/index.html');
+          if (knowledge) return knowledge;
+        }
         // Serve the cached app shell for known SPA paths; preserve the address bar URL.
-        const spaPaths = new Set(['/','/index.html','/dashboard','/listen','/listen/account','/support','/settings','/earnings','/statements','/operations','/notifications','/activity','/bands','/roster','/discover','/listen/artist','/link','/discography','/podcasts','/calendar','/insights','/pipeline','/studio','/vault','/business','/builder']);
+        const spaPaths = new Set(['/','/index.html','/dashboard','/listen','/listen/account','/support','/settings','/earnings','/statements','/operations','/notifications','/activity','/bands','/roster','/discover','/listen/artist','/link','/discography','/podcasts','/calendar','/insights','/pipeline','/studio','/vault','/business','/builder','/shop','/shop/manage']);
         if (spaPaths.has(path) || (path.startsWith('/profile/') && path.endsWith('/edit') && path.split('/').length===4) || /^\/(release|profile|listen\/artist|link)\/[^/]+$/.test(path)) {
           const shell = await cache.match('/index.html');
           if (shell) return shell;
