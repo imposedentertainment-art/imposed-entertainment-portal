@@ -20,9 +20,9 @@ if (cssLinks.length !== 1 || !cssLinks[0].startsWith('/ui-engine.css?')) fail(`E
 let depth = 0;
 for (const char of css) { if (char === '{') depth++; else if (char === '}') depth--; if (depth < 0) { fail('UI engine CSS has an unmatched closing brace.'); break; } }
 if (depth !== 0) fail(`UI engine CSS has unbalanced braces (final depth ${depth}).`);
-const assets = [...worker.matchAll(/['"]((?:\\/[A-Za-z0-9_./-]+))['"]/g)].map(m => m[1]).filter(p => /\\.(?:css|js|webmanifest|html|png|jpg|jpeg|webp|svg)$/i.test(p));
+const assets = [...worker.matchAll(/['"]((?:\/[A-Za-z0-9_./-]+))['"]/g)].map(m => m[1]).filter(p => /\.(?:css|js|webmanifest|html|png|jpg|jpeg|webp|svg)$/i.test(p));
 // A legacy URL may intentionally be absent because Cloudflare Pages redirects it to a canonical document.
-const redirectSources = new Set(read('_redirects').split(/\\r?\\n/).map(line => line.trim().split(/\\s+/)[0]).filter(Boolean));
+const redirectSources = new Set(read('_redirects').split(/\r?\n/).map(line => line.trim().split(/\s+/)[0]).filter(Boolean));
 for (const path of assets) if (!existsSync(resolve(root, path.slice(1))) && !redirectSources.has(path)) fail(`Service worker references missing asset: ${path}`);
 const localRef = (value) => { if (!value || /^(?:[a-z][a-z0-9+.-]*:|\/\/|#)/i.test(value)) return null; const path = value.split(/[?#]/,1)[0]; return path.startsWith('/') ? path.slice(1) : path; };
 for (const match of html.matchAll(/\b(?:src|href)=["']([^"']+)["']/gi)) {
