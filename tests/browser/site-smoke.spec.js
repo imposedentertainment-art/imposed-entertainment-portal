@@ -233,7 +233,7 @@ test('guest customiser persists an explicit workspace theme choice', async ({ pa
   const result = await page.evaluate(() => ({
     theme: document.documentElement.dataset.ieWorkspaceTheme,
     touched: JSON.parse(localStorage.getItem('ie-workspace-personalisation-touched-v1') || '[]'),
-    background: getComputedStyle(document.body).backgroundImage
+    background: getComputedStyle(document.body, '::before').backgroundImage
   }));
   expect(result.theme).toBe('plum-dusk');
   expect(result.touched).toContain('palette');
