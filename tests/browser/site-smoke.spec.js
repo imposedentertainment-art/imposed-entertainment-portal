@@ -104,8 +104,7 @@ test('appearance launcher remains visible and opens its settings panel', async (
   const trigger = page.locator('#ie-personalise-trigger');
   await expect(trigger).toBeVisible({ timeout: 8000 });
   await expect(trigger).toHaveAttribute('aria-expanded', 'false');
-  const glyph = await trigger.evaluate(el => getComputedStyle(el, '::before').content);
-  expect(glyph).toContain('✳');
+  expect(await trigger.textContent()).toContain('✳');
   await trigger.click();
   await expect(trigger).toHaveAttribute('aria-expanded', 'true');
   await expect(page.locator('#ie-personalise-panel')).toBeVisible();
@@ -169,7 +168,7 @@ test('artist workspace preserves theme artwork, glass panels and saved widget si
     const hero = document.querySelector('.dashboard-hero');
     const cards = [...document.querySelectorAll('[data-dashboard-widget-card]')];
     return {
-      themeArt: getComputedStyle(document.body).getPropertyValue('--ie-theme-art').trim(),
+      themeArt: getComputedStyle(document.body, '::before').backgroundImage,
       heroBackground: getComputedStyle(hero).backgroundImage,
       heroColumns: getComputedStyle(hero).gridTemplateColumns,
       cardSpans: cards.map(card => getComputedStyle(card).gridColumnStart + '/' + getComputedStyle(card).gridColumnEnd),
@@ -178,7 +177,7 @@ test('artist workspace preserves theme artwork, glass panels and saved widget si
     };
   });
   expect(result.themeArt).toContain('midnight-studio.jpg');
-  expect(result.heroBackground).toContain('url(');
+  expect(result.heroBackground).not.toContain('midnight-studio.jpg');
   expect(result.heroColumns).not.toBe('none');
   expect(result.cardSpans[0]).not.toBe('1 / -1');
   expect(result.cardSpans[1]).not.toBe('1 / -1');
@@ -196,7 +195,8 @@ test('all workspace themes keep their background artwork in light mode and on no
     const themes = ['light-skies', 'midnight-studio', 'graphite-minimal', 'plum-dusk', 'forest-room'];
     return themes.map(theme => {
       document.documentElement.dataset.ieWorkspaceTheme = theme;
-      const image = getComputedStyle(document.body).backgroundImage;
+      document.body.className = 'personalise-palette-' + theme;
+      const image = getComputedStyle(document.body, '::before').backgroundImage;
       return { theme, image };
     });
   });
@@ -240,7 +240,7 @@ test('liquid-glass chrome remains transparent and desktop navigation stays avail
   await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
   const result = await page.evaluate(() => {
     const stylesheet = [...document.querySelectorAll('link[rel="stylesheet"]')]
-      .find(link => link.href.includes('ui-glass-navigation-fix.css'));
+      .find(link => link.href.includes('ui-engine.css'));
     const nav = document.querySelector('header.nav');
     const desktop = nav?.querySelector('.desktop-nav');
     const inner = nav?.querySelector('.nav-inner');
