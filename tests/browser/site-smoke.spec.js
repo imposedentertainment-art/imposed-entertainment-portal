@@ -661,3 +661,15 @@ test('Prism recovers from corrupt JSON and falls back to valid legacy preference
   expect(repaired.current.palette).toBe('midnight-studio');
   expect(repaired.legacy.palette).toBe('midnight-studio');
 });
+
+
+test('quick customiser account sync has one retryable owner', async ({ request }) => {
+  const coreResponse = await request.get('http://127.0.0.1:4173/js/core.js?v=3.3.82');
+  const eventsResponse = await request.get('http://127.0.0.1:4173/js/events.js?v=3.3.82');
+  expect(coreResponse.ok()).toBeTruthy();
+  expect(eventsResponse.ok()).toBeTruthy();
+  const core = await coreResponse.text();
+  const events = await eventsResponse.text();
+  expect(core).toContain("window.addEventListener('ie-personalise-change'");
+  expect(events).not.toContain("addEventListener('ie-personalise-change'");
+});
