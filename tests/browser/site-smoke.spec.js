@@ -213,7 +213,7 @@ test('all workspace themes keep their background artwork in light mode and on no
     const themes = ['light-skies', 'midnight-studio', 'graphite-minimal', 'plum-dusk', 'forest-room'];
     return themes.map(theme => {
       document.documentElement.dataset.ieWorkspaceTheme = theme;
-      document.body.className = 'personalise-palette-' + theme;
+      // Production applies the selected workspace theme to <html>, not a palette class on <body>.
       const image = getComputedStyle(document.body, '::before').backgroundImage;
       return { theme, image };
     });
