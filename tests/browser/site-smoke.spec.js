@@ -261,3 +261,37 @@ test('welcome hero does not duplicate the page wallpaper with artwork', async ({
   await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
   await expect(page.locator('.dashboard-hero .hero-art, .dashboard-hero .hero-index, .welcome-card img, .welcome-widget img')).toHaveCount(0);
 });
+
+test('Prism validates and persists personalisation preferences through its engine contract', async ({ page }) => {
+  await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => window.Prism && window.CloudOS && window.NullCore);
+  const result = await page.evaluate(() => {
+    const saved = window.Prism.write({
+      accent: '#12abef',
+      palette: 'forest-room',
+      theme: 'light',
+      fontScale: 9,
+      lineHeight: 0.2,
+      buttonStyle: 'not-a-real-style',
+      glow: true
+    });
+    const readBack = window.Prism.read();
+    return {
+      saved: saved.state,
+      readBack,
+      health: window.Prism.health(),
+      engineRegistered: window.NullCore.getEngines().some(engine => engine.name === 'prism'),
+      serviceRegistered: window.CloudOS.getServices().some(service => service.name === 'prism-preferences')
+    };
+  });
+  expect(result.saved.accent).toBe('#12abef');
+  expect(result.saved.palette).toBe('forest-room');
+  expect(result.saved.fontScale).toBe(1.3);
+  expect(result.saved.lineHeight).toBe(1.25);
+  expect(result.saved.buttonStyle).toBe('soft');
+  expect(result.saved.glow).toBeTruthy();
+  expect(result.readBack.palette).toBe('forest-room');
+  expect(result.health.preferenceCount).toBeGreaterThan(10);
+  expect(result.engineRegistered).toBeTruthy();
+  expect(result.serviceRegistered).toBeTruthy();
+});
