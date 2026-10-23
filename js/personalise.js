@@ -50,7 +50,8 @@ window.addEventListener('ie-personalise-sync-status',function(event){
   var detail=event&&event.detail||{};
   if(detail.synced===true){status.textContent='Preferences saved and synced to your account.';status.dataset.syncState='synced';}
   else if(detail.reason==='local-only'){status.textContent='Preferences saved on this device. Sign in to sync them across devices.';status.dataset.syncState='local-only';}
-  else if(detail.reason==='profile-not-ready'){status.textContent='Saved on this device. Account sync is waiting for your profile to load; change a setting again to retry.';status.dataset.syncState='pending';}
+  else if(detail.reason==='profile-not-ready'&&detail.retrying){status.textContent='Saved on this device. Waiting for your account profile before syncing…';status.dataset.syncState='pending';}
+  else if(detail.reason==='profile-not-ready'){status.textContent='Saved on this device. Account sync could not start yet; your local changes are safe.';status.dataset.syncState='pending';}
   else{status.textContent='Saved on this device, but account sync failed. Your local changes are still available.';status.dataset.syncState='error';}
 });
 function fieldset(title,help){var f=el('fieldset',{});f.append(el('legend',{},title));if(help)f.append(el('p',{className:'ie-p-help'},help));return f}
