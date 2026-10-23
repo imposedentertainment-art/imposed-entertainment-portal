@@ -339,7 +339,7 @@ test('Prism stays aligned with account appearance events without starting a sync
 });
 
 test('unified stylesheet retains the authentication, customiser, shop and navigation feature layers', async ({ request }) => {
-  const response = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.74');
+  const response = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.75');
   expect(response.ok()).toBeTruthy();
   const css = await response.text();
   for (const selector of ['.auth-shell.auth-layout', '.ie-p-control', '.ie-shop-page', '.mobile-nav', '[data-ie-mode']) {
@@ -442,10 +442,44 @@ test('font loading uses the document preload path without a redundant CSS import
   expect(htmlResponse.ok()).toBeTruthy();
   const html = await htmlResponse.text();
   expect(html).toContain('fonts.googleapis.com/css2?family=DM+Sans');
-  const cssResponse = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.74');
+  const cssResponse = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.75');
   expect(cssResponse.ok()).toBeTruthy();
   const css = await cssResponse.text();
   expect(css).not.toMatch(/^\s*@import\s/m);
   expect(css).toContain('--ui:"DM Sans"');
   expect(css).toContain('--display:"Space Grotesk"');
+});
+
+
+test('reduced-motion preference disables non-essential motion across the interface', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
+  const result = await page.evaluate(() => {
+    const probe = document.createElement('button');
+    probe.textContent = 'Motion preference probe';
+    probe.style.animation = 'ie-motion-probe 4s infinite';
+    probe.style.transition = 'opacity 4s';
+    document.body.appendChild(probe);
+    const style = getComputedStyle(probe);
+    return {
+      motion: matchMedia('(prefers-reduced-motion: reduce)').matches,
+      animationDuration: parseFloat(style.animationDuration),
+      transitionDuration: parseFloat(style.transitionDuration),
+      scrollBehavior: getComputedStyle(document.documentElement).scrollBehavior
+    };
+  });
+  expect(result.motion).toBeTruthy();
+  expect(result.animationDuration).toBeLessThanOrEqual(0.001);
+  expect(result.transitionDuration).toBeLessThanOrEqual(0.001);
+  expect(result.scrollBehavior).toBe('auto');
+});
+
+test('high-contrast and forced-colours accessibility styles are present', async ({ request }) => {
+  const response = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.75');
+  expect(response.ok()).toBeTruthy();
+  const css = await response.text();
+  expect(css).toContain('@media (prefers-contrast: more)');
+  expect(css).toContain('@media (forced-colors: active)');
+  expect(css).toContain('outline: 2px solid Highlight');
+  expect(css).toContain('color: LinkText');
 });
