@@ -7281,3 +7281,22 @@ body :where(
   background-color: transparent !important;
   background-image: none !important;
 }
+
+
+/* v3.3.93 — light-theme wallpaper must remain visible on the artist workspace.
+   Light-mode workspace surfaces can otherwise wash out the background artwork. */
+html[data-ie-mode="light"] body::before,
+body.personalise-theme-light::before,
+body.personalise-palette-light-skies::before {
+  background-image:
+    linear-gradient(180deg, rgba(244, 247, 251, .10), rgba(244, 247, 251, .30)),
+    var(--theme-image, url('/themes/light-skies.jpg')) !important;
+  background-position: center, center !important;
+  background-size: cover, cover !important;
+  background-repeat: no-repeat, no-repeat !important;
+}
+html[data-ie-mode="light"] body,
+body.personalise-theme-light,
+body.personalise-palette-light-skies {
+  background-color: #e9edf2 !important;
+}
