@@ -1,6 +1,7 @@
 /* Imposed Entertainment v1.0.0: versioned static assets; never cache query-bearing navigations/auth callbacks. */
 const CACHE_NAME = 'imposed-jitter-v1.0.0';
 const STATIC_ASSETS = [
+  '/engines/cloud-os.js',
   '/engines/null-core.js',
   '/ui-engine.css',
   '/index.html',
@@ -20,7 +21,7 @@ self.addEventListener('install', event => {
     // Other allow-listed assets are cached as they are requested by the app.
     const criticalAssets = [
       '/ui-engine.css',
-      '/index.html', '/engines/null-core.js', '/js/personalise.js', '/js/quality.js', '/js/i18n.js', '/js/core.js', '/js/boot.js',
+      '/index.html', '/engines/null-core.js', '/engines/cloud-os.js', '/js/personalise.js', '/js/quality.js', '/js/i18n.js', '/js/core.js', '/js/boot.js',
       '/privacy/index.html', '/terms/index.html', '/img/logo-128.png'
     ];
     await Promise.allSettled(criticalAssets.map(async path => {
