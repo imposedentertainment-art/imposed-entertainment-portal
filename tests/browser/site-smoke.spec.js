@@ -336,3 +336,13 @@ test('Prism stays aligned with account appearance events without starting a sync
   expect(result.prefs.surface).toBe('glass');
   expect(result.syncEvents).toBe(0);
 });
+
+test('unified stylesheet retains the authentication, customiser, shop and navigation feature layers', async ({ request }) => {
+  const response = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.71');
+  expect(response.ok()).toBeTruthy();
+  const css = await response.text();
+  for (const selector of ['.auth-shell.auth-layout', '.ie-p-control', '.ie-shop-page', '.mobile-nav', '[data-ie-mode']) {
+    expect(css, 'missing stylesheet contract: ' + selector).toContain(selector);
+  }
+  expect(css.length).toBeGreaterThan(150000);
+});
