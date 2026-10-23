@@ -1,5 +1,19 @@
 const { test, expect } = require('@playwright/test');
 
+test('Null Core boots, exposes a stable engine contract and accepts application configuration', async ({ page }) => {
+  await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => window.NullCore && window.NullCore.lifecycle === 'ready');
+  const health = await page.evaluate(() => ({
+    health: window.NullCore.health(),
+    engines: window.NullCore.getEngines().map(engine => engine.name),
+    configIsObject: Boolean(window.NullCore.readConfig(window.IMPOSED_CONFIG) && typeof window.NullCore.readConfig(window.IMPOSED_CONFIG) === 'object')
+  }));
+  expect(health.health.engine).toBe('null-core');
+  expect(health.health.lifecycle).toBe('ready');
+  expect(health.engines).toContain('null-core');
+  expect(health.configIsObject).toBeTruthy();
+});
+
 test('homepage loads and local assets resolve', async ({ page }) => {
   const failedLocalResponses = [];
   page.on('response', response => {
