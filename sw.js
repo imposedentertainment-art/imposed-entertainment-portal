@@ -1,5 +1,5 @@
-/* Imposed Entertainment v3.3.75: versioned static assets; never cache query-bearing navigations/auth callbacks. */
-const CACHE_NAME = 'imposed-jitter-v3.3.75';
+/* Imposed Entertainment v3.3.76: versioned static assets; never cache query-bearing navigations/auth callbacks. */
+const CACHE_NAME = 'imposed-jitter-v3.3.76';
 const STATIC_ASSETS = [
   '/engines/cloud-os.js',
   '/engines/null-core.js',
@@ -60,7 +60,7 @@ self.addEventListener('fetch', event => {
   // Only accept the known release query on allow-listed public assets. All other query-bearing
   // requests (auth codes, invites, search state, user-specific data) bypass Cache Storage.
   const releaseVersion = CACHE_NAME.slice(CACHE_NAME.lastIndexOf('-v') + 2);
-  const isVersionedStaticAsset = isStaticAsset && url.searchParams.size === 1 && url.searchParams.get('v') === releaseVersion;
+  const isVersionedStaticAsset = isStaticAsset && Array.from(url.searchParams).length === 1 && url.searchParams.get('v') === releaseVersion;
   if ((url.search && !isVersionedStaticAsset) || url.hash || /\/(auth|callback|invite)(\/|$)/i.test(url.pathname)) return;
   if (!isNavigation && !isStaticAsset) return;
 
