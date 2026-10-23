@@ -1,6 +1,6 @@
 /* Config, constants, state variables, small helpers (esc, $, icon, toast) */
 
-  const C = window.IMPOSED_CONFIG || {};
+  const C = window.NullCore ? window.NullCore.readConfig(window.IMPOSED_CONFIG || {}) : (window.IMPOSED_CONFIG || {});
   const ready = Boolean(window.supabase && C.SUPABASE_URL && !C.SUPABASE_URL.includes('PASTE_') && C.SUPABASE_ANON_KEY && !C.SUPABASE_ANON_KEY.includes('PASTE_'));
   const sb = ready ? window.supabase.createClient(C.SUPABASE_URL, C.SUPABASE_ANON_KEY) : null;
 
