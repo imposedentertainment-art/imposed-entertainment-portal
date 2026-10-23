@@ -6857,3 +6857,21 @@ body {
    background; the CSS URL exists but the selected theme appears to be missing. */
 body { isolation: isolate; }
 body::before { z-index: -1; }
+
+/* FIX: keep the selected workspace wallpaper visible.
+   The old negative z-index placed the fixed wallpaper behind the body's opaque
+   background, so the theme URLs loaded but could never be seen in many browsers. */
+body { isolation: isolate; }
+body::before {
+  z-index: 0 !important;
+}
+body > * {
+  position: relative;
+  z-index: 1;
+}
+#app-loading {
+  z-index: 1000;
+}
+#toast-root {
+  z-index: 1100;
+}
