@@ -1,3 +1,10 @@
+## 3.3.72 — Complete UI stylesheet recovery
+
+- Recovered the full base stylesheet and the authentication, personalisation, accessibility, theme, design-system, shop and mobile-navigation layers into the single `ui-engine.css` entry point.
+- Restored the original cascade order: base styles, feature-specific layers, then current unified-engine overrides. The prior consolidation had removed the base stylesheet layer, leaving large parts of the interface without their intended styling.
+- Bumped app and service-worker cache versions to force browsers onto the corrected CSS.
+- Added a regression check for critical authentication, customiser, shop and mobile-navigation style contracts.
+
 ## 3.3.71 — Restore missing UI feature layers
 
 - Restored the previously deleted authentication, personalisation, accessibility, theme, design-system, shop and mobile-navigation CSS layers into the unified stylesheet in their original cascade order.
