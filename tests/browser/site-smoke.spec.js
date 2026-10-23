@@ -1,5 +1,17 @@
 const { test, expect } = require('@playwright/test');
 
+test('Cloud OS starts after Null Core and exposes an isolated service registry', async ({ page }) => {
+  await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => window.NullCore && window.NullCore.lifecycle === 'ready' && window.CloudOS && window.CloudOS.status === 'ready');
+  const result = await page.evaluate(() => ({
+    health: window.CloudOS.health(),
+    coreEngines: window.NullCore.getEngines().map(engine => engine.name)
+  }));
+  expect(result.health.engine).toBe('cloud-os');
+  expect(result.health.status).toBe('ready');
+  expect(result.coreEngines).toContain('cloud-os');
+});
+
 test('Null Core boots, exposes a stable engine contract and accepts application configuration', async ({ page }) => {
   await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
   await page.waitForFunction(() => window.NullCore && window.NullCore.lifecycle === 'ready');
