@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 /* Recovered full base stylesheet. The earlier consolidation dropped the base styles layer; retain it inside the single UI-engine entry point, then apply compatibility feature layers and the current engine overrides. */
 /* Imposed Entertainment portal. One stylesheet, tokens first. Palette comes from the logo: dark water, one pale-yellow flower. */
 :root{
