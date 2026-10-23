@@ -103,6 +103,18 @@ for (const route of ['/privacy', '/terms', '/help']) {
 }
 
 
+test('hidden boot overlay and passive toasts do not intercept workspace controls', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('#app-loading')).toHaveClass(/is-hidden/);
+  const overlay = await page.locator('#app-loading').evaluate(el => ({
+    display: getComputedStyle(el).display,
+    pointerEvents: getComputedStyle(el).pointerEvents
+  }));
+  expect(overlay.display).toBe('none');
+  expect(overlay.pointerEvents).toBe('none');
+});
+
 test('appearance launcher remains visible and opens its settings panel', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
