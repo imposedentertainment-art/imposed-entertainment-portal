@@ -3,7 +3,8 @@
 - Recover from corrupted JSON in the current personalisation key instead of silently falling back to in-memory defaults on every reload.
 - Prefer valid legacy preferences when the current key is malformed, and repair both keys to one canonical validated state.
 - If both stored values are corrupt, restore canonical defaults so subsequent loads are healthy.
-- Add browser regression coverage for legacy fallback and invalid-JSON repair; refresh stylesheet query and service-worker cache versions.
+- Remove a duplicate account-sync listener so each quick-customiser edit uses the debounced, retryable sync queue only once.
+- Add browser regression coverage for legacy fallback, invalid-JSON repair, and single-owner account sync; refresh stylesheet query and service-worker cache versions.
 
 ## 3.3.81 — Appearance sync consistency
 
