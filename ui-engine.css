@@ -7321,3 +7321,42 @@ body.personalise-theme-light::before {
   background-size: cover, cover !important;
   background-repeat: no-repeat, no-repeat !important;
 }
+
+
+/* v3.3.95 — final mobile workspace wallpaper compositing fix.
+   The artist portal is commonly used on narrow screens. Keep the fixed image layer
+   below the app, and explicitly remove legacy opaque shell/page backgrounds there. */
+html, body { min-height: 100%; }
+body {
+  position: relative !important;
+  isolation: isolate !important;
+  background-image: none !important;
+}
+body::before {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100dvh !important;
+  min-height: 100dvh !important;
+  z-index: 0 !important;
+  opacity: 1 !important;
+  pointer-events: none !important;
+  background-image:
+    linear-gradient(180deg, rgba(244,247,251,.06), rgba(244,247,251,.18)),
+    var(--theme-image, url('/themes/light-skies.jpg')) !important;
+  background-position: center, center !important;
+  background-size: cover, cover !important;
+  background-repeat: no-repeat, no-repeat !important;
+}
+#app, #app > *, #app .shell, #app .shell > *,
+#app main, #app .page, #app .page-content, #app .workspace,
+#app .main-content, #app #main-content {
+  background-color: transparent !important;
+  background-image: none !important;
+}
+#app .card, #app .panel, #app .dashboard-hero,
+#app .settings-card, #app .settings-section, #app .metric {
+  background-color: color-mix(in srgb, var(--surface, #ffffff) 76%, transparent) !important;
+  -webkit-backdrop-filter: blur(var(--user-glass-blur, 22px)) saturate(var(--user-glass-saturation, 165%)) !important;
+  backdrop-filter: blur(var(--user-glass-blur, 22px)) saturate(var(--user-glass-saturation, 165%)) !important;
+}
