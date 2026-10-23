@@ -240,9 +240,13 @@ function normaliseQuickCustomiser(value){
   window.addEventListener('ie-personalise-account-change', event => {
     const nextUserId = event?.detail?.userId || null;
     const saved = readPendingPersonaliseSnapshot();
+    if (saved && saved.userId === nextUserId) {
+      resumePendingPersonaliseSync();
+      return;
+    }
     clearTimeout(personaliseSyncTimer);
     pendingPersonaliseSnapshot = null;
-    if (saved && saved.userId !== nextUserId) {
+    if (saved) {
       try { localStorage.removeItem(PERSONALISE_PENDING_KEY); } catch (_) {}
     }
   });
