@@ -1,3 +1,12 @@
+## 3.3.82 — Resilient preference recovery
+
+- Recover from corrupted JSON in the current personalisation key instead of silently falling back to in-memory defaults on every reload.
+- Prefer valid legacy preferences when the current key is malformed, and repair both keys to one canonical validated state.
+- If both stored values are corrupt, restore canonical defaults so subsequent loads are healthy.
+- Remove a duplicate account-sync listener so each quick-customiser edit uses the debounced, retryable sync queue only once.
+- Stabilise two cross-browser layout tests by waiting for the app boot sequence to finish before injecting test fixtures.
+- Add browser regression coverage for legacy fallback, invalid-JSON repair, and single-owner account sync; refresh stylesheet query and service-worker cache versions.
+
 ## 3.3.81 — Appearance sync consistency
 
 - Make account-to-device density translation explicit, preventing account density values from being temporarily treated as device-only values.
