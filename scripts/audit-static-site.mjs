@@ -42,7 +42,13 @@ else {
   if (path && /\.(?:js|css)$/i.test(path) && path !== 'config.js' && !allow.has('/'+path)) fail(`App shell asset missing from service-worker allow-list: ${match[1]}`);
  }
 }
-if (!read('_redirects').includes('/* /index.html 200')) fail('_redirects is missing the SPA fallback.');
+const redirectRules = read('_redirects').split(/\r?\n/).map(line => line.trim()).filter(Boolean);
+const catchAllIndex = redirectRules.findIndex(line => line.startsWith('/* '));
+if (catchAllIndex < 0) fail('_redirects is missing the SPA fallback.');
+for (const legacyRoute of ['/privacy.html ', '/terms.html ']) {
+ const routeIndex = redirectRules.findIndex(line => line.startsWith(legacyRoute));
+ if (routeIndex < 0 || routeIndex > catchAllIndex) fail(`Explicit legacy redirect must precede the SPA fallback: ${legacyRoute.trim()}`);
+}
 if (!read('_headers').includes('Content-Security-Policy:')) fail('_headers is missing Content-Security-Policy.');
 if (/service_role|SUPABASE_SECRET_KEY|sb_secret_/i.test(read('config.js'))) fail('config.js appears to contain a server-side Supabase secret.');
 const migrationsDir = resolve(root,'supabase/migrations');
