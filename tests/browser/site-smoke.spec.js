@@ -347,3 +347,91 @@ test('unified stylesheet retains the authentication, customiser, shop and naviga
   }
   expect(css.length).toBeGreaterThan(150000);
 });
+
+
+test('workspace theme art remains visible and mobile background attachment avoids fixed scrolling', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
+  const desktopTheme = await page.evaluate(() => {
+    const root = document.documentElement;
+    const body = document.body;
+    ['light-skies', 'midnight-studio', 'graphite-minimal', 'plum-dusk', 'forest-room'].forEach(theme => {
+      body.classList.remove('personalise-palette-' + theme);
+    });
+    root.dataset.ieWorkspaceTheme = 'forest-room';
+    body.classList.add('personalise-palette-forest-room');
+    const layer = getComputedStyle(body, '::before');
+    return {
+      token: getComputedStyle(body).getPropertyValue('--theme-image'),
+      image: layer.backgroundImage,
+      display: layer.display
+    };
+  });
+  expect(desktopTheme.token).toContain('forest-room.jpg');
+  expect(desktopTheme.image).toContain('forest-room.jpg');
+  expect(desktopTheme.display).not.toBe('none');
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  const mobileBackground = await page.evaluate(() => ({
+    attachment: getComputedStyle(document.body).backgroundAttachment,
+    wallpaperPosition: getComputedStyle(document.body, '::before').position
+  }));
+  expect(mobileBackground.attachment).toContain('scroll');
+  expect(mobileBackground.wallpaperPosition).toBe('absolute');
+});
+
+test('support and appearance layouts respond cleanly across desktop and mobile widths', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
+  await page.evaluate(() => {
+    document.querySelector('#app').innerHTML =
+      '<main id="main-content" class="page support-page">' +
+        '<section class="support-centre-intro"><article class="support-hub-card card"><div class="support-hub-icon">?</div><div><h2>Help centre</h2><p>Guides</p></div></article><article class="support-hub-card card"><div class="support-hub-icon">!</div><div><h2>Contact support</h2><p>Contact us</p></div></article></section>' +
+        '<section class="support-topic-panel card"><div class="support-topic-grid"><button class="support-topic-choice">Access</button><button class="support-topic-choice">Releases</button><button class="support-topic-choice">Profiles</button></div></section>' +
+        '<section class="appearance-section"><div class="workspace-theme-grid"><button class="workspace-theme-option">Midnight</button><button class="workspace-theme-option">Forest</button></div><div class="appearance-choice-grid"><label class="appearance-choice">Vivid</label><label class="appearance-choice">Classic</label><label class="appearance-choice">Minimal</label></div></section>' +
+      '</main>';
+  });
+  const desktop = await page.evaluate(() => {
+    const columns = selector => getComputedStyle(document.querySelector(selector)).gridTemplateColumns.trim().split(/\s+/).length;
+    return {
+      supportIntro: columns('.support-centre-intro'),
+      topicGrid: columns('.support-topic-grid'),
+      themeGrid: columns('.workspace-theme-grid'),
+      choiceGrid: columns('.appearance-choice-grid')
+    };
+  });
+  expect(desktop.supportIntro).toBe(2);
+  expect(desktop.topicGrid).toBe(3);
+  expect(desktop.themeGrid).toBe(2);
+  expect(desktop.choiceGrid).toBe(3);
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  const mobile = await page.evaluate(() => ({
+    supportIntro: getComputedStyle(document.querySelector('.support-centre-intro')).gridTemplateColumns.trim().split(/\s+/).length,
+    topicGrid: getComputedStyle(document.querySelector('.support-topic-grid')).gridTemplateColumns.trim().split(/\s+/).length,
+    themeGrid: getComputedStyle(document.querySelector('.workspace-theme-grid')).gridTemplateColumns.trim().split(/\s+/).length,
+    viewport: document.documentElement.clientWidth,
+    pageWidth: document.documentElement.scrollWidth
+  }));
+  expect(mobile.supportIntro).toBe(1);
+  expect(mobile.topicGrid).toBe(1);
+  expect(mobile.themeGrid).toBe(1);
+  expect(mobile.pageWidth).toBeLessThanOrEqual(mobile.viewport + 2);
+});
+
+test('auth hero typography separates headline from explanatory copy', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
+  await page.evaluate(() => {
+    document.querySelector('#app').innerHTML =
+      '<main class="auth-shell auth-layout"><section class="auth-story"><div class="auth-story-content"><h2>Your music.<br><em>Your next chapter.</em></h2><p class="auth-story-copy">One place to submit releases, stay connected with the label, and follow every step from review to release day.</p></div></section></main>';
+  });
+  const sizes = await page.evaluate(() => ({
+    headline: parseFloat(getComputedStyle(document.querySelector('.auth-story h2')).fontSize),
+    copy: parseFloat(getComputedStyle(document.querySelector('.auth-story-copy')).fontSize),
+    copyWidth: document.querySelector('.auth-story-copy').getBoundingClientRect().width
+  }));
+  expect(sizes.headline).toBeGreaterThan(sizes.copy * 1.5);
+  expect(sizes.copy).toBeLessThanOrEqual(20);
+  expect(sizes.copyWidth).toBeGreaterThan(250);
+});
