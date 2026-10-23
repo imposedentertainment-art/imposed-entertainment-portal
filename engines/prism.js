@@ -59,9 +59,25 @@
 
   function safeRead() {
     try {
-      const raw = global.localStorage.getItem(STORAGE_KEY) || global.localStorage.getItem(LEGACY_KEY);
+      const currentRaw = global.localStorage.getItem(STORAGE_KEY);
+      const legacyRaw = global.localStorage.getItem(LEGACY_KEY);
+      const raw = currentRaw || legacyRaw;
       if (!raw) return { ...defaults };
-      return normalise(JSON.parse(raw));
+      const parsed = JSON.parse(raw);
+      const next = normalise(parsed);
+      /* Heal malformed, stale, or out-of-range preferences once instead of
+         re-reading the same invalid values on every reload. */
+      const canonical = JSON.stringify(next);
+      if (currentRaw !== canonical || legacyRaw !== canonical) {
+        try {
+          global.localStorage.setItem(STORAGE_KEY, canonical);
+          global.localStorage.setItem(LEGACY_KEY, canonical);
+          persistence = 'local';
+        } catch (_) {
+          persistence = 'memory';
+        }
+      }
+      return next;
     } catch (_) {
       persistence = 'memory';
       return { ...memoryState };
