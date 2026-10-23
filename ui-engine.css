@@ -6875,3 +6875,121 @@ body > * {
 #toast-root {
   z-index: 1100;
 }
+
+/* v3.3.84 — unified UI polish pass: resilient surfaces, responsive controls,
+   accessible focus, and reduced-motion support. Keep this as one final layer
+   until the legacy rules can be safely consolidated. */
+:root {
+  --ie-ui-ease: cubic-bezier(.2,.7,.2,1);
+  --ie-ui-fast: 160ms;
+  --ie-ui-medium: 240ms;
+  --ie-ui-ring: 0 0 0 3px color-mix(in srgb, var(--accent, #d7bd72) 32%, transparent);
+}
+html { scrollbar-gutter: stable; }
+body { text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; }
+button, input, select, textarea { font: inherit; }
+button, [role="button"], a, input, select, textarea, summary {
+  -webkit-tap-highlight-color: transparent;
+}
+:where(button, [role="button"], a, input, select, textarea, summary):focus-visible {
+  outline: 2px solid var(--accent, #d7bd72);
+  outline-offset: 3px;
+  box-shadow: var(--ie-ui-ring);
+}
+:where(button, [role="button"], a) { touch-action: manipulation; }
+:where(button, input, select, textarea) { max-width: 100%; }
+:where(img, video, canvas, svg) { max-width: 100%; }
+#app { min-width: 0; overflow-wrap: anywhere; }
+#app :where(.card, .panel, .stat-card, .release-card, .artist-card, .settings-card) {
+  min-width: 0;
+}
+#app :where(button, .primary, .secondary, .btn) {
+  transition: background-color var(--ie-ui-fast) var(--ie-ui-ease),
+              border-color var(--ie-ui-fast) var(--ie-ui-ease),
+              color var(--ie-ui-fast) var(--ie-ui-ease),
+              box-shadow var(--ie-ui-fast) var(--ie-ui-ease),
+              transform var(--ie-ui-fast) var(--ie-ui-ease);
+}
+#app :where(button, .primary, .secondary, .btn):active { transform: translateY(1px); }
+#app :where(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]), select, textarea) {
+  min-width: 0;
+  border-radius: var(--input-radius, var(--radius, 12px));
+}
+#app :where(input, select, textarea)::placeholder { opacity: .72; }
+#app :where(.grid, .cards-grid, .dashboard-grid, .settings-grid) {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+}
+#ie-personalise-panel {
+  max-width: min(540px, calc(100vw - 24px));
+  max-height: min(86dvh, 900px);
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
+}
+#ie-personalise-panel .ie-p-content { min-width: 0; }
+#ie-personalise-panel .ie-p-theme-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 138px), 1fr));
+}
+#ie-personalise-panel :where(button, select, input) { min-height: 40px; }
+#ie-personalise-panel .ie-p-theme-card {
+  min-width: 0;
+  min-height: 112px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+#ie-personalise-panel .ie-p-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+#ie-personalise-panel .ie-p-actions > * { flex: 1 1 120px; }
+#ie-personalise-panel .ie-p-control { min-width: 0; }
+#ie-personalise-panel .ie-p-control select { width: 100%; }
+#ie-personalise-panel .ie-p-tabs {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+#ie-personalise-panel .ie-p-tab { flex: 0 0 auto; }
+@media (max-width: 760px) {
+  html { scrollbar-gutter: auto; }
+  #ie-personalise-panel {
+    left: 12px;
+    right: 12px;
+    width: auto;
+    max-width: none;
+    max-height: calc(100dvh - 24px - env(safe-area-inset-top));
+    padding-top: max(12px, env(safe-area-inset-top));
+  }
+  #app :where(.page-header, .section-header, .toolbar, .filter-row) {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  #app :where(table) { display: block; max-width: 100%; overflow-x: auto; }
+}
+@media (max-width: 420px) {
+  #app :where(.page, .page-content, .content, .section) { min-width: 0; }
+  #app :where(.card, .panel, .settings-card) { overflow-wrap: anywhere; }
+  #ie-personalise-panel .ie-p-top { padding-inline: 14px; }
+  #ie-personalise-panel .ie-p-actions > * { flex-basis: 100%; }
+}
+@media (hover: hover) and (pointer: fine) {
+  #app :where(button:not(:disabled), .primary, .secondary, .btn):hover {
+    filter: brightness(1.045);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    transition-delay: 0ms !important;
+  }
+  #app :where(button, .primary, .secondary, .btn):active { transform: none; }
+}
