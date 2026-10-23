@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 /* Recovered full base stylesheet. The earlier consolidation dropped the base styles layer; retain it inside the single UI-engine entry point, then apply compatibility feature layers and the current engine overrides. */
 /* Imposed Entertainment portal. One stylesheet, tokens first. Palette comes from the logo: dark water, one pale-yellow flower. */
 :root{
@@ -5766,7 +5767,6 @@ html[data-ie-workspace-theme="forest-room"] { --theme-image: url('/themes/forest
 
 /* Imposed Entertainment — immersive editorial redesign layer.
    Intentionally additive: preserves existing view markup and interaction contracts. */
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 :root{
  --bg:#090a0c;--s1:#111316;--s2:#191c20;--s3:#23272c;--line:#30343a;--line2:#474d55;
  --text:#f8f5ef;--soft:#d8d5ce;--muted:#92959a;--accent:#e6c66f;--accent-hover:#f3d990;--accent-ink:#19160d;--teal:#e6c66f;
