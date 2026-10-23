@@ -339,7 +339,7 @@ test('Prism stays aligned with account appearance events without starting a sync
 });
 
 test('unified stylesheet retains the authentication, customiser, shop and navigation feature layers', async ({ request }) => {
-  const response = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.77');
+  const response = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.78');
   expect(response.ok()).toBeTruthy();
   const css = await response.text();
   for (const selector of ['.auth-shell.auth-layout', '.ie-p-control', '.ie-shop-page', '.mobile-nav', '[data-ie-mode']) {
@@ -442,7 +442,7 @@ test('font loading uses the document preload path without a redundant CSS import
   expect(htmlResponse.ok()).toBeTruthy();
   const html = await htmlResponse.text();
   expect(html).toContain('fonts.googleapis.com/css2?family=DM+Sans');
-  const cssResponse = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.77');
+  const cssResponse = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.78');
   expect(cssResponse.ok()).toBeTruthy();
   const css = await cssResponse.text();
   expect(css).not.toMatch(/^\s*@import\s/m);
@@ -475,7 +475,7 @@ test('reduced-motion preference disables non-essential motion across the interfa
 });
 
 test('high-contrast and forced-colours accessibility styles are present', async ({ request }) => {
-  const response = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.77');
+  const response = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.78');
   expect(response.ok()).toBeTruthy();
   const css = await response.text();
   expect(css).toContain('@media (prefers-contrast: more)');
@@ -486,7 +486,7 @@ test('high-contrast and forced-colours accessibility styles are present', async 
 
 
 test('cross-browser CSS fallbacks cover older engines without color-mix, :has, or backdrop-filter', async ({ request }) => {
-  const response = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.77');
+  const response = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.78');
   expect(response.ok()).toBeTruthy();
   const css = await response.text();
   expect(css).toContain('@supports not (color: color-mix(in srgb, #000 50%, #fff))');
@@ -565,4 +565,23 @@ test('Appearance Studio remains usable without horizontal overflow on compact sc
   expect(dimensions.document).toBeLessThanOrEqual(dimensions.viewport + 2);
   expect(dimensions.panel).toBeLessThanOrEqual(dimensions.viewport);
   expect(dimensions.panelRight).toBeLessThanOrEqual(dimensions.viewport + 1);
+});
+
+
+test('workspace shell uses responsive type and consistent component surfaces', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
+  const response = await page.request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.78');
+  expect(response.ok()).toBeTruthy();
+  const css = await response.text();
+  expect(css).toContain('--ie-shell-max: 1440px');
+  expect(css).toContain('3.3.78 — Workspace shell refresh');
+  expect(css).toContain('@media (max-width: 420px)');
+  const dimensions = await page.evaluate(() => ({
+    viewport: document.documentElement.clientWidth,
+    document: document.documentElement.scrollWidth,
+    bodyFont: getComputedStyle(document.body).fontSize
+  }));
+  expect(dimensions.document).toBeLessThanOrEqual(dimensions.viewport + 2);
+  expect(parseFloat(dimensions.bodyFont)).toBeGreaterThan(0);
 });

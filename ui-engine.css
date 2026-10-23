@@ -6749,3 +6749,104 @@ body.personalise-theme-light #ie-personalise-panel .ie-p-theme-name { color: #ff
     scroll-behavior: auto !important;
   }
 }
+
+
+/* 3.3.78 — Workspace shell refresh: consistent spacing, calm surfaces, and clearer hierarchy. */
+:root {
+  --ie-space-1: 4px;
+  --ie-space-2: 8px;
+  --ie-space-3: 12px;
+  --ie-space-4: 16px;
+  --ie-space-5: 20px;
+  --ie-space-6: 24px;
+  --ie-space-7: 32px;
+  --ie-space-8: 40px;
+  --ie-shell-max: 1440px;
+  --ie-shell-gutter: clamp(16px, 3vw, 36px);
+  --ie-panel-shadow: 0 12px 34px rgba(0,0,0,.12);
+}
+html { scroll-padding-top: 84px; }
+body {
+  font-family: var(--user-font-family, var(--ui, system-ui, sans-serif));
+  font-size: calc(15px * var(--user-font-scale, 1));
+  line-height: var(--user-line-height, 1.5);
+  text-rendering: optimizeLegibility;
+}
+#app { min-width: 0; }
+#app :where(main, section, article, aside, header, footer, nav, form, fieldset) { min-width: 0; }
+#app :where(h1,h2,h3) { text-wrap: balance; }
+#app :where(p, .sub, .muted, .help-text, .field-help) { overflow-wrap: anywhere; }
+#app :where(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]), select, textarea) {
+  min-height: 42px;
+  max-width: 100%;
+  border-radius: 11px;
+}
+#app :where(input[type="checkbox"], input[type="radio"]) { accent-color: var(--user-accent, var(--accent)); }
+#app :where(button, .primary, .new-btn, .secondary, .success, .danger-btn) {
+  -webkit-tap-highlight-color: transparent;
+}
+#app :where(button:not(:disabled), a, input, select, textarea) { touch-action: manipulation; }
+#app :where(button, .primary, .new-btn, .secondary, .success, .danger-btn) {
+  transition: background-color .16s ease, border-color .16s ease, color .16s ease, transform .16s ease, box-shadow .16s ease;
+}
+#app :where(.primary, .new-btn):hover { transform: translateY(-1px); box-shadow: 0 6px 18px color-mix(in srgb, var(--user-accent, var(--accent)) 18%, transparent); }
+#app :where(.secondary, .success, .danger-btn):hover { transform: translateY(-1px); }
+#app :where(.card, .settings-card, .detail-card, .approval-card, .metric, .invite-card, .builder-card, .empty, .roster-list, .insight, .panel, .surface) {
+  border: 1px solid var(--line, #28313b);
+  border-radius: clamp(12px, calc(12px * var(--user-radius-scale, 1)), 18px);
+  box-shadow: var(--user-glass-shadow, var(--ie-panel-shadow));
+}
+#app :where(.card, .settings-card, .detail-card, .approval-card, .invite-card, .builder-card, .panel, .surface) {
+  transition: border-color .16s ease, background-color .16s ease, box-shadow .16s ease;
+}
+#app :where(.card, .settings-card, .detail-card, .approval-card, .invite-card, .builder-card, .panel, .surface):hover {
+  border-color: color-mix(in srgb, var(--line-strong, var(--line)) 72%, var(--user-accent, var(--accent)));
+}
+#app :where(.page-heading, .hero-row) { gap: 18px; }
+#app .page-heading { margin-bottom: clamp(22px, 3vw, 34px); }
+#app .page-heading h1, #app .hero-row h1 { max-width: 22ch; font-size: clamp(1.85rem, 3.2vw, 2.7rem); line-height: 1.08; letter-spacing: -.045em; }
+#app :where(.section-head) { gap: 12px; margin-top: 30px; }
+#app :where(.section-head h2, .section-head h3) { letter-spacing: -.025em; }
+#app :where(.metrics, .stats-grid, .dashboard-grid, .card-grid, .artist-grid, .release-grid, .shop-grid, .profile-grid) { gap: clamp(10px, 1.3vw, 18px); }
+#app .metric { position: relative; padding: clamp(15px, 1.8vw, 22px); background: var(--s1, var(--surface)); }
+#app .metric strong { font-size: clamp(1.7rem, 2.3vw, 2.25rem); letter-spacing: -.045em; font-variant-numeric: tabular-nums; }
+#app :where(.settings-card, .settings-section, .setting-section) { padding: clamp(16px, 2vw, 24px); }
+#app :where(.settings-card, .settings-section, .setting-section) > :where(h2,h3) { margin-bottom: 6px; }
+#app :where(.form-row, .field-row, .settings-row) { gap: 12px; }
+#app :where(label) { min-width: 0; }
+#app :where(.pill, .badge, .status-pill) { max-width: 100%; }
+#app :where(.release-row, .up-card, .roster-row) { min-width: 0; }
+#app :where(.release-info, .roster-info, .artist-info) { min-width: 0; }
+#app :where(.empty, .empty-state) { padding: clamp(24px, 4vw, 42px); }
+#app :where(.modal-backdrop, .dialog-backdrop) { overscroll-behavior: contain; }
+.nav {
+  border-bottom: 1px solid color-mix(in srgb, var(--line, #28313b) 72%, transparent);
+  box-shadow: 0 6px 24px rgba(0,0,0,.08);
+}
+.nav-inner { max-width: var(--ie-shell-max); padding-inline: var(--ie-shell-gutter); }
+.main {
+  max-width: var(--ie-shell-max);
+  padding: clamp(22px, 3vw, 40px) var(--ie-shell-gutter) clamp(64px, 7vw, 96px);
+}
+#app :where(.desktop-nav .nav-link, .nav-link, .icon-btn) { transition: color .15s ease, background-color .15s ease, border-color .15s ease; }
+#app :where(.desktop-nav .nav-link, .nav-link).active { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--user-accent, var(--accent)) 30%, transparent); }
+@media (min-width: 1100px) {
+  #app :where(.page, .workspace, .main-content) { max-width: 100%; }
+}
+@media (max-width: 760px) {
+  #app .page-heading h1, #app .hero-row h1 { font-size: clamp(1.75rem, 7vw, 2.25rem); }
+  #app :where(.hero-row, .section-head) { align-items: flex-start; }
+  #app :where(.metrics, .stats-grid) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  #app :where(.card, .settings-card, .detail-card, .approval-card, .invite-card, .builder-card) { border-radius: 14px; }
+  #app :where(.primary, .new-btn, .secondary, .success, .danger-btn) { min-height: 42px; }
+}
+@media (max-width: 420px) {
+  #app :where(.metrics, .stats-grid) { gap: 9px; }
+  #app .metric { padding: 13px; }
+  #app .metric strong { font-size: 1.55rem; }
+  #app :where(.page-heading, .hero-row) { margin-bottom: 20px; }
+  #app :where(.page-heading h1, .hero-row h1) { overflow-wrap: anywhere; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #app :where(button, a, .card, .settings-card, .detail-card, .approval-card, .panel, .surface) { transition: none !important; }
+}
