@@ -6303,3 +6303,45 @@ button.secondary.small,.secondary.small,.btn-secondary.small{
   padding:7px 10px;
   font-size:.82rem;
 }
+
+
+/* Accessibility guardrails: honour motion preferences and preserve native contrast modes. */
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within { scroll-behavior: auto !important; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media (prefers-contrast: more) {
+  :where(button, input, select, textarea, [role="button"], .card, .panel, .setting-section) {
+    border-color: currentColor;
+  }
+  :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+    outline: 3px solid currentColor;
+    outline-offset: 3px;
+  }
+}
+
+@media (forced-colors: active) {
+  :where(a, button, input, select, textarea, [role="button"], [tabindex]):focus-visible {
+    outline: 2px solid Highlight !important;
+    outline-offset: 3px !important;
+    box-shadow: none !important;
+  }
+  :where(button, input, select, textarea, [role="button"]) {
+    border-color: ButtonText;
+    forced-color-adjust: auto;
+  }
+  :where(a) {
+    color: LinkText;
+    text-decoration: underline;
+  }
+  :where(button:disabled, input:disabled, select:disabled, textarea:disabled) {
+    color: GrayText;
+    border-color: GrayText;
+  }
+}
