@@ -621,3 +621,29 @@ test('Prism normalises and repairs invalid preferences in persistent storage', a
     expect(saved.density).toBe('standard');
   }
 });
+
+
+test('Prism repairs corrupt JSON and falls back to a valid legacy snapshot', async ({ page }) => {
+  await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
+  await page.evaluate(() => {
+    localStorage.setItem('ie-workspace-personalisation-v2', '{"palette":');
+    localStorage.setItem('ie-workspace-personalisation-v1', JSON.stringify({
+      accent: '#123456', palette: 'forest-room', fontScale: 1.1, lineHeight: 1.6,
+      theme: 'light', density: 'comfortable'
+    }));
+  });
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  const result = await page.evaluate(() => ({
+    current: JSON.parse(localStorage.getItem('ie-workspace-personalisation-v2')),
+    legacy: JSON.parse(localStorage.getItem('ie-workspace-personalisation-v1')),
+    state: window.Prism.read()
+  }));
+  for (const saved of [result.current, result.legacy, result.state]) {
+    expect(saved.accent).toBe('#123456');
+    expect(saved.palette).toBe('forest-room');
+    expect(saved.fontScale).toBe(1.1);
+    expect(saved.lineHeight).toBe(1.6);
+    expect(saved.theme).toBe('light');
+    expect(saved.density).toBe('comfortable');
+  }
+});
