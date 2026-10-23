@@ -80,11 +80,11 @@ self.addEventListener('fetch', event => {
       }
       if (isNavigation) {
         const path = url.pathname.replace(/\/+$/, '') || '/';
-        if (path === '/privacy') {
+        if (path === '/privacy' || path === '/privacy.html') {
           const legal = await cache.match('/privacy/index.html');
           if (legal) return legal;
         }
-        if (path === '/terms') {
+        if (path === '/terms' || path === '/terms.html') {
           const legal = await cache.match('/terms/index.html');
           if (legal) return legal;
         }
