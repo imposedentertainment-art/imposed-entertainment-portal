@@ -22,7 +22,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          for file in config.js sw.js js/*.js; do
+          for file in config.js sw.js js/*.js engines/*.js; do
             test -f "$file"
             node --check "$file"
           done
