@@ -6751,7 +6751,7 @@ body.personalise-theme-light #ie-personalise-panel .ie-p-theme-name { color: #ff
 }
 
 
-/* 3.3.78 — Workspace shell refresh: consistent spacing, calm surfaces, and clearer hierarchy. */
+/* 3.3.80 — Workspace shell refresh: consistent spacing, calm surfaces, and clearer hierarchy. */
 :root {
   --ie-space-1: 4px;
   --ie-space-2: 8px;
@@ -6850,3 +6850,10 @@ body {
 @media (prefers-reduced-motion: reduce) {
   #app :where(button, a, .card, .settings-card, .detail-card, .approval-card, .panel, .surface) { transition: none !important; }
 }
+
+
+/* Keep negative-layer wallpaper above the canvas background but below all page content.
+   Without an isolated body stacking context, some engines paint the wallpaper behind the body
+   background; the CSS URL exists but the selected theme appears to be missing. */
+body { isolation: isolate; }
+body::before { z-index: -1; }

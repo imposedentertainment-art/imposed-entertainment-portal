@@ -1,3 +1,10 @@
+## 3.3.80 — Theme rendering and browser reliability
+
+- Fix wallpaper stacking so selected theme artwork remains visible across browser engines instead of being painted behind the page canvas.
+- Stabilise the dashboard theme regression test by waiting for the workspace boot sequence to finish before injecting its fixture.
+- Remove brittle version-specific CSS comment matching from smoke tests so future releases do not fail only because the release number changes.
+- Bump app and service-worker cache versions so the rendering fix is picked up by existing clients.
+
 ## 3.3.79 — Preference recovery and regression fixes
 
 - Fix Prism preference reads so invalid, stale, or out-of-range local settings are normalised and written back to both current and legacy storage keys instead of recurring on every reload.

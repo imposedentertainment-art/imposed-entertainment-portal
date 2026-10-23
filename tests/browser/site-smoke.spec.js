@@ -169,6 +169,7 @@ test('mobile navigation drawer and toggle sit above the backdrop', async ({ page
 test('artist workspace preserves theme artwork, glass panels and saved widget sizing', async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => window.CloudOS && window.CloudOS.status === 'ready' && document.querySelector('#app-loading')?.classList.contains('is-hidden'));
   await page.evaluate(() => {
     document.documentElement.dataset.ieWorkspaceTheme = 'midnight-studio';
     document.documentElement.dataset.ieMode = 'dark';
@@ -575,7 +576,7 @@ test('workspace shell uses responsive type and consistent component surfaces', a
   expect(response.ok()).toBeTruthy();
   const css = await response.text();
   expect(css).toContain('--ie-shell-max: 1440px');
-  expect(css).toContain('3.3.79 — Workspace shell refresh');
+  expect(css).toContain('Workspace shell refresh');
   expect(css).toContain('@media (max-width: 420px)');
   const dimensions = await page.evaluate(() => ({
     viewport: document.documentElement.clientWidth,
