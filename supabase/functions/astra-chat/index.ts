@@ -1,7 +1,7 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const portalOrigin = Deno.env.get("PORTAL_ORIGIN") || "https://imposedentertainment.com";
+const portalOrigin = Deno.env.get("PORTAL_ORIGIN") || "https://imposed-entertainment-portal.pages.dev";
 const cors = {
   "Access-Control-Allow-Origin": portalOrigin,
   "Access-Control-Allow-Headers": "authorization, apikey, content-type, x-client-info",
