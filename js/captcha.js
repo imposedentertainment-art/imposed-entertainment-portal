@@ -30,8 +30,28 @@ function loadTurnstile() {
     s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
     s.async = true;
     s.defer = true;
-    s.onload = () => window.turnstile ? resolve() : reject(new Error('Cloudflare loaded without its verification API.'));
-    s.onerror = () => { tsLoading = null; reject(new Error('Cloudflare could not load. Check content blockers, network access and the site domain.')); };
+    let settled = false;
+    const timeout = setTimeout(() => {
+      if (settled) return;
+      settled = true;
+      tsLoading = null;
+      s.remove();
+      reject(new Error('Cloudflare verification took too long to load. Check your connection or content blocker, then retry.'));
+    }, 5000);
+    s.onload = () => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timeout);
+      if (window.turnstile) resolve();
+      else { tsLoading = null; reject(new Error('Cloudflare loaded without its verification API. Please retry.')); }
+    };
+    s.onerror = () => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timeout);
+      tsLoading = null;
+      reject(new Error('Cloudflare could not load. Check content blockers, network access and the site domain, then retry.'));
+    };
     document.head.appendChild(s);
   });
   return tsLoading;
