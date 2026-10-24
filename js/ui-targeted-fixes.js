@@ -32,22 +32,22 @@
   var url;
   try{url=new URL(link.href,location.href)}catch(_){return}
   if(url.origin!==location.origin)return;
-  var path=url.pathname.replace(/\\/+$/,'')||'/';
+  var path=url.pathname.replace(/\/+$/,'')||'/';
   if(path!=='/signin'&&path!=='/listen')return;
   event.preventDefault();
   if(path==='/signin'){
-   if((location.pathname.replace(/\\/+$/,'')||'/')!=='/signin')history.pushState({iePortalRoute:true},'',url.pathname+url.search+url.hash);
+   if((location.pathname.replace(/\/+$/,'')||'/')!=='/signin')history.pushState({iePortalRoute:true},'',url.pathname+url.search+url.hash);
    if(typeof window.renderAuth==='function')window.renderAuth();
    else if(typeof window.boot==='function')window.boot();
    setTimeout(focusAuth,0);
    return;
   }
-  if((location.pathname.replace(/\\/+$/,'')||'/')!=='/listen')history.pushState({iePortalRoute:true},'',url.pathname+url.search+url.hash);
+  if((location.pathname.replace(/\/+$/,'')||'/')!=='/listen')history.pushState({iePortalRoute:true},'',url.pathname+url.search+url.hash);
   if(typeof window.renderListenerRoute==='function')window.renderListenerRoute();
   else if(typeof window.boot==='function')window.boot();
  },true);
  window.addEventListener('popstate',function(){
-  var path=location.pathname.replace(/\\/+$/,'')||'/';
+  var path=location.pathname.replace(/\/+$/,'')||'/';
   if(path==='/listen'&&typeof window.renderListenerRoute==='function')window.renderListenerRoute();
   else if(path==='/signin'&&typeof window.renderAuth==='function')window.renderAuth();
  });
