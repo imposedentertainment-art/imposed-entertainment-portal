@@ -11,21 +11,14 @@ body { min-height: 100dvh; overflow-x: clip; }
 button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
 button, [role="button"], a { touch-action: manipulation; }
 img, video, canvas, svg { max-width: 100%; }
-:where(.modal,.dialog,.popover,.dropdown,.menu-popover,.context-menu,[role="dialog"],[data-overlay],.ie-p-modal,.ie-p-popover) {
-  isolation: isolate;
-}
-:where(.modal,.dialog,[role="dialog"],.ie-p-modal,[data-overlay]) {
-  z-index: var(--ie-overlay-z);
-}
+:where(.modal,.dialog,.popover,.dropdown,.menu-popover,.context-menu,[role="dialog"],[data-overlay],.ie-p-modal,.ie-p-popover) { isolation: isolate; }
+:where(.modal,.dialog,[role="dialog"],.ie-p-modal,[data-overlay]) { z-index: var(--ie-overlay-z); }
 :where(.modal-backdrop,.dialog-backdrop,[data-overlay-backdrop]) { z-index: calc(var(--ie-overlay-z) - 1); }
 :where(.nav,.nav-inner,.desktop-nav) { min-width: 0; }
 :where(.nav) { z-index: 200; }
 :where(.nav-link,.icon-btn,button) { min-height: 36px; }
 :where(input,select,textarea) { min-width: 0; max-width: 100%; }
-:where(.card,.panel,.surface,.stat-card,.settings-card,.ie-p-card) {
-  min-width: 0;
-  overflow-wrap: anywhere;
-}
+:where(.card,.panel,.surface,.stat-card,.settings-card,.ie-p-card) { min-width: 0; overflow-wrap: anywhere; }
 :where(.personalise-surface-glass) :where(.card,.panel,.surface,.stat-card,.settings-card,.ie-p-card,.nav) {
   background-color: var(--ie-glass-bg);
   border-color: var(--ie-glass-border);
@@ -40,23 +33,24 @@ img, video, canvas, svg { max-width: 100%; }
 :where(.personalise-high-contrast) :where(.card,.panel,.surface,.stat-card,.settings-card,.ie-p-card) {
   border-color: color-mix(in srgb, var(--text, #f6f3eb) 35%, transparent);
 }
-:where(.personalise-motion-reduced,.personalise-motion-none) *,
-@media (prefers-reduced-motion: reduce) {
+.personalise-motion-reduced *, .personalise-motion-none * {
   animation-duration: .01ms !important;
   animation-iteration-count: 1 !important;
   scroll-behavior: auto !important;
   transition-duration: .01ms !important;
 }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+  }
+}
 @media (max-width: 760px) {
   h1 { font-size: clamp(1.8rem, 7vw, 2.5rem); }
   .nav-inner { padding-inline: max(12px, env(safe-area-inset-left)); }
   :where(.page,.page-content,.content,.main-content) { padding-inline: 14px; }
-  :where(.grid,.dashboard-grid,.stats-grid) { grid-template-columns: minmax(0, 1fr); }
   :where(.table-wrap,.table-responsive) { max-width: 100%; overflow-x: auto; overscroll-behavior-x: contain; }
 }
-@media (min-width: 761px) {
-  :where(.mobile-nav,.mobile-menu-toggle,.mobile-nav-toggle) { display: none; }
-}
-@supports not (overflow: clip) {
-  body { overflow-x: hidden; }
-}
+@supports not (overflow: clip) { body { overflow-x: hidden; } }
