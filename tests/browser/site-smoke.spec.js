@@ -740,3 +740,20 @@ test('theme preference changes apply semantic theme classes and preserve mobile 
   expect(state.repairLoaded).toBeTruthy();
   expect(state.scrollWidth).toBeLessThanOrEqual(state.width + 1);
 });
+
+
+test('versioned rendering repair adds keyboard focus, reduced motion and responsive design tokens', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
+  const result = await page.evaluate(() => ({
+    repairStylesheet: [...document.styleSheets].some(sheet => (sheet.href || '').includes('/ui-rendering-repair.css?v=3.3.102')),
+    reducedMotion: matchMedia('(prefers-reduced-motion: reduce)').matches,
+    version: document.querySelector('meta[name="portal-build"]')?.content,
+    focusToken: getComputedStyle(document.documentElement).getPropertyValue('--ie-focus-ring').trim()
+  }));
+  expect(result.repairStylesheet).toBeTruthy();
+  expect(result.reducedMotion).toBeTruthy();
+  expect(result.version).toBe('3.3.102');
+  expect(result.focusToken).not.toBe('');
+});
