@@ -4953,7 +4953,7 @@ body.personalise-theme-light .shell .metric strong{color:#171a20!important}
   --ui-muted:#aab4c1;--ui-input:#0d1117;--ui-shadow:0 12px 34px #0003;
 }
 body{background:var(--ui-page)!important;color:var(--ui-text);color-scheme:dark}
-body :is(.auth-shell,.auth-panel,.auth-card,.guest-shell,.guest-welcome,.guest-directory,.listener-account-shell,.shell,.main,#main-content){
+body :is(.auth-shell,.auth-panel,.auth-card,.guest-shell,.guest-welcome,.guest-directory,.listener-account-shell,.shell,.main){
   color:var(--ui-text);
 }
 body :is(.auth-shell,.guest-shell,.guest-welcome,.guest-directory,.listener-account-shell){
@@ -5012,7 +5012,7 @@ body.personalise-theme-light{
   --text:#202630;--soft:#384252;--muted:#596575;--user-bg:#eef0f4;
   background:#eef0f4!important;color:#202630!important;
 }
-body.personalise-theme-light :is(.shell,.main,.workspace,.page,.auth-shell,.auth-panel,.auth-card,.guest-shell,.guest-welcome,.guest-directory,.listener-account-shell,#main-content){
+body.personalise-theme-light :is(.shell,.main,.workspace,.page,.auth-shell,.auth-panel,.auth-card,.guest-shell,.guest-welcome,.guest-directory,.listener-account-shell){
   background-color:var(--ui-page)!important;color:var(--ui-text)!important;
 }
 body.personalise-theme-light :is(.nav,.workspace-topbar,.topbar,.sidebar,.mobile-nav,.settings-quicknav,.dropdown-menu,.context-menu,.notification-panel,.search-panel){
@@ -5044,11 +5044,11 @@ body.personalise-theme-light :is(.primary,.btn-primary,.button-primary,.new-btn,
     --bg:#080a0e;--s1:#11151c;--s2:#171d26;--s3:#1d2530;--line:#2b3542;--line2:#3a4655;--text:#f3f5f8;--soft:#d9e0e8;--muted:#aab4c1;
     background:#080a0e!important;color:#f3f5f8!important;
   }
-  body.personalise-theme-system :is(.shell,.main,.workspace,.page,.auth-shell,.auth-panel,.auth-card,.guest-shell,.guest-welcome,.guest-directory,.listener-account-shell,#main-content){background-color:var(--ui-page)!important;color:var(--ui-text)!important}
+  body.personalise-theme-system :is(.shell,.main,.workspace,.page,.auth-shell,.auth-panel,.auth-card,.guest-shell,.guest-welcome,.guest-directory,.listener-account-shell){background-color:var(--ui-page)!important;color:var(--ui-text)!important}
   body.personalise-theme-system :is(.auth-card,.auth-panel,.guest-card,.guest-account-card,.guest-artist-card,.guest-release-card,.guest-feature-card,.profile-card,.release-card,.auth-form-card,.form-card,.settings-card,.appearance-card,.appearance-section,.card,.panel,.modal-card,.detail-card,.builder-card,.approval-card,.metric,.up-card,.popover,.dropdown-menu,.context-menu,.notification-panel,.search-panel,.search-results,.empty-state,.table-wrap,.data-table-wrap){background-color:var(--ui-surface)!important;color:var(--ui-text)!important;border-color:var(--ui-border)!important}
 }
 body.personalise-theme-amoled{--ui-page:#000;--ui-surface:#050505;--ui-surface-raised:#0b0b0b;--ui-surface-soft:#121212;--ui-border:#282828;--ui-text:#f5f5f5;--ui-muted:#b4b4b4;--ui-input:#050505}
-body.personalise-theme-amoled :is(.shell,.main,.workspace,.page,.auth-shell,.auth-panel,.auth-card,.guest-shell,.guest-welcome,.guest-directory,.listener-account-shell,#main-content){background-color:#000!important;color:#f5f5f5!important}
+body.personalise-theme-amoled :is(.shell,.main,.workspace,.page,.auth-shell,.auth-panel,.auth-card,.guest-shell,.guest-welcome,.guest-directory,.listener-account-shell){background-color:#000!important;color:#f5f5f5!important}
 body.personalise-theme-amoled :is(.auth-card,.auth-panel,.guest-card,.guest-account-card,.guest-artist-card,.guest-release-card,.guest-feature-card,.profile-card,.release-card,.auth-form-card,.form-card,.settings-card,.appearance-card,.appearance-section,.card,.panel,.modal-card,.detail-card,.builder-card,.approval-card,.metric,.up-card,.popover,.dropdown-menu,.context-menu,.notification-panel,.search-panel,.search-results,.empty-state,.table-wrap,.data-table-wrap){background-color:#050505!important;color:#f5f5f5!important;border-color:#282828!important}
 @media(max-width:760px){
   body :is(.auth-shell,.guest-shell,.guest-welcome,.guest-directory,.listener-account-shell){min-height:100dvh}
@@ -5062,7 +5062,7 @@ body.personalise-theme-amoled :is(.auth-card,.auth-panel,.guest-card,.guest-acco
     --bg:#eef0f4;--s1:#f7f8fa;--s2:#e9edf2;--s3:#e1e6ed;--line:#d0d6df;--line2:#b8c1cd;--text:#202630;--soft:#384252;--muted:#596575;
     background:#eef0f4!important;color:#202630!important;
   }
-  body.personalise-theme-system :is(.shell,.main,.workspace,.page,.auth-shell,.auth-panel,.auth-card,.guest-shell,.guest-welcome,.guest-directory,.listener-account-shell,#main-content){background-color:var(--ui-page)!important;color:var(--ui-text)!important}
+  body.personalise-theme-system :is(.shell,.main,.workspace,.page,.auth-shell,.auth-panel,.auth-card,.guest-shell,.guest-welcome,.guest-directory,.listener-account-shell){background-color:var(--ui-page)!important;color:var(--ui-text)!important}
   body.personalise-theme-system :is(.nav,.workspace-topbar,.topbar,.sidebar,.mobile-nav,.settings-quicknav,.dropdown-menu,.context-menu,.notification-panel,.search-panel,.auth-card,.auth-panel,.guest-card,.guest-account-card,.guest-artist-card,.guest-release-card,.guest-feature-card,.profile-card,.release-card,.auth-form-card,.form-card,.settings-card,.appearance-card,.appearance-section,.card,.panel,.modal-card,.detail-card,.builder-card,.approval-card,.metric,.up-card,.popover,.search-results,.empty-state,.table-wrap,.data-table-wrap){
     background-color:var(--ui-surface)!important;color:var(--ui-text)!important;border-color:var(--ui-border)!important;box-shadow:var(--ui-shadow);
   }
