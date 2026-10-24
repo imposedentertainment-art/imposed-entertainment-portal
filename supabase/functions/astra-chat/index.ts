@@ -1,11 +1,13 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
+const portalOrigin = Deno.env.get("PORTAL_ORIGIN") || "https://imposedentertainment.com";
 const cors = {
-  "Access-Control-Allow-Origin": Deno.env.get("PORTAL_ORIGIN") || "https://imposedentertainment.com",
+  "Access-Control-Allow-Origin": portalOrigin,
   "Access-Control-Allow-Headers": "authorization, apikey, content-type, x-client-info",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
   "Content-Type": "application/json; charset=utf-8",
+  "Cache-Control": "no-store",
   "Vary": "Origin",
 };
 const json = (status: number, body: Record<string, unknown>) =>
@@ -14,13 +16,16 @@ const json = (status: number, body: Record<string, unknown>) =>
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: cors });
   if (req.method !== "POST") return json(405, { error: "Method not allowed" });
+  const origin = req.headers.get("Origin");
+  if (origin && origin !== portalOrigin) return json(403, { error: "Origin not allowed" });
+
   const url = Deno.env.get("SUPABASE_URL");
   const anon = Deno.env.get("SUPABASE_ANON_KEY");
-  const apiKey = Deno.env.get("ASTRA_AI_API_KEY");
-  if (!url || !anon || !apiKey) return json(503, { error: "Astra AI is not configured" });
+  const workerUrl = Deno.env.get("ASTRA_WEB_WORKER_URL");
+  if (!url || !anon || !workerUrl) return json(503, { error: "Astra AI is not configured" });
 
   const auth = req.headers.get("Authorization") || "";
-  if (!auth.startsWith("Bearer ")) return json(401, { error: "Sign-in required" });
+  if (!auth.startsWith("Bearer ") || auth.length > 12000) return json(401, { error: "Sign-in required" });
   const userClient = createClient(url, anon, {
     global: { headers: { Authorization: auth } },
     auth: { persistSession: false, autoRefreshToken: false },
@@ -44,25 +49,29 @@ Deno.serve(async (req: Request) => {
   if (messages.some((m) => !m) || messages[messages.length - 1]?.role !== "user") {
     return json(400, { error: "Invalid message history" });
   }
-  const response = await fetch("https://api.openai.com/v1/chat/completions", {
-    method: "POST",
-    headers: { "Authorization": `Bearer ${apiKey}`, "Content-Type": "application/json" },
-    body: JSON.stringify({
-      model: Deno.env.get("ASTRA_AI_MODEL") || "gpt-4o-mini",
-      messages: [
-        { role: "system", content: "You are Astra AI, the helpful assistant inside Imposed Entertainment's artist and label portal. Help with portal navigation, music release planning, metadata preparation, artist development and label operations. Do not claim to have accessed account records or changed data unless a verified tool did so. Never request passwords, one-time codes, or payment credentials. Be clear that release submissions must be entered and reviewed by the label; do not claim a distributor integration exists." },
-        ...messages,
-      ],
-      max_tokens: 700,
-      temperature: 0.5,
-    }),
-  });
-  if (!response.ok) {
-    console.error("Astra provider returned status", response.status);
-    return json(502, { error: "AI service temporarily unavailable" });
+
+  try {
+    // The Cloudflare Worker verifies this same Supabase session and requires
+    // a linked Discord identity before accessing the shared Astra brain.
+    const upstream = await fetch(workerUrl, {
+      method: "POST",
+      headers: {
+        "Authorization": auth,
+        "Content-Type": "application/json",
+        "Origin": portalOrigin,
+      },
+      body: JSON.stringify({ messages }),
+      signal: AbortSignal.timeout(25000),
+    });
+    const result = await upstream.json().catch(() => ({}));
+    if (!upstream.ok) {
+      const status = [400, 401, 403, 429].includes(upstream.status) ? upstream.status : 503;
+      return json(status, { error: typeof result?.error === "string" ? result.error : "Astra is temporarily unavailable" });
+    }
+    if (typeof result?.reply !== "string" || !result.reply.trim()) return json(502, { error: "Astra returned no reply" });
+    return json(200, { reply: result.reply.slice(0, 8000) });
+  } catch (error) {
+    console.error("Astra Worker request failed:", String(error?.message || error));
+    return json(503, { error: "Astra is temporarily unavailable. Please try again shortly." });
   }
-  const result = await response.json();
-  const reply = result?.choices?.[0]?.message?.content;
-  if (typeof reply !== "string" || !reply.trim()) return json(502, { error: "AI service returned no reply" });
-  return json(200, { reply: reply.trim().slice(0, 8000) });
 });
