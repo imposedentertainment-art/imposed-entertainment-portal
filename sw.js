@@ -1,5 +1,5 @@
-/* Imposed Entertainment v3.3.103: versioned static assets; never cache query-bearing navigations/auth callbacks. */
-const CACHE_NAME = 'imposed-jitter-v3.3.103';
+/* Imposed Entertainment v3.3.104: versioned static assets; never cache query-bearing navigations/auth callbacks. */
+const CACHE_NAME = 'imposed-jitter-v3.3.104';
 const STATIC_ASSETS = [
   '/engines/cloud-os.js',
   '/engines/null-core.js',
@@ -57,7 +57,8 @@ self.addEventListener('fetch', event => {
   if (url.origin !== self.location.origin) return;
   if (url.pathname === '/config.js' || url.pathname === '/sw.js') return;
 
-  const isNavigation = request.mode === 'navigate';
+  // Streaming media and API responses are deliberately not allow-listed; audio and user-specific
+  // Supabase responses always use the network and never consume Cache Storage quota.\n  const isNavigation = request.mode === 'navigate';
   const isStaticAsset = STATIC_PATHS.has(url.pathname);
   // Only accept the known release query on allow-listed public assets. All other query-bearing
   // requests (auth codes, invites, search state, user-specific data) bypass Cache Storage.
