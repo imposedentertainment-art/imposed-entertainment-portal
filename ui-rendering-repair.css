@@ -1,0 +1,109 @@
+/* v3.3.100 — authenticated workspace rendering repair.
+   Keep this layer small and explicit: it corrects the proven specificity and flow bugs,
+   rather than adding another broad theme system. */
+:root {
+  --ie-workspace-nav-width: 248px;
+  --ie-glass-surface: color-mix(in srgb, var(--ui-surface, #171d25) 62%, transparent);
+  --ie-glass-border: color-mix(in srgb, var(--ui-text, #f6f3eb) 16%, transparent);
+}
+
+/* Wallpaper lives behind the app. Theme shell wrappers must not paint over it.
+   These selectors intentionally avoid :is(..., #main-content), whose ID specificity
+   was unintentionally making every selector in the list win the cascade. */
+@media (min-width: 761px) {
+  body.personalise-theme-light #app > .shell,
+  body.personalise-theme-light #app .shell .main,
+  body.personalise-theme-light #app .shell .page,
+  body.personalise-theme-system #app > .shell,
+  body.personalise-theme-system #app .shell .main,
+  body.personalise-theme-system #app .shell .page,
+  body.personalise-theme-amoled #app > .shell,
+  body.personalise-theme-amoled #app .shell .main,
+  body.personalise-theme-amoled #app .shell .page {
+    background-color: transparent !important;
+  }
+
+  /* The nav and content were styled as if the nav were fixed while the last
+     matching rule left it sticky in normal flow, pushing the dashboard below it. */
+  #app > .shell {
+    display: grid !important;
+    grid-template-columns: var(--ie-workspace-nav-width) minmax(0, 1fr) !important;
+    align-items: start;
+    min-height: 100dvh;
+    width: 100%;
+  }
+  #app > .shell > .nav,
+  #app > .shell .nav {
+    position: sticky !important;
+    top: 0 !important;
+    height: 100dvh !important;
+    max-height: 100dvh;
+    min-height: 0;
+    margin: 0 !important;
+    align-self: start;
+    overflow-y: auto;
+  }
+  #app > .shell > .main,
+  #app > .shell .main {
+    min-width: 0;
+    width: auto !important;
+    max-width: 100%;
+    margin: 0 !important;
+    grid-column: 2;
+    grid-row: 1;
+  }
+}
+@media (max-width: 760px) {
+  #app > .shell { min-width: 0; }
+  #app > .shell .main { min-width: 0; max-width: 100%; }
+}
+
+/* Keep the default surface treatment visibly glassy while preserving explicit flat mode.
+   Solid reading/content surfaces can opt out with .ie-solid-surface. */
+body:not(.personalise-surface-flat) #app .nav,
+body:not(.personalise-surface-flat) #app .workspace-topbar,
+body:not(.personalise-surface-flat) #app .topbar,
+body:not(.personalise-surface-flat) #app .card:not(.ie-solid-surface),
+body:not(.personalise-surface-flat) #app .panel:not(.ie-solid-surface),
+body:not(.personalise-surface-flat) #app .settings-card:not(.ie-solid-surface),
+body:not(.personalise-surface-flat) #app .dashboard-panel:not(.ie-solid-surface),
+body:not(.personalise-surface-flat) #app .metric:not(.ie-solid-surface),
+body:not(.personalise-surface-flat) #app .up-card:not(.ie-solid-surface) {
+  background-color: var(--ie-glass-surface);
+  border-color: var(--ie-glass-border);
+  -webkit-backdrop-filter: saturate(165%) blur(var(--user-glass-blur, 22px));
+  backdrop-filter: saturate(165%) blur(var(--user-glass-blur, 22px));
+  background-clip: padding-box;
+}
+body.personalise-theme-light {
+  --ie-glass-surface: color-mix(in srgb, #fff 66%, transparent);
+  --ie-glass-border: rgba(31, 51, 73, .17);
+}
+@media (prefers-reduced-transparency: reduce) {
+  body:not(.personalise-surface-flat) #app .nav,
+  body:not(.personalise-surface-flat) #app .workspace-topbar,
+  body:not(.personalise-surface-flat) #app .topbar,
+  body:not(.personalise-surface-flat) #app .card:not(.ie-solid-surface),
+  body:not(.personalise-surface-flat) #app .panel:not(.ie-solid-surface),
+  body:not(.personalise-surface-flat) #app .settings-card:not(.ie-solid-surface),
+  body:not(.personalise-surface-flat) #app .dashboard-panel:not(.ie-solid-surface),
+  body:not(.personalise-surface-flat) #app .metric:not(.ie-solid-surface),
+  body:not(.personalise-surface-flat) #app .up-card:not(.ie-solid-surface) {
+    background-color: var(--ui-surface, #171d25);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+@media (max-width: 760px) {
+  body.personalise-theme-light #app .shell,
+  body.personalise-theme-system #app .shell,
+  body.personalise-theme-amoled #app .shell,
+  body.personalise-theme-light #app .shell .main,
+  body.personalise-theme-system #app .shell .main,
+  body.personalise-theme-amoled #app .shell .main,
+  body.personalise-theme-light #app .shell .page,
+  body.personalise-theme-system #app .shell .page,
+  body.personalise-theme-amoled #app .shell .page {
+    background-color: transparent !important;
+  }
+}
