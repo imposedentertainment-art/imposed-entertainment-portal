@@ -346,7 +346,7 @@ test('Prism stays aligned with account appearance events without starting a sync
 });
 
 test('unified stylesheet retains the authentication, customiser, shop and navigation feature layers', async ({ request }) => {
-  const response = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.83');
+  const response = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.105');
   expect(response.ok()).toBeTruthy();
   const css = await response.text();
   for (const selector of ['.auth-shell.auth-layout', '.ie-p-control', '.ie-shop-page', '.mobile-nav', '[data-ie-mode']) {
@@ -451,7 +451,7 @@ test('font loading uses the document preload path without a redundant CSS import
   expect(htmlResponse.ok()).toBeTruthy();
   const html = await htmlResponse.text();
   expect(html).toContain('fonts.googleapis.com/css2?family=DM+Sans');
-  const cssResponse = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.83');
+  const cssResponse = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.105');
   expect(cssResponse.ok()).toBeTruthy();
   const css = await cssResponse.text();
   expect(css).not.toMatch(/^\s*@import\s/m);
@@ -484,7 +484,7 @@ test('reduced-motion preference disables non-essential motion across the interfa
 });
 
 test('high-contrast and forced-colours accessibility styles are present', async ({ request }) => {
-  const response = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.83');
+  const response = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.105');
   expect(response.ok()).toBeTruthy();
   const css = await response.text();
   expect(css).toContain('@media (prefers-contrast: more)');
@@ -495,7 +495,7 @@ test('high-contrast and forced-colours accessibility styles are present', async 
 
 
 test('cross-browser CSS fallbacks cover older engines without color-mix, :has, or backdrop-filter', async ({ request }) => {
-  const response = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.83');
+  const response = await request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.105');
   expect(response.ok()).toBeTruthy();
   const css = await response.text();
   expect(css).toContain('@supports not (color: color-mix(in srgb, #000 50%, #fff))');
@@ -580,7 +580,7 @@ test('Appearance Studio remains usable without horizontal overflow on compact sc
 test('workspace shell uses responsive type and consistent component surfaces', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
-  const response = await page.request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.83');
+  const response = await page.request.get('http://127.0.0.1:4173/ui-engine.css?v=3.3.105');
   expect(response.ok()).toBeTruthy();
   const css = await response.text();
   expect(css).toContain('--ie-shell-max: 1440px');
@@ -666,8 +666,8 @@ test('Prism recovers from corrupt JSON and falls back to valid legacy preference
 
 
 test('quick customiser account sync has one retryable owner', async ({ request }) => {
-  const coreResponse = await request.get('http://127.0.0.1:4173/js/core.js?v=3.3.83');
-  const eventsResponse = await request.get('http://127.0.0.1:4173/js/events.js?v=3.3.83');
+  const coreResponse = await request.get('http://127.0.0.1:4173/js/core.js?v=3.3.105');
+  const eventsResponse = await request.get('http://127.0.0.1:4173/js/events.js?v=3.3.105');
   expect(coreResponse.ok()).toBeTruthy();
   expect(eventsResponse.ok()).toBeTruthy();
   const core = await coreResponse.text();
@@ -678,8 +678,8 @@ test('quick customiser account sync has one retryable owner', async ({ request }
 
 
 test('account preference writes verify that a profile row was updated', async ({ request }) => {
-  const coreResponse = await request.get('http://127.0.0.1:4173/js/core.js?v=3.3.83');
-  const eventsResponse = await request.get('http://127.0.0.1:4173/js/events.js?v=3.3.83');
+  const coreResponse = await request.get('http://127.0.0.1:4173/js/core.js?v=3.3.105');
+  const eventsResponse = await request.get('http://127.0.0.1:4173/js/events.js?v=3.3.105');
   expect(coreResponse.ok()).toBeTruthy();
   expect(eventsResponse.ok()).toBeTruthy();
   const core = await coreResponse.text();
@@ -747,14 +747,14 @@ test('versioned rendering repair adds keyboard focus, reduced motion and respons
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
   const result = await page.evaluate(() => ({
-    repairStylesheet: [...document.styleSheets].some(sheet => (sheet.href || '').includes('/ui-rendering-repair.css?v=3.3.104')),
+    repairStylesheet: [...document.styleSheets].some(sheet => (sheet.href || '').includes('/ui-rendering-repair.css?v=3.3.105')),
     reducedMotion: matchMedia('(prefers-reduced-motion: reduce)').matches,
     version: document.querySelector('meta[name="portal-build"]')?.content,
     focusToken: getComputedStyle(document.documentElement).getPropertyValue('--ie-focus-ring').trim()
   }));
   expect(result.repairStylesheet).toBeTruthy();
   expect(result.reducedMotion).toBeTruthy();
-  expect(result.version).toBe('3.3.104');
+  expect(result.version).toBe('3.3.105');
   expect(result.focusToken).not.toBe('');
 });
 
@@ -766,9 +766,13 @@ test('saved theme is applied before app boot and captcha loading has a timeout f
   const theme = await page.evaluate(() => ({
     light: document.body.classList.contains('personalise-theme-light'),
     palette: document.body.classList.contains('personalise-palette-light-skies'),
+    modeAttribute: document.documentElement.dataset.ieMode,
+    workspaceThemeAttribute: document.documentElement.dataset.ieWorkspaceTheme,
     build: document.body.dataset.portalBuild
   }));
   expect(theme.light).toBeTruthy();
   expect(theme.palette).toBeTruthy();
-  expect(theme.build).toBe('3.3.104');
+  expect(theme.modeAttribute).toBe('light');
+  expect(theme.workspaceThemeAttribute).toBe('light-skies');
+  expect(theme.build).toBe('3.3.105');
 });
