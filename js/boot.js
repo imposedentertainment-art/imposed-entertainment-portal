@@ -304,4 +304,4 @@
     if(view==='podcasts')await loadPodcastSubmissions();
     if(view==='statements')await loadStatementData();
     if(window.__draftRestored&&(['','/','/index.html','/dashboard'].includes(location.pathname.replace(/\/+$/,''))))view='builder';
-    if(!session || session.user.id!==expectedUserId) return; render(); } catch(e){ if(session && session.user.id===expectedUserId){console.error('Workspace load failed for active session',e);toast('You are signed in, but your workspace could not finish loading. Retry below.','error');if(!profile)renderSignedInWorkspaceRecovery(expectedUserId);else render();} } finally { if(!session || session.user.id===expectedUserId) hidePortalLoading(); } }
+    if(!session || session.user.id!==expectedUserId) return; render(); } catch(e){ if(session && session.user.id===expectedUserId){console.error('Workspace load failed for active session',e);toast('You are signed in, but your workspace could not finish loading. Retry below.','error');renderSignedInWorkspaceRecovery(expectedUserId);} } finally { if(!session || session.user.id===expectedUserId) hidePortalLoading(); } }
