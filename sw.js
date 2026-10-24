@@ -58,7 +58,8 @@ self.addEventListener('fetch', event => {
   if (url.pathname === '/config.js' || url.pathname === '/sw.js') return;
 
   // Streaming media and API responses are deliberately not allow-listed; audio and user-specific
-  // Supabase responses always use the network and never consume Cache Storage quota.\n  const isNavigation = request.mode === 'navigate';
+  // Supabase responses always use the network and never consume Cache Storage quota.
+  const isNavigation = request.mode === 'navigate';
   const isStaticAsset = STATIC_PATHS.has(url.pathname);
   // Only accept the known release query on allow-listed public assets. All other query-bearing
   // requests (auth codes, invites, search state, user-specific data) bypass Cache Storage.
