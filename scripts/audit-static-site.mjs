@@ -16,7 +16,9 @@ if (!html.includes(`content="${version}"`) || !html.includes(`data-portal-build=
 if (!worker.includes(`const CACHE_NAME = 'imposed-jitter-v${version}'`)) fail('Service-worker cache name does not match VERSION.');
 if (!html.includes(`/${cssPath}?v=${version}`)) fail('App shell must load the single versioned Jitter UI engine stylesheet.');
 const cssLinks = [...html.matchAll(/<link\b(?=[^>]*\brel=["']stylesheet["'])[^>]*\bhref=["']([^"']+)["'][^>]*>/gi)].map(m => m[1]).filter(href => href.startsWith('/'));
-if (cssLinks.length !== 1 || !cssLinks[0].startsWith('/ui-engine.css?')) fail(`Expected one local UI stylesheet (ui-engine.css), found ${cssLinks.join(', ') || 'none'}.`);
+const expectedStylesheets = ['/ui-engine.css?v='+version, '/ui-stability.css?v='+version, '/ui-rendering-repair.css?v='+version];
+if (cssLinks.length !== expectedStylesheets.length || expectedStylesheets.some(href => !cssLinks.includes(href))) fail(`Expected the versioned UI engine, stability and rendering-repair stylesheets, found ${cssLinks.join(', ') || 'none'}.`);
+if (cssLinks[0] !== expectedStylesheets[0]) fail('The UI engine stylesheet must load before stability and repair layers.');
 let depth = 0;
 for (const char of css) { if (char === '{') depth++; else if (char === '}') depth--; if (depth < 0) { fail('UI engine CSS has an unmatched closing brace.'); break; } }
 if (depth !== 0) fail(`UI engine CSS has unbalanced braces (final depth ${depth}).`);
@@ -36,7 +38,7 @@ const staticBlock = worker.match(/const STATIC_ASSETS\s*=\s*\[([\s\S]*?)\];/);
 if (!staticBlock) fail('Service-worker STATIC_ASSETS list is missing.');
 else {
  const allow = new Set([...staticBlock[1].matchAll(/['"]([^'"]+)['"]/g)].map(m => m[1]));
- if (!allow.has('/ui-engine.css')) fail('Service worker must allow-list ui-engine.css.');
+ for (const path of ['/ui-engine.css','/ui-stability.css','/ui-rendering-repair.css']) if (!allow.has(path)) fail(`Service worker must allow-list ${path}.`);
  for (const match of html.matchAll(/\b(?:src|href)=["']([^"']+)["']/gi)) {
   const path = localRef(match[1]);
   if (path && /\.(?:js|css)$/i.test(path) && path !== 'config.js' && !allow.has('/'+path)) fail(`App shell asset missing from service-worker allow-list: ${match[1]}`);
@@ -59,4 +61,4 @@ if (existsSync(migrationsDir)) {
  for (const [key,count] of versions) if(count>1) fail(`Duplicate Supabase migration prefix ${key} (${count} files).`);
 }
 if (errors.length) { console.error('Static-site audit failed:'); for (const error of errors) console.error(' - '+error); process.exitCode=1; }
-else console.log(`Static-site audit passed for build ${version}: one Jitter UI stylesheet, valid CSS structure, versioned assets and deployment guards.`);
+else console.log(`Static-site audit passed for build ${version}: layered UI stylesheets, valid CSS structure, versioned assets and deployment guards.`);
