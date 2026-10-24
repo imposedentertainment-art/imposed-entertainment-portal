@@ -747,13 +747,28 @@ test('versioned rendering repair adds keyboard focus, reduced motion and respons
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
   const result = await page.evaluate(() => ({
-    repairStylesheet: [...document.styleSheets].some(sheet => (sheet.href || '').includes('/ui-rendering-repair.css?v=3.3.103')),
+    repairStylesheet: [...document.styleSheets].some(sheet => (sheet.href || '').includes('/ui-rendering-repair.css?v=3.3.104')),
     reducedMotion: matchMedia('(prefers-reduced-motion: reduce)').matches,
     version: document.querySelector('meta[name="portal-build"]')?.content,
     focusToken: getComputedStyle(document.documentElement).getPropertyValue('--ie-focus-ring').trim()
   }));
   expect(result.repairStylesheet).toBeTruthy();
   expect(result.reducedMotion).toBeTruthy();
-  expect(result.version).toBe('3.3.103');
+  expect(result.version).toBe('3.3.104');
   expect(result.focusToken).not.toBe('');
+});
+
+
+test('saved theme is applied before app boot and captcha loading has a timeout fallback', async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('ie-workspace-personalisation-v2', JSON.stringify({theme:'light', palette:'light-skies'})));
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
+  const theme = await page.evaluate(() => ({
+    light: document.body.classList.contains('personalise-theme-light'),
+    palette: document.body.classList.contains('personalise-palette-light-skies'),
+    build: document.body.dataset.portalBuild
+  }));
+  expect(theme.light).toBeTruthy();
+  expect(theme.palette).toBeTruthy();
+  expect(theme.build).toBe('3.3.104');
 });
