@@ -20,7 +20,7 @@
   function isListenerRoute(){
     const q=new URLSearchParams(location.search);
     const path=location.pathname.replace(/\/+$/,'')||'/';
-    return path==='/' || q.has('explore') || q.has('artist') || path==='/listen' || path==='/shop' || path==='/shop/manage' || path==='/listen/account' || /^\/listen\/artist\/[^/]+$/.test(path) || /^\/link\/[^/]+$/.test(path);
+    return (path==='/' && !session?.user?.id) || q.has('explore') || q.has('artist') || path==='/listen' || path==='/shop' || path==='/shop/manage' || path==='/listen/account' || /^\/listen\/artist\/[^/]+$/.test(path) || /^\/link\/[^/]+$/.test(path);
   }
   function renderListenerRoute(){
     const routeEpoch=window.__iePublicRouteEpoch=(Number(window.__iePublicRouteEpoch)||0)+1;
