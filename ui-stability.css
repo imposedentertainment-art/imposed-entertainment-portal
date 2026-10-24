@@ -252,3 +252,106 @@ html[data-ie-mode="light"] body:not(.personalise-surface-flat) :where(
   border-color: rgba(38,53,73,.16) !important;
   box-shadow: 0 12px 36px rgba(42,66,94,.12), inset 0 1px 0 rgba(255,255,255,.72) !important;
 }
+
+
+/* v3.3.99 — signed-in workspace surfaces + reliable wallpaper stacking.
+   Keep the wallpaper in the body's own stacking context: html pseudo-elements with
+   negative z-index can disappear behind the root canvas in Chromium/Opera. */
+html {
+  isolation: auto !important;
+  background: transparent !important;
+  min-height: 100%;
+}
+html::before { content: none !important; display: none !important; }
+body {
+  isolation: isolate !important;
+  position: relative !important;
+  min-height: 100vh;
+  background-color: var(--bg, #090a0c) !important;
+  background-image: none !important;
+}
+body::before {
+  content: "" !important;
+  display: block !important;
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+  opacity: 1 !important;
+  background-image:
+    linear-gradient(180deg, color-mix(in srgb, var(--bg, #090a0c) 8%, transparent), color-mix(in srgb, var(--bg, #090a0c) 30%, transparent)),
+    var(--theme-image, none),
+    radial-gradient(ellipse at 12% 0%, color-mix(in srgb, var(--accent, #d8bd73) 12%, transparent), transparent 48%) !important;
+  background-position: center, center, center !important;
+  background-size: cover, cover, cover !important;
+  background-repeat: no-repeat, no-repeat, no-repeat !important;
+}
+body::after {
+  content: "" !important;
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+  opacity: .035 !important;
+}
+body > * { position: relative; z-index: 1; }
+#app, #app > main, #app > section, #main-content, main, .main, .page,
+.page-content, .workspace, .main-content, .dashboard, .dashboard-layout,
+.app-shell, .app-layout, .portal-shell, .portal-layout, .view, .view-container {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+/* The authenticated portal uses more surface variants than the public auth shell.
+   Apply glass to common workspace containers and semantic data surfaces. */
+body:not(.personalise-surface-flat) :where(
+  #app .card, #app .panel, #app .surface, #app .widget, #app .tile,
+  #app .stat, #app .stat-card, #app .metric, #app .metric-card,
+  #app .dashboard-card, #app .dashboard-panel, #app .content-card,
+  #app .section-card, #app .settings-card, #app .settings-section,
+  #app .settings-group, #app .quick-link, #app .quick-links-panel,
+  #app .activity-item, #app .feed-item, #app .list-card, #app .data-card,
+  #app .table-wrap, #app .table-container, #app .empty-state,
+  #app .welcome-card, #app .welcome-widget, #app .hero-card,
+  #app .workspace-card, #app .artist-card, #app .release-card,
+  #app .approval-card, #app .detail-card, #app .builder-card,
+  #app [class*="card"], #app [class*="panel"], #app [class*="widget"],
+  #main-content .card, #main-content .panel, #main-content .surface,
+  main .card, main .panel, main .surface,
+  .sidebar, .app-sidebar, .workspace-sidebar, .topbar, .app-header,
+  .nav, .desktop-nav, .mobile-nav, .bottom-nav,
+  .dropdown-menu, .menu-popover, .popover, .context-menu,
+  [role="dialog"], .modal-content, .drawer, .sheet, #ie-personalise-panel
+) {
+  background-color: color-mix(in srgb, var(--bg, #111316) 64%, transparent) !important;
+  border: 1px solid color-mix(in srgb, var(--text, #fff) 15%, transparent) !important;
+  box-shadow: 0 16px 42px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.11) !important;
+  -webkit-backdrop-filter: blur(var(--user-glass-blur, 24px)) saturate(165%) !important;
+  backdrop-filter: blur(var(--user-glass-blur, 24px)) saturate(165%) !important;
+}
+html[data-ie-mode="light"] body:not(.personalise-surface-flat) :where(
+  #app .card, #app .panel, #app .surface, #app .widget, #app .tile,
+  #app .stat-card, #app .metric-card, #app .dashboard-card, #app .dashboard-panel,
+  #app .content-card, #app .section-card, #app .settings-card, #app .settings-section,
+  #app .settings-group, #app .quick-links-panel, #app .activity-item, #app .feed-item,
+  #app .list-card, #app .data-card, #app .welcome-card, #app .welcome-widget,
+  #app .hero-card, #app .workspace-card, #app .artist-card, #app .release-card,
+  #app .approval-card, #app .detail-card, #app .builder-card,
+  #app [class*="card"], #app [class*="panel"], #app [class*="widget"],
+  #main-content .card, #main-content .panel, main .card, main .panel,
+  .sidebar, .app-sidebar, .workspace-sidebar, .topbar, .app-header, .nav,
+  .dropdown-menu, .menu-popover, .popover, [role="dialog"], .modal-content,
+  .drawer, .sheet, #ie-personalise-panel
+) {
+  background-color: rgba(248,251,255,.64) !important;
+  border-color: rgba(38,53,73,.17) !important;
+  box-shadow: 0 16px 42px rgba(42,66,94,.12), inset 0 1px 0 rgba(255,255,255,.82) !important;
+}
+body.personalise-palette-light-skies {
+  --bg: #eaf2fb;
+  --text: #172638;
+  --soft: #293b50;
+  --muted: #53677e;
+}
