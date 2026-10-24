@@ -22,7 +22,7 @@ self.addEventListener('install', event => {
     // Keep first-install activation fast: precache only the app shell and legal documents.
     // Other allow-listed assets are cached as they are requested by the app.
     const criticalAssets = [
-      '/ui-engine.css',
+      '/ui-engine.css', '/ui-stability.css',
       '/index.html', '/engines/null-core.js', '/engines/cloud-os.js', '/engines/prism.js', '/js/personalise.js', '/js/quality.js', '/js/i18n.js', '/js/core.js', '/js/boot.js',
       '/privacy/index.html', '/terms/index.html', '/img/logo-128.png'
     ];
