@@ -3,12 +3,29 @@ let vaultFiles=[];
 let vaultLoading=false;
 let vaultError='';
 let vaultSearch='';
+let vaultLoadRequestId=0;
 async function loadVaultData(){
-  if(!session||!profile)return;
+  const requestId=++vaultLoadRequestId;
+  const userId=session?.user?.id;
+  if(!userId||!profile){vaultFiles=[];vaultError='';vaultLoading=false;return;}
+  const labelAdmin=isAdmin();
   vaultLoading=true;vaultError='';
-  try{let q=sb.from('vault_files').select('*').order('created_at',{ascending:false}).limit(250);if(!isAdmin())q=q.eq('artist_id',session.user.id);const {data,error}=await q;if(error)throw error;vaultFiles=data||[];}
-  catch(e){vaultError=e.message||'Could not load your private files.';vaultFiles=[];}
-  finally{vaultLoading=false;}
+  try{
+    let q=sb.from('vault_files').select('*').order('created_at',{ascending:false}).limit(250);
+    if(!labelAdmin)q=q.eq('artist_id',userId);
+    const {data,error}=await q;
+    if(requestId!==vaultLoadRequestId)return;
+    if(session?.user?.id!==userId){vaultFiles=[];vaultError='';return;}
+    if(error)throw error;
+    vaultFiles=Array.isArray(data)?data:[];
+  }catch(e){
+    if(requestId!==vaultLoadRequestId)return;
+    if(session?.user?.id!==userId){vaultFiles=[];vaultError='';return;}
+    vaultError=e.message||'Could not load your private files.';
+    vaultFiles=[];
+  }finally{
+    if(requestId===vaultLoadRequestId)vaultLoading=false;
+  }
 }
 function vaultView(){
   const visible=vaultFiles.filter(f=>!vaultSearch||`${f.name||''} ${f.kind||''}`.toLowerCase().includes(vaultSearch.toLowerCase()));

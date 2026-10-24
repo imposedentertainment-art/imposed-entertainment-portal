@@ -215,9 +215,9 @@
   }
   let lastRenderedWorkspaceView = null;
   function render(){
-    if(!session||!profile){mobile=false;document.body.style.overflow='';renderAuth();return;}
+    if(!session||!profile){if(typeof stopProfilePreview==='function')stopProfilePreview();mobile=false;document.body.style.overflow='';renderAuth();return;}
     // A route change always closes the mobile menu and releases the document scroll lock.
-    if(lastRenderedWorkspaceView!==null&&lastRenderedWorkspaceView!==view)mobile=false;
+    if(lastRenderedWorkspaceView!==null&&lastRenderedWorkspaceView!==view){mobile=false;if(typeof stopProfilePreview==='function')stopProfilePreview();}
     // Keep document scrolling enabled on touch devices; the menu has its own scroll container.
     document.body.style.overflow='';
     // Label accounts use internal operations workflows, not the artist-facing support form.

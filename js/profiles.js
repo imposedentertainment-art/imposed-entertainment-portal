@@ -1,5 +1,5 @@
 /* Account pages: Discover (search), public profile page, profile editor, audio player */
-let discoverQ = '', discoverRes = null, discoverError = '', discoverRequestId = 0, pageId = null, pageData = null, pageDisc = [], coverUrls = {}, editState = null, editTargetId = null, pfPlayer = null, pfNow = null, pfTimer, listenerSessionFallback = '';
+let discoverQ = '', discoverRes = null, discoverError = '', discoverRequestId = 0, pageId = null, pageData = null, pageDisc = [], coverUrls = {}, editState = null, editTargetId = null, pfPlayer = null, pfNow = null, pfTimer, pfPlayerRequestId = 0, listenerSessionFallback = '';
 function getListenerSession(){try{return sessionStorage.getItem('ie_listener_session')||listenerSessionFallback;}catch(_){return listenerSessionFallback;}}
 function setListenerSession(value){listenerSessionFallback=String(value||'');try{sessionStorage.setItem('ie_listener_session',listenerSessionFallback);}catch(_){}return !!listenerSessionFallback;}
 function clearListenerSession(){listenerSessionFallback='';try{sessionStorage.removeItem('ie_listener_session');}catch(_){}}
@@ -214,6 +214,7 @@ function openDiscover() { view = 'discover'; mobile = false; discoverRes = null;
 
 /* ---------- Profile page ---------- */
 async function openProfile(id) {
+  if ((view !== 'profile' || pageId !== id) && typeof stopProfilePreview === 'function') stopProfilePreview();
   pageId = id; pageData = null; pageDisc = []; coverUrls = {}; view = 'profile'; mobile = false; render(); window.scrollTo(0, 0);
   const [a, b] = await Promise.all([sb.rpc('get_profile', { p_id: id }), sb.rpc('profile_discography', { p_id: id })]);
   if (pageId !== id) return;
@@ -256,15 +257,33 @@ function profilePage() {
 }
 async function playTrack(path) {
   if (!path) return;
-  if (pfPlayer && pfNow === path) { pfPlayer.paused ? pfPlayer.play() : pfPlayer.pause(); return; }
-  const { data, error } = await sb.storage.from('audio').createSignedUrl(path, 3600);
-  if (error) return toast('Could not load audio: ' + error.message, 'error');
-  if (pfPlayer) pfPlayer.pause();
+  const requestId = ++pfPlayerRequestId;
+  if (pfPlayer && pfNow === path) {
+    if (pfPlayer.paused) pfPlayer.play().catch(e => toast(e.message, 'error'));
+    else pfPlayer.pause();
+    return;
+  }
+  let result;
+  try { result = await sb.storage.from('audio').createSignedUrl(path, 3600); }
+  catch (error) { if (requestId === pfPlayerRequestId) toast('Could not load audio: ' + (error?.message || 'Please try again.'), 'error'); return; }
+  if (requestId !== pfPlayerRequestId) return;
+  const { data, error } = result || {};
+  if (error || !data?.signedUrl) { toast('Could not load audio: ' + (error?.message || 'No playable URL was returned.'), 'error'); return; }
+  if (pfPlayer) { pfPlayer.pause(); pfPlayer.onplay = pfPlayer.onpause = pfPlayer.onended = null; }
   pfPlayer = new Audio(data.signedUrl); pfNow = path;
   pfPlayer.onplay = pfPlayer.onpause = pfPlayer.onended = syncPlayIcons;
-  pfPlayer.play().catch(e => toast(e.message, 'error'));
+  pfPlayer.play().catch(e => { if (requestId === pfPlayerRequestId) toast(e.message, 'error'); });
+}
+function stopProfilePreview() {
+  pfPlayerRequestId++;
+  if (pfPlayer) {
+    try { pfPlayer.pause(); pfPlayer.removeAttribute('src'); pfPlayer.load(); } catch (_) {}
+  }
+  pfPlayer = null; pfNow = null;
+  syncPlayIcons();
 }
 function syncPlayIcons() { document.querySelectorAll('[data-pf="play"]').forEach(b => { b.textContent = (b.dataset.path === pfNow && pfPlayer && !pfPlayer.paused && !pfPlayer.ended) ? '❚❚' : '▶'; }); }
+window.addEventListener('pagehide', stopProfilePreview);
 
 /* ---------- Editor ---------- */
 function downloadEPK(p, disc){
