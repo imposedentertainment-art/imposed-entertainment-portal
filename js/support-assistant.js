@@ -83,4 +83,18 @@
   document.addEventListener('ie-view-rendered', mountAssistant);
   document.addEventListener('DOMContentLoaded', mountAssistant, { once: true });
   window.addEventListener('portal-ready', mountAssistant);
+
+  // Load the separate Astra AI workspace assistant from the existing portal shell.
+  // Keeping this loader here avoids changing the security-sensitive entry document.
+  function loadAstraWorkspaceAssistant() {
+    if (document.querySelector('script[data-ie-astra-loader]')) return;
+    const script = document.createElement('script');
+    script.src = '/js/astra-ai.js?v=3.3.113';
+    script.defer = true;
+    script.dataset.ieAstraLoader = '1';
+    script.onerror = function () { script.remove(); };
+    document.head.appendChild(script);
+  }
+  document.addEventListener('DOMContentLoaded', loadAstraWorkspaceAssistant, { once: true });
+  window.addEventListener('portal-ready', loadAstraWorkspaceAssistant);
 })();
