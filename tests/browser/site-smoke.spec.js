@@ -747,14 +747,14 @@ test('versioned rendering repair adds keyboard focus, reduced motion and respons
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
   const result = await page.evaluate(() => ({
-    repairStylesheet: [...document.styleSheets].some(sheet => (sheet.href || '').includes('/ui-rendering-repair.css?v=3.3.113')),
+    repairStylesheet: [...document.styleSheets].some(sheet => (sheet.href || '').includes('/ui-rendering-repair.css?v=3.3.114')),
     reducedMotion: matchMedia('(prefers-reduced-motion: reduce)').matches,
     version: document.querySelector('meta[name="portal-build"]')?.content,
     focusToken: getComputedStyle(document.documentElement).getPropertyValue('--ie-focus-ring').trim()
   }));
   expect(result.repairStylesheet).toBeTruthy();
   expect(result.reducedMotion).toBeTruthy();
-  expect(result.version).toBe('3.3.113');
+  expect(result.version).toBe('3.3.114');
   expect(result.focusToken).not.toBe('');
 });
 
@@ -774,7 +774,7 @@ test('saved theme is applied before app boot and captcha loading has a timeout f
   expect(theme.palette).toBeTruthy();
   expect(theme.modeAttribute).toBe('light');
   expect(theme.workspaceThemeAttribute).toBe('light-skies');
-  expect(theme.build).toBe('3.3.113');
+  expect(theme.build).toBe('3.3.114');
 });
 
 
