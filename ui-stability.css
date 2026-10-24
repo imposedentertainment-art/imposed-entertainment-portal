@@ -54,3 +54,56 @@ img, video, canvas, svg { max-width: 100%; }
   :where(.table-wrap,.table-responsive) { max-width: 100%; overflow-x: auto; overscroll-behavior-x: contain; }
 }
 @supports not (overflow: clip) { body { overflow-x: hidden; } }
+
+/* Additional compatibility repairs: keep visual polish from breaking real controls. */
+/* 01–05: prevent common flex/grid overflow and long-content clipping. */
+:where(.nav-inner,.nav-actions,.toolbar,.page-heading,.section-heading,.card-header) > * { min-width: 0; }
+:where(.dashboard-grid,.stats-grid,.settings-grid,.content-grid) { min-width: 0; }
+:where(pre,code,.code-block,.url-text,.email-address) { overflow-wrap: anywhere; }
+:where(.table-wrap,.table-responsive,pre) { overscroll-behavior: contain; }
+:where(.page-content,.main-content,.workspace-content) { max-width: 100%; }
+/* 06–10: make fixed and sticky layers predictable without trapping page scrolling. */
+:where(.nav,.topbar,.app-header) { isolation: isolate; }
+:where(.sidebar,.side-menu,.drawer,.mobile-menu) { overscroll-behavior: contain; }
+:where(.drawer,.mobile-menu,[data-menu-panel]) { max-height: 100dvh; max-height: 100svh; overflow-y: auto; }
+:where(.modal,.dialog,[role="dialog"]) { max-height: calc(100dvh - 2rem); overflow: auto; }
+:where(.modal-backdrop,.dialog-backdrop,[data-overlay-backdrop]) { position: fixed; inset: 0; }
+/* 11–15: improve keyboard focus, disabled states and touch targets. */
+:where(button,a,[role="button"],input,select,textarea) { scroll-margin-block: 6rem; }
+:where(button:disabled,[aria-disabled="true"]) { cursor: not-allowed; }
+:where(button:focus-visible,a:focus-visible,[role="button"]:focus-visible) { outline-offset: 3px; }
+:where(input,select,textarea) { accent-color: var(--accent, #d8bd73); }
+:where(.icon-btn,[aria-label]) { -webkit-user-select: none; user-select: none; }
+/* 16–20: avoid unreadable glass and image-induced layout shifts. */
+:where(.personalise-surface-glass) :where(input,select,textarea) {
+  background-color: color-mix(in srgb, var(--s1, #11151b) 82%, transparent);
+}
+:where(.personalise-surface-glass) :where(.card,.panel,.surface,.settings-card) { background-clip: padding-box; }
+:where(img[width][height]) { height: auto; }
+:where(.avatar,.brand-mark,.auth-logo img) { object-fit: cover; }
+:where(.toast,.notification,.alert) { overflow-wrap: anywhere; }
+/* 21–25: mobile viewport, safe-area and form layout fixes. */
+@supports (height: 100dvh) { .app-loading { min-height: 100dvh; } }
+:where(.app-loading,.boot-skeleton) { padding-bottom: max(16px, env(safe-area-inset-bottom)); }
+:where(form,.form-grid,.auth-form) { min-width: 0; }
+:where(.form-row,.form-actions) { flex-wrap: wrap; }
+@media (max-width: 760px) {
+  :where(.page-heading,.section-heading) { align-items: flex-start; flex-wrap: wrap; gap: 12px; }
+  :where(.form-actions) > button { max-width: 100%; }
+  :where(.desktop-nav) { max-width: 100%; overflow-x: auto; }
+}
+/* 26–30: safe fallbacks and motion/contrast handling. */
+@supports not (backdrop-filter: blur(1px)) {
+  :where(.personalise-surface-glass) :where(.card,.panel,.surface,.settings-card,.nav) {
+    background-color: var(--s2, #171d25);
+  }
+}
+@media (prefers-contrast: more) {
+  :where(button,a,input,select,textarea,.card,.panel,.surface) { border-color: currentColor; }
+}
+@media (forced-colors: active) {
+  :where(button,a,input,select,textarea,.card,.panel,.surface) { forced-color-adjust: auto; }
+  :where(.personalise-surface-glass) :where(.card,.panel,.surface,.nav) { backdrop-filter: none; }
+}
+:where(.personalise-hide-decorative) :where(.decorative,.background-decoration,[data-decorative="true"]) { display: none !important; }
+:where(.personalise-no-shadows) :where(.card,.panel,.surface,.settings-card,.ie-p-card) { box-shadow: none !important; }
