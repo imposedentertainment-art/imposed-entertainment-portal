@@ -14,6 +14,9 @@ function notifyAccount(){try{window.dispatchEvent(new CustomEvent('ie-personalis
 function el(tag,attrs,text){var n=document.createElement(tag);Object.keys(attrs||{}).forEach(function(k){if(k==='className')n.className=attrs[k];else n.setAttribute(k,attrs[k])});if(text!==undefined)n.textContent=text;return n}
 function apply(){
 var root=document.documentElement,b=document.body;
+/* Keep CSS wallpaper selectors in sync with live customiser state (not only first paint). */
+root.dataset.ieMode=state.theme;
+root.dataset.ieWorkspaceTheme=state.palette;
 /* Single token bridge: the established preference state drives all new design tokens. */
 var densityScale=state.density==='compact'?.82:state.density==='comfortable'?1.16:1;
 var radiusScale=state.radius==='sharp'?.48:1;
