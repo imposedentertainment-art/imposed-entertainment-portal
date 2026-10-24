@@ -776,3 +776,14 @@ test('saved theme is applied before app boot and captcha loading has a timeout f
   expect(theme.workspaceThemeAttribute).toBe('light-skies');
   expect(theme.build).toBe('3.3.107');
 });
+
+
+test('shop collection type follows the account role rather than a disabled form field', async ({ page }) => {
+  await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
+  const result = await page.evaluate(() => ({
+    label: typeof window.ieShopStoreTypeForRole === 'function' ? window.ieShopStoreTypeForRole('label_admin') : null,
+    artist: typeof window.ieShopStoreTypeForRole === 'function' ? window.ieShopStoreTypeForRole('artist') : null
+  }));
+  expect(result.label).toBe('label');
+  expect(result.artist).toBe('artist');
+});
