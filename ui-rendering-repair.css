@@ -1,4 +1,4 @@
-/* v3.3.104 — authenticated workspace rendering repair.
+/* v3.3.105 — authenticated workspace rendering repair.
    Keep this layer small and explicit: it corrects the proven specificity and flow bugs,
    rather than adding another broad theme system. */
 :root {
@@ -109,7 +109,7 @@ body.personalise-theme-light {
 }
 
 
-/* v3.3.104: cross-portal usability and accessibility foundation. */
+/* v3.3.105: cross-portal usability and accessibility foundation. */
 :root {
   --ie-space-1: 4px; --ie-space-2: 8px; --ie-space-3: 12px;
   --ie-space-4: 16px; --ie-space-5: 20px; --ie-space-6: 24px;
@@ -190,4 +190,19 @@ body.personalise-theme-light :where(.muted, .sub, .subtitle, .meta, .timestamp, 
 /* Improve secondary-copy contrast without overriding intentional status colors. */
 body:not(.personalise-theme-light) #app :where(.muted, .sub, .subtitle, .meta, .timestamp, .helper-text, .field-hint, .eyebrow:not(.blue)) {
   color: color-mix(in srgb, var(--ui-text, #f6f3eb) 84%, var(--ui-surface, #171d25));
+}
+
+
+/* v3.3.105: avoid fixed wallpaper compositing on mobile browsers.
+   Fixed pseudo-elements can stutter during visual-viewport changes in Opera/WebKit.
+   Keep the image attached to the document while allowing the body to grow with content. */
+@media (max-width: 760px) {
+  body::before {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    background-attachment: scroll !important;
+  }
 }
