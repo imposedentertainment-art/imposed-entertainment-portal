@@ -185,3 +185,70 @@ body.personalise-theme-light #ie-personalise-panel .ie-p-help { color: #526579; 
 @supports not (backdrop-filter: blur(1px)) {
   #ie-personalise-panel { background: var(--surface, #171d25); }
 }
+
+
+/* v3.3.98 — harden wallpaper rendering independently of legacy body pseudo-elements.
+   Older rules redefine body::before several times; the root-layer wallpaper cannot be
+   accidentally replaced by those declarations and remains behind all interactive UI. */
+html {
+  position: relative;
+  isolation: isolate;
+  min-height: 100%;
+  background-color: var(--bg, #090a0c) !important;
+}
+html::before {
+  content: "" !important;
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  z-index: -1 !important;
+  pointer-events: none !important;
+  display: block !important;
+  opacity: 1 !important;
+  background-image:
+    linear-gradient(180deg, color-mix(in srgb, var(--bg, #090a0c) 12%, transparent), color-mix(in srgb, var(--bg, #090a0c) 42%, transparent)),
+    var(--theme-image, none) !important;
+  background-position: center, center !important;
+  background-size: cover, cover !important;
+  background-repeat: no-repeat, no-repeat !important;
+}
+body {
+  position: relative;
+  z-index: 0;
+  background-color: transparent !important;
+  background-image: none !important;
+  background-attachment: initial !important;
+}
+body::before {
+  z-index: -1 !important;
+  background-image:
+    linear-gradient(180deg, color-mix(in srgb, var(--bg, #090a0c) 8%, transparent), color-mix(in srgb, var(--bg, #090a0c) 24%, transparent)),
+    var(--theme-image, none) !important;
+  background-position: center, center !important;
+  background-size: cover, cover !important;
+  background-repeat: no-repeat, no-repeat !important;
+  opacity: 1 !important;
+}
+/* Keep the glass layer visible on browsers that only partially implement backdrop-filter. */
+body:not(.personalise-surface-flat) :where(
+  .card, .panel, .surface, .modal-content, .dropdown-menu, .popover,
+  .settings-card, .stat-card, .dashboard-card, .widget, .ie-p-theme-card,
+  #ie-personalise-panel, .sidebar, .menu-panel
+) {
+  background-color: color-mix(in srgb, var(--bg, #111316) 70%, transparent) !important;
+  border-color: color-mix(in srgb, var(--text, #fff) 16%, transparent) !important;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, .16), inset 0 1px 0 rgba(255,255,255,.09) !important;
+  -webkit-backdrop-filter: blur(var(--user-glass-blur, 20px)) saturate(155%) !important;
+  backdrop-filter: blur(var(--user-glass-blur, 20px)) saturate(155%) !important;
+}
+html[data-ie-mode="light"] body:not(.personalise-surface-flat) :where(
+  .card, .panel, .surface, .modal-content, .dropdown-menu, .popover,
+  .settings-card, .stat-card, .dashboard-card, .widget, .ie-p-theme-card,
+  #ie-personalise-panel, .sidebar, .menu-panel
+) {
+  background-color: rgba(255,255,255,.66) !important;
+  border-color: rgba(38,53,73,.16) !important;
+  box-shadow: 0 12px 36px rgba(42,66,94,.12), inset 0 1px 0 rgba(255,255,255,.72) !important;
+}
