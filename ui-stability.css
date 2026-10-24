@@ -107,3 +107,29 @@ img, video, canvas, svg { max-width: 100%; }
 }
 :where(.personalise-hide-decorative) :where(.decorative,.background-decoration,[data-decorative="true"]) { display: none !important; }
 :where(.personalise-no-shadows) :where(.card,.panel,.surface,.settings-card,.ie-p-card) { box-shadow: none !important; }
+
+/* UI polish: coherent liquid-glass surfaces, stable wallpaper, and clear layering. */
+:root {
+  --ie-glass-fill: color-mix(in srgb, var(--surface, var(--s2, #171d25)) 70%, transparent);
+  --ie-glass-edge: color-mix(in srgb, var(--text, #f6f3eb) 13%, transparent);
+  --ie-glass-depth: 0 12px 36px rgba(0,0,0,.16), inset 0 1px 0 color-mix(in srgb,var(--text,#fff) 20%,transparent);
+}
+body::before { position:fixed; inset:0; pointer-events:none; background-attachment:initial; transform:translateZ(0); will-change:auto; }
+body:not(.personalise-surface-flat) :where(.card,.panel,.surface,.stat-card,.settings-card,.detail-card,.builder-card,.approval-card,.metric,.up-card,.dashboard-panel,.quick-links-panel,.ie-p-card,.ie-p-top,.ie-p-tabs,.ie-p-content,.ie-p-theme-card,.dropdown-menu,.menu-popover,.popover,.context-menu,.toast,.notification-panel) {
+ background-color:var(--ie-glass-fill); border:1px solid var(--ie-glass-edge); box-shadow:var(--ie-glass-depth);
+ -webkit-backdrop-filter:saturate(155%) blur(var(--user-glass-blur,18px)); backdrop-filter:saturate(155%) blur(var(--user-glass-blur,18px)); background-clip:padding-box;
+}
+body.personalise-surface-glass :where(.card,.panel,.surface,.stat-card,.settings-card,.detail-card,.builder-card,.approval-card,.metric,.up-card,.dashboard-panel,.quick-links-panel,.ie-p-card,.dropdown-menu,.menu-popover,.popover,.context-menu,.toast,.notification-panel) {
+ background-color:color-mix(in srgb,var(--surface,var(--s2,#171d25)) 54%,transparent);
+ border-color:color-mix(in srgb,var(--text,#fff) 18%,transparent); box-shadow:0 18px 48px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.12);
+ -webkit-backdrop-filter:saturate(175%) blur(var(--user-glass-blur,26px)); backdrop-filter:saturate(175%) blur(var(--user-glass-blur,26px));
+}
+body.personalise-surface-flat :where(.card,.panel,.surface,.stat-card,.settings-card,.detail-card,.builder-card,.approval-card,.metric,.up-card,.dashboard-panel,.quick-links-panel,.ie-p-card,.dropdown-menu,.menu-popover,.popover,.context-menu,.toast,.notification-panel) { -webkit-backdrop-filter:none; backdrop-filter:none; box-shadow:none; }
+:where(.app-header,.topbar,.nav,.sidebar,.desktop-nav) { z-index:300; }
+:where(.dropdown-menu,.menu-popover,.popover,.context-menu,[data-menu-panel]) { position:relative; z-index:1200; }
+:where(.modal-backdrop,.dialog-backdrop,[data-overlay-backdrop]) { z-index:1990; }
+:where(.modal,.dialog,[role="dialog"],.ie-p-modal,[data-overlay]) { z-index:2000; }
+body.personalise-theme-light { --ie-glass-fill:color-mix(in srgb,#fff 76%,transparent); --ie-glass-edge:rgba(31,51,73,.13); --ie-glass-depth:0 12px 32px rgba(34,56,80,.1),inset 0 1px 0 rgba(255,255,255,.8); }
+body.personalise-theme-light :where(.card,.panel,.surface,.stat-card,.settings-card,.detail-card,.builder-card,.approval-card,.metric,.up-card,.dashboard-panel,.quick-links-panel,.ie-p-card,.dropdown-menu,.menu-popover,.popover,.context-menu) { color:var(--text,#182638); }
+body.personalise-theme-light :where(.muted,.sub,.helper-text,.ie-p-help) { color:var(--muted,#526579); }
+:where(.card,.panel,.surface,.settings-card,.ie-p-theme-card,.ie-p-tab,button,a,input,select,textarea) { transition-property:color,background-color,border-color,box-shadow,opacity,transform; transition-duration:var(--user-motion-duration,180ms); transition-timing-function:cubic-bezier(.2,.75,.25,1); }
