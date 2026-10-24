@@ -206,3 +206,23 @@ body:not(.personalise-theme-light) #app :where(.muted, .sub, .subtitle, .meta, .
     background-attachment: scroll !important;
   }
 }
+
+
+/* UI debug fix: provide a real visual fallback if a wallpaper file is missing or empty.
+   Keep the selected image as the middle layer; palette-specific gradients remain visible
+   underneath it, so a failed image request never leaves a blank/flat workspace. */
+html[data-ie-workspace-theme="light-skies"] { --ie-wallpaper-fallback: linear-gradient(135deg, #d9e9f8 0%, #f4f8fd 48%, #c4d9ed 100%); }
+html[data-ie-workspace-theme="midnight-studio"] { --ie-wallpaper-fallback: radial-gradient(ellipse at 20% 10%, #243c50 0%, #111923 46%, #080b10 100%); }
+html[data-ie-workspace-theme="graphite-minimal"] { --ie-wallpaper-fallback: linear-gradient(135deg, #25262b 0%, #111216 55%, #08090b 100%); }
+html[data-ie-workspace-theme="plum-dusk"] { --ie-wallpaper-fallback: radial-gradient(ellipse at 18% 12%, #50365c 0%, #24192d 46%, #100d15 100%); }
+html[data-ie-workspace-theme="forest-room"] { --ie-wallpaper-fallback: radial-gradient(ellipse at 18% 10%, #294b38 0%, #14271d 45%, #08120d 100%); }
+
+body::before {
+  background-image:
+    linear-gradient(180deg, color-mix(in srgb, var(--bg, #090a0c) 10%, transparent), color-mix(in srgb, var(--bg, #090a0c) 28%, transparent)),
+    var(--theme-image, none),
+    var(--ie-wallpaper-fallback, linear-gradient(135deg, #1b2734, #090b10)) !important;
+  background-position: center, center, center !important;
+  background-size: cover, cover, cover !important;
+  background-repeat: no-repeat, no-repeat, no-repeat !important;
+}
