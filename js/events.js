@@ -28,6 +28,10 @@ function ieSaveNotificationPreference(el){
       throw error;
     }
     toast('Preference saved','success');
+  }).catch(error=>{
+    // The UI already reports save failures; consume the rejection so a failed write
+    // does not leak as an unhandled promise rejection. The next queued save can proceed.
+    console.warn('Notification preference save failed.',error);
   });
 }
 function ieEmailCodeCooldownRemaining(){
