@@ -226,3 +226,48 @@ body::before {
   background-size: cover, cover, cover !important;
   background-repeat: no-repeat, no-repeat, no-repeat !important;
 }
+
+/* Phase 1 accessibility and responsive hardening. Keep this layer semantic and scoped. */
+:where(button, [role="button"], input, select, textarea, a[href], summary):focus-visible {
+  outline: 3px solid var(--accent, #d8bd73) !important;
+  outline-offset: 3px !important;
+  box-shadow: 0 0 0 2px var(--bg, #101114) !important;
+}
+:where(button, [role="button"], input, select, textarea) {
+  scroll-margin-block: 6rem;
+}
+/* Larger touch targets for navigation, player controls, and compact table actions. */
+:where(.desktop-nav button, .mobile-nav button, .bottom-nav button, .sidebar button,
+  .audio-player button, .player-controls button, .track-actions button,
+  .table-wrap button, .table-container button, button.icon-btn, .icon-button,
+  [data-action="mute"], [data-action="unmute"], [data-action="bookmark"]) {
+  min-width: 44px;
+  min-height: 44px;
+}
+/* Ensure subdued copy remains readable against either theme without hard-coding a mode. */
+body #app :where(.muted, .sub, .subtitle, .meta, .timestamp, .helper-text, .field-hint, .form-hint, .empty-state p) {
+  color: color-mix(in srgb, var(--text, #f5f5f5) 78%, var(--bg, #101114)) !important;
+}
+/* Consistent modal rhythm and readable dialog content. */
+body :where([role="dialog"], .modal-content, .drawer, .sheet, .ie-command-dialog) {
+  padding: clamp(1rem, 2.4vw, 1.5rem);
+  max-width: min(100vw - 1.25rem, 48rem);
+}
+body :where([role="dialog"], .modal-content, .drawer, .sheet) :where(header, .modal-header, .dialog-header) {
+  margin-bottom: 1rem;
+  gap: .75rem;
+}
+@media (max-width: 760px) {
+  :where(.desktop-nav, .topbar, .app-header) { min-width: 0; }
+  :where(.desktop-nav, .topbar, .app-header) :where(button, a[href]) { max-width: 100%; }
+  body :where(.table-wrap, .table-container) { max-width: 100%; overflow-x: auto; overscroll-behavior-inline: contain; }
+  body :where(.audio-player, .player-controls) button { min-width: 44px; min-height: 44px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
