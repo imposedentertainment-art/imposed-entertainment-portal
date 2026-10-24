@@ -60,7 +60,7 @@
   function loadAstraAssistant() {
     if (document.querySelector('script[data-ie-astra-loader]')) return;
     const script = document.createElement('script');
-    script.src = '/js/astra-ai.js?v=3.3.113';
+    script.src = '/js/astra-ai.js?v=3.3.114';
     script.defer = true;
     script.dataset.ieAstraLoader = '1';
     script.onerror = function () { script.remove(); };
