@@ -1,10 +1,11 @@
-/* Imposed Entertainment v3.3.95: versioned static assets; never cache query-bearing navigations/auth callbacks. */
-const CACHE_NAME = 'imposed-jitter-v3.3.95';
+/* Imposed Entertainment v3.3.96: versioned static assets; never cache query-bearing navigations/auth callbacks. */
+const CACHE_NAME = 'imposed-jitter-v3.3.96';
 const STATIC_ASSETS = [
   '/engines/cloud-os.js',
   '/engines/null-core.js',
   '/engines/prism.js',
   '/ui-engine.css',
+  '/ui-stability.css',
   '/index.html',
   '/themes/light-skies.jpg', '/themes/midnight-studio.jpg', '/themes/graphite-minimal.jpg', '/themes/plum-dusk.jpg', '/themes/forest-room.jpg', '/js/shop.js', '/manifest.webmanifest', '/privacy/index.html', '/terms/index.html',
   '/img/logo-64.png', '/img/logo-128.png', '/img/logo-192.png', '/img/logo-512.png',
