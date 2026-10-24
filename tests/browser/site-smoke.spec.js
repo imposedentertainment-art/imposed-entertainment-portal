@@ -690,3 +690,53 @@ test('account preference writes verify that a profile row was updated', async ({
   expect(events).toContain(".select('id').maybeSingle()");
   expect(events).toContain("if(error||!data)");
 });
+
+
+test('build metadata, layered theme stylesheets and wallpaper assets stay in sync', async ({ page }) => {
+  const failures = [];
+  page.on('response', response => {
+    if (response.url().startsWith('http://127.0.0.1:4173/') && response.status() >= 400) failures.push({url:response.url(),status:response.status()});
+  });
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
+  const result = await page.evaluate(() => ({
+    htmlVersion: document.querySelector('meta[name="portal-build"]')?.content,
+    bodyVersion: document.body.dataset.portalBuild,
+    styleLinks: Array.from(document.querySelectorAll('link[rel="stylesheet"][href^="/"]')).map(link => link.getAttribute('href')),
+    themeImages: ['light-skies','midnight-studio','graphite-minimal','plum-dusk','forest-room'].map(theme => ({theme, url:'/themes/'+theme+'.jpg'}))
+  }));
+  expect(result.htmlVersion).toBe(result.bodyVersion);
+  expect(result.styleLinks).toContain('/ui-engine.css?v=' + result.htmlVersion);
+  expect(result.styleLinks).toContain('/ui-stability.css?v=' + result.htmlVersion);
+  expect(result.styleLinks).toContain('/ui-rendering-repair.css?v=' + result.htmlVersion);
+  for (const item of result.themeImages) {
+    const response = await page.request.get('http://127.0.0.1:4173' + item.url);
+    expect(response.ok(), item.theme + ' wallpaper must resolve').toBeTruthy();
+    expect(response.headers()['content-type'] || '').toMatch(/image\//);
+  }
+  expect(failures, JSON.stringify(failures)).toEqual([]);
+});
+
+test('theme preference changes apply semantic theme classes and preserve mobile viewport width', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.addInitScript(() => {
+    localStorage.setItem('ie-workspace-personalisation-v2', JSON.stringify({
+      theme:'light', palette:'light-skies', surface:'glass', density:'standard'
+    }));
+  });
+  await page.goto('http://127.0.0.1:4173/', { waitUntil: 'domcontentloaded' });
+  await page.waitForTimeout(700);
+  const state = await page.evaluate(() => ({
+    light: document.body.classList.contains('personalise-theme-light'),
+    palette: document.body.classList.contains('personalise-palette-light-skies'),
+    width: document.documentElement.clientWidth,
+    scrollWidth: document.documentElement.scrollWidth,
+    repairLoaded: Array.from(document.styleSheets).some(sheet => {
+      try { return sheet.href && new URL(sheet.href).pathname === '/ui-rendering-repair.css'; } catch (_) { return false; }
+    })
+  }));
+  expect(state.light).toBeTruthy();
+  expect(state.palette).toBeTruthy();
+  expect(state.repairLoaded).toBeTruthy();
+  expect(state.scrollWidth).toBeLessThanOrEqual(state.width + 1);
+});
