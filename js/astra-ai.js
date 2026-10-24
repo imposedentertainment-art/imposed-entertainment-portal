@@ -14,13 +14,13 @@
   #ie-astra-send{border:0;border-radius:10px;background:#b3122a;color:white;padding:0 14px;font-weight:700} #ie-astra-send:disabled{opacity:.5}
   #ie-astra-note{padding:0 14px 10px;color:#a4aab5;font-size:11px} @media(max-width:520px){#ie-astra-launch{right:12px;bottom:12px}#ie-astra-panel{right:8px;bottom:68px;width:calc(100vw - 16px);height:min(620px,calc(100dvh - 86px))}`;
   function addMessage(role,text){const log=document.getElementById('ie-astra-log');if(!log)return;const node=document.createElement('div');node.className='ie-astra-msg '+(role==='user'?'ie-astra-user':'ie-astra-ai');node.textContent=text;log.appendChild(node);log.scrollTop=log.scrollHeight;return node;}
-  async function send(text){if(busy||!text.trim())return;if(!window.sb?.auth){addMessage('assistant','The secure assistant connection is not available right now. Please use the Help Centre.');return;}
+  async function send(text){if(busy||!text.trim())return;if(!(typeof sb!=='undefined' && sb)?.auth){addMessage('assistant','The secure assistant connection is not available right now. Please use the Help Centre.');return;}
     busy=true;const sendBtn=document.getElementById('ie-astra-send');if(sendBtn)sendBtn.disabled=true;addMessage('user',text);history.push({role:'user',content:text});const pending=addMessage('assistant','Thinking…');
-    try{const {data,error}=await window.sb.functions.invoke('astra-chat',{body:{messages:history.slice(-12)}});if(error)throw error;const answer=String(data?.reply||'I couldn’t produce a reply just now. Please try again.').slice(0,8000);pending.textContent=answer;history.push({role:'assistant',content:answer});}
+    try{const {data,error}=await sb.functions.invoke('astra-chat',{body:{messages:history.slice(-12)}});if(error)throw error;const answer=String(data?.reply||'I couldn’t produce a reply just now. Please try again.').slice(0,8000);pending.textContent=answer;history.push({role:'assistant',content:answer});}
     catch(_){pending.textContent='Astra AI is not connected yet. The team needs to configure the secure AI service. You can still use the Help Centre.';}
     finally{busy=false;if(sendBtn)sendBtn.disabled=false;}
   }
-  async function mount(){if(mounted||!window.sb?.auth)return;try{const {data}=await window.sb.auth.getSession();if(!data?.session?.user?.id)return;}catch(_){return;}
+  async function mount(){if(mounted||!(typeof sb!=='undefined' && sb)?.auth)return;try{const {data}=await window.sb.auth.getSession();if(!data?.session?.user?.id)return;}catch(_){return;}
     mounted=true;const style=document.createElement('style');style.textContent=css;document.head.appendChild(style);
     const launch=document.createElement('button');launch.id='ie-astra-launch';launch.type='button';launch.textContent='✳ Ask Astra AI';launch.setAttribute('aria-expanded','false');launch.setAttribute('aria-controls','ie-astra-panel');
     const panel=document.createElement('section');panel.id='ie-astra-panel';panel.setAttribute('aria-label','Astra AI assistant');panel.innerHTML='<div id="ie-astra-head"><div><strong>✳ Astra AI</strong><small>Imposed Entertainment assistant</small></div><button id="ie-astra-close" type="button" aria-label="Close assistant">×</button></div><div id="ie-astra-log" role="log" aria-live="polite"></div><div id="ie-astra-note">Do not share passwords, sign-in codes or sensitive payment details.</div><form id="ie-astra-form"><textarea id="ie-astra-input" rows="1" maxlength="2000" placeholder="Ask about your workspace…" aria-label="Message Astra AI" required></textarea><button id="ie-astra-send" type="submit">Send</button></form>';
@@ -29,7 +29,7 @@
     launch.addEventListener('click',()=>toggle(!panel.classList.contains('open')));document.getElementById('ie-astra-close').addEventListener('click',()=>toggle(false));
     document.getElementById('ie-astra-form').addEventListener('submit',e=>{e.preventDefault();const input=document.getElementById('ie-astra-input');const value=input.value.trim();if(!value)return;input.value='';send(value);});
     document.getElementById('ie-astra-input').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();document.getElementById('ie-astra-form').requestSubmit();}});
-    window.sb.auth.onAuthStateChange((_event,session)=>{if(!session?.user?.id){launch.remove();panel.remove();style.remove();mounted=false;history.length=0;}});
+    sb.auth.onAuthStateChange((_event,session)=>{if(!session?.user?.id){launch.remove();panel.remove();style.remove();mounted=false;history.length=0;}});
   }
   document.addEventListener('DOMContentLoaded',mount,{once:true});window.addEventListener('portal-ready',mount);document.addEventListener('ie-view-rendered',mount);
 })();
