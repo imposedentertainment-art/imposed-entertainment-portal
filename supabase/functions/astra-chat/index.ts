@@ -33,10 +33,16 @@ Deno.serve(async (req: Request) => {
   const { data: { user }, error: authError } = await userClient.auth.getUser();
   if (authError || !user) return json(401, { error: "Sign-in required" });
 
-  let body: { messages?: unknown };
+  let body: { action?: unknown; messages?: unknown; ticket?: unknown };
   try { body = await req.json(); } catch { return json(400, { error: "Invalid request" }); }
-  if (!Array.isArray(body.messages) || body.messages.length < 1 || body.messages.length > 12) {
-    return json(400, { error: "Send between 1 and 12 messages" });
+  const action = body.action === undefined ? "chat" : body.action;
+  if (action !== "chat" && action !== "create_support_ticket") {
+    return json(400, { error: "Invalid request action" });
+  }
+  const isSupportTicket = action === "create_support_ticket";
+  if (!Array.isArray(body.messages) || body.messages.length > 12 ||
+      (!isSupportTicket && body.messages.length < 1)) {
+    return json(400, { error: isSupportTicket ? "Invalid support context" : "Send between 1 and 12 messages" });
   }
   const messages = body.messages.map((m) => {
     if (!m || typeof m !== "object") return null;
@@ -46,8 +52,20 @@ Deno.serve(async (req: Request) => {
     if (!content || content.length > 2000) return null;
     return { role: item.role as "user" | "assistant", content };
   });
-  if (messages.some((m) => !m) || messages[messages.length - 1]?.role !== "user") {
+  if (messages.some((m) => !m) || (!isSupportTicket && messages[messages.length - 1]?.role !== "user")) {
     return json(400, { error: "Invalid message history" });
+  }
+  if (isSupportTicket) {
+    if (!body.ticket || typeof body.ticket !== "object" || Array.isArray(body.ticket)) {
+      return json(400, { error: "Invalid support ticket details" });
+    }
+    const ticket = body.ticket as Record<string, unknown>;
+    if (ticket.consent !== true || typeof ticket.subject !== "string" ||
+        ticket.subject.trim().length < 3 || ticket.subject.trim().length > 120 ||
+        typeof ticket.description !== "string" ||
+        ticket.description.trim().length < 5 || ticket.description.trim().length > 4000) {
+      return json(400, { error: "Check the ticket details and consent box, then try again." });
+    }
   }
 
   try {
@@ -60,13 +78,22 @@ Deno.serve(async (req: Request) => {
         "Content-Type": "application/json",
         "Origin": portalOrigin,
       },
-      body: JSON.stringify({ messages }),
+      body: JSON.stringify({ action, messages, ...(isSupportTicket ? { ticket: body.ticket } : {}) }),
       signal: AbortSignal.timeout(25000),
     });
     const result = await upstream.json().catch(() => ({}));
     if (!upstream.ok) {
       const status = [400, 401, 403, 429].includes(upstream.status) ? upstream.status : 503;
       return json(status, { error: typeof result?.error === "string" ? result.error : "Astra is temporarily unavailable" });
+    }
+    if (isSupportTicket) {
+      if (typeof result?.ticketReference !== "string" || !result.ticketReference) {
+        return json(502, { error: "Astra could not confirm the support request" });
+      }
+      return json(200, {
+        ticketReference: result.ticketReference.slice(0, 32),
+        supportNotified: result.supportNotified === true,
+      });
     }
     if (typeof result?.reply !== "string" || !result.reply.trim()) return json(502, { error: "Astra returned no reply" });
     return json(200, { reply: result.reply.slice(0, 8000) });
