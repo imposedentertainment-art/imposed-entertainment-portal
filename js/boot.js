@@ -283,7 +283,37 @@
     }
     showPortalLoading('Loading your workspace…','Syncing your releases and notifications'); try { await loadProfile(); if(!session || session.user.id!==expectedUserId)return; if(profile?.role==='listener'){history.replaceState(null,'','/listen/account');renderListenerRoute();hidePortalLoading();return;} await restoreDraftBackup(); const startupResults=await Promise.allSettled([loadReleases(), loadBands(), loadNotes(), loadMisc(), ...(isAdmin()?[loadUsers(), loadInvites()]:[])]); const startupFailures=startupResults.filter(x=>x.status==='rejected'); if(startupFailures.length)console.warn('Some workspace data did not load; preserving the requested route.',startupFailures.map(x=>x.reason));
     if(!session || session.user.id!==expectedUserId) return;
-    if(!window.__poll) window.__poll=setInterval(async()=>{ if(!session||!profile||document.hidden) return; const u=inbox.filter(n=>!n.read).length, p=myBandInvites.length; await loadNotes(); try{const m=await sb.rpc('my_band_invites'); myBandInvites=m.data||[];}catch(_){} let rosterChanged=false;if(isAdmin()){const rosterSignature=x=>`${x.id}:${x.avatar_path||''}:${x.avatar_url||''}:${x.banner_path||''}:${x.display_name||''}:${x.accent||''}:${x.tagline||''}:${x.updated_at||''}`;const before=users.map(rosterSignature).join('|');try{await loadUsers();rosterChanged=before!==users.map(rosterSignature).join('|');}catch(_){}} if(view!=='builder'&&!typing()&&(rosterChanged||inbox.filter(n=>!n.read).length!==u||myBandInvites.length!==p)) render(); },60000);
+    if(!window.__poll) window.__poll=setInterval(async()=>{
+      const pollUserId=session?.user?.id;
+      if(!pollUserId||!profile||document.hidden)return;
+      const unreadBefore=inbox.filter(n=>!n.read).length;
+      const invitesBefore=myBandInvites.length;
+      try{
+        await loadNotes();
+        if(!session||session.user.id!==pollUserId)return;
+        try{
+          const result=await sb.rpc('my_band_invites');
+          if(!session||session.user.id!==pollUserId)return;
+          if(!result.error)myBandInvites=result.data||[];
+          else console.warn('Could not refresh band invites during background sync',result.error);
+        }catch(error){console.warn('Could not refresh band invites during background sync',error);}
+        let rosterChanged=false;
+        if(isAdmin()){
+          const rosterSignature=x=>`${x.id}:${x.avatar_path||''}:${x.avatar_url||''}:${x.banner_path||''}:${x.display_name||''}:${x.accent||''}:${x.tagline||''}:${x.updated_at||''}`;
+          const before=users.map(rosterSignature).join('|');
+          try{
+            await loadUsers();
+            if(!session||session.user.id!==pollUserId)return;
+            rosterChanged=before!==users.map(rosterSignature).join('|');
+          }catch(error){console.warn('Could not refresh roster during background sync',error);}
+        }
+        if(session&&session.user.id===pollUserId&&view!=='builder'&&!typing()&&
+          (rosterChanged||inbox.filter(n=>!n.read).length!==unreadBefore||myBandInvites.length!==invitesBefore))render();
+      }catch(error){
+        // Background refreshes must never become unhandled rejections or interrupt the workspace.
+        console.warn('Background workspace refresh failed; the next poll will retry.',error);
+      }
+    },60000);
     if(window.__rtUid!==session.user.id){ try{ if(window.__rt) sb.removeChannel(window.__rt); window.__rtUid=session.user.id; window.__rt=sb.channel('notes-'+session.user.id).on('postgres_changes',{event:'INSERT',schema:'public',table:'notifications',filter:'user_id=eq.'+session.user.id},async p=>{ await loadNotes(); try{const m=await sb.rpc('my_band_invites'); myBandInvites=m.data||[];}catch(_){} await loadMisc(); if(p.new&&p.new.release_id) await loadReleases(); if(p.new&&p.new.title&&notificationIsVisible(p.new)) toast(p.new.title+(p.new.body?': '+p.new.body:''),'success'); if(view!=='builder'&&!typing()) render(); }).subscribe(); }catch(e){ console.warn('Realtime unavailable',e); } }
     // Keep the label's roster avatar/name data in sync when an artist updates their profile elsewhere.
     if(isAdmin()&&window.__profilesRtUid!==session.user.id){
