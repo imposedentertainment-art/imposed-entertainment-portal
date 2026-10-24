@@ -17,7 +17,7 @@
   async function send(text){if(busy||!text.trim())return;if(!(typeof sb!=='undefined' && sb)?.auth){addMessage('assistant','The secure assistant connection is not available right now. Please use the Help Centre.');return;}
     busy=true;const sendBtn=document.getElementById('ie-astra-send');if(sendBtn)sendBtn.disabled=true;addMessage('user',text);history.push({role:'user',content:text});const pending=addMessage('assistant','Thinking…');
     try{const {data,error}=await sb.functions.invoke('astra-chat',{body:{messages:history.slice(-12)}});if(error)throw error;const answer=String(data?.reply||'I couldn’t produce a reply just now. Please try again.').slice(0,8000);pending.textContent=answer;history.push({role:'assistant',content:answer});}
-    catch(_){pending.textContent='Astra AI is not connected yet. The team needs to configure the secure AI service. You can still use the Help Centre.';}
+    catch(_){pending.textContent='Astra could not connect just now. Check that your website account is linked to Discord, then try again. If it keeps happening, use the Help Centre.';}
     finally{busy=false;if(sendBtn)sendBtn.disabled=false;}
   }
   async function mount(){if(mounted||!(typeof sb!=='undefined' && sb)?.auth)return;try{const {data}=await window.sb.auth.getSession();if(!data?.session?.user?.id)return;}catch(_){return;}
